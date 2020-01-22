@@ -1,26 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Home from './layout/Home';
+import Admin from './layout/Admin';
+import logo from './logo.png';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+          <a class="navbar-brand" href="#">
+            <img src={logo} height="105" alt="" />
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+
+              <li class="nav-item">
+                <a class="nav-link" href="#"><Link className="text-light" style={{ textDecoration: 'none' }} to="/">Home</Link></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"><Link className="text-light" style={{ textDecoration: 'none' }} to="/admin">Admin</Link></a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <Switch>
+          <Route path="/admin">
+            <Admin />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
-
-export default App;
