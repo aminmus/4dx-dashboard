@@ -69,7 +69,8 @@ export default class App extends Component {
       <StateContext.Provider
         value={{
           clients: this.state.clients,
-          nps: this.state.nps
+          nps: this.state.nps,
+          chart: this.state.chart
         }}
       >
         <Router>
