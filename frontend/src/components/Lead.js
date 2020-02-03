@@ -7,20 +7,43 @@ export default function Lead(props) {
   const { nps, clients } = props;
   const { defineClients, defineText, implementText } = nps;
 
-  const renderDefineSuccess = () => {
-    let leadClassName = '';
+  const setDefineLeadClassName = () => {
     if (defineClients < 7) {
-      leadClassName = 'text-danger';
+      return 'text-danger';
     } else if (defineClients >= 8 && defineClients < 9) {
-      leadClassName = 'text-warning';
+      return 'text-warning';
     } else {
-      leadClassName = 'text-success';
+      return 'text-success';
     }
+  };
+
+  const calcLeads = () => {
+    const leads = { status: 0, total: 0, ratio: 0 };
+    for (const { progress } of clients) {
+      leads.total += 10;
+      leads.status += parseInt(progress);
+      leads.ratio = leads.status + '/' + leads.total;
+    }
+    return leads;
+  };
+
+  const setImplementLeadClassName = () => {
+    const leads = calcLeads();
+    if (leads.status < leads.total * 0.7) {
+      return 'text-danger';
+    } else if (leads.status >= leads.total * 0.7 && leads.status <= leads.total * 0.8) {
+      return 'text-warning';
+    } else {
+      return 'text-success';
+    }
+  };
+
+  const renderDefineSuccess = () => {
     return (
       <div>
         <h3 className="define">{defineText}</h3>
         <div className="define lead__number">
-          <span className={leadClassName}>
+          <span className={setDefineLeadClassName()}>
             {defineClients}
             /10
           </span>
@@ -30,26 +53,12 @@ export default function Lead(props) {
   };
 
   const renderImplementSuccess = () => {
-    let leadStatus = 0;
-    let leadTotal = 0;
-    let leadClassName = '';
-    for (const { progress } of clients) {
-      leadTotal += 10;
-      leadStatus += parseInt(progress);
-    }
-    if (leadStatus < leadTotal * 0.7) {
-      leadClassName = 'text-danger';
-    } else if (leadStatus >= leadTotal * 0.7 && leadStatus <= leadTotal * 0.8) {
-      leadClassName = 'text-warning';
-    } else {
-      leadClassName = 'text-success';
-    }
-    const leadValue = `${leadStatus}/${leadTotal}`;
+    const leads = calcLeads();
     return (
       <div>
         <h3 className="implement">{implementText}</h3>
         <div className="implement lead__number">
-          <span className={leadClassName}>{leadValue}</span>
+          <span className={setImplementLeadClassName()}>{leads.ratio}</span>
         </div>
       </div>
     );
@@ -65,7 +74,7 @@ export default function Lead(props) {
 
 Lead.defaultProps = {
   clients: [],
-  nps: {},
+  nps: {}
 };
 
 Lead.propTypes = {
@@ -76,6 +85,6 @@ Lead.propTypes = {
     goal: PropTypes.string,
     defineClients: PropTypes.string,
     defineText: PropTypes.string,
-    implementText: PropTypes.string,
-  }),
+    implementText: PropTypes.string
+  })
 };
