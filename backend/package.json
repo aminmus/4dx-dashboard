@@ -15,7 +15,10 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/vaimo/4dx#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "pg": "^7.18.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.3"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
