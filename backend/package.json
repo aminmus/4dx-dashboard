@@ -1,0 +1,24 @@
+{
+  "name": "4dx-backend",
+  "version": "0.1.0",
+  "description": "Backend for 4dx site",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/vaimo/4dx.git"
+  },
+  "author": "Amin Mushehid",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/vaimo/4dx#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.2"
+  }
+}
