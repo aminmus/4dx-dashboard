@@ -8,8 +8,8 @@ import {
 } from 'react-router-dom';
 import StateContext from './context/state-context';
 import Home from './layout/Home';
-import Admin from './layout/Admin';
 import logo from './logo.png';
+import Dashboard from './layout/Dashboard';
 
 export default function App() {
   const [data] = useState({
@@ -113,8 +113,8 @@ export default function App() {
                 </li>
                 <li className="nav-item">
                   <div className="nav-link" href="#">
-                    <Link className="text-light" style={{ textDecoration: 'none' }} to="/admin">
-                      Admin
+                    <Link className="text-light" style={{ textDecoration: 'none' }} to="/dashboard">
+                      Dashboard
                     </Link>
                   </div>
                 </li>
@@ -123,8 +123,8 @@ export default function App() {
           </nav>
 
           <Switch>
-            <Route path="/admin">
-              <Admin />
+            <Route path="/dashboard">
+              <Dashboard />
             </Route>
             <Route path="/">
               <Home />
