@@ -1,13 +1,9 @@
-const express = require('express');
+const router = require('express').Router();
 
-const app = express();
-const port = 4000;
+const npsData = require('../../data.json');
 
-app.use('/api', require('./routes/nps'));
-
-app.use('/', (_req, res) => {
-  res.writeHead(200);
-  res.end('Hello, World!\n');
+router.get('/nps', (_req, res) => {
+    res.send(npsData);
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}!`));
+module.exports = router;
