@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   // eslint-disable-next-line indent
   BrowserRouter as Router,
@@ -12,79 +12,37 @@ import logo from './logo.png';
 import Login from './layout/Login';
 
 export default function App() {
-  const [data] = useState({
-    clients: [
-      {
-        id: 0,
-        name: 'Arvid Nordqvist',
-        progress: '3/10'
-      },
-      {
-        id: 1,
-        name: 'Bauhaus1',
-        progress: '0/10'
-      },
-      {
-        id: 2,
-        name: 'Björn Borg',
-        progress: '3/10'
-      },
-      {
-        id: 3,
-        name: 'Dr Denim',
-        progress: '5/10'
-      },
-      {
-        id: 4,
-        name: 'Elon',
-        progress: '7/10'
-      },
-      {
-        id: 5,
-        name: 'Engelsson',
-        progress: '9/10'
-      },
-      {
-        id: 6,
-        name: 'Hydroscand',
-        progress: '10/10'
-      },
-      {
-        id: 7,
-        name: 'Lantmännen',
-        progress: '8/10'
-      },
-      {
-        id: 8,
-        name: 'Sc Motors',
-        progress: '6/10'
-      },
-      {
-        id: 9,
-        name: 'Stiga Sports',
-        progress: '5/10'
-      }
-    ],
-    nps: {
-      description: 'From -42 NPS to 10 by the end of October 2019',
-      current: '-18',
-      goal: '8',
-      defineClients: '5',
-      defineText: 'Define the Success factors for top 10 clients',
-      implementText: 'Implement Client Success Program for top 10 clients'
-    },
-    chart: {
-      months: ['June', 'July', 'August', 'September', 'October', 'November'],
-      values: [-5, -43, -34, -49, -25, -19]
-    }
+  const [clients, setClients] = useState([{ id: 0, name: 'default', progress: '0/10' }]);
+  const [nps, setNps] = useState({
+    description: 'N/A',
+    current: '0',
+    goal: '0',
+    defineClients: '0',
+    defineText: 'N/A',
+    implementText: 'N/A'
   });
+  const [chart, setChart] = useState({
+    months: ['June', 'July', 'August', 'September', 'October', 'November'],
+    values: [-5, -43, -34, -49, -25, -19]
+  });
+
+  useEffect(() => {
+    fetch('http://localhost:4000/api/clients')
+      .then(response => response.json())
+      .then(clients => setClients(clients))
+      .then(console.log(clients));
+    fetch('http://localhost:4000/api/nps')
+      .then(response => response.json())
+      .then(nps => setNps(nps))
+      .then(console.log(nps));
+  }, []);
 
   return (
     <StateContext.Provider
       value={{
-        clients: data.clients,
-        nps: data.nps,
-        chart: data.chart
+        clients: clients,
+        nps: nps,
+        chart: chart
       }}
     >
       <Router>
