@@ -9,7 +9,7 @@ import {
 import StateContext from './context/state-context';
 import Home from './layout/Home';
 import logo from './logo.png';
-import Dashboard from './layout/Dashboard';
+import Login from './layout/Login';
 
 export default function App() {
   const [data] = useState({
@@ -113,8 +113,8 @@ export default function App() {
                 </li>
                 <li className="nav-item">
                   <div className="nav-link" href="#">
-                    <Link className="text-light" style={{ textDecoration: 'none' }} to="/dashboard">
-                      Dashboard
+                    <Link className="text-light" style={{ textDecoration: 'none' }} to="/admin">
+                      Admin
                     </Link>
                   </div>
                 </li>
@@ -123,8 +123,8 @@ export default function App() {
           </nav>
 
           <Switch>
-            <Route path="/dashboard">
-              <Dashboard />
+            <Route path="/admin">
+              <Login />
             </Route>
             <Route path="/">
               <Home />
