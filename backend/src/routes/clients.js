@@ -34,8 +34,18 @@ function createClient(newClient) {
 	}
 }
 
+function deleteClient(clientId) {
+	data.clients = data.clients.filter(client => client.id != clientId);
+	try {
+		fs.writeFileSync("data.json", JSON.stringify(data, null, 2), "utf8");
+	} catch (err) {
+		console.log(err);
+	}
+}
+
 // GET SINGLE CLIENT
 router.get("/clients/:id", (_req, res) => {
+	console.log("FETCH ONE REQUEST");
 	res.setHeader("X-Total-Count", "30");
 	res.setHeader("Access-Control-Expose-Headers", "X-Total-Count");
 	res.send(data.clients[_req.params["id"]]);
@@ -43,12 +53,14 @@ router.get("/clients/:id", (_req, res) => {
 
 // GET ALL CLIENTS
 router.get("/clients", (_req, res) => {
+	console.log("FETCH ALL REQUEST");
 	res.setHeader("X-Total-Count", "30");
 	res.setHeader("Access-Control-Expose-Headers", "X-Total-Count");
 	res.send(data.clients);
 });
 // UPDATE CLIENT
 router.put("/clients/:id", jsonParser, (_req, res) => {
+	console.log("OUT REQUEST");
 	const client = data.clients[_req.params["id"]];
 	updateClient(_req.body);
 	return res.send(client);
@@ -56,8 +68,17 @@ router.put("/clients/:id", jsonParser, (_req, res) => {
 
 // POST CLIENT
 router.post("/clients", jsonParser, (_req, res) => {
+	console.log("POST REQUEST");
 	createClient(_req.body);
 	return res.send(_req.body);
+});
+
+// DELETE CLIENT
+router.delete("/clients/:id", (_req, res) => {
+	console.log("DELETE REQUEST");
+	const client = data.clients[_req.params["id"]];
+	deleteClient(_req.params["id"]);
+	return res.send(client);
 });
 
 module.exports = router;

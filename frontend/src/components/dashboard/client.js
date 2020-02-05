@@ -7,16 +7,18 @@ import {
   SimpleForm,
   TextField,
   TextInput,
-  EditButton
+  EditButton,
+  DeleteButton
 } from 'react-admin';
 
 export const ClientList = props => (
   <List style={{ backgroundColor: 'black' }} {...props}>
-    <Datagrid style={{ backgroundColor: 'darkgrey' }} rowClick="edit">
+    <Datagrid style={{ backgroundColor: 'darkgrey' }}>
       <TextField source="id" />
       <TextField source="name" />
       <TextField source="progress" />
       <EditButton />
+      <DeleteButton />
     </Datagrid>
   </List>
 );
@@ -31,10 +33,9 @@ export const ClientEdit = props => (
   </Edit>
 );
 
-//TODO: IMPLEMENT- CREATE CLIENT ROUTE
 export const ClientCreate = props => (
   <Create title="Create client entry" {...props}>
-    <SimpleForm style={{ backgroundColor: 'darkgrey' }} >
+    <SimpleForm style={{ backgroundColor: 'darkgrey' }}>
       <TextInput style={{ color: 'black' }} source="name" />
       <TextInput style={{ color: 'black' }} source="progress" />
     </SimpleForm>
