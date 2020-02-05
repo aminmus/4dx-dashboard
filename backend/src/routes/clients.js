@@ -19,6 +19,21 @@ function updateClient(newClient) {
 	}
 }
 
+function createClient(newClient) {
+	maxId = 0;
+
+	data.clients.map(client =>
+		client.id > maxId ? (maxId = client.id) : maxId++
+	);
+	newClient["id"] = maxId;
+	data.clients.push(newClient);
+	try {
+		fs.writeFileSync("data.json", JSON.stringify(data, null, 2), "utf8");
+	} catch (err) {
+		console.log(err);
+	}
+}
+
 // GET SINGLE CLIENT
 router.get("/clients/:id", (_req, res) => {
 	res.setHeader("X-Total-Count", "30");
@@ -35,9 +50,14 @@ router.get("/clients", (_req, res) => {
 // UPDATE CLIENT
 router.put("/clients/:id", jsonParser, (_req, res) => {
 	const client = data.clients[_req.params["id"]];
-	console.log(client);
 	updateClient(_req.body);
 	return res.send(client);
+});
+
+// POST CLIENT
+router.post("/clients", jsonParser, (_req, res) => {
+	createClient(_req.body);
+	return res.send(_req.body);
 });
 
 module.exports = router;

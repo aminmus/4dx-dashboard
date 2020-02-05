@@ -1,12 +1,22 @@
 import React from 'react';
-import { List, Datagrid, Edit, Create, SimpleForm, TextField, TextInput } from 'react-admin';
+import {
+  List,
+  Datagrid,
+  Edit,
+  Create,
+  SimpleForm,
+  TextField,
+  TextInput,
+  EditButton
+} from 'react-admin';
 
 export const ClientList = props => (
-  <List {...props}>
-    <Datagrid rowClick="edit">
-      <TextField style={{ color: 'black' }} source="id" />
-      <TextField style={{ color: 'black' }} source="name" />
-      <TextField style={{ color: 'black' }} source="progress" />
+  <List style={{ backgroundColor: 'black' }} {...props}>
+    <Datagrid style={{ backgroundColor: 'darkgrey' }} rowClick="edit">
+      <TextField source="id" />
+      <TextField source="name" />
+      <TextField source="progress" />
+      <EditButton />
     </Datagrid>
   </List>
 );
@@ -21,12 +31,12 @@ export const ClientEdit = props => (
   </Edit>
 );
 
-// TODO: IMPLEMENT- CREATE CLIENT ROUTE
-// export const ClientCreate = props => (
-//   <Create title="Create client entry" {...props}>
-//     <SimpleForm>
-//       <TextInput style={{ color: 'black' }} source="name" />
-//       <TextInput style={{ color: 'black' }} source="progress" />
-//     </SimpleForm>
-//   </Create>
-// );
+//TODO: IMPLEMENT- CREATE CLIENT ROUTE
+export const ClientCreate = props => (
+  <Create title="Create client entry" {...props}>
+    <SimpleForm style={{ backgroundColor: 'darkgrey' }} >
+      <TextInput style={{ color: 'black' }} source="name" />
+      <TextInput style={{ color: 'black' }} source="progress" />
+    </SimpleForm>
+  </Create>
+);
