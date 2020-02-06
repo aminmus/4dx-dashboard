@@ -13,7 +13,7 @@ import {
 
 export const ClientList = props => (
   <List style={{ backgroundColor: 'black' }} {...props}>
-    <Datagrid style={{ backgroundColor: 'darkgrey' }}>
+    <Datagrid style={{ backgroundColor: 'gray' }}>
       <TextField source="id" />
       <TextField source="name" />
       <TextField source="progress" />
@@ -26,9 +26,9 @@ export const ClientList = props => (
 export const ClientEdit = props => (
   <Edit title="Edit client entry" {...props}>
     <SimpleForm>
-      <TextInput style={{ color: 'black' }} disabled source="id" />
-      <TextInput style={{ color: 'black' }} source="name" />
-      <TextInput style={{ color: 'black' }} source="progress" />
+      <TextInput style={{ backgroundColor: 'gray', color: 'white' }} disabled source="id" />
+      <TextInput style={{ backgroundColor: 'gray', color: 'white' }} source="name" />
+      <TextInput style={{ backgroundColor: 'gray', color: 'white' }} source="progress" />
     </SimpleForm>
   </Edit>
 );
@@ -36,8 +36,8 @@ export const ClientEdit = props => (
 export const ClientCreate = props => (
   <Create title="Create client entry" {...props}>
     <SimpleForm style={{ backgroundColor: 'darkgrey' }}>
-      <TextInput style={{ color: 'black' }} source="name" />
-      <TextInput style={{ color: 'black' }} source="progress" />
+      <TextInput style={{ backgroundColor: 'gray', color: 'white' }} source="name" />
+      <TextInput style={{ backgroundColor: 'gray', color: 'white' }} source="progress" />
     </SimpleForm>
   </Create>
 );

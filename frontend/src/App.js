@@ -31,7 +31,7 @@ export default function App() {
       .then(response => response.json())
       .then(clients => setClients(clients))
       .then(console.log(clients));
-    fetch('http://localhost:4000/api/nps')
+    fetch('http://localhost:4000/api/nps/0')
       .then(response => response.json())
       .then(nps => setNps(nps))
       .then(console.log(nps));

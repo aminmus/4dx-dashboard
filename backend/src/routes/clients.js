@@ -60,7 +60,7 @@ router.get("/clients", (_req, res) => {
 });
 // UPDATE CLIENT
 router.put("/clients/:id", jsonParser, (_req, res) => {
-	console.log("OUT REQUEST");
+	console.log("PUT REQUEST");
 	const client = data.clients[_req.params["id"]];
 	updateClient(_req.body);
 	return res.send(client);
