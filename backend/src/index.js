@@ -1,7 +1,8 @@
 const express = require('express');
 
+require('dotenv').config();
+
 const app = express();
-const port = 4000;
 
 app.use('/api', require('./routes/nps'));
 
@@ -10,4 +11,4 @@ app.use('/', (_req, res) => {
   res.end('Hello, World!\n');
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}!`));
+app.listen(process.env.SERVER_PORT, () => console.log(`Listening on port ${process.env.SERVER_PORT}!`));
