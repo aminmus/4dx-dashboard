@@ -22,7 +22,8 @@ try {
 
 const app = express();
 
-app.use("/api", require("./routes/nps"));
+app.use("/api", require("./routes/client"));
+app.use("/api", require("./routes/user"));
 
 app.use("/", (_req, res) => {
 	res.writeHead(200);
