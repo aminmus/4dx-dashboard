@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 
 require("dotenv").config();
 
@@ -22,7 +23,12 @@ try {
 
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 app.use("/api", require("./routes/client"));
+app.use("/api", require("./routes/measure"));
+app.use("/api", require("./routes/csat"));
 app.use("/api", require("./routes/user"));
 
 app.use("/", (_req, res) => {
