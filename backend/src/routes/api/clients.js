@@ -1,104 +1,63 @@
 const router = require('express').Router();
-const bodyParser = require('body-parser');
-
-const jsonParser = bodyParser.json();
-const fs = require('fs');
-
-const db = require('../../../models/index');
-
-const Client = db.sequelize.import('../../../models/client');
-const Measure = db.sequelize.import('../../../models/measure');
-const data = require('../../../data.json');
-
-// Helper Functions
-function updateClient(newClient) {
-  const newClientData = data.clients.map((client) => (client.id === newClient.id ? newClient : client));
-  data.clients = newClientData;
-
-  try {
-    fs.writeFileSync('data.json', JSON.stringify(data, null, 2), 'utf8');
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-function createClient(newClient) {
-  let maxId = 0;
-
-  data.clients.map((client) => (client.id > maxId ? (maxId = client.id) : maxId++));
-  newClient.id = maxId;
-  data.clients.push(newClient);
-  try {
-    fs.writeFileSync('data.json', JSON.stringify(data, null, 2), 'utf8');
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-function deleteClient(clientId) {
-  data.clients = data.clients.filter((client) => client.id !== clientId);
-  try {
-    fs.writeFileSync('data.json', JSON.stringify(data, null, 2), 'utf8');
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-// GET SINGLE CLIENT
-router.get('/clients/:id', (_req, res) => {
-  console.log('FETCH ONE REQUEST');
-  res.setHeader('X-Total-Count', '30');
-  res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
-  res.send(data.clients[_req.params.id]);
-});
-
-// From database, TODO: change route path to something fitting later
-router.get('/clientsfromdatabase', async (_req, res) => {
-  try {
-    const client = await Client.findAll({
-      include: [
-        {
-          model: Measure,
-        },
-      ],
-    });
-    return client;
-  } catch (error) {
-    return res.send({
-      'error message': error.message,
-      error,
-    });
-  }
-});
+const models = require('../../../models');
 
 // GET ALL CLIENTS
-router.get('/clients', (_req, res) => {
-  console.log('FETCH ALL REQUEST');
-  res.setHeader('X-Total-Count', '30');
-  res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
-  res.send(data.clients);
+router.get('/clients', async (_req, res) => {
+  try {
+    const clients = await models.Client.findAll({
+      include: [{ all: true, nested: true }],
+    });
+    console.log(JSON.stringify(clients, null, 2));
+    res.send(clients);
+  } catch (err) {
+    console.log(`ERROR: ${err}`);
+    res.send('error');
+  }
 });
+
+// GET ONE CLIENT
+router.get('/clients/:clientId', async (req, res) => {
+  try {
+    const client = await models.Client.findByPk(req.params.clientId, {
+      include: [{ all: true, nested: true }],
+    });
+    console.log(JSON.stringify(client, null, 2));
+
+    res.send(client);
+  } catch (err) {
+    console.log(`ERROR: ${err}`);
+    res.send('error');
+  }
+});
+
 // UPDATE CLIENT
-router.put('/clients/:id', jsonParser, (_req, res) => {
-  console.log('PUT REQUEST');
-  const client = data.clients[_req.params.id];
-  updateClient(_req.body);
-  return res.send(client);
+router.put('/clients/:clientId', async (req, res) => {
+  try {
+    const client = await models.Client.findByPk(req.params.clientId, {
+      include: [{ all: true, nested: true }],
+    });
+    client.name = req.body.name;
+    await client.save();
+    console.log('client updated');
+    res.send(client);
+  } catch (err) {
+    console.log(`ERROR: ${err}`);
+    res.send('error');
+  }
 });
 
 // POST CLIENT
-router.post('/clients', jsonParser, (_req, res) => {
-  console.log('POST REQUEST');
-  createClient(_req.body);
-  return res.send(_req.body);
-});
-
-// DELETE CLIENT
-router.delete('/clients/:id', (_req, res) => {
-  console.log('DELETE REQUEST');
-  const client = data.clients[_req.params.id];
-  deleteClient(_req.params.id);
-  return res.send(client);
+router.post('/clients', async (req, res) => {
+  try {
+    const newClient = await models.Client.build(req.body);
+    console.log(req.body);
+    await newClient.save();
+    console.log('new client saved');
+    res.send(newClient);
+  } catch (err) {
+    console.log(`ERROR: ${err}`);
+    res.send('error');
+  }
 });
 
 module.exports = router;
