@@ -23,30 +23,30 @@ export default function Monitor(props) {
             pointRadius: 5,
             pointBorderWidth: 3,
             pointBackgroundColor: 'rgba(250, 191, 44, 1)',
-            fill: false,
-          },
-        ],
+            fill: false
+          }
+        ]
       },
       options: {
         scales: {
           yAxes: [
             {
               scaleLabel: {
-                fontColor: 'pink',
+                fontColor: 'pink'
               },
               ticks: {
                 beginAtZero: false,
                 suggestedMax: 30,
-                suggestedMin: -60,
-              },
-            },
-          ],
+                suggestedMin: -60
+              }
+            }
+          ]
         },
         legend: {
-          display: false,
+          display: false
         },
-        fill: false,
-      },
+        fill: false
+      }
     });
   });
   return (
@@ -57,12 +57,12 @@ export default function Monitor(props) {
 }
 
 Monitor.defaultProps = {
-  chart: {},
+  chart: {}
 };
 
 Monitor.propTypes = {
   chart: PropTypes.shape({
     months: PropTypes.array,
-    values: PropTypes.array,
-  }),
+    values: PropTypes.array
+  })
 };

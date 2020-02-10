@@ -1,9 +1,10 @@
 const express = require('express');
+const cors = require('cors');
 
 require('dotenv').config();
 
 const tryDbConnection = require('./utils/tryDbConnection');
-const client = require('./routes/api/client');
+const clients = require('./routes/api/clients');
 const user = require('./routes/api/user');
 
 const db = require('../models');
@@ -22,7 +23,9 @@ const startServer = async () => {
 
   const app = express();
 
-  app.use('/api', client);
+  app.use(cors());
+
+  app.use('/api', clients);
   app.use('/api', user);
 
   app.use('/', (_req, res) => {

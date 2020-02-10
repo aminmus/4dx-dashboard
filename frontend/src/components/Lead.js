@@ -10,11 +10,11 @@ export default function Lead(props) {
   const setDefineLeadClassName = () => {
     if (defineClients < 7) {
       return 'text-danger';
-    } else if (defineClients >= 8 && defineClients < 9) {
-      return 'text-warning';
-    } else {
-      return 'text-success';
     }
+    if (defineClients >= 8 && defineClients < 9) {
+      return 'text-warning';
+    }
+    return 'text-success';
   };
 
   const calcLeads = () => {
@@ -22,7 +22,7 @@ export default function Lead(props) {
     for (const { progress } of clients) {
       leads.total += 10;
       leads.status += parseInt(progress);
-      leads.ratio = leads.status + '/' + leads.total;
+      leads.ratio = `${leads.status}/${leads.total}`;
     }
     return leads;
   };
@@ -31,11 +31,11 @@ export default function Lead(props) {
     const leads = calcLeads();
     if (leads.status < leads.total * 0.7) {
       return 'text-danger';
-    } else if (leads.status >= leads.total * 0.7 && leads.status <= leads.total * 0.8) {
-      return 'text-warning';
-    } else {
-      return 'text-success';
     }
+    if (leads.status >= leads.total * 0.7 && leads.status <= leads.total * 0.8) {
+      return 'text-warning';
+    }
+    return 'text-success';
   };
 
   const renderDefineSuccess = () => {
