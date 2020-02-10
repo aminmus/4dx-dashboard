@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const db = require("../../models/index");
+const db = require("../../../models/client.js");
+
 const Client = db.sequelize.import("../../models/client");
 const Measure = db.sequelize.import("../../models/measure");
 

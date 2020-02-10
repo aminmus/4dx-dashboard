@@ -3,6 +3,8 @@ const express = require('express');
 require('dotenv').config();
 
 const tryDbConnection = require('./utils/tryDbConnection');
+const client = require('./routes/api/client');
+const user = require('./routes/api/user');
 
 const db = require('../models');
 
@@ -20,8 +22,8 @@ const startServer = async () => {
 
   const app = express();
 
-  app.use('/api', require('./routes/client'));
-  app.use('/api', require('./routes/user'));
+  app.use('/api', client);
+  app.use('/api', user);
 
   app.use('/', (_req, res) => {
     res.writeHead(200);

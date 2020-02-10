@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const db = require("../../models/index");
+const db = require("../../../models/index");
 const User = db.sequelize.import("../../models/user");
 
 router.get("/users", async (_req, res) => {
