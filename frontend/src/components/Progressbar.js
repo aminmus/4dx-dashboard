@@ -24,10 +24,10 @@ export default function ProgressBar(props) {
 
 ProgressBar.defaultProps = {
   clientName: '',
-  clientScore: '',
+  clientScore: ''
 };
 
 ProgressBar.propTypes = {
   clientName: PropTypes.string,
-  clientScore: PropTypes.string,
+  clientScore: PropTypes.string
 };
