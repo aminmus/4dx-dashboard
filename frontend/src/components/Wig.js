@@ -19,7 +19,7 @@ export default function Wig(props) {
 }
 
 Wig.defaultProps = {
-  nps: {},
+  nps: {}
 };
 
 Wig.propTypes = {
@@ -29,6 +29,6 @@ Wig.propTypes = {
     goal: PropTypes.string,
     defineClients: PropTypes.string,
     defineText: PropTypes.string,
-    implementText: PropTypes.string,
-  }),
+    implementText: PropTypes.string
+  })
 };

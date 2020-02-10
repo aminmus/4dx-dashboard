@@ -8,7 +8,7 @@ import Monitor from '../components/Monitor';
 export default function Home() {
   return (
     <StateContext.Consumer>
-      {(context) => (
+      {context => (
         <div className="px-5">
           <div className="row">
             <div className="col-sm">

@@ -7,7 +7,7 @@ export default function Details(props) {
   return (
     <div>
       <ol>
-        {clients.map((client) => (
+        {clients.map(client => (
           <Progressbar key={client.id} clientName={client.name} clientScore={client.progress} />
         ))}
       </ol>
@@ -16,9 +16,9 @@ export default function Details(props) {
 }
 
 Details.defaultProps = {
-  clients: [],
+  clients: []
 };
 
 Details.propTypes = {
-  clients: PropTypes.arrayOf(PropTypes.object),
+  clients: PropTypes.arrayOf(PropTypes.object)
 };
