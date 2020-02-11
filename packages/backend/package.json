@@ -6,7 +6,7 @@
     "scripts": {
         "start": "nodemon src/index.js",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "lint:js:fix": "npm run eslint . --ext .js,.jsx --fix"
+        "precommit": "lint-staged"
     },
     "repository": {
         "type": "git",
