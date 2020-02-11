@@ -13,7 +13,7 @@ import Login from './layout/Login';
 
 export default function App() {
   const [clients, setClients] = useState([{ id: 0, name: 'default', progress: '0/10' }]);
-  const [nps, setNps] = useState({
+  const [nps] = useState({
     description: 'N/A',
     current: '0',
     goal: '0',
@@ -21,7 +21,7 @@ export default function App() {
     defineText: 'N/A',
     implementText: 'N/A'
   });
-  const [chart, setChart] = useState({
+  const [chart] = useState({
     months: ['June', 'July', 'August', 'September', 'October', 'November'],
     values: [-5, -43, -34, -49, -25, -19]
   });
@@ -29,12 +29,7 @@ export default function App() {
   useEffect(() => {
     fetch('http://localhost:4000/api/clients')
       .then(response => response.json())
-      .then(clients => setClients(clients))
-      .then(console.log(clients));
-    fetch('http://localhost:4000/api/nps/0')
-      .then(response => response.json())
-      .then(nps => setNps(nps))
-      .then(console.log(nps));
+      .then(result => setClients(result));
   }, []);
 
   return (
