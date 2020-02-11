@@ -1,12 +1,12 @@
 import React from 'react';
 import { Admin, Resource, ListGuesser } from 'react-admin';
+import { createMuiTheme } from '@material-ui/core/styles';
+import simpleRestProvider from 'ra-data-simple-rest';
 import { ClientList, ClientEdit, ClientShow, ClientCreate } from '../components/dashboard/client';
 import authProvider from '../authProvider';
 import Dashboard from './Dashboard';
-import { createMuiTheme } from '@material-ui/core/styles';
 import { CsatEdit, CsatCreate } from '../components/dashboard/csat';
 import { MeasureEdit, MeasureCreate } from '../components/dashboard/measure';
-import simpleRestProvider from 'ra-data-simple-rest';
 
 export default function Login() {
   const theme = createMuiTheme({

@@ -35,9 +35,9 @@ export default function App() {
   return (
     <StateContext.Provider
       value={{
-        clients: clients,
-        nps: nps,
-        chart: chart
+        clients,
+        nps,
+        chart
       }}
     >
       <Router>
