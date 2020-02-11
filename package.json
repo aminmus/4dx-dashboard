@@ -5,8 +5,10 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "hooks": {
-        "pre-commit": "lerna run --concurrency 1 --stream precommit"
+    "husky": {
+        "hooks": {
+            "pre-commit": "lerna run --concurrency 1 --stream precommit"
+        }
     },
     "repository": {
         "type": "git",
@@ -14,7 +16,7 @@
     },
     "workspaces": [
         "packages/*"
-      ],
+    ],
     "contributors": [
         "Amin Mushehid",
         "Daniel Salin"
