@@ -6,9 +6,12 @@ export default function ProgressBar(props) {
   const { clientScore, clientName } = props;
 
   useEffect(() => {
+    const [progress, total] = clientScore.split('/');
+
     const canvas = document.getElementById(clientName);
     const ctx = canvas.getContext('2d');
-    const x = parseInt(clientScore) / 10;
+    const x = parseInt(progress) / parseInt(total);
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = 'green';
     ctx.fillRect(0, 0, canvas.width * x, canvas.height);
