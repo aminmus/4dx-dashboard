@@ -3,9 +3,13 @@ const models = require("../../models");
 
 // GET ALL USERS
 router.get("/users", async (_req, res) => {
+	res.setHeader("Access-Control-Expose-Headers", "Content-Range");
+	res.setHeader("Content-Range", "30");
+	console.log("*************************");
+	console.log("GET ALL REQUEST - USER");
+	console.log("*************************");
 	try {
 		const users = await models.User.findAll();
-		console.log(JSON.stringify(users, null, 2));
 		res.send(users);
 	} catch (err) {
 		console.log("ERROR: " + err);
@@ -15,9 +19,11 @@ router.get("/users", async (_req, res) => {
 
 //GET ONE USER
 router.get("/users/:userId", async (req, res) => {
+	console.log("*************************");
+	console.log("GET ONE REQUEST - USER");
+	console.log("*************************");
 	try {
 		const user = await models.User.findByPk(req.params.userId);
-		console.log(JSON.stringify(user, null, 2));
 		res.send(user);
 	} catch (err) {
 		console.log("ERROR: " + err);
@@ -27,12 +33,14 @@ router.get("/users/:userId", async (req, res) => {
 
 //UPDATE USER
 router.put("/users/:userId", async (req, res) => {
+	console.log("*************************");
+	console.log("PUT REQUEST - USER");
+	console.log("*************************");
 	try {
 		const user = await models.User.findByPk(req.params.userId);
 		user.email = req.body["email"];
 		user.password = req.body["password"];
 		await user.save();
-		console.log("user updated");
 		res.send(user);
 	} catch (err) {
 		console.log("ERROR: " + err);
@@ -42,12 +50,28 @@ router.put("/users/:userId", async (req, res) => {
 
 //POST USER
 router.post("/users", async (req, res) => {
+	console.log("*************************");
+	console.log("POST REQUEST - CSAT");
+	console.log("*************************");
 	try {
 		const newUser = await models.User.build(req.body);
-		console.log(req.body);
 		await newUser.save();
-		console.log("new user saved");
 		res.send(newUser);
+	} catch (err) {
+		console.log("ERROR: " + err);
+		res.send("error");
+	}
+});
+
+// DELETE USER
+router.delete("/users/:userId", async (req, res) => {
+	console.log("*************************");
+	console.log("DELETE REQUEST - USER");
+	console.log("*************************");
+	try {
+		const user = await models.user.findByPk(req.params.clientId);
+		await user.destroy();
+		return res.send(user);
 	} catch (err) {
 		console.log("ERROR: " + err);
 		res.send("error");

@@ -1,11 +1,23 @@
 const router = require("express").Router();
 const models = require("../../models");
 
-// GET ALL measureS
+// GET ALL MEASURES
 router.get("/measures", async (req, res) => {
+	res.setHeader("Access-Control-Expose-Headers", "Content-Range");
+	res.setHeader("Content-Range", "30");
+	console.log("*************************");
+	console.log("GET ALL REQUEST - MEASURE");
+	console.log("*************************");
+	let filter = {};
+	if (req.query.filter) {
+		queryFilter = JSON.parse(req.query.filter);
+		let ClientId = queryFilter.Client_Id;
+		filter = {
+			where: { ClientId: ClientId }
+		};
+	}
 	try {
-		const measures = await models.Measure.findAll();
-		console.log(JSON.stringify(measures, null, 2));
+		const measures = await models.Measure.findAll(filter);
 		res.send(measures);
 	} catch (err) {
 		console.log("ERROR: " + err);
@@ -13,12 +25,13 @@ router.get("/measures", async (req, res) => {
 	}
 });
 
-//GET ONE measure
+//GET ONE MEASURE
 router.get("/measures/:measureId", async (req, res) => {
+	console.log("*************************");
+	console.log("GET ONE REQUEST - MEASURE");
+	console.log("*************************");
 	try {
 		const measure = await models.Measure.findByPk(req.params.measureId);
-		console.log(JSON.stringify(measure, null, 2));
-
 		res.send(measure);
 	} catch (err) {
 		console.log("ERROR: " + err);
@@ -26,14 +39,19 @@ router.get("/measures/:measureId", async (req, res) => {
 	}
 });
 
-//UPDATE measure
+//UPDATE MEASURE
 router.put("/measures/:measureId", async (req, res) => {
+	console.log("*************************");
+	console.log("PUT REQUEST - MEASURE");
+	console.log("*************************");
 	try {
 		const measure = await models.Measure.findByPk(req.params.measureId);
 		measure.description = req.body["description"];
 		measure.success = req.body["success"];
+		if (measure.success == null) {
+			measure.success = false;
+		}
 		await measure.save();
-		console.log("measure updated");
 		res.send(measure);
 	} catch (err) {
 		console.log("ERROR: " + err);
@@ -41,14 +59,33 @@ router.put("/measures/:measureId", async (req, res) => {
 	}
 });
 
-//POST measure
+//POST MEASURE
 router.post("/measures", async (req, res) => {
+	console.log("*************************");
+	console.log("POST REQUEST - MEASURE");
+	console.log("*************************");
 	try {
 		const newMeasure = await models.Measure.build(req.body);
-		console.log(req.body);
+		if (newMeasure.success == null) {
+			newMeasure.success = false;
+		}
 		await newMeasure.save();
-		console.log("new measure saved");
 		res.send(newMeasure);
+	} catch (err) {
+		console.log("ERROR: " + err);
+		res.send("error");
+	}
+});
+
+// DELETE MEASURE
+router.delete("/measures/:clientId", async (req, res) => {
+	console.log("*************************");
+	console.log("DELETE REQUEST - MEASURE");
+	console.log("*************************");
+	try {
+		const measure = await models.Measure.findByPk(req.params.clientId);
+		await measure.destroy();
+		return res.send(measure);
 	} catch (err) {
 		console.log("ERROR: " + err);
 		res.send("error");

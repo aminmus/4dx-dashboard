@@ -1,11 +1,23 @@
 const router = require("express").Router();
 const models = require("../../models");
 
-// GET ALL csat
-router.get("/csat", async (_req, res) => {
+// GET ALL CSAT
+router.get("/csat", async (req, res) => {
+	res.setHeader("Access-Control-Expose-Headers", "Content-Range");
+	res.setHeader("Content-Range", "30");
+	console.log("*************************");
+	console.log("GET ALL REQUEST - CSAT");
+	console.log("*************************");
+	let filter = {};
+	if (req.query.filter) {
+		queryFilter = JSON.parse(req.query.filter);
+		let ClientId = queryFilter.Client_Id;
+		filter = {
+			where: { ClientId: ClientId }
+		};
+	}
 	try {
-		const csat = await models.Csat.findAll();
-		console.log(JSON.stringify(csat, null, 2));
+		const csat = await models.Csat.findAll(filter);
 		res.send(csat);
 	} catch (err) {
 		console.log("ERROR: " + err);
@@ -13,11 +25,13 @@ router.get("/csat", async (_req, res) => {
 	}
 });
 
-//GET ONE csat
+//GET ONE CSAT
 router.get("/csat/:csatId", async (req, res) => {
+	console.log("*************************");
+	console.log("GET ONE REQUEST - CSAT");
+	console.log("*************************");
 	try {
 		const csat = await models.Csat.findByPk(req.params.csatId);
-		console.log(JSON.stringify(csat, null, 2));
 		res.send(csat);
 	} catch (err) {
 		console.log("ERROR: " + err);
@@ -25,14 +39,16 @@ router.get("/csat/:csatId", async (req, res) => {
 	}
 });
 
-//UPDATE csat
+//UPDATE CSAT
 router.put("/csat/:csatId", async (req, res) => {
+	console.log("*************************");
+	console.log("PUT REQUEST - CSAT");
+	console.log("*************************");
 	try {
 		const csat = await models.Csat.findByPk(req.params.csatId);
 		csat.score = req.body["score"];
 		csat.date = req.body["date"];
 		await csat.save();
-		console.log("csat updated");
 		res.send(csat);
 	} catch (err) {
 		console.log("ERROR: " + err);
@@ -40,14 +56,30 @@ router.put("/csat/:csatId", async (req, res) => {
 	}
 });
 
-//POST csat
+//POST CSAT
 router.post("/csat", async (req, res) => {
+	console.log("*************************");
+	console.log("POST REQUEST - CSAT");
+	console.log("*************************");
 	try {
 		const newCsat = await models.Csat.build(req.body);
-		console.log(req.body);
 		await newCsat.save();
-		console.log("new csat saved");
 		res.send(newCsat);
+	} catch (err) {
+		console.log("ERROR: " + err);
+		res.send("error");
+	}
+});
+
+// DELETE CSAT
+router.delete("/csat/:clientId", async (req, res) => {
+	console.log("*************************");
+	console.log("DELETE REQUEST - CSAT");
+	console.log("*************************");
+	try {
+		const csat = await models.Csat.findByPk(req.params.clientId);
+		await csat.destroy();
+		return res.send(csat);
 	} catch (err) {
 		console.log("ERROR: " + err);
 		res.send("error");
