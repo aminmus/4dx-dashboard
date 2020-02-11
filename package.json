@@ -3,7 +3,17 @@
     "version": "0.1.0",
     "description": "New 4DX site in React and Node JS",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lerna:lint:js": "lerna run lint:js:fix"
+    },
+    "lint-staged": {
+        "packages/**/*.{js,jsx}": [
+            "npm run --silent lerna:lint:js",
+            "git add"
+        ]
+    },
+    "hooks": {
+        "pre-commit": "lint-staged"
     },
     "repository": {
         "type": "git",
@@ -15,5 +25,9 @@
     ],
     "license": "ISC",
     "homepage": "https://bitbucket.org/vaimo/4dx#readme",
-    "dependencies": {}
+    "devDependencies": {
+        "husky": "^4.2.1",
+        "lerna": "^3.20.2",
+        "lint-staged": "^10.0.7"
+    }
 }
