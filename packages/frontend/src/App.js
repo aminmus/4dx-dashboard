@@ -6,6 +6,7 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
+import reformatClientData from './reformatClientData';
 import StateContext from './context/state-context';
 import Home from './layout/Home';
 import logo from './logo.png';
@@ -29,7 +30,9 @@ export default function App() {
   useEffect(() => {
     fetch('http://localhost:4000/api/clients')
       .then(response => response.json())
-      .then(result => setClients(result));
+      .then(result => {
+        setClients(reformatClientData(result));
+      });
   }, []);
 
   return (
