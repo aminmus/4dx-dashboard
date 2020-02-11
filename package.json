@@ -5,15 +5,27 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lerna run --concurrency 1 --stream precommit"
+        }
+    },
     "repository": {
         "type": "git",
         "url": "git+ssh://git@bitbucket.org/vaimo/4dx.git"
     },
+    "workspaces": [
+        "packages/*"
+    ],
     "contributors": [
         "Amin Mushehid",
         "Daniel Salin"
     ],
     "license": "ISC",
     "homepage": "https://bitbucket.org/vaimo/4dx#readme",
-    "dependencies": {}
+    "devDependencies": {
+        "husky": "^4.2.1",
+        "lerna": "^3.20.2",
+        "lint-staged": "^10.0.7"
+    }
 }
