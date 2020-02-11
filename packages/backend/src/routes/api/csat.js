@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const models = require("../../models");
+const models = require("../../../models");
 
 // GET ALL csat
 router.get("/csat", async (_req, res) => {
