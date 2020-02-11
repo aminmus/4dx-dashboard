@@ -10,6 +10,7 @@ export default clients => {
     const newElement = {};
     newElement.name = clientNames[i];
     newElement.id = clientIds[i];
+    newElement.measures = clientMeasures[i];
     let score = 0;
     let total = 0;
     for (let j = 0; j < clientMeasures[i].length; j += 1) {

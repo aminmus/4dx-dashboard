@@ -13,7 +13,9 @@ import logo from './logo.png';
 import Login from './layout/Login';
 
 export default function App() {
-  const [clients, setClients] = useState([{ id: 0, name: 'default', progress: '0/10' }]);
+  const [clients, setClients] = useState([
+    { id: 0, name: 'default', measures: [], progress: '0/10' }
+  ]);
   const [nps] = useState({
     description: 'N/A',
     current: '0',
