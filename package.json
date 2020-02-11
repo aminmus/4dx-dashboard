@@ -3,14 +3,7 @@
     "version": "0.1.0",
     "description": "New 4DX site in React and Node JS",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "lerna:lint:js": "lerna run lint:js:fix"
-    },
-    "lint-staged": {
-        "packages/**/*.{js,jsx}": [
-            "npm run --silent lerna:lint:js",
-            "git add"
-        ]
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "hooks": {
         "pre-commit": "lerna run --concurrency 1 --stream precommit"
