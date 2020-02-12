@@ -1,23 +1,17 @@
-/*
-Calculate lead status based on clients
-Lead = Measures fulfilled 
-Lead Total = Total number of measures implemented
-*/
+/* eslint-disable no-return-assign, no-param-reassign */
 export default clients => {
-  const clientNames = clients.map(client => client.name);
-  const clientMeasures = clients.map(client => client.Measures);
-  const leadsStatus = {};
-  let leads = 0;
-  let leadsTotal = 0;
-  for (let i = 0; i < clientNames.length; i += 1) {
-    for (let j = 0; j < clientMeasures[i].length; j += 1) {
-      if (clientMeasures[i][j].success) {
-        leads += 1;
-      }
-      leadsTotal += 1;
-    }
-  }
-  leadsStatus.leads = leads;
-  leadsStatus.leadsTotal = leadsTotal;
-  return leadsStatus;
+  // Collect measures over all clients and collect these
+  const measuresArray = clients.map(client => client.Measures);
+
+  // Flatten array into a single array of all measures
+  const flatMeasuresArray = measuresArray.reduce(
+    (measureTotal, measure) => measureTotal.concat(measure),
+    []
+  );
+  return {
+    leads: flatMeasuresArray.reduce((successfulMeasure, measure) => {
+      return measure.success ? (successfulMeasure += 1) : successfulMeasure;
+    }, 0),
+    leadsTotal: flatMeasuresArray.length
+  };
 };

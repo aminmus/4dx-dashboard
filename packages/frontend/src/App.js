@@ -24,7 +24,7 @@ export default function App() {
     goal: '8',
     targetlDate: 'April 2019',
     defineText: 'Define the Success factors for listed clients',
-    implementText: 'Implement Client Success Program for liested clients'
+    implementText: 'Implement Client Success Program for listed clients'
   });
   const [chart] = useState({
     months: ['June', 'July', 'August', 'September', 'October', 'November'],
