@@ -1,10 +1,12 @@
-/* eslint-disable radix */
-/* eslint-disable no-restricted-syntax */
+/* eslint-disable radix */ /* eslint-disable no-restricted-syntax */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function Lead(props) {
-  const { nps, clients } = props;
+  const { nps, leadStatus, definedStatus } = props;
+  const { leads, leadsTotal } = leadStatus;
+  const { definedClients, totalClients } = definedStatus;
   const { defineClients, defineText, implementText } = nps;
 
   const setDefineLeadClassName = () => {
@@ -17,22 +19,11 @@ export default function Lead(props) {
     return 'text-success';
   };
 
-  const calcLeads = () => {
-    const leads = { status: 0, total: 0, ratio: 0 };
-    for (const { progress } of clients) {
-      leads.total += 10;
-      leads.status += parseInt(progress);
-      leads.ratio = `${leads.status}/${leads.total}`;
-    }
-    return leads;
-  };
-
   const setImplementLeadClassName = () => {
-    const leads = calcLeads();
-    if (leads.status < leads.total * 0.7) {
+    if (leads < leadsTotal * 0.7) {
       return 'text-danger';
     }
-    if (leads.status >= leads.total * 0.7 && leads.status <= leads.total * 0.8) {
+    if (leads >= leadsTotal * 0.7 && leads <= leadsTotal * 0.8) {
       return 'text-warning';
     }
     return 'text-success';
@@ -43,22 +34,18 @@ export default function Lead(props) {
       <div>
         <h3 className="define">{defineText}</h3>
         <div className="define lead__number">
-          <span className={setDefineLeadClassName()}>
-            {defineClients}
-            /10
-          </span>
+          <span className={setDefineLeadClassName()}>{`${definedClients}/${totalClients}`}</span>
         </div>
       </div>
     );
   };
 
   const renderImplementSuccess = () => {
-    const leads = calcLeads();
     return (
       <div>
         <h3 className="implement">{implementText}</h3>
         <div className="implement lead__number">
-          <span className={setImplementLeadClassName()}>{leads.ratio}</span>
+          <span className={setImplementLeadClassName()}>{`${leads}/${leadsTotal}`}</span>
         </div>
       </div>
     );
@@ -73,12 +60,17 @@ export default function Lead(props) {
 }
 
 Lead.defaultProps = {
-  clients: [],
-  nps: {}
+  nps: {},
+  leadStatus: {},
+  definedStatus: {}
 };
 
 Lead.propTypes = {
-  clients: PropTypes.arrayOf(PropTypes.object),
+  leadStatus: PropTypes.shape({ leads: PropTypes.number, leadsTotal: PropTypes.number }),
+  definedStatus: PropTypes.shape({
+    definedClients: PropTypes.number,
+    totalClients: PropTypes.number
+  }),
   nps: PropTypes.shape({
     description: PropTypes.string,
     current: PropTypes.string,

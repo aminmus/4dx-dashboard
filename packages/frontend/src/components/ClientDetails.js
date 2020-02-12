@@ -24,9 +24,14 @@ export default function ClientDetails(props) {
 }
 
 ClientDetails.defaultProps = {
-  client: []
+  client: {}
 };
 
 ClientDetails.propTypes = {
-  client: PropTypes.arrayOf(PropTypes.object)
+  client: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    measures: PropTypes.array,
+    progress: PropTypes.string
+  })
 };

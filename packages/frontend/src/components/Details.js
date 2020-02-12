@@ -7,7 +7,7 @@ export default function Details(props) {
   return (
     <div className="mt-5">
       {clients.map(client => (
-        <ClientDetails client={client} />
+        <ClientDetails key={client.id} client={client} />
       ))}
     </div>
   );
