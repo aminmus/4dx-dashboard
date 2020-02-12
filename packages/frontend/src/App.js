@@ -7,22 +7,24 @@ import {
   Switch
 } from 'react-router-dom';
 import reformatClientData from './reformatClientData';
+import calcDefineClients from './calcDefineClients';
+import calcLeads from './calcLeads';
 import StateContext from './context/state-context';
 import Home from './layout/Home';
 import logo from './logo.png';
 import Login from './layout/Login';
 
 export default function App() {
-  const [clients, setClients] = useState([
-    { id: 0, name: 'default', measures: [], progress: '0/10' }
-  ]);
+  const [clients, setClients] = useState([{ id: 0, name: 'default', measures: [] }]);
+  const [definedStatus, setDefinedStatus] = useState({ totalClients: 0, definedClients: 0 });
+  const [leadStatus, setLeadStatus] = useState({ leads: 0, leadsTotal: 0 });
   const [nps] = useState({
     description: 'N/A',
-    current: '0',
-    goal: '0',
-    defineClients: '0',
-    defineText: 'N/A',
-    implementText: 'N/A'
+    current: '-18',
+    goal: '8',
+    targetlDate: 'April 2019',
+    defineText: 'Define the Success factors for listed clients',
+    implementText: 'Implement Client Success Program for liested clients'
   });
   const [chart] = useState({
     months: ['June', 'July', 'August', 'September', 'October', 'November'],
@@ -34,6 +36,8 @@ export default function App() {
       .then(response => response.json())
       .then(result => {
         setClients(reformatClientData(result));
+        setDefinedStatus(calcDefineClients(result));
+        setLeadStatus(calcLeads(result));
       });
   }, []);
 
@@ -42,7 +46,9 @@ export default function App() {
       value={{
         clients,
         nps,
-        chart
+        chart,
+        leadStatus,
+        definedStatus
       }}
     >
       <Router>
