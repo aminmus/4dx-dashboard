@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const passport = require('passport');
 
 require('dotenv').config();
 
@@ -27,6 +28,7 @@ const startServer = async () => {
   app.use(express.json());
   app.use(express.urlencoded());
   app.use(cors());
+  app.use(passport.initialize());
 
   app.use('/api', measure);
   app.use('/api', clients);
