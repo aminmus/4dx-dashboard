@@ -8,13 +8,14 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes: 
-        - ./pgdata:/var/lib/postgresql/data
+        - /var/lib/postgresql/data
     ports: 
     - "5432:5432"
   web:
     build: .
     volumes: 
       - ./:/usr/src/app
+      - /usr/src/app/node_modules
     restart: always
     depends_on: 
      - db
