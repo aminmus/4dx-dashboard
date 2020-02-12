@@ -10,7 +10,7 @@ export default function MeasureCheckList(props) {
     <List>
       {measures.map(measure => {
         return (
-          <ListItem button className="text-light">
+          <ListItem button key={measure.id} className="text-light">
             {measure.success ? (
               <CheckCircleIcon className="mr-2 text-success" />
             ) : (
