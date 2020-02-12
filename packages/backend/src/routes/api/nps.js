@@ -1,82 +1,84 @@
+/* eslint-disable no-console */
 const router = require('express').Router();
-const bodyParser = require('body-parser');
+const models = require('../../../models');
 
-const jsonParser = bodyParser.json();
-const fs = require('fs');
-
-const data = require('../../../data.json');
-
-// Helper Functions
-function updateNpsOption(newNpsOption) {
-  const newNpsData = data.nps.map((nps) => (nps.id === newNpsOption.id ? newNpsOption : nps));
-  data.nps = newNpsData;
-
+// GET ALL NPS
+router.get('/nps', async (_req, res) => {
+  res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
+  res.setHeader('Content-Range', '30');
+  console.log('*************************');
+  console.log('GET ALL REQUEST - NPS');
+  console.log('*************************');
   try {
-    fs.writeFile('data.json', JSON.stringify(data, null, 2), 'utf8');
+    const nps = await models.Nps.findAll();
+    return res.send(nps);
   } catch (err) {
-    console.log(err);
+    console.log(`ERROR: ${err}`);
+    return res.send('error');
   }
-}
-
-function createNpsOption(newNpsOption) {
-  let maxId = 0;
-
-  data.nps.map((nps) => (nps.id > maxId ? (maxId = nps.id) : maxId++));
-  newNpsOption.id = maxId;
-  data.nps.push(newNpsOption);
-  try {
-    fs.writeFile('data.json', JSON.stringify(data, null, 2), 'utf8');
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-function deleteNpsOption(npsId) {
-  data.nps = data.nps.filter((npsOption) => npsOption.id !== npsId);
-  try {
-    fs.writeFile('data.json', JSON.stringify(data, null, 2), 'utf8');
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-// GET ONE NPS OPTION ENTRY
-router.get('/nps/:id', (_req, res) => {
-  console.log('FETCH ONE REQUEST');
-  res.setHeader('X-Total-Count', '30');
-  res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
-  res.send(data.nps[_req.params.id]);
 });
 
-// GET ALL NPS OPTIONS
-router.get('/nps', (_req, res) => {
-  console.log('FETCH ALL REQUEST');
-  res.setHeader('X-Total-Count', '30');
-  res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
-  res.send(data.nps);
+// GET ONE NPS
+router.get('/nps/:npsId', async (req, res) => {
+  console.log('*************************');
+  console.log('GET ONE REQUEST - NPS');
+  console.log('*************************');
+  try {
+    const nps = await models.Nps.findByPk(req.params.npsId);
+    return res.send(nps);
+  } catch (err) {
+    console.log(`ERROR: ${err}`);
+    return res.send('error');
+  }
 });
 
 // UPDATE NPS
-router.put('/nps/:id', jsonParser, (_req, res) => {
-  console.log('PUT REQUEST');
-  const nps = data.nps[_req.params.id];
-  updateNpsOption(_req.body);
-  return res.send(nps);
+router.put('/nps/:npsId', async (req, res) => {
+  console.log('*************************');
+  console.log('PUT REQUEST - NPS');
+  console.log('*************************');
+  try {
+    const nps = await models.Nps.findByPk(req.params.npsId);
+    nps.currentNPS = req.body.currentNPS;
+    nps.goalNPS = req.body.goalNPS;
+    nps.date = req.body.date;
+    nps.targetDate = req.body.targetDate;
+    await nps.save();
+    return res.send(nps);
+  } catch (err) {
+    console.log(`ERROR: ${err}`);
+    return res.send('error');
+  }
 });
 
 // POST NPS
-router.post('/nps', jsonParser, (_req, res) => {
-  console.log('POST REQUEST');
-  createNpsOption(_req.body);
-  return res.send(_req.body);
+router.post('/nps', async (req, res) => {
+  console.log('*************************');
+  console.log('POST REQUEST - NPS');
+  console.log('*************************');
+  try {
+    const newNps = await models.Nps.build(req.body);
+    await newNps.save();
+    return res.send(newNps);
+  } catch (err) {
+    console.log(`ERROR: ${err}`);
+    return res.send('error');
+  }
 });
 
 // DELETE NPS
-router.delete('/nps/:id', (_req, res) => {
-  console.log('DELETE REQUEST');
-  const nps = data.nps[_req.params.id];
-  deleteNpsOption(_req.params.id);
-  return res.send(nps);
+router.delete('/nps/:npsId', async (req, res) => {
+  console.log('*************************');
+  console.log('DELETE REQUEST - NPS');
+  console.log('*************************');
+  try {
+    const nps = await models.Nps.findByPk(req.params.npsId);
+    await nps.destroy();
+    return res.send(nps);
+  } catch (err) {
+    console.log(`ERROR: ${err}`);
+    return res.send('error');
+  }
 });
 
 module.exports = router;
