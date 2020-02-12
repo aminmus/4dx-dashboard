@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const router = require('express').Router();
-const models = require('../../models');
+const models = require('../../../models');
 
 // GET ALL CSAT
 router.get('/csat', async (req, res) => {
