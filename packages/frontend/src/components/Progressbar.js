@@ -18,10 +18,10 @@ export default function ProgressBar(props) {
   });
 
   return (
-    <li className="justify-content-center">
+    <div className="justify-content-center py-1">
       <span>{clientName}</span>
       <canvas id={clientName} style={{ backgroundColor: 'black', width: '100%', height: '10px' }} />
-    </li>
+    </div>
   );
 }
 
