@@ -12,8 +12,12 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       unique: true,
+      required: true,
     },
-    password: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      required: true,
+    },
   }, { sequelize });
 
   User.associate = function (_models) {
