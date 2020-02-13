@@ -7,7 +7,7 @@ router.get('/users', async (_req, res) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
-  console.log('GET ALL REQUEST - USER');
+  console.log('GET ALL REQUEST - USERS');
   console.log('*************************');
   try {
     const users = await models.User.findAll();
@@ -21,7 +21,7 @@ router.get('/users', async (_req, res) => {
 // GET ONE USER
 router.get('/users/:userId', async (req, res) => {
   console.log('*************************');
-  console.log('GET ONE REQUEST - USER');
+  console.log('GET ONE REQUEST - USERS');
   console.log('*************************');
   try {
     const user = await models.User.findByPk(req.params.userId);
@@ -35,7 +35,7 @@ router.get('/users/:userId', async (req, res) => {
 // UPDATE USER
 router.put('/users/:userId', async (req, res) => {
   console.log('*************************');
-  console.log('PUT REQUEST - USER');
+  console.log('PUT REQUEST - USERS');
   console.log('*************************');
   try {
     const user = await models.User.findByPk(req.params.userId);
@@ -49,10 +49,10 @@ router.put('/users/:userId', async (req, res) => {
   }
 });
 
-// POST USER
+// CREATE USER
 router.post('/users', async (req, res) => {
   console.log('*************************');
-  console.log('POST REQUEST - CSAT');
+  console.log('POST REQUEST - USERS');
   console.log('*************************');
   try {
     const newUser = await models.User.build(req.body);
@@ -67,7 +67,7 @@ router.post('/users', async (req, res) => {
 // DELETE USER
 router.delete('/users/:userId', async (req, res) => {
   console.log('*************************');
-  console.log('DELETE REQUEST - USER');
+  console.log('DELETE REQUEST - USERS');
   console.log('*************************');
   try {
     const user = await models.user.findByPk(req.params.clientId);

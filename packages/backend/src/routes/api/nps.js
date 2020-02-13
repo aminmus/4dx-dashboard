@@ -51,7 +51,7 @@ router.put('/nps/:npsId', async (req, res) => {
   }
 });
 
-// POST NPS
+// CREATE NPS
 router.post('/nps', async (req, res) => {
   console.log('*************************');
   console.log('POST REQUEST - NPS');
