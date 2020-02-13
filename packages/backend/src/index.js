@@ -6,9 +6,10 @@ require('dotenv').config();
 
 const tryDbConnection = require('./utils/tryDbConnection');
 const clients = require('./routes/api/clients');
-const measure = require('./routes/api/measure')
-const csat = require('./routes/api/csat')
+const measure = require('./routes/api/measure');
+const csat = require('./routes/api/csat');
 const user = require('./routes/api/user');
+const nps = require('./routes/api/nps');
 const db = require('../models');
 
 const startServer = async () => {
@@ -33,6 +34,7 @@ const startServer = async () => {
   app.use('/api', measure);
   app.use('/api', clients);
   app.use('/api', csat);
+  app.use('/api', nps);
   app.use('/api', user);
 
   app.use('/', (_req, res) => {

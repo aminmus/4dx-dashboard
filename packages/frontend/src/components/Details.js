@@ -1,16 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Progressbar from './Progressbar';
+import ClientDetails from './ClientDetails';
 
 export default function Details(props) {
   const { clients } = props;
   return (
-    <div>
-      <ol>
-        {clients.map(client => (
-          <Progressbar key={client.id} clientName={client.name} clientScore={client.progress} />
-        ))}
-      </ol>
+    <div className="mt-5">
+      {clients.map(client => (
+        <ClientDetails key={client.id} client={client} />
+      ))}
     </div>
   );
 }

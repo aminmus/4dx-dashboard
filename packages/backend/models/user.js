@@ -1,4 +1,4 @@
-
+/* eslint-disable func-names */
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
