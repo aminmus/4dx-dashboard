@@ -7,7 +7,7 @@ router.get('/measures', async (req, res) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
-  console.log('GET ALL REQUEST - MEASURE');
+  console.log('GET ALL REQUEST - MEASURES');
   console.log('*************************');
   let filter = {};
   if (req.query.filter) {
@@ -29,7 +29,7 @@ router.get('/measures', async (req, res) => {
 // GET ONE MEASURE
 router.get('/measures/:measureId', async (req, res) => {
   console.log('*************************');
-  console.log('GET ONE REQUEST - MEASURE');
+  console.log('GET ONE REQUEST - MEASURES');
   console.log('*************************');
   try {
     const measure = await models.Measure.findByPk(req.params.measureId);
@@ -43,7 +43,7 @@ router.get('/measures/:measureId', async (req, res) => {
 // UPDATE MEASURE
 router.put('/measures/:measureId', async (req, res) => {
   console.log('*************************');
-  console.log('PUT REQUEST - MEASURE');
+  console.log('PUT REQUEST - MEASURES');
   console.log('*************************');
   try {
     const measure = await models.Measure.findByPk(req.params.measureId);
@@ -60,10 +60,10 @@ router.put('/measures/:measureId', async (req, res) => {
   }
 });
 
-// POST MEASURE
+// CREATE MEASURE
 router.post('/measures', async (req, res) => {
   console.log('*************************');
-  console.log('POST REQUEST - MEASURE');
+  console.log('POST REQUEST - MEASURES');
   console.log('*************************');
   try {
     const newMeasure = await models.Measure.build(req.body);
@@ -81,7 +81,7 @@ router.post('/measures', async (req, res) => {
 // DELETE MEASURE
 router.delete('/measures/:clientId', async (req, res) => {
   console.log('*************************');
-  console.log('DELETE REQUEST - MEASURE');
+  console.log('DELETE REQUEST - MEASURES');
   console.log('*************************');
   try {
     const measure = await models.Measure.findByPk(req.params.clientId);

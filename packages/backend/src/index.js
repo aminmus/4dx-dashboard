@@ -4,10 +4,10 @@ const cors = require('cors');
 require('dotenv').config();
 
 const tryDbConnection = require('./utils/tryDbConnection');
+const measures = require('./routes/api/measures');
 const clients = require('./routes/api/clients');
-const measure = require('./routes/api/measure');
+const users = require('./routes/api/users');
 const csat = require('./routes/api/csat');
-const user = require('./routes/api/user');
 const nps = require('./routes/api/nps');
 const db = require('../models');
 
@@ -29,11 +29,11 @@ const startServer = async () => {
   app.use(express.urlencoded());
   app.use(cors());
 
-  app.use('/api', measure);
+  app.use('/api', measures);
   app.use('/api', clients);
+  app.use('/api', users);
   app.use('/api', csat);
   app.use('/api', nps);
-  app.use('/api', user);
 
   app.use('/', (_req, res) => {
     res.writeHead(200);
