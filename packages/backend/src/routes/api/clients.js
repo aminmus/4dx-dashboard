@@ -7,7 +7,7 @@ router.get('/clients', async (_req, res) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
-  console.log('GET ALL REQUEST - CLIENT');
+  console.log('GET ALL REQUEST - CLIENTS');
   console.log('*************************');
   try {
     const clients = await models.Client.findAll({
@@ -23,7 +23,7 @@ router.get('/clients', async (_req, res) => {
 // GET ONE CLIENT
 router.get('/clients/:clientId', async (req, res) => {
   console.log('*************************');
-  console.log('GET ONE REQUEST - CLIENT');
+  console.log('GET ONE REQUEST - CLIENTS');
   console.log('*************************');
   try {
     const client = await models.Client.findByPk(req.params.clientId, {
@@ -39,7 +39,7 @@ router.get('/clients/:clientId', async (req, res) => {
 // UPDATE CLIENT
 router.put('/clients/:clientId', async (req, res) => {
   console.log('*************************');
-  console.log('PUT REQUEST - CLIENT');
+  console.log('PUT REQUEST - CLIENTS');
   console.log('*************************');
   try {
     const client = await models.Client.findByPk(req.params.clientId, {
@@ -54,10 +54,10 @@ router.put('/clients/:clientId', async (req, res) => {
   }
 });
 
-// POST CLIENT
+// CREATE CLIENT
 router.post('/clients', async (req, res) => {
   console.log('*************************');
-  console.log('POST REQUEST - CLIENT');
+  console.log('POST REQUEST - CLIENTS');
   console.log('*************************');
   try {
     const newClient = await models.Client.build(req.body);
@@ -73,7 +73,7 @@ router.post('/clients', async (req, res) => {
 // DELETE CLIENT
 router.delete('/clients/:clientId', async (req, res) => {
   console.log('*************************');
-  console.log('DELETE REQUEST - CLIENT');
+  console.log('DELETE REQUEST - CLIENTS');
   console.log('*************************');
   try {
     const client = await models.Client.findByPk(req.params.clientId);

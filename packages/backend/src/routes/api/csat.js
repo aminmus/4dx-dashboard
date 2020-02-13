@@ -57,7 +57,7 @@ router.put('/csat/:csatId', async (req, res) => {
   }
 });
 
-// POST CSAT
+// CREATE CSAT
 router.post('/csat', async (req, res) => {
   console.log('*************************');
   console.log('POST REQUEST - CSAT');
