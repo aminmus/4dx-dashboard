@@ -13,7 +13,11 @@ export default function Home() {
           <div className="row">
             <div className="col-sm">
               <Wig nps={context.nps} />
-              <Lead clients={context.clients} nps={context.nps} />
+              <Lead
+                nps={context.nps}
+                definedStatus={context.definedStatus}
+                leadStatus={context.leadStatus}
+              />
             </div>
             <div className="col-sm">
               <Details clients={context.clients} />
