@@ -1,14 +1,15 @@
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const { Strategy: LocalStrategy } = require('passport-local');
+const { Strategy: JWTstrategy, ExtractJwt } = require('passport-jwt');
 
-const UserModel = require('../../models/user');
+const { User } = require('../../models');
 
 passport.use('signup', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
 }, async (email, password, done) => {
   try {
-    const user = await UserModel.create({ email, password });
+    const user = await User.create({ email, password });
     return done(null, user);
   } catch (error) {
     return done(error);
@@ -20,7 +21,7 @@ passport.use('login', new LocalStrategy({
   passwordField: 'password',
 }, async (email, password, done) => {
   try {
-    const user = await UserModel.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email } });
     if (!user) return done(null, false, { message: 'User not found' });
 
     const isValidPassword = await user.isValidPassword(password);
@@ -31,3 +32,22 @@ passport.use('login', new LocalStrategy({
     return done(error);
   }
 }));
+
+
+// Verify token sent by user
+passport.use(new JWTstrategy({
+  secretOrKey: process.env.JWT_SECRET,
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+}, async (token, done) => {
+  try {
+    return done(null, token.user);
+  } catch (error) {
+    return done(error);
+  }
+}));
+
+// Auth middleware
+
+const isAuthenticated = passport.authenticate('jwt', { session: false });
+
+module.exports = isAuthenticated;
