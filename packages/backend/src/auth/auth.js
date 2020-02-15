@@ -1,6 +1,6 @@
 const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
-const { Strategy: JWTstrategy, ExtractJwt } = require('passport-jwt');
+const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
 
 const { User } = require('../../models');
 
@@ -35,7 +35,7 @@ passport.use('login', new LocalStrategy({
 
 
 // Verify token sent by user
-passport.use(new JWTstrategy({
+passport.use(new JwtStrategy({
   secretOrKey: process.env.JWT_SECRET,
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 }, async (token, done) => {
@@ -47,7 +47,6 @@ passport.use(new JWTstrategy({
 }));
 
 // Auth middleware
-
 const isAuthenticated = passport.authenticate('jwt', { session: false });
 
 module.exports = isAuthenticated;
