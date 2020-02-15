@@ -70,7 +70,7 @@ router.delete('/users/:userId', async (req, res) => {
   console.log('DELETE REQUEST - USERS');
   console.log('*************************');
   try {
-    const user = await models.user.findByPk(req.params.clientId);
+    const user = await models.User.findByPk(req.params.clientId);
     await user.destroy();
     return res.send(user);
   } catch (err) {
