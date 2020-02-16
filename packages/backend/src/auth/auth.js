@@ -9,7 +9,13 @@ passport.use('signup', new LocalStrategy({
   passwordField: 'password',
 }, async (email, password, done) => {
   try {
-    const user = await User.create({ email, password });
+    const [user, isCreated] = await User.findOrCreate({
+      where: { email },
+      defaults: { email, password },
+    });
+
+    if (!isCreated && user) return done(null, false, { message: 'User already exists' });
+
     return done(null, user);
   } catch (error) {
     return done(error);
@@ -22,10 +28,10 @@ passport.use('login', new LocalStrategy({
 }, async (email, password, done) => {
   try {
     const user = await User.findOne({ where: { email } });
-    if (!user) return done(null, false, { message: 'User not found' });
+    if (!user) return done(null, false, { message: 'Invalid email or password' });
 
     const isValidPassword = await user.isValidPassword(password);
-    if (!isValidPassword) return done(null, false, { message: 'Invalid password' });
+    if (!isValidPassword) return done(null, false, { message: 'Invalid email or password' });
 
     return done(null, user, { message: 'Logged in Successfully' });
   } catch (error) {

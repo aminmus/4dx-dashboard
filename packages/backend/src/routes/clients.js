@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const {
   createOne, deleteById, getAll, getById, updateById,
-} = require('../../controllers/client');
-const { isAuthenticated } = require('../../auth/auth');
+} = require('../controllers/client');
+const { isAuthenticated } = require('../auth/auth');
 
 // Require authentication
 router.all('/', isAuthenticated);

@@ -1,16 +1,17 @@
 const router = require('express').Router();
+// const passport = require('passport');
 const {
   createOne, deleteById, getAll, getById, updateById,
-} = require('../../controllers/csat');
-const { isAuthenticated } = require('../../auth/auth');
+} = require('../controllers/user');
+const { isAuthenticated } = require('../auth/auth');
 
 // Require authentication
 router.all('/', isAuthenticated);
 
 router.get('/', getAll);
-router.get('/:csatId', getById);
-router.put('/:csatId', updateById);
+router.get('/:userId', getById);
+router.put('/:userId', updateById);
 router.post('/', createOne);
-router.delete('/:clientId', deleteById);
+router.delete('/:userId', deleteById);
 
 module.exports = router;

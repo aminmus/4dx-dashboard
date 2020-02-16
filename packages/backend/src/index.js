@@ -5,7 +5,7 @@ const passport = require('passport');
 require('dotenv').config();
 
 const tryDbConnection = require('./utils/tryDbConnection');
-const apiRoutes = require('./routes/api');
+const routes = require('./routes');
 const db = require('../models');
 
 const startServer = async () => {
@@ -27,11 +27,13 @@ const startServer = async () => {
   app.use(cors());
   app.use(passport.initialize());
 
-  app.use('/api', apiRoutes);
+  app.use('/api', routes);
 
-  app.use('/', (_req, res) => {
-    res.writeHead(200);
-    res.end('Hello, World!\n');
+  // Handle errors
+  app.use((err, _req, res, _next) => {
+    res.status(err.status || 500);
+    console.log(err);
+    res.json({ error: err });
   });
 
   app.listen(process.env.SERVER_PORT, () => console.log(`Listening on port ${process.env.SERVER_PORT}!`));

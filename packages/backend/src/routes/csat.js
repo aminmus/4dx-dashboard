@@ -1,16 +1,16 @@
 const router = require('express').Router();
 const {
   createOne, deleteById, getAll, getById, updateById,
-} = require('../../controllers/nps');
-const { isAuthenticated } = require('../../auth/auth');
+} = require('../controllers/csat');
+const { isAuthenticated } = require('../auth/auth');
 
 // Require authentication
 router.all('/', isAuthenticated);
 
 router.get('/', getAll);
-router.get('/:npsId', getById);
-router.put('/:npsId', updateById);
+router.get('/:csatId', getById);
+router.put('/:csatId', updateById);
 router.post('/', createOne);
-router.delete('/:npsId', deleteById);
+router.delete('/:clientId', deleteById);
 
 module.exports = router;

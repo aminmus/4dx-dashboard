@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const {
   createOne, deleteById, getAll, getById, updateById,
-} = require('../../controllers/measure');
-const { isAuthenticated } = require('../../auth/auth');
+} = require('../controllers/measure');
+const { isAuthenticated } = require('../auth/auth');
 
 
 router.all('/', isAuthenticated);
