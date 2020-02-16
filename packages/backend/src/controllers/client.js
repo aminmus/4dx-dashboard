@@ -1,6 +1,6 @@
 const { Client } = require('../../models');
 
-const getAll = async (_req, res) => {
+const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
@@ -13,11 +13,11 @@ const getAll = async (_req, res) => {
     res.send(clients);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    res.send('error');
+    next(err);
   }
 };
 
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
   console.log('*************************');
   console.log('GET ONE REQUEST - CLIENTS');
   console.log('*************************');
@@ -28,11 +28,11 @@ const getById = async (req, res) => {
     res.send(client);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    res.send('error');
+    next(err);
   }
 };
 
-const updateById = async (req, res) => {
+const updateById = async (req, res, next) => {
   console.log('*************************');
   console.log('PUT REQUEST - CLIENTS');
   console.log('*************************');
@@ -45,11 +45,11 @@ const updateById = async (req, res) => {
     res.send(client);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    res.send('error');
+    next(err);
   }
 };
 
-const createOne = async (req, res) => {
+const createOne = async (req, res, next) => {
   console.log('*************************');
   console.log('POST REQUEST - CLIENTS');
   console.log('*************************');
@@ -60,11 +60,11 @@ const createOne = async (req, res) => {
     res.send(newClient);
   } catch (err) {
     console.log(`ERROR on client save: ${err}`);
-    res.send('error');
+    next(err);
   }
 };
 
-const deleteById = async (req, res) => {
+const deleteById = async (req, res, next) => {
   console.log('*************************');
   console.log('DELETE REQUEST - CLIENTS');
   console.log('*************************');
@@ -74,7 +74,7 @@ const deleteById = async (req, res) => {
     return res.send(client);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
 };
 

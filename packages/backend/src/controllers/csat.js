@@ -1,6 +1,6 @@
 const { Csat } = require('../../models');
 
-const getAll = async (req, res) => {
+const getAll = async (req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
@@ -19,11 +19,11 @@ const getAll = async (req, res) => {
     return res.send(csat);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
 };
 
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
   console.log('*************************');
   console.log('GET ONE REQUEST - CSAT');
   console.log('*************************');
@@ -32,11 +32,11 @@ const getById = async (req, res) => {
     res.send(csat);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    res.send('error');
+    next(err);
   }
 };
 
-const updateById = async (req, res) => {
+const updateById = async (req, res, next) => {
   console.log('*************************');
   console.log('PUT REQUEST - CSAT');
   console.log('*************************');
@@ -48,11 +48,11 @@ const updateById = async (req, res) => {
     return res.send(csat);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
 };
 
-const createOne = async (req, res) => {
+const createOne = async (req, res, next) => {
   console.log('*************************');
   console.log('POST REQUEST - CSAT');
   console.log('*************************');
@@ -62,11 +62,11 @@ const createOne = async (req, res) => {
     return res.send(newCsat);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
 };
 
-const deleteById = async (req, res) => {
+const deleteById = async (req, res, next) => {
   console.log('*************************');
   console.log('DELETE REQUEST - CSAT');
   console.log('*************************');
@@ -76,7 +76,7 @@ const deleteById = async (req, res) => {
     return res.send(csat);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
 };
 

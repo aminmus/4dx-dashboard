@@ -1,6 +1,6 @@
 const { Nps } = require('../../models');
 
-const getAll = async (_req, res) => {
+const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
@@ -11,11 +11,11 @@ const getAll = async (_req, res) => {
     return res.send(nps);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
 };
 
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
   console.log('*************************');
   console.log('GET ONE REQUEST - NPS');
   console.log('*************************');
@@ -24,11 +24,11 @@ const getById = async (req, res) => {
     return res.send(nps);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
 };
 
-const updateById = async (req, res) => {
+const updateById = async (req, res, next) => {
   console.log('*************************');
   console.log('PUT REQUEST - NPS');
   console.log('*************************');
@@ -42,11 +42,11 @@ const updateById = async (req, res) => {
     return res.send(nps);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
 };
 
-const createOne = async (req, res) => {
+const createOne = async (req, res, next) => {
   console.log('*************************');
   console.log('POST REQUEST - NPS');
   console.log('*************************');
@@ -56,11 +56,11 @@ const createOne = async (req, res) => {
     return res.send(newNps);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
 };
 
-const deleteById = async (req, res) => {
+const deleteById = async (req, res, next) => {
   console.log('*************************');
   console.log('DELETE REQUEST - NPS');
   console.log('*************************');
@@ -70,7 +70,7 @@ const deleteById = async (req, res) => {
     return res.send(nps);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
 };
 
