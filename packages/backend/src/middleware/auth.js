@@ -53,6 +53,6 @@ passport.use(new JwtStrategy({
 }));
 
 // Auth middleware
-const isAuthenticated = passport.authenticate('jwt', { session: false });
+const checkAuth = passport.authenticate('jwt', { session: false });
 
-module.exports = { isAuthenticated };
+module.exports = { checkAuth };

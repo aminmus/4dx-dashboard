@@ -2,10 +2,10 @@ const router = require('express').Router();
 const {
   createOne, deleteById, getAll, getById, updateById,
 } = require('../controllers/measure');
-const { isAuthenticated } = require('../auth/auth');
+const { checkAuth } = require('../middleware/auth');
 
 // Require authentication
-router.all('/', isAuthenticated);
+router.all('/', checkAuth);
 
 router.get('/', getAll);
 router.get('/:measureId', getById);
