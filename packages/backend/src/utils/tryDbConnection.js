@@ -1,4 +1,4 @@
-const db = require('../../models/index');
+const db = require('../models/index');
 
 const tryDbConnection = async () => {
   let retries = 5;

@@ -9,7 +9,7 @@ const clients = require('./routes/api/clients');
 const users = require('./routes/api/users');
 const csat = require('./routes/api/csat');
 const nps = require('./routes/api/nps');
-const db = require('../models');
+const db = require('./models');
 
 const startServer = async () => {
   await tryDbConnection();
