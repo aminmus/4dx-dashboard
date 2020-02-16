@@ -30,10 +30,10 @@ const startServer = async () => {
   app.use('/api', routes);
 
   // Handle errors
-  app.use((err, _req, res, _next) => {
-    res.status(err.status || 500);
-    console.log(err);
-    res.json({ error: err });
+  app.use((error, _req, res, _next) => {
+    res.status(error.status || 500);
+    console.error(error);
+    res.json({ error });
   });
 
   app.listen(process.env.SERVER_PORT, () => console.log(`Listening on port ${process.env.SERVER_PORT}!`));
