@@ -2,11 +2,15 @@ const router = require('express').Router();
 const {
   createOne, deleteById, getAll, getById, updateById,
 } = require('../../controllers/nps');
+const { isAuthenticated } = require('../../auth/auth');
 
-router.get('/nps', getAll);
-router.get('/nps/:npsId', getById);
-router.put('/nps/:npsId', updateById);
-router.post('/nps', createOne);
-router.delete('/nps/:npsId', deleteById);
+// Require authentication
+router.all('/', isAuthenticated);
+
+router.get('/', getAll);
+router.get('/:npsId', getById);
+router.put('/:npsId', updateById);
+router.post('/', createOne);
+router.delete('/:npsId', deleteById);
 
 module.exports = router;

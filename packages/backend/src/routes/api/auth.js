@@ -2,7 +2,7 @@ const router = require('express').Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
-router.post('/auth/signup', passport.authenticate('signup', { session: false }), async (req, res) => {
+router.post('/signup', passport.authenticate('signup', { session: false }), async (req, res) => {
   res.json({
     message: 'Signup successful',
     user: req.user,
@@ -10,7 +10,7 @@ router.post('/auth/signup', passport.authenticate('signup', { session: false }),
 });
 
 
-router.post('/auth/login', async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
   passport.authenticate('login', (err, user) => {
     try {
       if (err || !user) return next(err);

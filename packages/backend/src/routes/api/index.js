@@ -7,6 +7,14 @@ const csat = require('./csat');
 const auth = require('./auth');
 const nps = require('./nps');
 
-router.use([measures, clients, users, csat, auth, nps]);
+// Authentication required for these routes
+router.use('/measures', measures);
+router.use('/clients', clients);
+router.use('/users', users);
+router.use('/csat', csat);
+router.use('/nps', nps);
+
+// Sign up and sign in routes
+router.use('/auth', auth);
 
 module.exports = router;
