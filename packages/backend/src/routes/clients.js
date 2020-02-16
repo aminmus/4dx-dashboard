@@ -4,13 +4,14 @@ const {
 } = require('../controllers/client');
 const { checkAuth } = require('../middleware/auth');
 
+
 // Require authentication
 router.all('/', checkAuth);
 
-router.get('/clients', getAll);
-router.get('/clients/:clientId', getById);
-router.put('/clients/:clientId', updateById);
-router.post('/clients', createOne);
-router.delete('/clients/:clientId', deleteById);
+router.get('/', getAll);
+router.get('/:clientId', getById);
+router.put('/:clientId', updateById);
+router.post('/', createOne);
+router.delete('/:clientId', deleteById);
 
 module.exports = router;
