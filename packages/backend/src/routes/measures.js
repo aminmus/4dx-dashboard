@@ -4,7 +4,7 @@ const {
 } = require('../controllers/measure');
 const { isAuthenticated } = require('../auth/auth');
 
-
+// Require authentication
 router.all('/', isAuthenticated);
 
 router.get('/', getAll);
