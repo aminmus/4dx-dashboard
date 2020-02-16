@@ -4,7 +4,6 @@ const {
 } = require('../controllers/client');
 const { checkAuth } = require('../middleware/auth');
 
-
 // Require authentication
 router.all('/', checkAuth);
 
