@@ -4,7 +4,7 @@ const measures = require('./measures');
 const clients = require('./clients');
 const users = require('./users');
 const csat = require('./csat');
-const auth = require('./auth');
+const auth = require('./authentication');
 const nps = require('./nps');
 
 // Authentication required for these routes

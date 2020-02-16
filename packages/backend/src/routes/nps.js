@@ -2,7 +2,7 @@ const router = require('express').Router();
 const {
   createOne, deleteById, getAll, getById, updateById,
 } = require('../controllers/nps');
-const { checkAuth } = require('../middleware/auth');
+const { checkAuth } = require('../middleware/authentication');
 
 // Require authentication
 router.all('/', checkAuth);
