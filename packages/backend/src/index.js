@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const tryDbConnection = require('./utils/tryDbConnection');
 const routes = require('./routes');
-const db = require('../models');
+const db = require('./models');
 
 const startServer = async () => {
   await tryDbConnection();

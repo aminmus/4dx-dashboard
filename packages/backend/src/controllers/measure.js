@@ -1,4 +1,4 @@
-const { Measure } = require('../../models');
+const { Measure } = require('../models');
 
 const getAll = async (req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');

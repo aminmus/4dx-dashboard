@@ -1,4 +1,4 @@
-const { Csat } = require('../../models');
+const { Csat } = require('../models');
 
 const getAll = async (req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');

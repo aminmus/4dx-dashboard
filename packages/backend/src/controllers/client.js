@@ -1,4 +1,4 @@
-const { Client } = require('../../models');
+const { Client } = require('../models');
 
 const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
