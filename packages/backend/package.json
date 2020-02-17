@@ -16,15 +16,20 @@
     "license": "ISC",
     "homepage": "https://bitbucket.org/vaimo/4dx#readme",
     "dependencies": {
+        "bcryptjs": "^2.4.3",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
+        "jsonwebtoken": "^8.5.1",
+        "passport": "^0.4.1",
+        "passport-jwt": "^4.0.0",
+        "passport-local": "^1.0.0",
         "pg": "^7.18.1",
         "pg-hstore": "^2.3.3",
         "sequelize": "^5.21.3"
     },
     "devDependencies": {
-        "eslint": "^6.8.0",
+        "eslint": "^6.1.0",
         "eslint-config-airbnb-base": "^14.0.0",
         "eslint-plugin-import": "^2.20.1",
         "nodemon": "^2.0.2"

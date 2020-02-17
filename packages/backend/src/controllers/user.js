@@ -1,82 +1,77 @@
-/* eslint-disable no-console */
-const router = require('express').Router();
-const models = require('../../models');
+const { User } = require('../models');
 
-// GET ALL USERS
-router.get('/users', async (_req, res) => {
+const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
   console.log('GET ALL REQUEST - USERS');
   console.log('*************************');
   try {
-    const users = await models.User.findAll();
+    const users = await User.findAll();
     return res.send(users);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-// GET ONE USER
-router.get('/users/:userId', async (req, res) => {
+const getById = async (req, res, next) => {
   console.log('*************************');
   console.log('GET ONE REQUEST - USERS');
   console.log('*************************');
   try {
-    const user = await models.User.findByPk(req.params.userId);
+    const user = await User.findByPk(req.params.userId);
     return res.send(user);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-// UPDATE USER
-router.put('/users/:userId', async (req, res) => {
+const updateById = async (req, res, next) => {
   console.log('*************************');
   console.log('PUT REQUEST - USERS');
   console.log('*************************');
   try {
-    const user = await models.User.findByPk(req.params.userId);
+    const user = await User.findByPk(req.params.userId);
     user.email = req.body.email;
     user.password = req.body.password;
     await user.save();
     return res.send(user);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-// CREATE USER
-router.post('/users', async (req, res) => {
+const createOne = async (req, res, next) => {
   console.log('*************************');
   console.log('POST REQUEST - USERS');
   console.log('*************************');
   try {
-    const newUser = await models.User.build(req.body);
+    const newUser = await User.build(req.body);
     await newUser.save();
     return res.send(newUser);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-// DELETE USER
-router.delete('/users/:userId', async (req, res) => {
+const deleteById = async (req, res, next) => {
   console.log('*************************');
   console.log('DELETE REQUEST - USERS');
   console.log('*************************');
   try {
-    const user = await models.user.findByPk(req.params.clientId);
+    const user = await User.findByPk(req.params.clientId);
     await user.destroy();
     return res.send(user);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  createOne, deleteById, getAll, getById, updateById,
+};

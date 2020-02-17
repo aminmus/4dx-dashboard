@@ -1,44 +1,39 @@
-/* eslint-disable no-console */
-const router = require('express').Router();
-const models = require('../../models');
+const { Nps } = require('../models');
 
-// GET ALL NPS
-router.get('/nps', async (_req, res) => {
+const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
   console.log('GET ALL REQUEST - NPS');
   console.log('*************************');
   try {
-    const nps = await models.Nps.findAll();
+    const nps = await Nps.findAll();
     return res.send(nps);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-// GET ONE NPS
-router.get('/nps/:npsId', async (req, res) => {
+const getById = async (req, res, next) => {
   console.log('*************************');
   console.log('GET ONE REQUEST - NPS');
   console.log('*************************');
   try {
-    const nps = await models.Nps.findByPk(req.params.npsId);
+    const nps = await Nps.findByPk(req.params.npsId);
     return res.send(nps);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-// UPDATE NPS
-router.put('/nps/:npsId', async (req, res) => {
+const updateById = async (req, res, next) => {
   console.log('*************************');
   console.log('PUT REQUEST - NPS');
   console.log('*************************');
   try {
-    const nps = await models.Nps.findByPk(req.params.npsId);
+    const nps = await Nps.findByPk(req.params.npsId);
     nps.currentNPS = req.body.currentNPS;
     nps.goalNPS = req.body.goalNPS;
     nps.date = req.body.date;
@@ -47,38 +42,38 @@ router.put('/nps/:npsId', async (req, res) => {
     return res.send(nps);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-// CREATE NPS
-router.post('/nps', async (req, res) => {
+const createOne = async (req, res, next) => {
   console.log('*************************');
   console.log('POST REQUEST - NPS');
   console.log('*************************');
   try {
-    const newNps = await models.Nps.build(req.body);
+    const newNps = await Nps.build(req.body);
     await newNps.save();
     return res.send(newNps);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-// DELETE NPS
-router.delete('/nps/:npsId', async (req, res) => {
+const deleteById = async (req, res, next) => {
   console.log('*************************');
   console.log('DELETE REQUEST - NPS');
   console.log('*************************');
   try {
-    const nps = await models.Nps.findByPk(req.params.npsId);
+    const nps = await Nps.findByPk(req.params.npsId);
     await nps.destroy();
     return res.send(nps);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  createOne, deleteById, getAll, getById, updateById,
+};

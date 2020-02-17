@@ -1,9 +1,6 @@
-/* eslint-disable no-console */
-const router = require('express').Router();
-const models = require('../../models');
+const { Measure } = require('../models');
 
-// GET ALL MEASURES
-router.get('/measures', async (req, res) => {
+const getAll = async (req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
@@ -18,35 +15,33 @@ router.get('/measures', async (req, res) => {
     };
   }
   try {
-    const measures = await models.Measure.findAll(filter);
+    const measures = await Measure.findAll(filter);
     return res.send(measures);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-// GET ONE MEASURE
-router.get('/measures/:measureId', async (req, res) => {
+const getById = async (req, res, next) => {
   console.log('*************************');
   console.log('GET ONE REQUEST - MEASURES');
   console.log('*************************');
   try {
-    const measure = await models.Measure.findByPk(req.params.measureId);
+    const measure = await Measure.findByPk(req.params.measureId);
     return res.send(measure);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-// UPDATE MEASURE
-router.put('/measures/:measureId', async (req, res) => {
+const updateById = async (req, res, next) => {
   console.log('*************************');
   console.log('PUT REQUEST - MEASURES');
   console.log('*************************');
   try {
-    const measure = await models.Measure.findByPk(req.params.measureId);
+    const measure = await Measure.findByPk(req.params.measureId);
     measure.description = req.body.description;
     measure.success = req.body.success;
     if (measure.success == null) {
@@ -56,17 +51,16 @@ router.put('/measures/:measureId', async (req, res) => {
     return res.send(measure);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-// CREATE MEASURE
-router.post('/measures', async (req, res) => {
+const createOne = async (req, res, next) => {
   console.log('*************************');
   console.log('POST REQUEST - MEASURES');
   console.log('*************************');
   try {
-    const newMeasure = await models.Measure.build(req.body);
+    const newMeasure = await Measure.build(req.body);
     if (newMeasure.success == null) {
       newMeasure.success = false;
     }
@@ -74,23 +68,24 @@ router.post('/measures', async (req, res) => {
     return res.send(newMeasure);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-// DELETE MEASURE
-router.delete('/measures/:clientId', async (req, res) => {
+const deleteById = async (req, res, next) => {
   console.log('*************************');
   console.log('DELETE REQUEST - MEASURES');
   console.log('*************************');
   try {
-    const measure = await models.Measure.findByPk(req.params.clientId);
+    const measure = await Measure.findByPk(req.params.clientId);
     await measure.destroy();
     return res.send(measure);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  createOne, deleteById, getAll, getById, updateById,
+};

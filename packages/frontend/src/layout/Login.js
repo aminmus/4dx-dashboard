@@ -1,5 +1,5 @@
 import React from 'react';
-import { Admin, Resource, ListGuesser } from 'react-admin';
+import { fetchUtils, Admin, Resource, ListGuesser } from 'react-admin';
 import { createMuiTheme } from '@material-ui/core/styles';
 import simpleRestProvider from 'ra-data-simple-rest';
 import { ClientList, ClientEdit, ClientShow, ClientCreate } from '../components/dashboard/client';
@@ -15,10 +15,17 @@ export default function Login() {
     }
   });
 
+  const httpClient = (url, options = {}) => {
+    const headers = options.headers ? options.headers : new Headers({ Accept: 'application/json' });
+    const token = localStorage.getItem('token');
+    headers.set('Authorization', `Bearer ${token}`);
+    return fetchUtils.fetchJson(url, options);
+  };
+
   return (
     <Admin
       authProvider={authProvider}
-      dataProvider={simpleRestProvider('http://localhost:4000/api')}
+      dataProvider={simpleRestProvider('http://localhost:4000/api', httpClient)}
       dashboard={Dashboard}
       theme={theme}
     >

@@ -1,48 +1,43 @@
-/* eslint-disable no-console */
-const router = require('express').Router();
-const models = require('../../models');
+const { Client } = require('../models');
 
-// GET ALL CLIENTS
-router.get('/clients', async (_req, res) => {
+const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
   console.log('GET ALL REQUEST - CLIENTS');
   console.log('*************************');
   try {
-    const clients = await models.Client.findAll({
+    const clients = await Client.findAll({
       include: [{ all: true, nested: true }],
     });
     res.send(clients);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    res.send('error');
+    next(err);
   }
-});
+};
 
-// GET ONE CLIENT
-router.get('/clients/:clientId', async (req, res) => {
+const getById = async (req, res, next) => {
   console.log('*************************');
   console.log('GET ONE REQUEST - CLIENTS');
   console.log('*************************');
   try {
-    const client = await models.Client.findByPk(req.params.clientId, {
+    const client = await Client.findByPk(req.params.clientId, {
       include: [{ all: true, nested: true }],
     });
     res.send(client);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    res.send('error');
+    next(err);
   }
-});
+};
 
-// UPDATE CLIENT
-router.put('/clients/:clientId', async (req, res) => {
+const updateById = async (req, res, next) => {
   console.log('*************************');
   console.log('PUT REQUEST - CLIENTS');
   console.log('*************************');
   try {
-    const client = await models.Client.findByPk(req.params.clientId, {
+    const client = await Client.findByPk(req.params.clientId, {
       include: [{ all: true, nested: true }],
     });
     client.name = req.body.name;
@@ -50,39 +45,39 @@ router.put('/clients/:clientId', async (req, res) => {
     res.send(client);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    res.send('error');
+    next(err);
   }
-});
+};
 
-// CREATE CLIENT
-router.post('/clients', async (req, res) => {
+const createOne = async (req, res, next) => {
   console.log('*************************');
   console.log('POST REQUEST - CLIENTS');
   console.log('*************************');
   try {
-    const newClient = await models.Client.build(req.body);
+    const newClient = await Client.build(req.body);
     await newClient.save();
     console.log('New client saved');
     res.send(newClient);
   } catch (err) {
     console.log(`ERROR on client save: ${err}`);
-    res.send('error');
+    next(err);
   }
-});
+};
 
-// DELETE CLIENT
-router.delete('/clients/:clientId', async (req, res) => {
+const deleteById = async (req, res, next) => {
   console.log('*************************');
   console.log('DELETE REQUEST - CLIENTS');
   console.log('*************************');
   try {
-    const client = await models.Client.findByPk(req.params.clientId);
+    const client = await Client.findByPk(req.params.clientId);
     await client.destroy();
     return res.send(client);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    return res.send('error');
+    return next(err);
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  createOne, deleteById, getAll, getById, updateById,
+};
