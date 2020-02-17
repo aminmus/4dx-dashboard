@@ -17,6 +17,7 @@ export default {
   // called when the user clicks on the logout button
   logout: () => {
     localStorage.removeItem('email');
+    localStorage.removeItem('token');
     return Promise.resolve();
   },
   // called when the API returns an error
