@@ -63,7 +63,7 @@ const deleteById = async (req, res, next) => {
   console.log('DELETE REQUEST - USERS');
   console.log('*************************');
   try {
-    const user = await User.findByPk(req.params.clientId);
+    const user = await User.findByPk(req.params.userId);
     await user.destroy();
     return res.send(user);
   } catch (err) {
