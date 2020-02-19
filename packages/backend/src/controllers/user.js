@@ -9,7 +9,15 @@ const getAll = async (_req, res, next) => {
   try {
     const users = await User.findAll();
     return res.status(200).json({
-      data: users.map((user) => ({ type: 'users', ...user.get({ plain: true }) })),
+      data: users.map((user) => {
+        const { id, ...values } = user.get({ plain: true });
+        console.log(values);
+        return ({
+          type: 'users',
+          id,
+          attributes: { ...values },
+        });
+      }),
     });
   } catch (err) {
     console.log(`ERROR: ${err}`);
