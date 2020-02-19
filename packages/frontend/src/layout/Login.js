@@ -16,7 +16,10 @@ export default function Login() {
   });
 
   const httpClient = (url, optionsArg = {}) => {
-    const options = {};
+    const options = {
+      total: null
+    };
+
     options.headers = optionsArg.headers
       ? optionsArg.headers
       : new Headers({ Accept: 'application/json' });
