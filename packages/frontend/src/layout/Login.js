@@ -1,7 +1,7 @@
 import React from 'react';
 import { fetchUtils, Admin, Resource, ListGuesser } from 'react-admin';
 import { createMuiTheme } from '@material-ui/core/styles';
-import simpleRestProvider from 'ra-data-simple-rest';
+import jsonapiClient from 'ra-jsonapi-client';
 import { ClientList, ClientEdit, ClientShow, ClientCreate } from '../components/dashboard/client';
 import authProvider from '../authProvider';
 import Dashboard from './Dashboard';
@@ -31,7 +31,7 @@ export default function Login() {
   return (
     <Admin
       authProvider={authProvider}
-      dataProvider={simpleRestProvider('http://localhost:4000/api', httpClient)}
+      dataProvider={jsonapiClient('http://localhost:4000/api', httpClient)}
       dashboard={Dashboard}
       theme={theme}
     >
