@@ -15,10 +15,13 @@ export default function Login() {
     }
   });
 
-  const httpClient = (url, options = {}) => {
-    const headers = options.headers ? options.headers : new Headers({ Accept: 'application/json' });
+  const httpClient = (url, optionsArg = {}) => {
+    const options = {};
+    options.headers = optionsArg.headers
+      ? optionsArg.headers
+      : new Headers({ Accept: 'application/json' });
     const token = localStorage.getItem('token');
-    headers.set('Authorization', `Bearer ${token}`);
+    options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
   };
 
