@@ -1,3 +1,4 @@
+/* eslint-disable  react/jsx-props-no-spreading, react/prop-types */
 import React from 'react';
 import {
   List,
@@ -27,7 +28,6 @@ export const ClientList = props => (
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />
-      <TextField source="progress" />
       <EditButton />
       <DeleteButton />
       <ShowButton />
@@ -40,7 +40,6 @@ export const ClientEdit = props => (
     <SimpleForm>
       <TextInput disabled source="id" />
       <TextInput source="name" />
-      <TextInput source="progress" />
     </SimpleForm>
   </Edit>
 );

@@ -57,7 +57,7 @@ const updateById = async (req, res, next) => {
         .status(404)
         .json({ error: { title: 'client not found' }, data: null });
     }
-    client.name = req.body.name;
+    client.name = req.body.data.attributes.name;
 
     await client.save();
     return res.status(200).json({
@@ -74,7 +74,7 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - CLIENTS');
   console.log('*************************');
   try {
-    const { name } = req.body;
+    const { name } = req.body.data.attributes;
     const [client, isCreated] = await Client.findOrCreate({
       where: { name },
     });
