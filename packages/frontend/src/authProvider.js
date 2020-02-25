@@ -5,7 +5,7 @@ export default {
     const request = new Request('http://localhost:4000/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email: username, password }),
-      headers: new Headers({ 'Content-Type': 'application/json' })
+      headers: new Headers({ 'Content-Type': 'application/vnd.api+json' })
     });
 
     const response = await fetch(request);
