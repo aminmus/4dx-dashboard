@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchUtils, Admin, Resource } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
 import { createMuiTheme } from '@material-ui/core/styles';
 import jsonapiClient from 'ra-jsonapi-client';
 import { ClientList, ClientEdit, ClientShow, ClientCreate } from '../components/dashboard/client';
@@ -16,23 +16,18 @@ export default function Login() {
     }
   });
 
-  const httpClient = (url, optionsArg = {}) => {
-    const options = {
-      total: null
-    };
-
-    options.headers = optionsArg.headers
-      ? optionsArg.headers
-      : new Headers({ Accept: 'application/json' });
-    const token = localStorage.getItem('token');
-    options.headers.set('Authorization', `Bearer ${token}`);
-    return fetchUtils.fetchJson(url, options);
+  const settings = {
+    updateMethod: 'PUT',
+    headers: {
+      Accept: 'application/vnd.api+json',
+      'Content-Type': 'application/vnd.api+json'
+    }
   };
 
   return (
     <Admin
       authProvider={authProvider}
-      dataProvider={jsonapiClient('http://localhost:4000/api', httpClient)}
+      dataProvider={jsonapiClient('http://localhost:4000/api', settings)}
       dashboard={Dashboard}
       theme={theme}
     >

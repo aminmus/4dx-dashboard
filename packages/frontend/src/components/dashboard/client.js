@@ -1,3 +1,4 @@
+/* eslint-disable  react/jsx-props-no-spreading, react/prop-types */
 import React from 'react';
 import {
   List,
@@ -23,11 +24,10 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
 export const ClientList = props => (
-  <List {...props}>
-    <Datagrid>
+  <List {...props} bulkActionButtons={false}>
+    <Datagrid isRowSelectable={() => false}>
       <TextField source="id" />
       <TextField source="name" />
-      <TextField source="progress" />
       <EditButton />
       <DeleteButton />
       <ShowButton />
@@ -40,7 +40,6 @@ export const ClientEdit = props => (
     <SimpleForm>
       <TextInput disabled source="id" />
       <TextInput source="name" />
-      <TextInput source="progress" />
     </SimpleForm>
   </Edit>
 );

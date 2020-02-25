@@ -1,3 +1,4 @@
+/* eslint-disable no-console, consistent-return */
 const { Client } = require('../models');
 
 const getAll = async (_req, res, next) => {
@@ -10,7 +11,17 @@ const getAll = async (_req, res, next) => {
     const clients = await Client.findAll({
       include: [{ all: true, nested: true }],
     });
-    res.send(clients);
+    return res.status(200).json({
+      data: clients.map((client) => {
+        const { id, ...values } = client.get({ plain: true });
+        console.log(values);
+        return {
+          type: 'clients',
+          id,
+          attributes: { ...values },
+        };
+      }),
+    });
   } catch (err) {
     console.log(`ERROR: ${err}`);
     next(err);
@@ -25,10 +36,17 @@ const getById = async (req, res, next) => {
     const client = await Client.findByPk(req.params.clientId, {
       include: [{ all: true, nested: true }],
     });
-    res.send(client);
+    if (!client) {
+      return res
+        .status(404)
+        .json({ error: { title: 'Client not found' }, data: null });
+    }
+    return res.status(200).json({
+      data: { type: 'clients', ...client.get({ plain: true }) },
+    });
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    next(err);
+    return next(err);
   }
 };
 
@@ -40,12 +58,20 @@ const updateById = async (req, res, next) => {
     const client = await Client.findByPk(req.params.clientId, {
       include: [{ all: true, nested: true }],
     });
-    client.name = req.body.name;
+    if (!client) {
+      return res
+        .status(404)
+        .json({ error: { title: 'client not found' }, data: null });
+    }
+    client.name = req.body.data.attributes.name;
+
     await client.save();
-    res.send(client);
+    return res.status(200).json({
+      data: { type: 'clients', ...client.get({ plain: true }) },
+    });
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    next(err);
+    return next(err);
   }
 };
 
@@ -54,13 +80,22 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - CLIENTS');
   console.log('*************************');
   try {
-    const newClient = await Client.build(req.body);
-    await newClient.save();
-    console.log('New client saved');
-    res.send(newClient);
+    const { name } = req.body.data.attributes;
+    const [client, isCreated] = await Client.findOrCreate({
+      where: { name },
+    });
+    if (!isCreated && client) {
+      return res.status(409).json({
+        error: { title: 'Client by that name already exists' },
+        data: null,
+      });
+    }
+    return res.status(201).json({
+      data: { type: 'clients', ...client.get({ plain: true }) },
+    });
   } catch (err) {
-    console.log(`ERROR on client save: ${err}`);
-    next(err);
+    console.log(`ERROR: ${err}`);
+    return next(err);
   }
 };
 
@@ -79,5 +114,9 @@ const deleteById = async (req, res, next) => {
 };
 
 module.exports = {
-  createOne, deleteById, getAll, getById, updateById,
+  createOne,
+  deleteById,
+  getAll,
+  getById,
+  updateById,
 };
