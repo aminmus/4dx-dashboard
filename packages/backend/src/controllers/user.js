@@ -8,7 +8,17 @@ const getAll = async (_req, res, next) => {
   console.log('*************************');
   try {
     const users = await User.findAll();
-    return res.send(users);
+    return res.status(200).json({
+      data: users.map((user) => {
+        const { id, ...values } = user.get({ plain: true });
+        console.log(values);
+        return ({
+          type: 'users',
+          id,
+          attributes: { ...values },
+        });
+      }),
+    });
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -21,7 +31,8 @@ const getById = async (req, res, next) => {
   console.log('*************************');
   try {
     const user = await User.findByPk(req.params.userId);
-    return res.send(user);
+    if (!user) return res.status(404).json({ error: { title: 'User not found' }, data: null });
+    return res.status(200).json({ data: { type: 'users', ...user.get({ plain: true }) } });
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -34,10 +45,11 @@ const updateById = async (req, res, next) => {
   console.log('*************************');
   try {
     const user = await User.findByPk(req.params.userId);
+    if (!user) return res.status(404).json({ error: { title: 'User not found' }, data: null });
     user.email = req.body.email;
     user.password = req.body.password;
     await user.save();
-    return res.send(user);
+    return res.status(200).json({ data: { type: 'users', ...user.get({ plain: true }) } });
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -49,9 +61,13 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - USERS');
   console.log('*************************');
   try {
-    const newUser = await User.build(req.body);
-    await newUser.save();
-    return res.send(newUser);
+    const { email, password } = req.body;
+    const [user, isCreated] = await User.findOrCreate({
+      where: { email },
+      defaults: { email, password },
+    });
+    if (!isCreated && user) return res.status(409).json({ error: { title: 'User already exists' }, data: null });
+    return res.status(201).json({ data: { type: 'users', ...user.get({ plain: true }) } });
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -63,9 +79,10 @@ const deleteById = async (req, res, next) => {
   console.log('DELETE REQUEST - USERS');
   console.log('*************************');
   try {
-    const user = await User.findByPk(req.params.clientId);
+    const user = await User.findByPk(req.params.userId);
+    if (!user) return res.status(404).json({ error: { title: 'User not found' }, data: null });
     await user.destroy();
-    return res.send(user);
+    return res.status(204).send();
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
