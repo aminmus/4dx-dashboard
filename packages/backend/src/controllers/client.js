@@ -8,7 +8,9 @@ const getAll = async (_req, res, next) => {
   console.log('GET ALL REQUEST - CLIENTS');
   console.log('*************************');
   try {
-    const clients = await Client.findAll();
+    const clients = await Client.findAll({
+      include: [{ all: true, nested: true }],
+    });
     return res.status(200).json({
       data: clients.map((client) => {
         const { id, ...values } = client.get({ plain: true });
@@ -31,7 +33,9 @@ const getById = async (req, res, next) => {
   console.log('GET ONE REQUEST - CLIENTS');
   console.log('*************************');
   try {
-    const client = await Client.findByPk(req.params.clientId);
+    const client = await Client.findByPk(req.params.clientId, {
+      include: [{ all: true, nested: true }],
+    });
     if (!client) {
       return res
         .status(404)
@@ -51,7 +55,9 @@ const updateById = async (req, res, next) => {
   console.log('PUT REQUEST - CLIENTS');
   console.log('*************************');
   try {
-    const client = await Client.findByPk(req.params.clientId);
+    const client = await Client.findByPk(req.params.clientId, {
+      include: [{ all: true, nested: true }],
+    });
     if (!client) {
       return res
         .status(404)
