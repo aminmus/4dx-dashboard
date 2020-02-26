@@ -77,12 +77,8 @@ const updateById = async (req, res, next) => {
         .status(404)
         .json({ error: { title: 'client not found' }, data: null });
     }
-    client.name = req.body.data.attributes.name;
-
-    await client.save();
-    return res.status(200).json({
-      data: { type: 'clients', ...client.get({ plain: true }) },
-    });
+    await client.update(req.body.data.attributes);
+    return res.status(200).json(ClientSerializer.serialize(client));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
