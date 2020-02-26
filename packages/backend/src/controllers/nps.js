@@ -35,7 +35,7 @@ const updateById = async (req, res, next) => {
   try {
     const nps = await Nps.findByPk(req.params.npsId);
     nps.currentNps = req.body.currentNps;
-    nps.goalNPS = req.body.goalNPS;
+    nps.goalNps = req.body.goalNps;
     nps.date = req.body.date;
     nps.targetDate = req.body.targetDate;
     await nps.save();
@@ -75,5 +75,9 @@ const deleteById = async (req, res, next) => {
 };
 
 module.exports = {
-  createOne, deleteById, getAll, getById, updateById,
+  createOne,
+  deleteById,
+  getAll,
+  getById,
+  updateById,
 };
