@@ -1,4 +1,15 @@
+const {
+  Serializer: JSONAPISerializer,
+  Deserializer: JSONAPIDeserializer,
+} = require('jsonapi-serializer');
 const { Measure } = require('../models');
+
+const MeasureSerializer = new JSONAPISerializer('measures', {
+  attributes: ['description', 'success', 'ClientId', 'createdAt', 'updatedAt'],
+});
+const MeasureDeserializer = new JSONAPIDeserializer('measures', {
+  attributes: ['description', 'success', 'ClientId', 'createdAt', 'updatedAt'],
+});
 
 const getAll = async (req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
@@ -6,17 +17,9 @@ const getAll = async (req, res, next) => {
   console.log('*************************');
   console.log('GET ALL REQUEST - MEASURES');
   console.log('*************************');
-  let filter = {};
-  if (req.query.filter) {
-    const queryFilter = JSON.parse(req.query.filter);
-    const ClientId = queryFilter.Client_Id;
-    filter = {
-      where: { ClientId },
-    };
-  }
   try {
-    const measures = await Measure.findAll(filter);
-    return res.send(measures);
+    const measures = await Measure.findAll();
+    return res.status(200).json(MeasureSerializer.serialize(measures));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -29,7 +32,12 @@ const getById = async (req, res, next) => {
   console.log('*************************');
   try {
     const measure = await Measure.findByPk(req.params.measureId);
-    return res.send(measure);
+    if (!measure) {
+      return res
+        .status(404)
+        .json({ error: { title: 'Measure not found' }, data: null });
+    }
+    return res.status(200).json(MeasureSerializer.serialize(measure));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -42,13 +50,25 @@ const updateById = async (req, res, next) => {
   console.log('*************************');
   try {
     const measure = await Measure.findByPk(req.params.measureId);
-    measure.description = req.body.description;
-    measure.success = req.body.success;
-    if (measure.success == null) {
-      measure.success = false;
+    if (!measure) {
+      return res
+        .status(404)
+        .json({ error: { title: 'Measure not found' }, data: null });
     }
+
+    const {
+      description,
+      success,
+      ClientId,
+    } = await MeasureDeserializer.deserialize(req.body);
+
+    // TODO: use measure.update instead of manual updating
+    measure.description = description;
+    measure.success = success;
+    measure.ClientId = ClientId;
     await measure.save();
-    return res.send(measure);
+
+    return res.status(200).json(MeasureSerializer.serialize(measure));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -60,12 +80,17 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - MEASURES');
   console.log('*************************');
   try {
-    const newMeasure = await Measure.build(req.body);
-    if (newMeasure.success == null) {
-      newMeasure.success = false;
-    }
-    await newMeasure.save();
-    return res.send(newMeasure);
+    // When Trying to serialize ClientId it can't be found
+    const { ClientId } = req.body.data.attributes;
+    const { description, success } = await MeasureDeserializer.deserialize(
+      req.body,
+    );
+    const measure = await Measure.create({
+      description,
+      success,
+      ClientId,
+    });
+    return res.status(201).json(MeasureSerializer.serialize(measure));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -87,5 +112,9 @@ const deleteById = async (req, res, next) => {
 };
 
 module.exports = {
-  createOne, deleteById, getAll, getById, updateById,
+  createOne,
+  deleteById,
+  getAll,
+  getById,
+  updateById,
 };
