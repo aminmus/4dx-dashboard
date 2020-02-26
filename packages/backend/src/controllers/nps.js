@@ -1,4 +1,23 @@
+const {
+  Serializer: JSONAPISerializer,
+  Deserializer: JSONAPIDeserializer,
+} = require('jsonapi-serializer');
 const { Nps } = require('../models');
+
+const NpsSerializer = new JSONAPISerializer('nps', {
+  attributes: [
+    'currentNps',
+    'goalNps',
+    'date',
+    'targetDate',
+    'createdAt',
+    'updatedAt',
+  ],
+});
+
+const NpsDeserializer = new JSONAPIDeserializer({
+  keyForAttribute: 'camelCase',
+});
 
 const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
@@ -8,7 +27,7 @@ const getAll = async (_req, res, next) => {
   console.log('*************************');
   try {
     const nps = await Nps.findAll();
-    return res.send(nps);
+    return res.status(200).json(NpsSerializer.serialize(nps));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -21,7 +40,12 @@ const getById = async (req, res, next) => {
   console.log('*************************');
   try {
     const nps = await Nps.findByPk(req.params.npsId);
-    return res.send(nps);
+    if (!nps) {
+      return res
+        .status(404)
+        .json({ error: { title: 'Nps entry not found' }, data: null });
+    }
+    return res.status(200).json(NpsSerializer.serialize(nps));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -34,12 +58,25 @@ const updateById = async (req, res, next) => {
   console.log('*************************');
   try {
     const nps = await Nps.findByPk(req.params.npsId);
-    nps.currentNps = req.body.currentNps;
-    nps.goalNps = req.body.goalNps;
-    nps.date = req.body.date;
-    nps.targetDate = req.body.targetDate;
+    if (!nps) {
+      return res
+        .status(404)
+        .json({ error: { title: 'Nps not found' }, data: null });
+    }
+    const {
+      currentNps,
+      goalNps,
+      targetDate,
+      date,
+    } = await NpsDeserializer.deserialize(req.body);
+    // TODO: use nps.update instead of manual updating
+    nps.date = date;
+    nps.targetDate = targetDate;
+    nps.currentNps = currentNps;
+    nps.goalNps = goalNps;
     await nps.save();
-    return res.send(nps);
+
+    return res.status(200).json(NpsSerializer.serialize(nps));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -51,9 +88,21 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - NPS');
   console.log('*************************');
   try {
-    const newNps = await Nps.build(req.body);
-    await newNps.save();
-    return res.send(newNps);
+    const {
+      date,
+      currentNps,
+      goalNps,
+      targetDate,
+    } = await NpsDeserializer.deserialize(req.body);
+
+    const nps = await Nps.create({
+      currentNps,
+      goalNps,
+      date,
+      targetDate,
+    });
+
+    return res.status(201).json(NpsSerializer.serialize(nps));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
