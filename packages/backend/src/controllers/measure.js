@@ -19,8 +19,7 @@ const getAll = async (req, res, next) => {
   console.log('*************************');
   try {
     const measures = await Measure.findAll();
-    const data = await MeasureSerializer.serialize(measures);
-    return res.status(200).json({ ...data });
+    return res.status(200).json(MeasureSerializer.serialize(measures));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
