@@ -1,5 +1,31 @@
 /* eslint-disable no-console, consistent-return */
+const { Serializer: JSONAPISerializer, Deserializer: JSONAPIDeserializer } = require('jsonapi-serializer');
 const { Client } = require('../models');
+
+// eslint-disable-next-line no-unused-vars
+const ClientSerializer = new JSONAPISerializer('clients', {
+  attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
+  Csats: {
+    attributes: ['score', 'date', 'createdAt', 'updatedAt'],
+    ref: 'ClientId',
+  },
+  Measures: {
+    attributes: ['description', 'success', 'createdAt', 'updatedAt'],
+    ref: 'ClientId',
+  },
+});
+// eslint-disable-next-line no-unused-vars
+const ClientDeserializer = new JSONAPIDeserializer('clients', {
+  attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
+  Csats: {
+    attributes: ['score', 'date', 'createdAt', 'updatedAt'],
+    ref: 'ClientId',
+  },
+  Measures: {
+    attributes: ['description', 'success', 'createdAt', 'updatedAt'],
+    ref: 'ClientId',
+  },
+});
 
 const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
