@@ -37,17 +37,8 @@ const getAll = async (_req, res, next) => {
     const clients = await Client.findAll({
       include: [{ all: true, nested: true }],
     });
-    return res.status(200).json({
-      data: clients.map((client) => {
-        const { id, ...values } = client.get({ plain: true });
-        console.log(values);
-        return {
-          type: 'clients',
-          id,
-          attributes: { ...values },
-        };
-      }),
-    });
+
+    return res.status(200).json(ClientSerializer.serialize(clients));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     next(err);
