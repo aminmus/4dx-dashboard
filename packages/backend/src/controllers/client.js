@@ -2,7 +2,6 @@
 const { Serializer: JSONAPISerializer, Deserializer: JSONAPIDeserializer } = require('jsonapi-serializer');
 const { Client } = require('../models');
 
-// eslint-disable-next-line no-unused-vars
 const ClientSerializer = new JSONAPISerializer('clients', {
   attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
   Csats: {
@@ -58,9 +57,7 @@ const getById = async (req, res, next) => {
         .status(404)
         .json({ error: { title: 'Client not found' }, data: null });
     }
-    return res.status(200).json({
-      data: { type: 'clients', ...client.get({ plain: true }) },
-    });
+    return res.status(200).json(ClientSerializer.serialize(client));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
