@@ -34,7 +34,7 @@ const updateById = async (req, res, next) => {
   console.log('*************************');
   try {
     const nps = await Nps.findByPk(req.params.npsId);
-    nps.currentNPS = req.body.currentNPS;
+    nps.currentNps = req.body.currentNps;
     nps.goalNPS = req.body.goalNPS;
     nps.date = req.body.date;
     nps.targetDate = req.body.targetDate;
