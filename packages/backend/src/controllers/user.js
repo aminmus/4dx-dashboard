@@ -16,8 +16,7 @@ const getAll = async (_req, res, next) => {
   console.log('*************************');
   try {
     const users = await User.findAll();
-    const data = await UserSerializer.serialize(users);
-    return res.status(200).json({ ...data });
+    return res.status(200).json(UserSerializer.serialize(users));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
