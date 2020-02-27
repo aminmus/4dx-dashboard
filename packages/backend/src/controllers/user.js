@@ -44,14 +44,7 @@ const updateById = async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId);
     if (!user) return res.status(404).json({ error: { title: 'User not found' }, data: null });
-
-    const { email, password } = await UserDeserializer.deserialize(req.body);
-
-    // TODO: use user.update instead of manual updating
-    user.email = email;
-    user.password = password;
-    await user.save();
-
+    await user.update(await UserDeserializer.deserialize(req.body));
     return res.status(200).json(UserSerializer.serialize(user));
   } catch (err) {
     console.log(`ERROR: ${err}`);
