@@ -63,19 +63,8 @@ const updateById = async (req, res, next) => {
         .status(404)
         .json({ error: { title: 'Nps not found' }, data: null });
     }
-    const {
-      currentNps,
-      goalNps,
-      targetDate,
-      date,
-    } = await NpsDeserializer.deserialize(req.body);
-    // TODO: use nps.update instead of manual updating
-    nps.date = date;
-    nps.targetDate = targetDate;
-    nps.currentNps = currentNps;
-    nps.goalNps = goalNps;
-    await nps.save();
-
+    const deserializedNps = await NpsDeserializer.deserialize(req.body);
+    await nps.update(deserializedNps);
     return res.status(200).json(NpsSerializer.serialize(nps));
   } catch (err) {
     console.log(`ERROR: ${err}`);
