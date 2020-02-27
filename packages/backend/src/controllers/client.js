@@ -14,8 +14,8 @@ const ClientSerializer = new JSONAPISerializer('clients', {
   },
 });
 // eslint-disable-next-line no-unused-vars
-const ClientDeserializer = new JSONAPIDeserializer('clients', {
-  attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
+const ClientDeserializer = new JSONAPIDeserializer({
+  keyForAttribute: 'camelCase',
   Csats: {
     attributes: ['score', 'date', 'createdAt', 'updatedAt'],
     ref: 'ClientId',
