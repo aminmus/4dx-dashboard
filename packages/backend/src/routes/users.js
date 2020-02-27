@@ -5,7 +5,7 @@ const {
 const { checkAuth } = require('../middleware/authentication');
 
 // Require authentication
-router.all('/', checkAuth);
+router.all('*', checkAuth);
 
 router.get('/', getAll);
 router.get('/:userId', getById);
