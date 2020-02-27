@@ -7,8 +7,8 @@ const { Measure } = require('../models');
 const MeasureSerializer = new JSONAPISerializer('measures', {
   attributes: ['description', 'success', 'ClientId', 'createdAt', 'updatedAt'],
 });
-const MeasureDeserializer = new JSONAPIDeserializer('measures', {
-  attributes: ['description', 'success', 'ClientId', 'createdAt', 'updatedAt'],
+const MeasureDeserializer = new JSONAPIDeserializer({
+  keyForAttribute: 'camelCase',
 });
 
 const getAll = async (req, res, next) => {
@@ -55,17 +55,13 @@ const updateById = async (req, res, next) => {
         .status(404)
         .json({ error: { title: 'Measure not found' }, data: null });
     }
-
-    const {
-      description,
-      success,
-      ClientId,
-    } = await MeasureDeserializer.deserialize(req.body);
+    const { description, success } = await MeasureDeserializer.deserialize(
+      req.body,
+    );
 
     // TODO: use measure.update instead of manual updating
     measure.description = description;
     measure.success = success;
-    measure.ClientId = ClientId;
     await measure.save();
 
     return res.status(200).json(MeasureSerializer.serialize(measure));
@@ -80,8 +76,9 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - MEASURES');
   console.log('*************************');
   try {
-    // When Trying to serialize ClientId it can't be found
+    // Deserialization convertcase format conflict, ClientId is CamelCased, db entry is Pascal Cased
     const { ClientId } = req.body.data.attributes;
+
     const { description, success } = await MeasureDeserializer.deserialize(
       req.body,
     );
