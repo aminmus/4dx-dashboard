@@ -1,5 +1,30 @@
 /* eslint-disable no-console, consistent-return */
+const { Serializer: JSONAPISerializer, Deserializer: JSONAPIDeserializer } = require('jsonapi-serializer');
 const { Client } = require('../models');
+
+const ClientSerializer = new JSONAPISerializer('clients', {
+  attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
+  Csats: {
+    attributes: ['score', 'date', 'createdAt', 'updatedAt'],
+    ref: 'ClientId',
+  },
+  Measures: {
+    attributes: ['description', 'success', 'createdAt', 'updatedAt'],
+    ref: 'ClientId',
+  },
+});
+
+const ClientDeserializer = new JSONAPIDeserializer({
+  keyForAttribute: 'camelCase',
+  Csats: {
+    attributes: ['score', 'date', 'createdAt', 'updatedAt'],
+    ref: 'ClientId',
+  },
+  Measures: {
+    attributes: ['description', 'success', 'createdAt', 'updatedAt'],
+    ref: 'ClientId',
+  },
+});
 
 const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
@@ -11,17 +36,8 @@ const getAll = async (_req, res, next) => {
     const clients = await Client.findAll({
       include: [{ all: true, nested: true }],
     });
-    return res.status(200).json({
-      data: clients.map((client) => {
-        const { id, ...values } = client.get({ plain: true });
-        console.log(values);
-        return {
-          type: 'clients',
-          id,
-          attributes: { ...values },
-        };
-      }),
-    });
+
+    return res.status(200).json(ClientSerializer.serialize(clients));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     next(err);
@@ -41,9 +57,7 @@ const getById = async (req, res, next) => {
         .status(404)
         .json({ error: { title: 'Client not found' }, data: null });
     }
-    return res.status(200).json({
-      data: { type: 'clients', ...client.get({ plain: true }) },
-    });
+    return res.status(200).json(ClientSerializer.serialize(client));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -63,12 +77,8 @@ const updateById = async (req, res, next) => {
         .status(404)
         .json({ error: { title: 'client not found' }, data: null });
     }
-    client.name = req.body.data.attributes.name;
-
-    await client.save();
-    return res.status(200).json({
-      data: { type: 'clients', ...client.get({ plain: true }) },
-    });
+    await client.update(req.body.data.attributes);
+    return res.status(200).json(ClientSerializer.serialize(client));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -80,7 +90,7 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - CLIENTS');
   console.log('*************************');
   try {
-    const { name } = req.body.data.attributes;
+    const { name } = await ClientDeserializer.deserialize(req.body);
     const [client, isCreated] = await Client.findOrCreate({
       where: { name },
     });
@@ -90,9 +100,7 @@ const createOne = async (req, res, next) => {
         data: null,
       });
     }
-    return res.status(201).json({
-      data: { type: 'clients', ...client.get({ plain: true }) },
-    });
+    return res.status(201).json(ClientSerializer.serialize(client));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
