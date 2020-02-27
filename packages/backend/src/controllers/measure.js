@@ -11,7 +11,7 @@ const MeasureDeserializer = new JSONAPIDeserializer({
   keyForAttribute: 'camelCase',
 });
 
-const getAll = async (req, res, next) => {
+const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
