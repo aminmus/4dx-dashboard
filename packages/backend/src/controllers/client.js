@@ -13,7 +13,7 @@ const ClientSerializer = new JSONAPISerializer('clients', {
     ref: 'ClientId',
   },
 });
-// eslint-disable-next-line no-unused-vars
+
 const ClientDeserializer = new JSONAPIDeserializer({
   keyForAttribute: 'camelCase',
   Csats: {
@@ -90,7 +90,7 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - CLIENTS');
   console.log('*************************');
   try {
-    const { name } = req.body.data.attributes;
+    const { name } = await ClientDeserializer.deserialize(req.body);
     const [client, isCreated] = await Client.findOrCreate({
       where: { name },
     });
@@ -100,9 +100,7 @@ const createOne = async (req, res, next) => {
         data: null,
       });
     }
-    return res.status(201).json({
-      data: { type: 'clients', ...client.get({ plain: true }) },
-    });
+    return res.status(201).json(ClientSerializer.serialize(client));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
