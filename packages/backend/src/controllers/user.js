@@ -1,11 +1,14 @@
-const { Serializer: JSONAPISerializer, Deserializer: JSONAPIDeserializer } = require('jsonapi-serializer');
+const {
+  Serializer: JSONAPISerializer,
+  Deserializer: JSONAPIDeserializer,
+} = require('jsonapi-serializer');
 const { User } = require('../models');
 
 const UserSerializer = new JSONAPISerializer('users', {
   attributes: ['email', 'password', 'createdAt', 'updatedAt'],
 });
 const UserDeserializer = new JSONAPIDeserializer('users', {
-  attributes: ['email', 'password', 'createdAt', 'updatedAt'],
+  keyForAttribute: 'camelCase',
 });
 
 const getAll = async (_req, res, next) => {
@@ -29,7 +32,11 @@ const getById = async (req, res, next) => {
   console.log('*************************');
   try {
     const user = await User.findByPk(req.params.userId);
-    if (!user) return res.status(404).json({ error: { title: 'User not found' }, data: null });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: { title: 'User not found' }, data: null });
+    }
     return res.status(200).json(UserSerializer.serialize(user));
   } catch (err) {
     console.log(`ERROR: ${err}`);
@@ -57,12 +64,18 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - USERS');
   console.log('*************************');
   try {
-    const { email, password } = await UserDeserializer.deserialize(req.body);
+    const { email, password } = await UserDeserializer.deserialize(
+      req.body,
+    );
     const [user, isCreated] = await User.findOrCreate({
       where: { email },
       defaults: { email, password },
     });
-    if (!isCreated && user) return res.status(409).json({ error: { title: 'User already exists' }, data: null });
+    if (!isCreated && user) {
+      return res
+        .status(409)
+        .json({ error: { title: 'User already exists' }, data: null });
+    }
 
     return res.status(201).json(UserSerializer.serialize(user));
   } catch (err) {
@@ -77,7 +90,11 @@ const deleteById = async (req, res, next) => {
   console.log('*************************');
   try {
     const user = await User.findByPk(req.params.userId);
-    if (!user) return res.status(404).json({ error: { title: 'User not found' }, data: null });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: { title: 'User not found' }, data: null });
+    }
     await user.destroy();
     return res.status(204).send();
   } catch (err) {
@@ -87,5 +104,9 @@ const deleteById = async (req, res, next) => {
 };
 
 module.exports = {
-  createOne, deleteById, getAll, getById, updateById,
+  createOne,
+  deleteById,
+  getAll,
+  getById,
+  updateById,
 };
