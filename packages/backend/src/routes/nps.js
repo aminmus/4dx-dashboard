@@ -4,13 +4,12 @@ const {
 } = require('../controllers/nps');
 const { checkAuth } = require('../middleware/authentication');
 
-// Require authentication
-router.all('/', checkAuth);
-
 router.get('/', getAll);
 router.get('/:npsId', getById);
-router.put('/:npsId', updateById);
-router.post('/', createOne);
-router.delete('/:npsId', deleteById);
+
+// Protected routes
+router.put('/:npsId', checkAuth, updateById);
+router.post('/', checkAuth, createOne);
+router.delete('/:npsId', checkAuth, deleteById);
 
 module.exports = router;
