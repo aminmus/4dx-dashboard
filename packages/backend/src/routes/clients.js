@@ -8,13 +8,12 @@ const {
 } = require('../controllers/client');
 const { checkAuth } = require('../middleware/authentication');
 
-// Require authentication
-router.all('/', checkAuth);
-
 router.get('/', getAll);
 router.get('/:clientId', getById);
-router.put('/:clientId', updateById);
-router.post('/', createOne);
-router.delete('/:clientId', deleteById);
+
+// Protected routes
+router.put('/:clientId', checkAuth, updateById);
+router.post('/', checkAuth, createOne);
+router.delete('/:clientId', checkAuth, deleteById);
 
 module.exports = router;
