@@ -4,13 +4,14 @@ const {
 } = require('jsonapi-serializer');
 const { Csat } = require('../models');
 
-
 const CsatSerializer = new JSONAPISerializer('csats', {
-  attributes: ['score', 'date', 'ClientId', 'createdAt', 'updatedAt'],
+  attributes: ['score', 'date', 'Client', 'ClientId'],
+  Client: { ref: 'id' },
 });
 
 const CsatDeserializer = new JSONAPIDeserializer({
   keyForAttribute: 'camelCase',
+  Client: { ref: 'id' },
 });
 
 const getAll = async (_req, res, next) => {
@@ -20,7 +21,9 @@ const getAll = async (_req, res, next) => {
   console.log('GET ALL REQUEST - CSAT');
   console.log('*************************');
   try {
-    const csats = await Csat.findAll();
+    const csats = await Csat.findAll({
+      include: [{ all: true, nested: true }],
+    });
     return res.status(200).json(CsatSerializer.serialize(csats));
   } catch (err) {
     console.log(`ERROR: ${err}`);
@@ -33,7 +36,9 @@ const getById = async (req, res, next) => {
   console.log('GET ONE REQUEST - CSAT');
   console.log('*************************');
   try {
-    const csat = await Csat.findByPk(req.params.csatId);
+    const csat = await Csat.findByPk(req.params.csatId, {
+      include: [{ all: true, nested: true }],
+    });
     if (!csat) {
       return res
         .status(404)
@@ -51,7 +56,9 @@ const updateById = async (req, res, next) => {
   console.log('PUT REQUEST - CSAT');
   console.log('*************************');
   try {
-    const csat = await Csat.findByPk(req.params.csatId);
+    const csat = await Csat.findByPk(req.params.csatId, {
+      include: [{ all: true, nested: true }],
+    });
     if (!csat) {
       return res
         .status(404)
