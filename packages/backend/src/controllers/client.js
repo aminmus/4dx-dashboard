@@ -13,18 +13,7 @@ const ClientSerializer = new JSONAPISerializer('clients', {
     ref: 'ClientId',
   },
 });
-
-const ClientDeserializer = new JSONAPIDeserializer({
-  keyForAttribute: 'camelCase',
-  Csats: {
-    attributes: ['score', 'date', 'createdAt', 'updatedAt'],
-    ref: 'ClientId',
-  },
-  Measures: {
-    attributes: ['description', 'success', 'createdAt', 'updatedAt'],
-    ref: 'ClientId',
-  },
-});
+const ClientDeserializer = new JSONAPIDeserializer({ keyForAttribute: 'camelCase' });
 
 const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
