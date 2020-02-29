@@ -11,7 +11,6 @@ const CsatSerializer = new JSONAPISerializer('csats', {
     ref: 'id',
   },
 });
-
 const CsatDeserializer = new JSONAPIDeserializer({ keyForAttribute: 'camelCase' });
 
 const getAll = async (_req, res, next) => {
