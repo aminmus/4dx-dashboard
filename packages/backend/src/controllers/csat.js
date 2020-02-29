@@ -83,10 +83,7 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - CSAT');
   console.log('*************************');
   try {
-    // Deserialization convertcase format conflict, ClientId is CamelCased, db entry is Pascal Cased
-    const { ClientId } = req.body.data.attributes;
-
-    const { date, score } = await CsatDeserializer.deserialize(req.body);
+    const { date, score, clientId: ClientId } = await CsatDeserializer.deserialize(req.body);
     const csat = await Csat.create({
       date,
       score,
