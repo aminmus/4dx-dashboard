@@ -101,7 +101,7 @@ const deleteById = async (req, res, next) => {
   console.log('DELETE REQUEST - CSAT');
   console.log('*************************');
   try {
-    const csat = await Csat.findByPk(req.params.clientId);
+    const csat = await Csat.findByPk(req.params.csatId);
     await csat.destroy();
     return res.send(csat);
   } catch (err) {
