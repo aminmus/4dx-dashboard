@@ -6,11 +6,11 @@ const ClientSerializer = new JSONAPISerializer('clients', {
   attributes: ['name', 'createdAt', 'updatedAt', 'csats', 'measures'],
   csats: {
     attributes: ['score', 'date', 'createdAt', 'updatedAt'],
-    ref: 'ClientId',
+    ref: 'id',
   },
   measures: {
     attributes: ['description', 'success', 'createdAt', 'updatedAt'],
-    ref: 'ClientId',
+    ref: 'id',
   },
 });
 const ClientDeserializer = new JSONAPIDeserializer({ keyForAttribute: 'camelCase' });
