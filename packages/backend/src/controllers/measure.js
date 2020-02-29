@@ -37,7 +37,9 @@ const getById = async (req, res, next) => {
   console.log('GET ONE REQUEST - MEASURES');
   console.log('*************************');
   try {
-    const measure = await Measure.findByPk(req.params.measureId);
+    const measure = await Measure.findByPk(req.params.measureId, {
+      include: [{ all: true, nested: true }],
+    });
     if (!measure) {
       return res
         .status(404)
