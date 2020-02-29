@@ -2,7 +2,7 @@
 const { Serializer: JSONAPISerializer, Deserializer: JSONAPIDeserializer } = require('jsonapi-serializer');
 const { Client } = require('../models');
 
-const ClientSerializer = new JSONAPISerializer('clients', {
+const ClientSerializer = new JSONAPISerializer('Clients', {
   attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
   Csats: {
     attributes: ['score', 'date', 'createdAt', 'updatedAt'],
