@@ -5,14 +5,13 @@ const {
 const { Csat } = require('../models');
 
 const CsatSerializer = new JSONAPISerializer('csats', {
-  attributes: ['score', 'date', 'Client', 'ClientId'],
-  Client: { ref: 'id' },
+  attributes: ['score', 'date', 'client'],
+  client: {
+    attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
+    ref: 'id',
+  },
 });
-
-const CsatDeserializer = new JSONAPIDeserializer({
-  keyForAttribute: 'camelCase',
-  Client: { ref: 'id' },
-});
+const CsatDeserializer = new JSONAPIDeserializer({ keyForAttribute: 'camelCase' });
 
 const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
@@ -64,13 +63,7 @@ const updateById = async (req, res, next) => {
         .status(404)
         .json({ error: { title: 'Csat not found' }, data: null });
     }
-    const { score, date } = await CsatDeserializer.deserialize(req.body);
-
-    // TODO: use csat.update instead of manual updating
-    csat.score = score;
-    csat.date = date;
-    await csat.save();
-
+    await csat.update(await CsatDeserializer.deserialize(req.body));
     return res.status(200).json(CsatSerializer.serialize(csat));
   } catch (err) {
     console.log(`ERROR: ${err}`);
@@ -83,10 +76,7 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - CSAT');
   console.log('*************************');
   try {
-    // Deserialization convertcase format conflict, ClientId is CamelCased, db entry is Pascal Cased
-    const { ClientId } = req.body.data.attributes;
-
-    const { date, score } = await CsatDeserializer.deserialize(req.body);
+    const { date, score, clientId: ClientId } = await CsatDeserializer.deserialize(req.body);
     const csat = await Csat.create({
       date,
       score,
@@ -104,7 +94,7 @@ const deleteById = async (req, res, next) => {
   console.log('DELETE REQUEST - CSAT');
   console.log('*************************');
   try {
-    const csat = await Csat.findByPk(req.params.clientId);
+    const csat = await Csat.findByPk(req.params.csatId);
     await csat.destroy();
     return res.send(csat);
   } catch (err) {
