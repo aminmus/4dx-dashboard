@@ -12,10 +12,7 @@ const CsatSerializer = new JSONAPISerializer('csats', {
   },
 });
 
-const CsatDeserializer = new JSONAPIDeserializer({
-  keyForAttribute: 'camelCase',
-  Client: { ref: 'id' },
-});
+const CsatDeserializer = new JSONAPIDeserializer({ keyForAttribute: 'camelCase' });
 
 const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
