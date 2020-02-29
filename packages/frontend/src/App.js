@@ -6,18 +6,27 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import reformatClientData from './reformatClientData';
-import calcDefineClients from './calcDefineClients';
-import calcLeads from './calcLeads';
+// import reformatClientData from './reformatClientData';
+// import calcDefineClients from './calcDefineClients';
+// import calcLeads from './calcLeads';
 import StateContext from './context/state-context';
 import Home from './layout/Home';
 import logo from './logo.png';
 import Login from './layout/Login';
 
 export default function App() {
-  const [clients, setClients] = useState([{ id: 0, name: 'default', measures: [] }]);
-  const [definedStatus, setDefinedStatus] = useState({ totalClients: 0, definedClients: 0 });
-  const [leadStatus, setLeadStatus] = useState({ leads: 0, leadsTotal: 0 });
+  const [
+    clients
+    // setClients
+  ] = useState([{ id: 0, name: 'default', measures: [] }]);
+  const [
+    definedStatus
+    // setDefinedStatus
+  ] = useState({ totalClients: 0, definedClients: 0 });
+  const [
+    leadStatus
+    // setLeadStatus
+  ] = useState({ leads: 0, leadsTotal: 0 });
   const [nps] = useState({
     description: 'N/A',
     current: '-18',
@@ -32,13 +41,13 @@ export default function App() {
   });
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/clients')
-      .then(response => response.json())
-      .then(result => {
-        setClients(reformatClientData(result));
-        setDefinedStatus(calcDefineClients(result));
-        setLeadStatus(calcLeads(result));
-      });
+    // fetch('http://localhost:4000/api/clients')
+    //   .then(response => response.json())
+    //   .then(result => {
+    //     setClients(reformatClientData(result));
+    //     setDefinedStatus(calcDefineClients(result));
+    //     setLeadStatus(calcLeads(result));
+    //   });
   }, []);
 
   return (

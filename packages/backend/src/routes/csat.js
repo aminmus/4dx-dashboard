@@ -10,6 +10,6 @@ router.get('/:csatId', getById);
 // Protected routes
 router.put('/:csatId', checkAuth, updateById);
 router.post('/', checkAuth, createOne);
-router.delete('/:clientId', checkAuth, deleteById);
+router.delete('/:csatId', checkAuth, deleteById);
 
 module.exports = router;

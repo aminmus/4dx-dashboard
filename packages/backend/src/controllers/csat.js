@@ -1,22 +1,29 @@
+const {
+  Serializer: JSONAPISerializer,
+  Deserializer: JSONAPIDeserializer,
+} = require('jsonapi-serializer');
 const { Csat } = require('../models');
 
-const getAll = async (req, res, next) => {
+const CsatSerializer = new JSONAPISerializer('csats', {
+  attributes: ['score', 'date', 'client'],
+  client: {
+    attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
+    ref: 'id',
+  },
+});
+const CsatDeserializer = new JSONAPIDeserializer({ keyForAttribute: 'camelCase' });
+
+const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
   console.log('GET ALL REQUEST - CSAT');
   console.log('*************************');
-  let filter = {};
-  if (req.query.filter) {
-    const queryFilter = JSON.parse(req.query.filter);
-    const ClientId = queryFilter.Client_Id;
-    filter = {
-      where: { ClientId },
-    };
-  }
   try {
-    const csat = await Csat.findAll(filter);
-    return res.send(csat);
+    const csats = await Csat.findAll({
+      include: [{ all: true, nested: true }],
+    });
+    return res.status(200).json(CsatSerializer.serialize(csats));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -28,11 +35,18 @@ const getById = async (req, res, next) => {
   console.log('GET ONE REQUEST - CSAT');
   console.log('*************************');
   try {
-    const csat = await Csat.findByPk(req.params.csatId);
-    res.send(csat);
+    const csat = await Csat.findByPk(req.params.csatId, {
+      include: [{ all: true, nested: true }],
+    });
+    if (!csat) {
+      return res
+        .status(404)
+        .json({ error: { title: 'Csat not found' }, data: null });
+    }
+    return res.status(200).json(CsatSerializer.serialize(csat));
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    next(err);
+    return next(err);
   }
 };
 
@@ -41,11 +55,16 @@ const updateById = async (req, res, next) => {
   console.log('PUT REQUEST - CSAT');
   console.log('*************************');
   try {
-    const csat = await Csat.findByPk(req.params.csatId);
-    csat.score = req.body.score;
-    csat.date = req.body.date;
-    await csat.save();
-    return res.send(csat);
+    const csat = await Csat.findByPk(req.params.csatId, {
+      include: [{ all: true, nested: true }],
+    });
+    if (!csat) {
+      return res
+        .status(404)
+        .json({ error: { title: 'Csat not found' }, data: null });
+    }
+    await csat.update(await CsatDeserializer.deserialize(req.body));
+    return res.status(200).json(CsatSerializer.serialize(csat));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -57,9 +76,13 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - CSAT');
   console.log('*************************');
   try {
-    const newCsat = await Csat.build(req.body);
-    await newCsat.save();
-    return res.send(newCsat);
+    const { date, score, clientId: ClientId } = await CsatDeserializer.deserialize(req.body);
+    const csat = await Csat.create({
+      date,
+      score,
+      ClientId,
+    });
+    return res.status(201).json(CsatSerializer.serialize(csat));
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
@@ -71,7 +94,7 @@ const deleteById = async (req, res, next) => {
   console.log('DELETE REQUEST - CSAT');
   console.log('*************************');
   try {
-    const csat = await Csat.findByPk(req.params.clientId);
+    const csat = await Csat.findByPk(req.params.csatId);
     await csat.destroy();
     return res.send(csat);
   } catch (err) {
@@ -81,5 +104,9 @@ const deleteById = async (req, res, next) => {
 };
 
 module.exports = {
-  createOne, deleteById, getAll, getById, updateById,
+  createOne,
+  deleteById,
+  getAll,
+  getById,
+  updateById,
 };
