@@ -64,13 +64,7 @@ const updateById = async (req, res, next) => {
         .status(404)
         .json({ error: { title: 'Csat not found' }, data: null });
     }
-    const { score, date } = await CsatDeserializer.deserialize(req.body);
-
-    // TODO: use csat.update instead of manual updating
-    csat.score = score;
-    csat.date = date;
-    await csat.save();
-
+    await csat.update(await CsatDeserializer.deserialize(req.body));
     return res.status(200).json(CsatSerializer.serialize(csat));
   } catch (err) {
     console.log(`ERROR: ${err}`);
