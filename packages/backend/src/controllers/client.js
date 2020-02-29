@@ -3,12 +3,12 @@ const { Serializer: JSONAPISerializer, Deserializer: JSONAPIDeserializer } = req
 const { Client } = require('../models');
 
 const ClientSerializer = new JSONAPISerializer('clients', {
-  attributes: ['name', 'createdAt', 'updatedAt', 'csats', 'measures'],
-  csats: {
+  attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
+  Csats: {
     attributes: ['score', 'date', 'createdAt', 'updatedAt'],
     ref: 'id',
   },
-  measures: {
+  Measures: {
     attributes: ['description', 'success', 'createdAt', 'updatedAt'],
     ref: 'id',
   },
@@ -25,7 +25,6 @@ const getAll = async (_req, res, next) => {
     const clients = await Client.findAll({
       include: [{ all: true, nested: true }],
     });
-
     return res.status(200).json(ClientSerializer.serialize(clients));
   } catch (err) {
     console.log(`ERROR: ${err}`);
