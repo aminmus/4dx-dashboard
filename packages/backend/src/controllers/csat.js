@@ -5,8 +5,11 @@ const {
 const { Csat } = require('../models');
 
 const CsatSerializer = new JSONAPISerializer('csats', {
-  attributes: ['score', 'date', 'Client', 'ClientId'],
-  Client: { ref: 'id' },
+  attributes: ['score', 'date', 'client'],
+  client: {
+    attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
+    ref: 'id',
+  },
 });
 
 const CsatDeserializer = new JSONAPIDeserializer({
