@@ -100,11 +100,11 @@ export const ClientShow = props => (
       </Tab>
       <Tab label="Measures" path="measures">
         <AddNewClientMeasure />
-        <ReferenceManyField reference="measures" target="Client_Id" addLabel={false}>
+        <ReferenceManyField reference="measures" target="clientId" addLabel={false}>
           <Datagrid>
             <TextField source="description" />
             <TextField source="success" />
-            <TextField label="Client Id" source="ClientId" />
+            <TextField label="id" source="id" />
             <EditButton />
           </Datagrid>
         </ReferenceManyField>
