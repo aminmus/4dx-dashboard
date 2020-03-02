@@ -4,9 +4,9 @@ const {
 } = require('jsonapi-serializer');
 const { Csat } = require('../models');
 
-const CsatSerializer = new JSONAPISerializer('csats', {
-  attributes: ['score', 'date', 'client'],
-  client: {
+const CsatSerializer = new JSONAPISerializer('Csats', {
+  attributes: ['score', 'date', 'Client'],
+  Client: {
     attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
     ref: 'id',
   },

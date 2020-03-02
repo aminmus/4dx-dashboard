@@ -4,7 +4,7 @@ const {
 } = require('jsonapi-serializer');
 const { Nps } = require('../models');
 
-const NpsSerializer = new JSONAPISerializer('nps', {
+const NpsSerializer = new JSONAPISerializer('Nps', {
   attributes: [
     'currentNps',
     'goalNps',

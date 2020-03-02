@@ -4,8 +4,12 @@ const {
 } = require('jsonapi-serializer');
 const { Measure } = require('../models');
 
-const MeasureSerializer = new JSONAPISerializer('measures', {
-  attributes: ['description', 'success', 'ClientId', 'createdAt', 'updatedAt'],
+const MeasureSerializer = new JSONAPISerializer('Measures', {
+  attributes: ['description', 'success', 'createdAt', 'updatedAt', 'Client'],
+  Client: {
+    attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
+    ref: 'id',
+  },
 });
 const MeasureDeserializer = new JSONAPIDeserializer({
   keyForAttribute: 'camelCase',
@@ -18,7 +22,9 @@ const getAll = async (_req, res, next) => {
   console.log('GET ALL REQUEST - MEASURES');
   console.log('*************************');
   try {
-    const measures = await Measure.findAll();
+    const measures = await Measure.findAll({
+      include: [{ all: true, nested: true }],
+    });
     return res.status(200).json(MeasureSerializer.serialize(measures));
   } catch (err) {
     console.log(`ERROR: ${err}`);
@@ -31,7 +37,9 @@ const getById = async (req, res, next) => {
   console.log('GET ONE REQUEST - MEASURES');
   console.log('*************************');
   try {
-    const measure = await Measure.findByPk(req.params.measureId);
+    const measure = await Measure.findByPk(req.params.measureId, {
+      include: [{ all: true, nested: true }],
+    });
     if (!measure) {
       return res
         .status(404)
@@ -76,10 +84,7 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - MEASURES');
   console.log('*************************');
   try {
-    // Deserialization convertcase format conflict, ClientId is CamelCased, db entry is Pascal Cased
-    const { ClientId } = req.body.data.attributes;
-
-    const { description, success } = await MeasureDeserializer.deserialize(
+    const { description, success, clientId: ClientId } = await MeasureDeserializer.deserialize(
       req.body,
     );
     const measure = await Measure.create({

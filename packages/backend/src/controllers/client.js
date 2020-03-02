@@ -2,29 +2,18 @@
 const { Serializer: JSONAPISerializer, Deserializer: JSONAPIDeserializer } = require('jsonapi-serializer');
 const { Client } = require('../models');
 
-const ClientSerializer = new JSONAPISerializer('clients', {
+const ClientSerializer = new JSONAPISerializer('Clients', {
   attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
   Csats: {
     attributes: ['score', 'date', 'createdAt', 'updatedAt'],
-    ref: 'ClientId',
+    ref: 'id',
   },
   Measures: {
     attributes: ['description', 'success', 'createdAt', 'updatedAt'],
-    ref: 'ClientId',
+    ref: 'id',
   },
 });
-
-const ClientDeserializer = new JSONAPIDeserializer({
-  keyForAttribute: 'camelCase',
-  Csats: {
-    attributes: ['score', 'date', 'createdAt', 'updatedAt'],
-    ref: 'ClientId',
-  },
-  Measures: {
-    attributes: ['description', 'success', 'createdAt', 'updatedAt'],
-    ref: 'ClientId',
-  },
-});
+const ClientDeserializer = new JSONAPIDeserializer({ keyForAttribute: 'camelCase' });
 
 const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
@@ -36,7 +25,6 @@ const getAll = async (_req, res, next) => {
     const clients = await Client.findAll({
       include: [{ all: true, nested: true }],
     });
-
     return res.status(200).json(ClientSerializer.serialize(clients));
   } catch (err) {
     console.log(`ERROR: ${err}`);
