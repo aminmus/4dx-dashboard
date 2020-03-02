@@ -13,16 +13,18 @@ const CsatSerializer = new JSONAPISerializer('Csats', {
 });
 const CsatDeserializer = new JSONAPIDeserializer({ keyForAttribute: 'camelCase' });
 
-const getAll = async (_req, res, next) => {
+const getAll = async (req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
   console.log('GET ALL REQUEST - CSAT');
   console.log('*************************');
   try {
-    const csats = await Csat.findAll({
-      include: [{ all: true, nested: true }],
-    });
+    const opts = { include: [{ all: true, nested: true }] };
+    if (req.query.filter && req.query.filter.clientId) {
+      opts.where = { ClientId: req.query.filter.clientId };
+    }
+    const csats = await Csat.findAll(opts);
     return res.status(200).json(CsatSerializer.serialize(csats));
   } catch (err) {
     console.log(`ERROR: ${err}`);

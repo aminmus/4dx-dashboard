@@ -89,11 +89,11 @@ export const ClientShow = props => (
       </Tab>
       <Tab label="Client Satisfaction" path="csat">
         <AddNewClientScore />
-        <ReferenceManyField reference="csat" target="Client_Id" addLabel={false}>
+        <ReferenceManyField reference="csat" target="clientId" addLabel={false}>
           <Datagrid>
             <NumberField label="Score" source="score" />
             <DateField label="Date of Score" source="date" />
-            <TextField label="Client Id" source="ClientId" />
+            <TextField label="id" source="id" />
             <EditButton />
           </Datagrid>
         </ReferenceManyField>
