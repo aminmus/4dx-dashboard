@@ -102,7 +102,7 @@ const deleteById = async (req, res, next) => {
   try {
     const client = await Client.findByPk(req.params.clientId);
     await client.destroy();
-    return res.send(client);
+    return res.status(204).send();
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
