@@ -15,16 +15,18 @@ const MeasureDeserializer = new JSONAPIDeserializer({
   keyForAttribute: 'camelCase',
 });
 
-const getAll = async (_req, res, next) => {
+const getAll = async (req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
   console.log('*************************');
   console.log('GET ALL REQUEST - MEASURES');
   console.log('*************************');
   try {
-    const measures = await Measure.findAll({
-      include: [{ all: true, nested: true }],
-    });
+    const opts = { include: [{ all: true, nested: true }] };
+    if (req.query.filter && req.query.filter.clientId) {
+      opts.where = { ClientId: req.query.filter.clientId };
+    }
+    const measures = await Measure.findAll(opts);
     return res.status(200).json(MeasureSerializer.serialize(measures));
   } catch (err) {
     console.log(`ERROR: ${err}`);
