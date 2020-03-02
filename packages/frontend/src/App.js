@@ -6,32 +6,28 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-// import reformatClientData from './reformatClientData';
-// import calcDefineClients from './calcDefineClients';
-// import calcLeads from './calcLeads';
+import fetchData from './fetchData';
+import reformatClientData from './reformatClientData';
+import calcDefineClients from './calcDefineClients';
+import calcLeads from './calcLeads';
+import reformatNps from './reformatNps';
 import StateContext from './context/state-context';
 import Home from './layout/Home';
 import logo from './logo.png';
 import Login from './layout/Login';
 
 export default function App() {
-  const [
-    clients
-    // setClients
-  ] = useState([{ id: 0, name: 'default', measures: [] }]);
-  const [
-    definedStatus
-    // setDefinedStatus
-  ] = useState({ totalClients: 0, definedClients: 0 });
-  const [
-    leadStatus
-    // setLeadStatus
-  ] = useState({ leads: 0, leadsTotal: 0 });
-  const [nps] = useState({
+  const [clients, setClients] = useState([
+    { id: 0, name: 'No Clients Available', measures: [], csats: [] }
+  ]);
+
+  const [definedStatus, setDefinedStatus] = useState({ totalClients: 0, definedClients: 0 });
+  const [leadStatus, setLeadStatus] = useState({ leads: 0, leadsTotal: 0 });
+  const [nps, setNps] = useState({
     description: 'N/A',
-    current: '-18',
-    goal: '8',
-    targetlDate: 'April 2019',
+    current: 0,
+    goal: 0,
+    targetDate: 'N/A',
     defineText: 'Define the Success factors for listed clients',
     implementText: 'Implement Client Success Program for listed clients'
   });
@@ -40,14 +36,18 @@ export default function App() {
     values: [-5, -43, -34, -49, -25, -19]
   });
 
-  useEffect(() => {
-    // fetch('http://localhost:4000/api/clients')
-    //   .then(response => response.json())
-    //   .then(result => {
-    //     setClients(reformatClientData(result));
-    //     setDefinedStatus(calcDefineClients(result));
-    //     setLeadStatus(calcLeads(result));
-    //   });
+  useEffect(async () => {
+    const [npsData, clientsData] = await fetchData();
+
+    if (clientsData.clients.data.length > 0) {
+      const clientData = reformatClientData(clientsData.clients);
+      setClients(clientData);
+      setDefinedStatus(calcDefineClients(clientData));
+      setLeadStatus(calcLeads(clientData));
+    }
+    if (npsData.nps.data.length) {
+      setNps(reformatNps(npsData.nps));
+    }
   }, []);
 
   return (
