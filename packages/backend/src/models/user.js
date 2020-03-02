@@ -2,6 +2,10 @@
 const Sequelize = require('sequelize');
 const bcrypt = require('bcryptjs');
 
+const hashPassword = async (user) => {
+  user.password = await bcrypt.hash(user.password, 10);
+};
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Sequelize.Model {
     isValidPassword(password) {
@@ -24,9 +28,8 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
   };
 
-  User.beforeCreate(async (user) => {
-    user.password = await bcrypt.hash(user.password, 10);
-  });
+  User.beforeCreate(hashPassword);
+  User.beforeUpdate(hashPassword);
 
   return User;
 };
