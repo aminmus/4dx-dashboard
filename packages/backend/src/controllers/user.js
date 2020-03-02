@@ -5,7 +5,7 @@ const {
 const { User } = require('../models');
 
 const UserSerializer = new JSONAPISerializer('Users', {
-  attributes: ['email', 'password', 'createdAt', 'updatedAt'],
+  attributes: ['email', 'createdAt', 'updatedAt'],
 });
 const UserDeserializer = new JSONAPIDeserializer('users', {
   keyForAttribute: 'camelCase',

@@ -97,6 +97,11 @@ const deleteById = async (req, res, next) => {
   console.log('*************************');
   try {
     const csat = await Csat.findByPk(req.params.csatId);
+    if (!csat) {
+      return res
+        .status(404)
+        .json({ error: { title: 'Csat not found' }, data: null });
+    }
     await csat.destroy();
     return res.status(204).send();
   } catch (err) {
