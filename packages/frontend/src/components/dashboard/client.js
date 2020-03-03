@@ -16,7 +16,8 @@ import {
   Tab,
   ReferenceManyField,
   NumberField,
-  DateField
+  DateField,
+  BooleanField
 } from 'react-admin';
 
 import Button from '@material-ui/core/Button';
@@ -100,6 +101,26 @@ const EditClientScore = ({ record, clientId }) => {
   );
 };
 
+const EditClientMeasure = ({ record, clientId }) => {
+  /*
+  Custom edit button exists to pass along the client id to
+  the edit context. Otherwise it is lost and redirect won't
+  work 
+  */
+  return (
+    <Button
+      component={Link}
+      to={{
+        pathname: `/measures/${record.id}`,
+        search: `?client_id=${clientId}`
+      }}
+    >
+      <EditIcon />
+      <span className="px-1">EDIT</span>
+    </Button>
+  );
+};
+
 export const ClientShow = props => {
   return (
     <Show {...props}>
@@ -123,8 +144,8 @@ export const ClientShow = props => {
           <ReferenceManyField reference="measures" target="clientId" addLabel={false}>
             <Datagrid>
               <TextField source="description" />
-              <TextField source="success" />
-              <EditButton />
+              <BooleanField source="success" />
+              <EditClientMeasure {...props} clientId={props.id} />
               <DeleteButton />
             </Datagrid>
           </ReferenceManyField>
