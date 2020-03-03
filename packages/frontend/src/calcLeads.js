@@ -1,7 +1,7 @@
 /* eslint-disable no-return-assign, no-param-reassign */
 export default clients => {
   // Collect measures over all clients and collect these
-  const measuresArray = clients.map(client => client.Measures);
+  const measuresArray = clients.map(client => client.measures);
 
   // Flatten array into a single array of all measures
   const flatMeasuresArray = measuresArray.reduce(
