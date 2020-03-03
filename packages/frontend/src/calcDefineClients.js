@@ -3,7 +3,7 @@ export default clients => {
   return {
     totalClients: clients.length,
     definedClients: clients.reduce(
-      (defined, client) => (client.Measures.length > 0 ? (defined += 1) : defined),
+      (defined, client) => (client.measures.length > 0 ? (defined += 1) : defined),
       0
     )
   };

@@ -73,8 +73,8 @@ Lead.propTypes = {
   }),
   nps: PropTypes.shape({
     description: PropTypes.string,
-    current: PropTypes.string,
-    goal: PropTypes.string,
+    current: PropTypes.number,
+    goal: PropTypes.number,
     defineClients: PropTypes.string,
     defineText: PropTypes.string,
     implementText: PropTypes.string
