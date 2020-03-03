@@ -104,8 +104,13 @@ const deleteById = async (req, res, next) => {
   console.log('*************************');
   try {
     const nps = await Nps.findByPk(req.params.npsId);
+    if (!nps) {
+      return res
+        .status(404)
+        .json({ error: { title: 'Nps not found' }, data: null });
+    }
     await nps.destroy();
-    return res.send(nps);
+    return res.status(204).send();
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);

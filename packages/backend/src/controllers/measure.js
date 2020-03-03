@@ -107,8 +107,13 @@ const deleteById = async (req, res, next) => {
   console.log('*************************');
   try {
     const measure = await Measure.findByPk(req.params.clientId);
+    if (!measure) {
+      return res
+        .status(404)
+        .json({ error: { title: 'Measure not found' }, data: null });
+    }
     await measure.destroy();
-    return res.send(measure);
+    return res.status(204).send();
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);

@@ -101,8 +101,13 @@ const deleteById = async (req, res, next) => {
   console.log('*************************');
   try {
     const client = await Client.findByPk(req.params.clientId);
+    if (!client) {
+      return res
+        .status(404)
+        .json({ error: { title: 'Client not found' }, data: null });
+    }
     await client.destroy();
-    return res.send(client);
+    return res.status(204).send();
   } catch (err) {
     console.log(`ERROR: ${err}`);
     return next(err);
