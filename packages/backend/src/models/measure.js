@@ -4,7 +4,11 @@ module.exports = (sequelize, DataTypes) => {
     'Measure',
     {
       description: DataTypes.STRING,
-      success: DataTypes.BOOLEAN,
+      success: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      },
     },
     {},
   );
