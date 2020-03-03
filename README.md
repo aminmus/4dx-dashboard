@@ -17,13 +17,13 @@ To run the seeders you need to use the sequelize cli from inside the backend con
 You can do that by running the following command from the project root:
 
 `
-docker exec 4dx_web_1 npx sequelize db:seed:all
+docker exec 4dx_web_1 npx sequelize-cli db:seed:all
 ` 
 
 You can run any sequelize cli command the same way, so for example if you want to undo the seeding you can do (beware: this might delete other records you have manually added as well):
 
 `
-docker exec 4dx_web_1 npx sequelize db:seed:undo:all   
+docker exec 4dx_web_1 npx sequelize-cli db:seed:undo:all   
 `
 
 Your docker container name might be something else than `4dx_web_1`. You can check your container names by running `docker-compose ps`.
