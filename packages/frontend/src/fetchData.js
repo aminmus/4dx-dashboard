@@ -1,3 +1,7 @@
+/* 
+Add a response type key to each returned client array entry
+to make it easier to target the data
+*/
 const labelResultsWithKey = (data, url) => {
   const key = url.split('api/')[1];
   const reformattedResult = {};
