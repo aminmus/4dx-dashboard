@@ -16,4 +16,4 @@ COPY . .
 
 EXPOSE 4000
 
-CMD [ "npm", "run", "start:prod" ]
+CMD [ "node", "src/index.js"]
