@@ -2,7 +2,8 @@
 export default {
   // called when the user attempts to log in
   login: async ({ username, password }) => {
-    const request = new Request('http://localhost:4000/api/auth/login', {
+    const baseUrl = `${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_SERVER_PORT}`;
+    const request = new Request(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       body: JSON.stringify({ email: username, password }),
       headers: new Headers({ 'Content-Type': 'application/vnd.api+json' })
