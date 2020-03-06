@@ -24,10 +24,12 @@ export default function Login() {
     }
   };
 
+  const baseUrl = `${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_SERVER_PORT}`;
+
   return (
     <Admin
       authProvider={authProvider}
-      dataProvider={jsonapiClient('http://localhost:4000/api', settings)}
+      dataProvider={jsonapiClient(`${baseUrl}/api`, settings)}
       dashboard={Dashboard}
       theme={theme}
     >
