@@ -36,18 +36,24 @@ export default function App() {
     values: [-5, -43, -34, -49, -25, -19]
   });
 
-  useEffect(async () => {
-    const [npsData, clientsData] = await fetchData();
-
-    if (clientsData.clients.data.length > 0) {
-      const clientData = reformatClientData(clientsData.clients);
-      setClients(clientData);
-      setDefinedStatus(calcDefineClients(clientData));
-      setLeadStatus(calcLeads(clientData));
+  useEffect(() => {
+    async function setAppState() {
+      try {
+        const [npsData, clientsData] = await fetchData();
+        if (clientsData.clients.data.length > 0) {
+          const clientData = reformatClientData(clientsData.clients);
+          setClients(clientData);
+          setDefinedStatus(calcDefineClients(clientData));
+          setLeadStatus(calcLeads(clientData));
+        }
+        if (npsData.nps.data.length) {
+          setNps(reformatNps(npsData.nps));
+        }
+      } catch (e) {
+        console.error(e);
+      }
     }
-    if (npsData.nps.data.length) {
-      setNps(reformatNps(npsData.nps));
-    }
+    setAppState();
   }, []);
 
   return (
