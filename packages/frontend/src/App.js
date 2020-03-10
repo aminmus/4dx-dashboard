@@ -15,6 +15,7 @@ import StateContext from './context/state-context';
 import Home from './layout/Home';
 import logo from './logo.png';
 import Login from './layout/Login';
+import reformatChart from './reformatChart';
 
 export default function App() {
   const [clients, setClients] = useState([
@@ -31,7 +32,7 @@ export default function App() {
     defineText: 'Define the Success factors for listed clients',
     implementText: 'Implement Client Success Program for listed clients'
   });
-  const [chart] = useState({
+  const [chart, setChart] = useState({
     months: ['June', 'July', 'August', 'September', 'October', 'November'],
     values: [-5, -43, -34, -49, -25, -19]
   });
@@ -47,6 +48,7 @@ export default function App() {
     }
     if (npsData.nps.data.length) {
       setNps(reformatNps(npsData.nps));
+      setChart(reformatChart(npsData.nps));
     }
   }, []);
 
