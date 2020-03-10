@@ -8,6 +8,7 @@ import Dashboard from './Dashboard';
 import { CsatEdit, CsatCreate } from '../components/dashboard/csat';
 import { MeasureEdit, MeasureCreate } from '../components/dashboard/measure';
 import UserList from '../components/UserList';
+import { NpsList, NpsEdit, NpsCreate } from '../components/dashboard/nps';
 
 export default function Login() {
   const theme = createMuiTheme({
@@ -43,6 +44,7 @@ export default function Login() {
       <Resource name="csat" edit={CsatEdit} create={CsatCreate} />
       <Resource name="measures" edit={MeasureEdit} create={MeasureCreate} />
       <Resource name="users" list={UserList} />
+      <Resource name="nps" list={NpsList} edit={NpsEdit} create={NpsCreate} />
     </Admin>
   );
 }
