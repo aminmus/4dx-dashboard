@@ -15,7 +15,7 @@ import {
 
 export const NpsList = props => (
   <List {...props} bulkActionButtons={false}>
-    <Datagrid isRowSelectable={() => false}>
+    <Datagrid rowClick="edit" isRowSelectable={() => false}>
       <NumberField source="current-nps" />
       <NumberField source="goal-nps" />
       <DateField source="date" />
