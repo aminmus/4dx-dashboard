@@ -135,7 +135,7 @@ export const ClientShow = props => {
               <NumberField label="Score" source="score" />
               <DateField label="Date of Score" source="date" />
               <EditClientScore {...props} clientId={props.id} />
-              <DeleteButton />
+              <DeleteButton redirect={`/clients/${props.id}/show/csat`} />
             </Datagrid>
           </ReferenceManyField>
         </Tab>
@@ -146,7 +146,7 @@ export const ClientShow = props => {
               <TextField source="description" />
               <BooleanField source="success" />
               <EditClientMeasure {...props} clientId={props.id} />
-              <DeleteButton />
+              <DeleteButton redirect={`/clients/${props.id}/show/measures`} />
             </Datagrid>
           </ReferenceManyField>
         </Tab>
