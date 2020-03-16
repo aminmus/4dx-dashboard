@@ -27,7 +27,7 @@ import { Link } from 'react-router-dom';
 
 export const ClientList = props => (
   <List {...props} bulkActionButtons={false}>
-    <Datagrid isRowSelectable={() => false}>
+    <Datagrid rowClick="show" isRowSelectable={() => false}>
       <TextField source="name" />
       <EditButton />
       <DeleteButton />
@@ -131,7 +131,7 @@ export const ClientShow = props => {
         <Tab label="Client Satisfaction" path="csat">
           <AddNewClientScore />
           <ReferenceManyField reference="csat" target="clientId" addLabel={false}>
-            <Datagrid>
+            <Datagrid rowClick="edit">
               <NumberField label="Score" source="score" />
               <DateField label="Date of Score" source="date" />
               <EditClientScore {...props} clientId={props.id} />
@@ -142,7 +142,7 @@ export const ClientShow = props => {
         <Tab label="Measures" path="measures">
           <AddNewClientMeasure />
           <ReferenceManyField reference="measures" target="clientId" addLabel={false}>
-            <Datagrid>
+            <Datagrid rowClick="edit">
               <TextField source="description" />
               <BooleanField source="success" />
               <EditClientMeasure {...props} clientId={props.id} />
