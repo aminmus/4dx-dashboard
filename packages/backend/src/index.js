@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
+const JSONAPIError = require('jsonapi-serializer').Error;
 
 require('dotenv').config();
 
@@ -33,7 +34,7 @@ const startServer = async () => {
   app.use((error, _req, res, _next) => {
     res.status(error.status || 500);
     console.error(error);
-    res.json({ error });
+    res.json(new JSONAPIError({ ...error, title: error.message }));
   });
 
   app.listen(process.env.SERVER_PORT, () => console.log(`Listening on port ${process.env.SERVER_PORT}!`));
