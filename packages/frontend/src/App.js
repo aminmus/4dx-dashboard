@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   // eslint-disable-next-line indent
   BrowserRouter as Router,
-  Link,
   Route,
   Switch
 } from 'react-router-dom';
@@ -12,8 +11,8 @@ import calcDefineClients from './calcDefineClients';
 import calcLeads from './calcLeads';
 import reformatNps from './reformatNps';
 import StateContext from './context/state-context';
+import Header from './components/Header';
 import Home from './layout/Home';
-import logo from './logo.png';
 import Login from './layout/Login';
 import reformatChart from './reformatChart';
 
@@ -69,49 +68,15 @@ export default function App() {
       }}
     >
       <Router>
-        <header>
-          <nav className="navbar navbar-expand-lg navbar-light py-0">
-            <img className="logo navbar-brand" src={logo} alt="" />
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon" />
-            </button>
-            <div className="collapse navbar-collapse" id="navbarNav">
-              <ul className="navbar-nav">
-                <li className="nav-item">
-                  <div className="nav-link">
-                    <Link className="text-light" style={{ textDecoration: 'none' }} to="/">
-                      Home
-                    </Link>
-                  </div>
-                </li>
-                <li className="nav-item">
-                  <div className="nav-link" href="#">
-                    <Link className="text-light" style={{ textDecoration: 'none' }} to="/admin">
-                      Admin
-                    </Link>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </nav>
-
-          <Switch>
-            <Route path="/admin">
-              <Login />
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-        </header>
+        <Header />
+        <Switch>
+          <Route path="/admin">
+            <Login />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
       </Router>
     </StateContext.Provider>
   );
