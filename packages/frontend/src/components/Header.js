@@ -13,16 +13,12 @@ export default function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link className="text-light">
-              <Link className="text-light" style={{ textDecoration: 'none' }} to="/">
-                Home
-              </Link>
-            </Nav.Link>
-            <Nav.Link className="text-light">
-              <Link className="text-light" style={{ textDecoration: 'none' }} to="/admin">
-                Admin
-              </Link>
-            </Nav.Link>
+            <Link className="text-light mx-2" style={{ textDecoration: 'none' }} to="/">
+              Home
+            </Link>
+            <Link className="text-light mx-2" style={{ textDecoration: 'none' }} to="/admin">
+              Admin
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
