@@ -1,20 +1,9 @@
 /* eslint-disable camelcase, import/no-extraneous-dependencies, react/destructuring-assignment, react/jsx-props-no-spreading, react/prop-types */
 
 import React from 'react';
-import {
-  Edit,
-  Create,
-  SimpleForm,
-  TextInput,
-  BooleanInput,
-  required,
-  minLength,
-  maxLength
-} from 'react-admin';
+import { Edit, Create, SimpleForm, TextInput, BooleanInput } from 'react-admin';
 import { parse } from 'query-string';
-
-const validateSuccess = [required()];
-const validateDescription = [required(), minLength(5), maxLength(100)];
+import { validateSuccess, validateDescription } from '../utils/adminValidation';
 
 export const MeasureEdit = props => {
   const { client_id } = parse(props.location.search);
