@@ -9,6 +9,7 @@ import { CsatEdit, CsatCreate } from '../components/dashboard/csat';
 import { MeasureEdit, MeasureCreate } from '../components/dashboard/measure';
 import UserList from '../components/UserList';
 import { NpsList, NpsEdit, NpsCreate } from '../components/dashboard/nps';
+import CustomLayout from '../CustomLayout';
 
 export default function Login() {
   const theme = createMuiTheme({
@@ -33,6 +34,7 @@ export default function Login() {
       dataProvider={jsonapiClient(`${baseUrl}/api`, settings)}
       dashboard={Dashboard}
       theme={theme}
+      layout={CustomLayout}
     >
       <Resource
         name="clients"
