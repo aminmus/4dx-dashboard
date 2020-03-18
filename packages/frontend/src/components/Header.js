@@ -25,17 +25,19 @@ export default function Header() {
           <img className="logo navbar-brand" src={logo} alt="" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Link className="text-light mx-2" style={{ textDecoration: 'none' }} to="/">
+        <Navbar.Collapse id="navbar-nav">
+          <Nav className="navbar-nav-left">
+            <Link className="nav-link text-light" style={{ textDecoration: 'none' }} to="/">
               Home
             </Link>
-            <Link className="text-light mx-2" style={{ textDecoration: 'none' }} to="/admin">
+            <Link className="nav-link text-light" style={{ textDecoration: 'none' }} to="/admin">
               Admin
             </Link>
+          </Nav>
+          <Nav className="navbar-nav-right">
             {isLoggedIn() ? (
               <Nav.Item
-                className="text-light mx-2"
+                className="nav-link btn-logout text-light"
                 style={{ textDecoration: 'none' }}
                 onClick={handleClick}
               >

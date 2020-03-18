@@ -7,6 +7,15 @@ body {
   padding: 0;
 }
 
+/*
+* NAVBAR
+*/
+
+.navbar-collapse {
+  justify-content: space-between;
+  width: 100%;
+}
+
 header {
   background-color: #333333;
 }
@@ -15,6 +24,7 @@ header {
   height: 105px;
 }
 
+/*-------------*/
 span {
   color: white;
 }
