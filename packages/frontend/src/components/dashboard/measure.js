@@ -1,7 +1,7 @@
 /* eslint-disable camelcase, import/no-extraneous-dependencies, react/destructuring-assignment, react/jsx-props-no-spreading, react/prop-types */
 
 import React from 'react';
-import { Edit, Create, SimpleForm, TextInput, BooleanInput } from 'react-admin';
+import { Edit, Create, SimpleForm, TextInput, DateInput } from 'react-admin';
 import { parse } from 'query-string';
 
 export const MeasureEdit = props => {
@@ -11,7 +11,7 @@ export const MeasureEdit = props => {
       <SimpleForm redirect={`/clients/${client_id}/show/measures`}>
         <TextInput disabled source="id" />
         <TextInput source="description" />
-        <BooleanInput source="success" className="mx-auto" />
+        <DateInput source="success" label="Success Date" className="mx-auto" />
       </SimpleForm>
     </Edit>
   );
@@ -26,7 +26,7 @@ export const MeasureCreate = props => {
         redirect={`/clients/${client_id}/show/measures`}
       >
         <TextInput source="description" />
-        <BooleanInput source="success" className="mx-auto" />
+        <DateInput source="success" label="Success Date" className="mx-auto" />
       </SimpleForm>
     </Create>
   );
