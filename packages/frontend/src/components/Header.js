@@ -9,7 +9,7 @@ export default function Header() {
   const history = useHistory();
 
   const isLoggedIn = () => {
-    return !!localStorage.getItem('token');
+    return localStorage.getItem('token');
   };
 
   const handleClick = e => {
