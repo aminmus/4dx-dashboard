@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import {
   // eslint-disable-next-line indent
@@ -20,6 +21,11 @@ export default function App() {
   const [clients, setClients] = useState([
     { id: 0, name: 'No Clients Available', measures: [], csats: [] }
   ]);
+
+  const [measuresGoal] = useState({
+    targetMeasures: 10,
+    targetDate: '2020-03-30'
+  });
 
   const [definedStatus, setDefinedStatus] = useState({ totalClients: 0, definedClients: 0 });
   const [leadStatus, setLeadStatus] = useState({ leads: 0, leadsTotal: 0 });
@@ -64,7 +70,8 @@ export default function App() {
         nps,
         chart,
         leadStatus,
-        definedStatus
+        definedStatus,
+        measuresGoal
       }}
     >
       <Router>
