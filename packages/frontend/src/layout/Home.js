@@ -4,6 +4,7 @@ import Wig from '../components/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/Details';
 import Monitor from '../components/Monitor';
+import MeasuresGoalChart from '../components/MeasuresGoalChart';
 
 export default function Home() {
   return (
@@ -22,6 +23,10 @@ export default function Home() {
             <div className="col-sm">
               <Details clients={context.clients} />
               <Monitor chart={context.chart} />
+              <MeasuresGoalChart
+                measures={context.leadStatus}
+                measuresGoal={context.measuresGoal}
+              />
             </div>
           </div>
         </div>
