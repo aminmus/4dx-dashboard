@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import {
   List,
@@ -8,10 +9,9 @@ import {
   EditButton,
   DeleteButton,
   NumberField,
-  DateField,
-  NumberInput,
-  DateInput
+  DateField
 } from 'react-admin';
+import { validateNps, validateDate } from '../utils/adminValidation';
 
 export const NpsList = props => (
   <List {...props} bulkActionButtons={false}>
@@ -29,10 +29,10 @@ export const NpsList = props => (
 export const NpsEdit = props => (
   <Edit title="Edit client entry" {...props}>
     <SimpleForm redirect="list">
-      <NumberInput source="current-nps" />
-      <NumberInput source="goal-nps" />
-      <DateInput source="date" />
-      <DateInput source="target-date" />
+      <NumberField source="current-nps" valdiate={validateNps} />
+      <NumberField source="goal-nps" valdiate={validateNps} />
+      <DateField source="date" valdiate={validateDate} />
+      <DateField source="target-date" valdiate={validateDate} />
     </SimpleForm>
   </Edit>
 );
@@ -40,10 +40,10 @@ export const NpsEdit = props => (
 export const NpsCreate = props => (
   <Create title="Create client entry" {...props}>
     <SimpleForm redirect="list">
-      <NumberInput source="current-nps" />
-      <NumberInput source="goal-nps" />
-      <DateInput source="date" />
-      <DateInput source="target-date" />
+      <NumberField source="current-nps" valdiate={validateNps} />
+      <NumberField source="goal-nps" valdiate={validateNps} />
+      <DateField source="date" valdiate={validateDate} />
+      <DateField source="target-date" valdiate={validateDate} />
     </SimpleForm>
   </Create>
 );
