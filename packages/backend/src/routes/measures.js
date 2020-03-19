@@ -10,6 +10,6 @@ router.get('/:measureId', getById);
 // Protected routes
 router.put('/:measureId', checkAuth, updateById);
 router.post('/', checkAuth, createOne);
-router.delete('/:clientId', checkAuth, deleteById);
+router.delete('/:measureId', checkAuth, deleteById);
 
 module.exports = router;

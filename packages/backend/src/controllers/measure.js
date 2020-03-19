@@ -106,7 +106,7 @@ const deleteById = async (req, res, next) => {
   console.log('DELETE REQUEST - MEASURES');
   console.log('*************************');
   try {
-    const measure = await Measure.findByPk(req.params.clientId);
+    const measure = await Measure.findByPk(req.params.measureId);
     if (!measure) {
       return res
         .status(404)
