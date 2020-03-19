@@ -53,7 +53,8 @@ export default function Login() {
       <Resource name="users" list={UserList} />
       <Resource name="nps" list={NpsList} edit={NpsEdit} create={NpsCreate} />
       <Resource
-        name="measureGoals"
+        name="MeasureGoals"
+        options={{ label: 'Measure Goals' }}
         list={MeasureGoalList}
         edit={MeasureGoalEdit}
         create={MeasureGoalCreate}
