@@ -31,10 +31,10 @@ export const NpsList = props => (
 export const NpsEdit = props => (
   <Edit title="Edit client entry" {...props}>
     <SimpleForm redirect="list">
-      <NumberInput source="current-nps" valdiate={validateNps} />
-      <NumberInput source="goal-nps" valdiate={validateNps} />
-      <DateInput source="date" valdiate={validateDate} />
-      <DateInput source="target-date" valdiate={validateDate} />
+      <NumberInput source="current-nps" validate={validateNps} />
+      <NumberInput source="goal-nps" validate={validateNps} />
+      <DateInput source="date" validate={validateDate} />
+      <DateInput source="target-date" validate={validateDate} />
     </SimpleForm>
   </Edit>
 );
@@ -42,10 +42,10 @@ export const NpsEdit = props => (
 export const NpsCreate = props => (
   <Create title="Create client entry" {...props}>
     <SimpleForm redirect="list">
-      <NumberInput source="current-nps" valdiate={validateNps} />
-      <NumberInput source="goal-nps" valdiate={validateNps} />
-      <DateInput source="date" valdiate={validateDate} />
-      <DateInput source="target-date" valdiate={validateDate} />
+      <NumberInput source="current-nps" validate={validateNps} />
+      <NumberInput source="goal-nps" validate={validateNps} />
+      <DateInput source="date" validate={validateDate} />
+      <DateInput source="target-date" validate={validateDate} />
     </SimpleForm>
   </Create>
 );
