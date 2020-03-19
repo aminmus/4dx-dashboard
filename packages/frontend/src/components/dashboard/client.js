@@ -16,12 +16,13 @@ import {
   Tab,
   ReferenceManyField,
   NumberField,
-  DateField,
-  BooleanField
+  DateField
 } from 'react-admin';
 
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
+import FalseIcon from '@material-ui/icons/Clear';
+import TrueIcon from '@material-ui/icons/Done';
 
 import { Link } from 'react-router-dom';
 import { validateName } from '../utils/adminValidation';
@@ -122,6 +123,13 @@ const EditClientMeasure = ({ record, clientId }) => {
   );
 };
 
+const CustomBooleanField = ({ record }) => {
+  if (record.success) {
+    return <TrueIcon />;
+  }
+  return <FalseIcon />;
+};
+
 export const ClientShow = props => {
   return (
     <Show {...props}>
@@ -145,7 +153,7 @@ export const ClientShow = props => {
           <ReferenceManyField reference="measures" target="clientId" addLabel={false}>
             <Datagrid rowClick="edit">
               <TextField source="description" />
-              <BooleanField source="success" />
+              <CustomBooleanField label="Success" {...props} />
               <EditClientMeasure {...props} clientId={props.id} />
               <DeleteButton redirect={`/clients/${props.id}/show/measures`} />
             </Datagrid>

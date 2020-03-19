@@ -5,9 +5,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       description: DataTypes.STRING,
       success: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-        allowNull: false,
+        type: DataTypes.DATEONLY,
+        defaultValue: null,
       },
     },
     {},
