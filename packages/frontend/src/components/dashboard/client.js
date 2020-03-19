@@ -25,6 +25,7 @@ import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
 
 import { Link } from 'react-router-dom';
+import { validateName } from '../utils/adminValidation';
 
 export const ClientList = props => (
   <List {...props} bulkActionButtons={false}>
@@ -41,7 +42,7 @@ export const ClientEdit = props => (
   <Edit title="Edit client entry" {...props}>
     <SimpleForm redirect="show">
       <TextInput disabled source="id" />
-      <TextInput source="name" />
+      <TextInput source="name" validate={validateName} />
     </SimpleForm>
   </Edit>
 );
@@ -49,7 +50,7 @@ export const ClientEdit = props => (
 export const ClientCreate = props => (
   <Create title="Create client entry" {...props}>
     <SimpleForm redirect="show">
-      <TextInput source="name" />
+      <TextInput source="name" validate={validateName} />
     </SimpleForm>
   </Create>
 );
