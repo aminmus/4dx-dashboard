@@ -23,10 +23,7 @@ export default function Home() {
             <div className="col-sm">
               <Details clients={context.clients} />
               <Monitor chart={context.chart} />
-              <MeasuresGoalChart
-                measures={context.leadStatus}
-                measuresGoal={context.measuresGoal}
-              />
+              <MeasuresGoalChart measures={context.measures} measuresGoal={context.measuresGoal} />
             </div>
           </div>
         </div>
