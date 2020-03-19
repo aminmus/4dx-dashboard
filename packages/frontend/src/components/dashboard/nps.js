@@ -9,7 +9,9 @@ import {
   EditButton,
   DeleteButton,
   NumberField,
-  DateField
+  DateField,
+  NumberInput,
+  DateInput
 } from 'react-admin';
 import { validateNps, validateDate } from '../utils/adminValidation';
 
@@ -29,10 +31,10 @@ export const NpsList = props => (
 export const NpsEdit = props => (
   <Edit title="Edit client entry" {...props}>
     <SimpleForm redirect="list">
-      <NumberField source="current-nps" valdiate={validateNps} />
-      <NumberField source="goal-nps" valdiate={validateNps} />
-      <DateField source="date" valdiate={validateDate} />
-      <DateField source="target-date" valdiate={validateDate} />
+      <NumberInput source="current-nps" valdiate={validateNps} />
+      <NumberInput source="goal-nps" valdiate={validateNps} />
+      <DateInput source="date" valdiate={validateDate} />
+      <DateInput source="target-date" valdiate={validateDate} />
     </SimpleForm>
   </Edit>
 );
@@ -40,10 +42,10 @@ export const NpsEdit = props => (
 export const NpsCreate = props => (
   <Create title="Create client entry" {...props}>
     <SimpleForm redirect="list">
-      <NumberField source="current-nps" valdiate={validateNps} />
-      <NumberField source="goal-nps" valdiate={validateNps} />
-      <DateField source="date" valdiate={validateDate} />
-      <DateField source="target-date" valdiate={validateDate} />
+      <NumberInput source="current-nps" valdiate={validateNps} />
+      <NumberInput source="goal-nps" valdiate={validateNps} />
+      <DateInput source="date" valdiate={validateDate} />
+      <DateInput source="target-date" valdiate={validateDate} />
     </SimpleForm>
   </Create>
 );
