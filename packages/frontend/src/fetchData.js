@@ -11,7 +11,7 @@ const labelResultsWithKey = (data, url) => {
 
 export default () => {
   const baseUrl = `${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_SERVER_PORT}`;
-  const urls = [`${baseUrl}/api/nps`, `${baseUrl}/api/clients`];
+  const urls = [`${baseUrl}/api/nps`, `${baseUrl}/api/clients`, `${baseUrl}/api/measures`];
   const myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/vnd.api+json');
 
