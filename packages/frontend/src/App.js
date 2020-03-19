@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import {
   // eslint-disable-next-line indent
@@ -22,9 +22,31 @@ export default function App() {
     { id: 0, name: 'No Clients Available', measures: [], csats: [] }
   ]);
 
-  const [measuresGoal] = useState({
+  // TODO: TRIM DOWN AND FETCH DATA IN USEFFECT
+  const [measures, setMeasures] = useState([
+    '2020-03-03',
+    '2020-01-01',
+    '2020-04-04',
+    '2020-05-05',
+    '2020-01-01',
+    '2020-02-02',
+    '2020-03-03',
+    '2020-03-03',
+    '2020-05-05',
+    '2020-05-05',
+    null,
+    null,
+    null,
+    null
+  ]);
+
+  /*
+   TODO: REPLACE MOCK DATA (FOR TARGET DATE AND EXPECTED COMPLETED MEASURES BY SAID DATE)
+   AND FETCH DATA IN USEFFECT 
+   */
+  const [measuresGoal, setMeasuresGoal] = useState({
     targetMeasures: 10,
-    targetDate: '2020-03-30'
+    targetDate: '2020-04-20'
   });
 
   const [definedStatus, setDefinedStatus] = useState({ totalClients: 0, definedClients: 0 });
@@ -71,7 +93,8 @@ export default function App() {
         chart,
         leadStatus,
         definedStatus,
-        measuresGoal
+        measuresGoal,
+        measures
       }}
     >
       <Router>
