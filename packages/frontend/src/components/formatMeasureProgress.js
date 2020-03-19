@@ -1,48 +1,82 @@
-/* eslint-disable no-unused-vars, no-plusplus, no-console */
+/* eslint-disable no-plusplus, no-param-reassign */
 import moment from 'moment';
 
-export default function() {
-  const measures = [
-    { sucessDate: '2020-02-10' },
-    { sucessDate: '2020-02-10' },
-    { sucessDate: '2020-01-10' },
-    { sucessDate: '2020-02-11' },
-    { sucessDate: '2020-03-10' },
-    { sucessDate: '2020-02-10' },
-    { sucessDate: '2020-02-05' },
-    { sucessDate: '2020-02-10' },
-    { sucessDate: '2020-01-10' },
-    { sucessDate: '2020-02-10' },
-    { sucessDate: '2020-02-10' },
-    { sucessDate: '2020-01-10' },
-    { sucessDate: '2020-02-10' },
-    { sucessDate: '2019-02-10' },
-    { sucessDate: '2020-02-10' },
-    { sucessDate: '2020-05-10' },
-    { sucessDate: '2020-02-10' },
-    { sucessDate: '2020-06-10' },
-    { sucessDate: '2020-07-10' }
-  ];
-
-  // 1. FETCH ALL THE MEASURES ARRANGE INTO "ARRAY",  OF DATES
-  const dateArray = measures.map(entry => moment(entry.sucessDate));
-
-  // 2. GET THE CURRENT DATE
-  const currentDate = moment();
-
-  // 3. CREATE A DATE INTERVAL (7 DAYS PER INCREMENT FROM CURRENT DATE)
+/*
+ Return an array of dates spanning a range of set increments between the current date and target date
+*/
+const calDateInterval = (currentDate, targetDate, incrementSize) => {
   const dateInterval = [];
-  for (let i = 0; i <= 5; i++) {
+  const differenceWeeks = moment(targetDate).diff(currentDate, 'weeks');
+
+  let date = targetDate;
+  for (let i = 0; i <= differenceWeeks * 2; i++) {
+    date = moment(date)
+      .subtract(incrementSize, 'd')
+      .format('YYYY-MM-DD');
+
     dateInterval.push({
-      date: currentDate.subtract(7, 'd').format('YYYY-MM-DD'),
+      date,
       measuresCompleted: null
     });
   }
+  return dateInterval;
+};
 
-  console.log(dateInterval);
+/*
+ Populate date array with successful measures matching the date.
+*/
+const populateMeasuresCompleted = (measures, dates, currentDate) => {
+  measures.forEach(entry => {
+    dates.forEach(item => {
+      if (moment(item.date).isSameOrAfter(entry) && moment(item.date).isSameOrBefore(currentDate)) {
+        item.measuresCompleted++;
+      }
+    });
+  });
+  return dates.reverse();
+};
 
-  // 4. POPULATE DATE INTERVAL OBJECTS WITH MEASURES COMPLETED
-  // FILTER AWAY ARRAY VALUES THAT COME AFTER DATE
-  // DO AN ARRAY LENGTH ON THIS EXISTING ARRAY TO GET MEASURES
-  // POPULATE USING MAP OVER ARRAY OF OBJECTS
+/*
+ Return array with start/end values for measures, populate interspersing data with null values
+ for ChartJS interpolation
+*/
+const calcGoalData = (dateMeasureArray, targetDate, targetMeasures) => {
+  const target = [];
+
+  for (let k = 0; k <= dateMeasureArray.length - 1; k++) {
+    if (k === 0) {
+      target.push({
+        date: dateMeasureArray[0].date,
+        measuresCompleted: dateMeasureArray[0].measuresCompleted
+      });
+    } else if (k === dateMeasureArray.length - 1) {
+      target.push({
+        date: targetDate,
+        measuresCompleted: targetMeasures
+      });
+    } else {
+      target.push(null);
+    }
+  }
+  return target;
+};
+
+export default function(measures, targetDate, targetMeasures) {
+  const successfulMeasures = measures.filter(dateOfSucces => dateOfSucces !== null);
+
+  const currentDate = moment();
+
+  const dateInterval = calDateInterval(currentDate, targetDate, 7);
+
+  const dateIntervalWithMeasures = populateMeasuresCompleted(
+    successfulMeasures,
+    dateInterval,
+    currentDate
+  );
+
+  const target = calcGoalData(dateIntervalWithMeasures, targetDate, targetMeasures);
+
+  const results = { current: dateIntervalWithMeasures, target };
+
+  return results;
 }
