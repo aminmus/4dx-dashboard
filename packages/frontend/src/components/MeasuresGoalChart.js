@@ -1,12 +1,14 @@
-/* eslint-disable no-unused-vars, no-plusplus, no-console, react/prop-types, react/destructuring-assignment, no-shadow, no-param-reassign */
+/* eslint-disable no-unused-vars, react/prop-types, no-param-reassign */
 
 import React, { useEffect, useState } from 'react';
 import Chart from 'chart.js';
 import formatMeasureProgress from './formatMeasureProgress';
 
 export default function MeasuresGoalChart(props) {
-  const { measures } = props;
-  const { targetDate, targetMeasures } = props.measuresGoal;
+  const { measures, measuresGoal } = props;
+  const { targetDate, targetMeasures } = measuresGoal;
+  const chartRef = React.createRef();
+  const [graph, setGraph] = useState(null);
 
   const formattedMeasureData = formatMeasureProgress(measures, targetDate, targetMeasures);
   const currentChartLabels = formattedMeasureData.current.map(entry => entry.date);
@@ -15,8 +17,12 @@ export default function MeasuresGoalChart(props) {
     return entry !== null ? entry.measuresCompleted : null;
   });
 
-  const chartRef = React.createRef();
-  const [graph, setGraph] = useState(null);
+  const updateData = (graphInstance, newLabels, newData, newTargetData) => {
+    graphInstance.data.datasets[0].data = newData;
+    graphInstance.data.datasets[1].data = newTargetData;
+    graphInstance.data.labels = newLabels;
+    graphInstance.update();
+  };
 
   useEffect(() => {
     const detailsChartRef = chartRef.current.getContext('2d');
@@ -32,7 +38,7 @@ export default function MeasuresGoalChart(props) {
             datasets: [
               {
                 data: currentChartValues,
-                borderColor: ['rgba(250, 191, 44, 1)'],
+                borderColor: 'rgba(250, 191, 44, 1)',
                 borderWidth: 3,
                 pointRadius: 5,
                 pointBorderWidth: 3,
@@ -81,8 +87,10 @@ export default function MeasuresGoalChart(props) {
           }
         })
       );
+    } else {
+      updateData(graph, currentChartLabels, currentChartValues, targetChartValues);
     }
-  });
+  }, []);
 
   return (
     <div className="chart__nps">
