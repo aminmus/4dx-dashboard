@@ -1,7 +1,7 @@
 import { required, minLength, maxLength, number, minValue, maxValue, regex } from 'react-admin';
 
 export const validateName = [required(), minLength(1), maxLength(50)];
-export const validateSuccess = [required()];
+export const validateRequired = [required()];
 export const validateDescription = [required(), minLength(5), maxLength(100)];
 export const validateScore = [required(), number(), minValue(1), maxValue(10)];
 export const validateNps = [required(), number(), minValue(-100), maxValue(100)];
