@@ -1,4 +1,4 @@
-/* eslint-disable no-console, no-unused-vars */
+/* eslint-disable no-console, no-unused-vars, no-shadow */
 import React, { useState, useEffect } from 'react';
 import {
   // eslint-disable-next-line indent
@@ -16,34 +16,16 @@ import Header from './components/Header';
 import Home from './layout/Home';
 import Login from './layout/Login';
 import reformatChart from './reformatChart';
+import reformatMeasureGoals from './reformatMeasureGoals';
+import reformatMeasures from './reformatMeasures';
 
 export default function App() {
   const [clients, setClients] = useState([
     { id: 0, name: 'No Clients Available', measures: [], csats: [] }
   ]);
 
-  // TODO: TRIM DOWN AND FETCH DATA IN USEFFECT
-  const [measures, setMeasures] = useState([
-    '2020-03-03',
-    '2020-01-01',
-    '2020-04-04',
-    '2020-05-05',
-    '2020-01-01',
-    '2020-02-02',
-    '2020-03-03',
-    '2020-03-03',
-    '2020-05-05',
-    '2020-05-05',
-    null,
-    null,
-    null,
-    null
-  ]);
+  const [measures, setMeasures] = useState([]);
 
-  /*
-   TODO: REPLACE MOCK DATA (FOR TARGET DATE AND EXPECTED COMPLETED MEASURES BY SAID DATE)
-   AND FETCH DATA IN USEFFECT 
-   */
   const [measuresGoal, setMeasuresGoal] = useState({
     targetMeasures: 10,
     targetDate: '2020-04-20'
@@ -67,16 +49,22 @@ export default function App() {
   useEffect(() => {
     async function setAppState() {
       try {
-        const [npsData, clientsData] = await fetchData();
+        const [npsData, clientsData, measures, measureGoals] = await fetchData();
         if (clientsData.clients.data.length > 0) {
           const clientData = reformatClientData(clientsData.clients);
           setClients(clientData);
           setDefinedStatus(calcDefineClients(clientData));
           setLeadStatus(calcLeads(clientData));
         }
-        if (npsData.nps.data.length) {
+        if (npsData.nps.data.length > 0) {
           setNps(reformatNps(npsData.nps));
           setChart(reformatChart(npsData.nps));
+        }
+        if (measureGoals.measureGoals.data.length > 0) {
+          setMeasuresGoal(reformatMeasureGoals(measureGoals.measureGoals));
+        }
+        if (measures.measures.data.length > 0) {
+          setMeasures(reformatMeasures(measures.measures));
         }
       } catch (e) {
         console.error(e);
