@@ -27,8 +27,8 @@ export default function App() {
   const [measures, setMeasures] = useState([]);
 
   const [measuresGoal, setMeasuresGoal] = useState({
-    targetMeasures: 10,
-    targetDate: '2020-04-20'
+    targetMeasures: null,
+    targetDate: null
   });
 
   const [definedStatus, setDefinedStatus] = useState({ totalClients: 0, definedClients: 0 });

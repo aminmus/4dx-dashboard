@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Chart from 'chart.js';
 import formatMeasureProgress from './formatMeasureProgress';
 
-export default function MeasuresGoalChart(props) {
+export default function MeasureGoalsChart(props) {
   const { measures, measuresGoal } = props;
   const { targetDate, targetMeasures } = measuresGoal;
   const chartRef = React.createRef();
@@ -14,7 +14,7 @@ export default function MeasuresGoalChart(props) {
   const currentChartLabels = formattedMeasureData.current.map(entry => entry.date);
   const currentChartValues = formattedMeasureData.current.map(entry => entry.measuresCompleted);
   const targetChartValues = formattedMeasureData.target.map(entry => {
-    return entry !== null ? entry.measuresCompleted : null;
+    return entry ? entry.measuresCompleted : null;
   });
 
   const updateData = (graphInstance, newLabels, newData, newTargetData) => {
@@ -29,7 +29,7 @@ export default function MeasuresGoalChart(props) {
     Chart.defaults.global.defaultFontColor = '#7C7C7C';
     Chart.defaults.global.defaultFontSize = 14;
 
-    if (graph === null) {
+    if (!graph) {
       setGraph(
         new Chart(detailsChartRef, {
           type: 'line',

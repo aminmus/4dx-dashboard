@@ -1,23 +1,41 @@
-/* eslint-disable no-plusplus, no-param-reassign */
+/* eslint-disable no-param-reassign */
 import moment from 'moment';
 
 /*
  Return an array of dates spanning a range of set increments between the current date and target date
 */
-const calDateInterval = (currentDate, targetDate, incrementSize) => {
+const calcDateInterval = (currentDate, targetDate, incrementSize) => {
   const dateInterval = [];
-  const differenceWeeks = moment(targetDate).diff(currentDate, 'weeks');
 
-  let date = targetDate;
-  for (let i = 0; i <= differenceWeeks * 2; i++) {
-    date = moment(date)
-      .subtract(incrementSize, 'd')
-      .format('YYYY-MM-DD');
+  let date = targetDate || currentDate;
 
-    dateInterval.push({
-      date,
-      measuresCompleted: null
-    });
+  let dateSpan = null;
+
+  if (moment(date).diff(currentDate, 'weeks') >= 1) {
+    dateSpan = moment(targetDate).diff(currentDate, 'weeks');
+    for (let i = 0; i <= dateSpan * 2; i += 1) {
+      date = moment(date)
+        .subtract(incrementSize, 'd')
+        .format('YYYY-MM-DD');
+
+      dateInterval.push({
+        date,
+        measuresCompleted: null
+      });
+    }
+  } else {
+    dateSpan = 4;
+    for (let i = 0; i <= dateSpan * 2; i += 1) {
+      if (i !== 0) {
+        date = moment(date)
+          .subtract(incrementSize, 'd')
+          .format('YYYY-MM-DD');
+      }
+      dateInterval.push({
+        date: moment(date).format('YYYY-MM-DD'),
+        measuresCompleted: null
+      });
+    }
   }
   return dateInterval;
 };
@@ -26,16 +44,23 @@ const calDateInterval = (currentDate, targetDate, incrementSize) => {
  Populate date array with successful measures matching the date.
 */
 const populateMeasuresCompleted = (measures, dates, currentDate) => {
-  measures.forEach(entry => {
-    dates.forEach(item => {
-      if (item.measuresCompleted === null && moment(item.date).isSameOrBefore(currentDate)) {
-        item.measuresCompleted = 0;
+  measures.forEach(successfulMeasureDate => {
+    dates.forEach(dateIntervalEntry => {
+      if (
+        !dateIntervalEntry.measuresCompleted &&
+        moment(dateIntervalEntry.date).isSameOrBefore(currentDate)
+      ) {
+        dateIntervalEntry.measuresCompleted = 0;
       }
-      if (moment(item.date).isSameOrAfter(entry) && moment(item.date).isSameOrBefore(currentDate)) {
-        item.measuresCompleted++;
+      if (
+        moment(dateIntervalEntry.date).isSameOrAfter(successfulMeasureDate) &&
+        moment(dateIntervalEntry.date).isSameOrBefore(currentDate)
+      ) {
+        dateIntervalEntry.measuresCompleted += 1;
       }
     });
   });
+
   return dates.reverse();
 };
 
@@ -46,31 +71,35 @@ const populateMeasuresCompleted = (measures, dates, currentDate) => {
 const calcGoalData = (dateMeasureArray, targetDate, targetMeasures) => {
   const target = [];
 
-  for (let k = 0; k <= dateMeasureArray.length - 1; k++) {
-    if (k === 0) {
-      target.push({
-        date: dateMeasureArray[0].date,
-        measuresCompleted:
-          dateMeasureArray[0].measuresCompleted == null ? 0 : dateMeasureArray[0].measuresCompleted
-      });
-    } else if (k === dateMeasureArray.length - 1) {
-      target.push({
-        date: targetDate,
-        measuresCompleted: targetMeasures
-      });
-    } else {
-      target.push(null);
+  if (targetDate || targetMeasures) {
+    for (let k = 0; k <= dateMeasureArray.length - 1; k += 1) {
+      if (k === 0) {
+        target.push({
+          date: dateMeasureArray[0].date,
+          measuresCompleted: !dateMeasureArray[0].measuresCompleted
+            ? 0
+            : dateMeasureArray[0].measuresCompleted
+        });
+      } else if (k === dateMeasureArray.length - 1) {
+        target.push({
+          date: targetDate,
+          measuresCompleted: targetMeasures
+        });
+      } else {
+        target.push(null);
+      }
     }
   }
+
   return target;
 };
 
 export default function(measures, targetDate, targetMeasures) {
-  const successfulMeasures = measures.filter(dateOfSucces => dateOfSucces !== null);
+  const successfulMeasures = measures.filter(dateOfSuccess => dateOfSuccess);
 
   const currentDate = moment();
 
-  const dateInterval = calDateInterval(currentDate, targetDate, 7);
+  const dateInterval = calcDateInterval(currentDate, targetDate, 7);
 
   const dateIntervalWithMeasures = populateMeasuresCompleted(
     successfulMeasures,
