@@ -1,9 +1,9 @@
 /* eslint-disable camelcase, import/no-extraneous-dependencies, react/destructuring-assignment, react/jsx-props-no-spreading, react/prop-types */
 
 import React from 'react';
-import { Edit, Create, SimpleForm, TextInput, BooleanInput } from 'react-admin';
+import { Edit, Create, SimpleForm, TextInput, DateInput } from 'react-admin';
 import { parse } from 'query-string';
-import { validateSuccess, validateDescription } from '../utils/adminValidation';
+import { validateDescription, validateDate } from '../utils/adminValidation';
 
 export const MeasureEdit = props => {
   const { client_id } = parse(props.location.search);
@@ -12,7 +12,12 @@ export const MeasureEdit = props => {
       <SimpleForm redirect={`/clients/${client_id}/show/measures`}>
         <TextInput disabled source="id" />
         <TextInput source="description" validate={validateDescription} />
-        <BooleanInput source="success" validate={validateSuccess} className="mx-auto" />
+        <DateInput
+          source="success"
+          label="Success Date"
+          validate={validateDate}
+          className="mx-auto"
+        />
       </SimpleForm>
     </Edit>
   );
@@ -27,7 +32,12 @@ export const MeasureCreate = props => {
         redirect={`/clients/${client_id}/show/measures`}
       >
         <TextInput source="description" validate={validateDescription} />
-        <BooleanInput source="success" validate={validateSuccess} className="mx-auto" />
+        <DateInput
+          source="success"
+          label="Success Date"
+          validate={validateDate}
+          className="mx-auto"
+        />
       </SimpleForm>
     </Create>
   );

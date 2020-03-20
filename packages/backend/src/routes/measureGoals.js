@@ -1,15 +1,15 @@
 const router = require('express').Router();
 const {
   createOne, deleteById, getAll, getById, updateById,
-} = require('../controllers/measure');
+} = require('../controllers/measureGoals');
 const { checkAuth } = require('../middleware/authentication');
 
 router.get('/', getAll);
-router.get('/:measureId', getById);
+router.get('/:measureGoalId', getById);
 
 // Protected routes
-router.put('/:measureId', checkAuth, updateById);
+router.put('/:measureGoalId', checkAuth, updateById);
 router.post('/', checkAuth, createOne);
-router.delete('/:measureId', checkAuth, deleteById);
+router.delete('/:measureGoalId', checkAuth, deleteById);
 
 module.exports = router;

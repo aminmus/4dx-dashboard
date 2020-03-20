@@ -31,7 +31,7 @@ MeasureCheckList.defaultProps = {
 MeasureCheckList.propTypes = {
   measures: PropTypes.arrayOf(
     PropTypes.shape({
-      success: PropTypes.bool,
+      success: PropTypes.string,
       description: PropTypes.string
     })
   )
