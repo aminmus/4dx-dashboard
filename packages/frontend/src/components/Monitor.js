@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import React, { useEffect, useState } from 'react';
 import Chart from 'chart.js';
 import PropTypes from 'prop-types';
@@ -7,16 +9,24 @@ export default function Monitor(props) {
   const chartRef = React.createRef();
   const [graph, setGraph] = useState(null);
 
-  const updateData = (graph, newLabels, newData) => {
-    graph.data.datasets[0].data = newData;
-    graph.data.labels = newLabels;
-    graph.update();
+  const updateData = (graphData, newLabels, newData, newTarget) => {
+    graphData.data.datasets[0].data = newData;
+    graphData.data.datasets[1].data = newTarget;
+    graphData.data.labels = newLabels;
+    graphData.update();
   };
 
   useEffect(() => {
     const detailsChartRef = chartRef.current.getContext('2d');
     Chart.defaults.global.defaultFontColor = '#7C7C7C';
     Chart.defaults.global.defaultFontSize = 14;
+
+    let targetValues = [];
+    if (chart.target) {
+      targetValues = chart.values.map(() => null);
+      targetValues[0] = chart.target;
+      targetValues[chart.values.length - 1] = chart.target;
+    }
 
     if (graph === null) {
       setGraph(
@@ -33,15 +43,30 @@ export default function Monitor(props) {
                 pointBorderWidth: 3,
                 pointBackgroundColor: 'rgba(250, 191, 44, 1)',
                 fill: false
+              },
+              {
+                data: targetValues,
+                spanGaps: true,
+                borderWidth: 2,
+                borderColor: 'lightgreen',
+                fill: false
               }
             ]
           },
           options: {
+            responsive: true,
+            title: {
+              display: true,
+              text: 'NPS Over Time (monthly)',
+              fontColor: 'rgba(250, 191, 44, 1)'
+            },
             scales: {
               yAxes: [
                 {
                   scaleLabel: {
-                    fontColor: 'pink'
+                    display: true,
+                    labelString: 'Measures Completed',
+                    fontColor: 'rgba(250, 191, 44, 1)'
                   },
                   ticks: {
                     beginAtZero: false,
@@ -59,7 +84,7 @@ export default function Monitor(props) {
         })
       );
     } else {
-      updateData(graph, chart.months, chart.values);
+      updateData(graph, chart.months, chart.values, targetValues);
     }
   });
 
@@ -77,6 +102,7 @@ Monitor.defaultProps = {
 Monitor.propTypes = {
   chart: PropTypes.shape({
     months: PropTypes.array,
-    values: PropTypes.array
+    values: PropTypes.array,
+    target: PropTypes.number
   })
 };
