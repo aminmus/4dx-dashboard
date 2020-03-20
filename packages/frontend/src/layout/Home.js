@@ -22,8 +22,23 @@ export default function Home() {
             </div>
             <div className="col-sm">
               <Details clients={context.clients} />
-              <Monitor chart={context.chart} />
-              <MeasuresGoalChart measures={context.measures} measuresGoal={context.measuresGoal} />
+              {context.chart.values.length > 0 ? (
+                <Monitor chart={context.chart} />
+              ) : (
+                <div className="my-5 p-4 jumbotron text-light bg-dark">
+                  No Measure Data Available For NPS graph
+                </div>
+              )}
+              {context.measures.length > 0 ? (
+                <MeasuresGoalChart
+                  measures={context.measures}
+                  measuresGoal={context.measuresGoal}
+                />
+              ) : (
+                <div className="my-5 p-4 jumbotron text-light bg-dark">
+                  No Measure Data Available For Measure Over Time Graph
+                </div>
+              )}
             </div>
           </div>
         </div>
