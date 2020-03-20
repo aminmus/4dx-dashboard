@@ -52,11 +52,19 @@ export default function MeasuresGoalChart(props) {
             ]
           },
           options: {
+            responsive: true,
+            title: {
+              display: true,
+              text: 'Measures Completed Over Time (weekly)',
+              fontColor: 'rgba(250, 191, 44, 1)'
+            },
             scales: {
               yAxes: [
                 {
                   scaleLabel: {
-                    fontColor: 'pink'
+                    display: true,
+                    labelString: 'Measures Completed',
+                    fontColor: 'rgba(250, 191, 44, 1)'
                   },
                   ticks: {
                     beginAtZero: false,
