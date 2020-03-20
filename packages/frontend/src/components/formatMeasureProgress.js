@@ -28,6 +28,9 @@ const calDateInterval = (currentDate, targetDate, incrementSize) => {
 const populateMeasuresCompleted = (measures, dates, currentDate) => {
   measures.forEach(entry => {
     dates.forEach(item => {
+      if (item.measuresCompleted === null && moment(item.date).isSameOrBefore(currentDate)) {
+        item.measuresCompleted = 0;
+      }
       if (moment(item.date).isSameOrAfter(entry) && moment(item.date).isSameOrBefore(currentDate)) {
         item.measuresCompleted++;
       }
@@ -47,7 +50,8 @@ const calcGoalData = (dateMeasureArray, targetDate, targetMeasures) => {
     if (k === 0) {
       target.push({
         date: dateMeasureArray[0].date,
-        measuresCompleted: dateMeasureArray[0].measuresCompleted
+        measuresCompleted:
+          dateMeasureArray[0].measuresCompleted == null ? 0 : dateMeasureArray[0].measuresCompleted
       });
     } else if (k === dateMeasureArray.length - 1) {
       target.push({
