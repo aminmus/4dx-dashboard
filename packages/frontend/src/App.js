@@ -42,8 +42,8 @@ export default function App() {
     implementText: 'Implement Client Success Program for listed clients'
   });
   const [chart, setChart] = useState({
-    months: ['June', 'July', 'August', 'September', 'October', 'November'],
-    values: [0, 0, 0, 0, 0, 0]
+    months: [],
+    values: []
   });
 
   useEffect(() => {
