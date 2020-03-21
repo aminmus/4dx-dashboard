@@ -1,12 +1,25 @@
-/* eslint-disable no-unused-vars, react/prop-types, no-param-reassign */
+/* eslint-disable no-unused-vars, react/prop-types, no-param-reassign, react/jsx-one-expression-per-line, no-shadow, no-unused-expressions */
 
 import React, { useEffect, useState } from 'react';
 import Chart from 'chart.js';
+import moment from 'moment';
+import { Button } from 'react-bootstrap';
 import formatMeasureProgress from './formatMeasureProgress';
 
-const updateData = (graphInstance, newLabels, newData, newTargetData) => {
+const updateData = (
+  graphInstance,
+  newLabels,
+  newData,
+  newTargetData,
+  newHighlightData,
+  measureLineShow,
+  targetLineShow
+) => {
   graphInstance.data.datasets[0].data = newData;
-  graphInstance.data.datasets[1].data = newTargetData;
+  graphInstance.data.datasets[1].data = newHighlightData;
+  graphInstance.data.datasets[2].data = newTargetData;
+  graphInstance.data.datasets[0].showLine = measureLineShow;
+  graphInstance.data.datasets[2].showLine = targetLineShow;
   graphInstance.data.labels = newLabels;
   graphInstance.update();
 };
@@ -16,9 +29,47 @@ export default function MeasureGoalsChart(props) {
   const { targetDate, targetMeasures } = measuresGoal;
   const chartRef = React.createRef();
   const [graph, setGraph] = useState(null);
+  const [measureLineShow, setMeasureLineShow] = useState(true);
+  const [targetLineShow, setTargetLineShow] = useState(true);
 
   const { labels, data } = formatMeasureProgress(measures, targetDate, targetMeasures);
   const { measuresData, targetData, highlightData } = data;
+
+  const setLastPointRadius = (radiusSize, measures) => {
+    const array = measures.filter(value => value === 0 || value);
+    for (let i = 0; i < array.length; i += 1) {
+      i === array.length - 1 ? (array[i] = radiusSize) : (array[i] = 0);
+    }
+    return array;
+  };
+
+  const toggleMeasures = e => {
+    e.preventDefault();
+    setMeasureLineShow(!measureLineShow);
+    updateData(
+      graph,
+      labels,
+      measuresData,
+      targetData,
+      highlightData,
+      measureLineShow,
+      targetLineShow
+    );
+  };
+
+  const toggleTarget = e => {
+    e.preventDefault();
+    setTargetLineShow(!targetLineShow);
+    updateData(
+      graph,
+      labels,
+      measuresData,
+      targetData,
+      highlightData,
+      measureLineShow,
+      targetLineShow
+    );
+  };
 
   useEffect(() => {
     const detailsChartRef = chartRef.current.getContext('2d');
@@ -35,12 +86,13 @@ export default function MeasureGoalsChart(props) {
               {
                 data: measuresData,
                 borderColor: 'rgba(250, 191, 44, 1)',
-                borderWidth: 3,
-                pointRadius: 0,
+                borderWidth: 2,
+                pointRadius: setLastPointRadius(3, measuresData),
                 pointBorderWidth: 0,
                 pointBackgroundColor: 'rgba(250, 191, 44, 1)',
                 fill: false,
-                steppedLine: true
+                steppedLine: true,
+                showLine: measureLineShow
               },
               {
                 data: highlightData,
@@ -50,16 +102,18 @@ export default function MeasureGoalsChart(props) {
                 pointBorderWidth: 4,
                 pointBackgroundColor: 'green',
                 fill: false,
-                steppedLine: true
+                showLine: false,
+                hitRadius: 5
               },
               {
                 data: targetData,
                 spanGaps: true,
                 borderColor: ['red'],
-                borderWidth: 3,
-                pointRadius: 5,
-                pointBorderWidth: 3,
+                borderWidth: 0,
+                pointRadius: 0,
+                pointBorderWidth: 0,
                 pointBackgroundColor: 'red',
+                showLine: targetLineShow,
                 fill: false
               }
             ]
@@ -75,17 +129,23 @@ export default function MeasureGoalsChart(props) {
               bodyFontSize: 18,
               titleFontSize: 20,
               callbacks: {
-                /* TODO: GENERATE DATA POINTS FOR TARGET LINE USING SLOPE OF TARGET LINE
-                ROUND THE VALUE UP/DOWN IN THE TOOLBOX AND LIST BELOW
-                */
-                label: tooltipItem => {
-                  const { datasetIndex, value } = tooltipItem;
-                  if (datasetIndex === 1) {
-                    return `Completed: ${value}`;
+                title: tooltipItem => {
+                  return tooltipItem[0].label === moment().format('YYYY-MM-DD')
+                    ? `Today (${tooltipItem[0].label})`
+                    : tooltipItem[0].label;
+                },
+                label: (tooltipItem, data) => {
+                  const { datasetIndex, value, index } = tooltipItem;
+
+                  if (datasetIndex === 1 || data.labels[index] === moment().format('YYYY-MM-DD')) {
+                    return `Completed: ${value} Target: ${Math.round(
+                      data.datasets[2].data[index]
+                    )}`;
                   }
-                  if (datasetIndex === 2) {
-                    return `Target: ${value}`;
+                  if (datasetIndex === 2 && index > 0) {
+                    return `Target: ${Math.round(value)}`;
                   }
+
                   return null;
                 }
               }
@@ -94,10 +154,11 @@ export default function MeasureGoalsChart(props) {
               xAxes: [
                 {
                   ticks: {
-                    maxTicksLimit: 9,
+                    autoSkip: true,
+                    maxTicksLimit: 500,
                     callback(value, index, values) {
                       if (index % 7 === 0 || index === values[index.length]) {
-                        return value;
+                        return moment(value).format('MMMM DD');
                       }
                       return null;
                     }
@@ -127,13 +188,27 @@ export default function MeasureGoalsChart(props) {
         })
       );
     } else {
-      updateData(graph, labels, measuresData, targetData);
+      updateData(
+        graph,
+        labels,
+        measuresData,
+        targetData,
+        highlightData,
+        measureLineShow,
+        targetLineShow
+      );
     }
-  }, []);
+  });
 
   return (
     <div className="chart__nps">
       <canvas id="chart__nps" ref={chartRef} />
+      <Button size="sm" onClick={toggleMeasures} variant="warning">
+        Toggle Measure Graph
+      </Button>{' '}
+      <Button size="sm" onClick={toggleTarget} variant="warning">
+        Toggle Target Graph
+      </Button>
     </div>
   );
 }

@@ -66,26 +66,20 @@ const populateMeasuresCompleted = (measures, dates, currentDate) => {
  Return array with start/end values for measures, populate interspersing data with null values
  for ChartJS interpolation
 */
-const calcGoalData = (dateMeasureArray, targetDate, targetMeasures) => {
+const calcTargetData = (dateMeasureArray, targetDate, targetMeasures) => {
+  const differenceX = moment(targetDate).diff(dateMeasureArray[0].date, 'd');
+  const differenceY = targetMeasures - dateMeasureArray[0].measuresCompleted;
+  const slope = differenceY / differenceX;
+
   const target = [];
 
   if (targetDate || targetMeasures) {
-    for (let k = 0; k <= dateMeasureArray.length - 1; k += 1) {
-      if (k === 0) {
-        target.push({
-          date: dateMeasureArray[0].date,
-          measuresCompleted: !dateMeasureArray[0].measuresCompleted
-            ? 0
-            : dateMeasureArray[0].measuresCompleted
-        });
-      } else if (k === dateMeasureArray.length - 1) {
-        target.push({
-          date: targetDate,
-          measuresCompleted: targetMeasures
-        });
-      } else {
-        target.push(null);
-      }
+    for (let k = 0; k < dateMeasureArray.length; k += 1) {
+      target.push({
+        date: dateMeasureArray[k].date,
+        measuresCompleted:
+          moment(dateMeasureArray[k].date).diff(dateMeasureArray[0].date, 'd') * slope
+      });
     }
   }
   return target;
@@ -121,7 +115,7 @@ export default function(measures, targetDate, targetMeasures) {
     currentDate
   );
 
-  const targetArray = calcGoalData(dateIntervalWithMeasures, targetDate, targetMeasures);
+  const targetArray = calcTargetData(dateIntervalWithMeasures, targetDate, targetMeasures);
 
   const filteredArray = filterDatesAfterCurrentDate(dateIntervalWithMeasures);
 
