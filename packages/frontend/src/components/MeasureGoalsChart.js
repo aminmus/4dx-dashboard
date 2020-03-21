@@ -4,25 +4,21 @@ import React, { useEffect, useState } from 'react';
 import Chart from 'chart.js';
 import formatMeasureProgress from './formatMeasureProgress';
 
+const updateData = (graphInstance, newLabels, newData, newTargetData) => {
+  graphInstance.data.datasets[0].data = newData;
+  graphInstance.data.datasets[1].data = newTargetData;
+  graphInstance.data.labels = newLabels;
+  graphInstance.update();
+};
+
 export default function MeasureGoalsChart(props) {
   const { measures, measuresGoal } = props;
   const { targetDate, targetMeasures } = measuresGoal;
   const chartRef = React.createRef();
   const [graph, setGraph] = useState(null);
 
-  const formattedMeasureData = formatMeasureProgress(measures, targetDate, targetMeasures);
-  const currentChartLabels = formattedMeasureData.current.map(entry => entry.date);
-  const currentChartValues = formattedMeasureData.current.map(entry => entry.measuresCompleted);
-  const targetChartValues = formattedMeasureData.target.map(entry => {
-    return entry ? entry.measuresCompleted : null;
-  });
-
-  const updateData = (graphInstance, newLabels, newData, newTargetData) => {
-    graphInstance.data.datasets[0].data = newData;
-    graphInstance.data.datasets[1].data = newTargetData;
-    graphInstance.data.labels = newLabels;
-    graphInstance.update();
-  };
+  const { labels, data } = formatMeasureProgress(measures, targetDate, targetMeasures);
+  const { measuresData, targetData, highlightData } = data;
 
   useEffect(() => {
     const detailsChartRef = chartRef.current.getContext('2d');
@@ -34,19 +30,30 @@ export default function MeasureGoalsChart(props) {
         new Chart(detailsChartRef, {
           type: 'line',
           data: {
-            labels: currentChartLabels,
+            labels,
             datasets: [
               {
-                data: currentChartValues,
+                data: measuresData,
                 borderColor: 'rgba(250, 191, 44, 1)',
                 borderWidth: 3,
-                pointRadius: 5,
-                pointBorderWidth: 3,
+                pointRadius: 0,
+                pointBorderWidth: 0,
                 pointBackgroundColor: 'rgba(250, 191, 44, 1)',
-                fill: false
+                fill: false,
+                steppedLine: true
               },
               {
-                data: targetChartValues,
+                data: highlightData,
+                borderColor: 'green',
+                borderWidth: 3,
+                pointRadius: 4,
+                pointBorderWidth: 4,
+                pointBackgroundColor: 'green',
+                fill: false,
+                steppedLine: true
+              },
+              {
+                data: targetData,
                 spanGaps: true,
                 borderColor: ['red'],
                 borderWidth: 3,
@@ -64,7 +71,39 @@ export default function MeasureGoalsChart(props) {
               text: 'Measures Completed Over Time (weekly)',
               fontColor: 'rgba(250, 191, 44, 1)'
             },
+            tooltips: {
+              bodyFontSize: 18,
+              titleFontSize: 20,
+              callbacks: {
+                /* TODO: GENERATE DATA POINTS FOR TARGET LINE USING SLOPE OF TARGET LINE
+                ROUND THE VALUE UP/DOWN IN THE TOOLBOX AND LIST BELOW
+                */
+                label: tooltipItem => {
+                  const { datasetIndex, value } = tooltipItem;
+                  if (datasetIndex === 1) {
+                    return `Completed: ${value}`;
+                  }
+                  if (datasetIndex === 2) {
+                    return `Target: ${value}`;
+                  }
+                  return null;
+                }
+              }
+            },
             scales: {
+              xAxes: [
+                {
+                  ticks: {
+                    maxTicksLimit: 9,
+                    callback(value, index, values) {
+                      if (index % 7 === 0 || index === values[index.length]) {
+                        return value;
+                      }
+                      return null;
+                    }
+                  }
+                }
+              ],
               yAxes: [
                 {
                   scaleLabel: {
@@ -75,7 +114,7 @@ export default function MeasureGoalsChart(props) {
                   ticks: {
                     beginAtZero: false,
                     suggestedMax: targetMeasures,
-                    suggestedMin: currentChartValues[0]
+                    suggestedMin: measuresData[0]
                   }
                 }
               ]
@@ -88,7 +127,7 @@ export default function MeasureGoalsChart(props) {
         })
       );
     } else {
-      updateData(graph, currentChartLabels, currentChartValues, targetChartValues);
+      updateData(graph, labels, measuresData, targetData);
     }
   }, []);
 
