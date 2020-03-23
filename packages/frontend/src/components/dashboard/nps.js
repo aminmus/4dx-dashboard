@@ -13,7 +13,7 @@ import {
   NumberInput,
   DateInput
 } from 'react-admin';
-import { validateNps, validateDate } from '../utils/adminValidation';
+import { validateNps, validateDateRequired } from '../utils/adminValidation';
 
 export const NpsList = props => (
   <List {...props} bulkActionButtons={false}>
@@ -23,7 +23,7 @@ export const NpsList = props => (
       <DateField source="date" />
       <DateField source="target-date" />
       <EditButton />
-      <DeleteButton />
+      <DeleteButton undoable={false} />
     </Datagrid>
   </List>
 );
@@ -33,8 +33,8 @@ export const NpsEdit = props => (
     <SimpleForm redirect="list">
       <NumberInput source="current-nps" validate={validateNps} />
       <NumberInput source="goal-nps" validate={validateNps} />
-      <DateInput source="date" validate={validateDate} />
-      <DateInput source="target-date" validate={validateDate} />
+      <DateInput source="date" validate={validateDateRequired} />
+      <DateInput source="target-date" validate={validateDateRequired} />
     </SimpleForm>
   </Edit>
 );
@@ -44,8 +44,8 @@ export const NpsCreate = props => (
     <SimpleForm redirect="list">
       <NumberInput source="current-nps" validate={validateNps} />
       <NumberInput source="goal-nps" validate={validateNps} />
-      <DateInput source="date" validate={validateDate} />
-      <DateInput source="target-date" validate={validateDate} />
+      <DateInput source="date" validate={validateDateRequired} />
+      <DateInput source="target-date" validate={validateDateRequired} />
     </SimpleForm>
   </Create>
 );

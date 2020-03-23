@@ -3,7 +3,7 @@
 import React from 'react';
 import { Edit, Create, SimpleForm, TextInput, DateInput, NumberInput } from 'react-admin';
 import { parse } from 'query-string';
-import { validateScore, validateDate } from '../utils/adminValidation';
+import { validateScore, validateDateRequired } from '../utils/adminValidation';
 
 export const CsatEdit = props => {
   const { client_id } = parse(props.location.search);
@@ -11,7 +11,7 @@ export const CsatEdit = props => {
     <Edit title="Edit Client Satisfaction score" {...props}>
       <SimpleForm redirect={`/clients/${client_id}/show/csat`}>
         <TextInput disabled source="id" />
-        <DateInput source="date" validate={validateDate} />
+        <DateInput source="date" validate={validateDateRequired} />
         <NumberInput source="score" validate={validateScore} />
       </SimpleForm>
     </Edit>
@@ -27,7 +27,7 @@ export const CsatCreate = props => {
         redirect={`/clients/${client_id}/show/csat`}
       >
         <NumberInput source="ClientId" disabled />
-        <DateInput source="date" validate={validateDate} />
+        <DateInput source="date" validate={validateDateRequired} />
         <NumberInput source="score" validate={validateScore} />
       </SimpleForm>
     </Create>
