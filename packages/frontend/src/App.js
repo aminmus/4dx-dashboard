@@ -43,7 +43,8 @@ export default function App() {
   });
   const [chart, setChart] = useState({
     months: [],
-    values: []
+    values: [],
+    target: null
   });
 
   useEffect(() => {
