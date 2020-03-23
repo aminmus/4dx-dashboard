@@ -32,7 +32,7 @@ export const ClientList = props => (
     <Datagrid rowClick="show" isRowSelectable={() => false}>
       <TextField source="name" />
       <EditButton />
-      <DeleteButton />
+      <DeleteButton undoable={false} />
       <ShowButton />
     </Datagrid>
   </List>

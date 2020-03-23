@@ -21,7 +21,7 @@ export const MeasureGoalList = props => (
       <NumberField source="measures-amount" label="Measures goal amount" />
       <DateField source="target-date" label="Target date" />
       <EditButton />
-      <DeleteButton />
+      <DeleteButton undoable={false} />
     </Datagrid>
   </List>
 );
