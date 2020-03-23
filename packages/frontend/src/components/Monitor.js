@@ -65,7 +65,7 @@ export default function Monitor(props) {
                 {
                   scaleLabel: {
                     display: true,
-                    labelString: 'Measures Completed',
+                    labelString: 'NPS',
                     fontColor: 'rgba(250, 191, 44, 1)'
                   },
                   ticks: {
