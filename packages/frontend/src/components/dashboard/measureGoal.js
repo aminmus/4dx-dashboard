@@ -13,7 +13,7 @@ import {
   NumberInput,
   DateInput
 } from 'react-admin';
-import { validateDate, validateRequired } from '../utils/adminValidation';
+import { validateGoalDate, validateRequired } from '../utils/adminValidation';
 
 export const MeasureGoalList = props => (
   <List {...props} bulkActionButtons={false}>
@@ -34,7 +34,7 @@ export const MeasureGoalEdit = props => (
         label="Measures goal amount"
         validate={validateRequired}
       />
-      <DateInput source="target-date" label="Target date" validate={validateDate} />
+      <DateInput source="target-date" label="Target date" validate={validateGoalDate} />
     </SimpleForm>
   </Edit>
 );
@@ -47,7 +47,7 @@ export const MeasureGoalCreate = props => (
         label="Measures goal amount"
         validate={validateRequired}
       />
-      <DateInput source="target-date" label="Target date" validate={validateDate} />
+      <DateInput source="target-date" label="Target date" validate={validateGoalDate} />
     </SimpleForm>
   </Create>
 );
