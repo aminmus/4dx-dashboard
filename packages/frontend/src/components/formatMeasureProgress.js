@@ -42,14 +42,19 @@ const calcDateInterval = (currentDate, targetDate, incrementSize) => {
  Populate date array with successful measures matching the date.
 */
 const populateMeasuresCompleted = (measures, dates, currentDate) => {
+  // Run through all of the successful measures
   measures.forEach(successfulMeasureDate => {
+    // For each entry check with the current dateInterval dates
     dates.forEach(dateIntervalEntry => {
+      // Setting up the initial count for succesful measures
       if (
         !dateIntervalEntry.measuresCompleted &&
         moment(dateIntervalEntry.date).isSameOrBefore(currentDate)
       ) {
         dateIntervalEntry.measuresCompleted = 0;
       }
+      // Add to the count if succesful measure occurs before dateInterval date
+      // but before/on the current date
       if (
         moment(dateIntervalEntry.date).isSameOrAfter(successfulMeasureDate) &&
         moment(dateIntervalEntry.date).isSameOrBefore(currentDate)

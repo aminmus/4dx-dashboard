@@ -36,10 +36,8 @@ export default function MeasureGoalsChart(props) {
   const { measuresData, targetData, highlightData } = data;
 
   const setLastPointRadius = (radiusSize, measures) => {
-    const array = measures.filter(value => value === 0 || value);
-    for (let i = 0; i < array.length; i += 1) {
-      i === array.length - 1 ? (array[i] = radiusSize) : (array[i] = 0);
-    }
+    const array = measures.filter(value => value === 0 || value).map(() => 0);
+    array.splice(-1, 1, radiusSize);
     return array;
   };
 
@@ -87,7 +85,7 @@ export default function MeasureGoalsChart(props) {
                 data: measuresData,
                 borderColor: 'rgba(250, 191, 44, 1)',
                 borderWidth: 2,
-                pointRadius: setLastPointRadius(3, measuresData),
+                pointRadius: setLastPointRadius(5, measuresData),
                 pointBorderWidth: 0,
                 pointBackgroundColor: 'rgba(250, 191, 44, 1)',
                 fill: false,
