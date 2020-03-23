@@ -1,3 +1,4 @@
+/* eslint-disable no-console, no-unused-vars, no-shadow */
 import React, { useState, useEffect } from 'react';
 import {
   // eslint-disable-next-line indent
@@ -15,11 +16,20 @@ import Header from './components/Header';
 import Home from './layout/Home';
 import Login from './layout/Login';
 import reformatChart from './reformatChart';
+import reformatMeasureGoals from './reformatMeasureGoals';
+import reformatMeasures from './reformatMeasures';
 
 export default function App() {
   const [clients, setClients] = useState([
     { id: 0, name: 'No Clients Available', measures: [], csats: [] }
   ]);
+
+  const [measures, setMeasures] = useState([]);
+
+  const [measuresGoal, setMeasuresGoal] = useState({
+    targetMeasures: null,
+    targetDate: null
+  });
 
   const [definedStatus, setDefinedStatus] = useState({ totalClients: 0, definedClients: 0 });
   const [leadStatus, setLeadStatus] = useState({ leads: 0, leadsTotal: 0 });
@@ -40,16 +50,22 @@ export default function App() {
   useEffect(() => {
     async function setAppState() {
       try {
-        const [npsData, clientsData] = await fetchData();
+        const [npsData, clientsData, measures, measureGoals] = await fetchData();
         if (clientsData.clients.data.length > 0) {
           const clientData = reformatClientData(clientsData.clients);
           setClients(clientData);
           setDefinedStatus(calcDefineClients(clientData));
           setLeadStatus(calcLeads(clientData));
         }
-        if (npsData.nps.data.length) {
+        if (npsData.nps.data.length > 0) {
           setNps(reformatNps(npsData.nps));
           setChart(reformatChart(npsData.nps));
+        }
+        if (measureGoals.measureGoals.data.length > 0) {
+          setMeasuresGoal(reformatMeasureGoals(measureGoals.measureGoals));
+        }
+        if (measures.measures.data.length > 0) {
+          setMeasures(reformatMeasures(measures.measures));
         }
       } catch (e) {
         console.error(e);
@@ -65,7 +81,9 @@ export default function App() {
         nps,
         chart,
         leadStatus,
-        definedStatus
+        definedStatus,
+        measuresGoal,
+        measures
       }}
     >
       <Router>
