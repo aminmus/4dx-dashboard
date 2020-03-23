@@ -9,17 +9,18 @@
 */
 
 export default nps => {
-  let npsEntries = nps.data.map(entry => {
+  const npsEntries = nps.data.map(entry => {
     return {
       date: entry.attributes.date,
-      nps: entry.attributes['current-nps']
+      nps: entry.attributes['current-nps'],
+      goal: entry.attributes['goal-nps']
     };
   });
 
   // Sort array by ascending date
   npsEntries.sort((a, b) => {
-    var dateA = new Date(a.date);
-    var dateB = new Date(b.date);
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
     return dateA - dateB;
   });
 
@@ -27,9 +28,9 @@ export default nps => {
 
   /* 
   Compare previous entry and current entry's date.
-  If they match skip, if they don't match add to new array
+  If they match skip, if they don't match add entry to new array
   */
-  for (var i = 1; i <= npsEntries.length; i++) {
+  for (let i = 1; i <= npsEntries.length; i += 1) {
     if (i === npsEntries.length) {
       cleanDateArray.push(npsEntries[i - 1]);
     } else {
@@ -38,10 +39,9 @@ export default nps => {
       dateArrayCurrent = npsEntries[i].date.split('-');
       dateArrayPrevious = npsEntries[i - 1].date.split('-');
       if (
-        dateArrayCurrent[0] === dateArrayPrevious[0] &&
-        dateArrayCurrent[1] === dateArrayPrevious[1]
+        dateArrayCurrent[0] !== dateArrayPrevious[0] ||
+        dateArrayCurrent[1] !== dateArrayPrevious[1]
       ) {
-      } else {
         cleanDateArray.push(npsEntries[i - 1]);
       }
     }
@@ -56,14 +56,15 @@ export default nps => {
   };
 
   // Apply conversion of dates
-  let convertedArray = cleanDateArray.map(entry => {
-    return { nps: entry.nps, date: convertDate(entry.date) };
+  const convertedArray = cleanDateArray.map(entry => {
+    return { nps: entry.nps, date: convertDate(entry.date), goal: entry.goal };
   });
 
-  let finalArray = convertedArray.length > 5 ? convertedArray.slice(1).slice(-5) : convertedArray;
+  const finalArray = convertedArray.length > 5 ? convertedArray.slice(1).slice(-5) : convertedArray;
 
   return {
     months: finalArray.map(entry => entry.date),
-    values: finalArray.map(entry => entry.nps)
+    values: finalArray.map(entry => entry.nps),
+    target: finalArray.slice(-1)[0].goal
   };
 };
