@@ -13,7 +13,7 @@ import {
   NumberInput,
   DateInput
 } from 'react-admin';
-import { validateGoalDate, validateRequired } from '../utils/adminValidation';
+import { validateGoalDate, validateRequired } from '../../utils/adminValidation';
 
 export const MeasureGoalList = props => (
   <List {...props} bulkActionButtons={false}>

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Edit, Create, SimpleForm, TextInput, DateInput, NumberInput } from 'react-admin';
 import { parse } from 'query-string';
-import { validateScore, validateDateRequired } from '../utils/adminValidation';
+import { validateScore, validateDateRequired } from '../../utils/adminValidation';
 
 export const CsatEdit = props => {
   const { client_id } = parse(props.location.search);

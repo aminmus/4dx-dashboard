@@ -2,7 +2,7 @@ import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import logo from '../logo.png';
-import authProvider from '../authProvider';
+import authProvider from '../utils/authProvider';
 
 export default function Header() {
   const { logout } = authProvider;

@@ -6,18 +6,18 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import fetchData from './fetchData';
-import reformatClientData from './reformatClientData';
-import calcDefineClients from './calcDefineClients';
-import calcLeads from './calcLeads';
-import reformatNps from './reformatNps';
+import fetchData from './utils/fetchData';
+import reformatClientData from './utils/reformatClientData';
+import calcDefineClients from './utils/calcDefineClients';
+import calcLeads from './utils/calcLeads';
+import reformatNps from './utils/reformatNps';
 import StateContext from './context/state-context';
 import Header from './components/Header';
-import Home from './layout/Home';
-import Login from './layout/Login';
-import reformatChart from './reformatChart';
-import reformatMeasureGoals from './reformatMeasureGoals';
-import reformatMeasures from './reformatMeasures';
+import Home from './layouts/Home';
+import Admin from './layouts/Admin';
+import reformatChart from './utils/reformatChart';
+import reformatMeasureGoals from './utils/reformatMeasureGoals';
+import reformatMeasures from './utils/reformatMeasures';
 
 export default function App() {
   const [clients, setClients] = useState([
@@ -90,7 +90,7 @@ export default function App() {
         <Header />
         <Switch>
           <Route path="/admin">
-            <Login />
+            <Admin />
           </Route>
           <Route path="/">
             <Home />
