@@ -12,13 +12,15 @@ const updateData = (
   newData,
   newTargetData,
   measureLineShow,
-  targetLineShow
+  targetLineShow,
+  lineTension
 ) => {
   graphInstance.data.datasets[0].data = newData;
   graphInstance.data.datasets[1].data = newTargetData;
   graphInstance.data.datasets[0].showLine = measureLineShow;
   graphInstance.data.datasets[1].showLine = targetLineShow;
   graphInstance.data.labels = newLabels;
+  graphInstance.data.datasets[0].lineTension = lineTension;
   graphInstance.update();
 };
 
@@ -29,6 +31,7 @@ export default function MeasuresOverTime(props) {
   const [graph, setGraph] = useState(null);
   const [measureLineShow, setMeasureLineShow] = useState(true);
   const [targetLineShow, setTargetLineShow] = useState(true);
+  const [lineTension, setLineTension] = useState(0);
 
   const { labels, measuresData, targetData } = formatMeasureProgress(
     measures,
@@ -39,13 +42,43 @@ export default function MeasuresOverTime(props) {
   const toggleMeasures = e => {
     e.preventDefault();
     setMeasureLineShow(!measureLineShow);
-    updateData(graph, labels, measuresData, targetData, measureLineShow, targetLineShow);
+    updateData(
+      graph,
+      labels,
+      measuresData,
+      targetData,
+      measureLineShow,
+      targetLineShow,
+      lineTension
+    );
   };
 
   const toggleTarget = e => {
     e.preventDefault();
     setTargetLineShow(!targetLineShow);
-    updateData(graph, labels, measuresData, targetData, measureLineShow, targetLineShow);
+    updateData(
+      graph,
+      labels,
+      measuresData,
+      targetData,
+      measureLineShow,
+      targetLineShow,
+      lineTension
+    );
+  };
+
+  const toggleLineTension = e => {
+    e.preventDefault();
+    setLineTension(lineTension === 0.4 ? 0 : 0.4);
+    updateData(
+      graph,
+      labels,
+      measuresData,
+      targetData,
+      measureLineShow,
+      targetLineShow,
+      lineTension
+    );
   };
 
   useEffect(() => {
@@ -68,8 +101,8 @@ export default function MeasuresOverTime(props) {
                 pointBorderWidth: 0,
                 pointBackgroundColor: 'rgba(250, 191, 44, 1)',
                 fill: false,
-                steppedLine: true,
-                showLine: measureLineShow
+                showLine: measureLineShow,
+                lineTension: 0.4
               },
               {
                 data: targetData,
@@ -144,7 +177,15 @@ export default function MeasuresOverTime(props) {
         })
       );
     } else {
-      updateData(graph, labels, measuresData, targetData, measureLineShow, targetLineShow);
+      updateData(
+        graph,
+        labels,
+        measuresData,
+        targetData,
+        measureLineShow,
+        targetLineShow,
+        lineTension
+      );
     }
   });
 
@@ -156,6 +197,9 @@ export default function MeasuresOverTime(props) {
       </Button>{' '}
       <Button size="sm" onClick={toggleTarget} variant="warning">
         Toggle Target Graph
+      </Button>{' '}
+      <Button size="sm" onClick={toggleLineTension} variant="warning">
+        Toggle Line Tension
       </Button>
     </div>
   );
