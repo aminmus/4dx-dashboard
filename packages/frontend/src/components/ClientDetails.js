@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Progressbar from './Progressbar';
-import MeasureCheckList from './MeasureCheckList';
+import MeasureCheckList from './admin/MeasureCheckList';
 
 export default function ClientDetails(props) {
   const { client } = props;

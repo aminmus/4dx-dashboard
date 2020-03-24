@@ -3,8 +3,8 @@ import StateContext from '../context/state-context';
 import Wig from '../components/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/Details';
-import Monitor from '../components/Monitor';
-import MeasureGoalsChart from '../components/MeasureGoalsChart';
+import Nps from '../components/Nps';
+import MeasuresOverTime from '../components/MeasuresOverTime';
 
 export default function Home() {
   return (
@@ -23,17 +23,14 @@ export default function Home() {
             <div className="col-sm">
               <Details clients={context.clients} />
               {context.chart.values.length > 0 ? (
-                <Monitor chart={context.chart} />
+                <Nps chart={context.chart} />
               ) : (
                 <div className="my-5 p-4 jumbotron text-light bg-dark">
                   No Measure Data Available For NPS graph
                 </div>
               )}
               {context.measures.length > 0 ? (
-                <MeasureGoalsChart
-                  measures={context.measures}
-                  measuresGoal={context.measuresGoal}
-                />
+                <MeasuresOverTime measures={context.measures} measuresGoal={context.measuresGoal} />
               ) : (
                 <div className="my-5 p-4 jumbotron text-light bg-dark">
                   No Measure Data Available For Measure Over Time Graph

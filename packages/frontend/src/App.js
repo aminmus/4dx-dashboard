@@ -6,18 +6,18 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import fetchData from './fetchData';
-import reformatClientData from './reformatClientData';
-import calcDefineClients from './calcDefineClients';
-import calcLeads from './calcLeads';
-import reformatNps from './reformatNps';
+import fetchData from './components/utils/fetchData';
+import reformatClientData from './components/utils/reformatClientData';
+import calcDefineClients from './components/utils/calcDefineClients';
+import calcLeads from './components/utils/calcLeads';
+import reformatNps from './components/utils/reformatNps';
 import StateContext from './context/state-context';
 import Header from './components/Header';
-import Home from './layout/Home';
-import Login from './layout/Login';
-import reformatChart from './reformatChart';
-import reformatMeasureGoals from './reformatMeasureGoals';
-import reformatMeasures from './reformatMeasures';
+import Home from './layouts/Home';
+import Admin from './layouts/Admin';
+import reformatChart from './components/utils/reformatChart';
+import reformatMeasureGoals from './components/utils/reformatMeasureGoals';
+import reformatMeasures from './components/utils/reformatMeasures';
 
 export default function App() {
   const [clients, setClients] = useState([
@@ -90,7 +90,7 @@ export default function App() {
         <Header />
         <Switch>
           <Route path="/admin">
-            <Login />
+            <Admin />
           </Route>
           <Route path="/">
             <Home />

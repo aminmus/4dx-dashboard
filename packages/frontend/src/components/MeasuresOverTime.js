@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Chart from 'chart.js';
 import moment from 'moment';
 import { Button } from 'react-bootstrap';
-import formatMeasureProgress from './formatMeasureProgress';
+import formatMeasureProgress from './utils/formatMeasureProgress';
 
 const updateData = (
   graphInstance,
@@ -24,7 +24,7 @@ const updateData = (
   graphInstance.update();
 };
 
-export default function MeasureGoalsChart(props) {
+export default function MeasuresOverTime(props) {
   const { measures, measuresGoal } = props;
   const { targetDate, targetMeasures } = measuresGoal;
   const chartRef = React.createRef();

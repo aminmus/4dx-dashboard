@@ -1,20 +1,20 @@
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
+import { Admin as ReactAdmin, Resource } from 'react-admin';
 import { createMuiTheme } from '@material-ui/core/styles';
 import jsonapiClient from 'ra-jsonapi-client';
-import { ClientList, ClientEdit, ClientShow, ClientCreate } from '../components/dashboard/client';
-import authProvider from '../authProvider';
-import Dashboard from './Dashboard';
-import { CsatEdit, CsatCreate } from '../components/dashboard/csat';
-import { MeasureEdit, MeasureCreate } from '../components/dashboard/measure';
-import UserList from '../components/UserList';
-import { NpsList, NpsEdit, NpsCreate } from '../components/dashboard/nps';
+import { ClientList, ClientEdit, ClientShow, ClientCreate } from '../components/admin/client';
+import authProvider from '../components/utils/authProvider';
+import Dashboard from '../components/admin/Dashboard';
+import { CsatEdit, CsatCreate } from '../components/admin/csat';
+import { MeasureEdit, MeasureCreate } from '../components/admin/measure';
+import UserList from '../components/admin/user';
+import { NpsList, NpsEdit, NpsCreate } from '../components/admin/nps';
 import {
   MeasureGoalList,
   MeasureGoalEdit,
   MeasureGoalCreate
-} from '../components/dashboard/measureGoal';
-import CustomLayout from '../CustomLayout';
+} from '../components/admin/measureGoal';
+import CustomLayout from '../components/admin/CustomLayout';
 
 export default function Login() {
   const theme = createMuiTheme({
@@ -34,7 +34,7 @@ export default function Login() {
   const baseUrl = `${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_SERVER_PORT}`;
 
   return (
-    <Admin
+    <ReactAdmin
       authProvider={authProvider}
       dataProvider={jsonapiClient(`${baseUrl}/api`, settings)}
       dashboard={Dashboard}
@@ -59,6 +59,6 @@ export default function Login() {
         edit={MeasureGoalEdit}
         create={MeasureGoalCreate}
       />
-    </Admin>
+    </ReactAdmin>
   );
 }
