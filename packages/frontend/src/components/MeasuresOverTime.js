@@ -11,15 +11,13 @@ const updateData = (
   newLabels,
   newData,
   newTargetData,
-  newHighlightData,
   measureLineShow,
   targetLineShow
 ) => {
   graphInstance.data.datasets[0].data = newData;
-  graphInstance.data.datasets[1].data = newHighlightData;
-  graphInstance.data.datasets[2].data = newTargetData;
+  graphInstance.data.datasets[1].data = newTargetData;
   graphInstance.data.datasets[0].showLine = measureLineShow;
-  graphInstance.data.datasets[2].showLine = targetLineShow;
+  graphInstance.data.datasets[1].showLine = targetLineShow;
   graphInstance.data.labels = newLabels;
   graphInstance.update();
 };
@@ -32,41 +30,22 @@ export default function MeasuresOverTime(props) {
   const [measureLineShow, setMeasureLineShow] = useState(true);
   const [targetLineShow, setTargetLineShow] = useState(true);
 
-  const { labels, data } = formatMeasureProgress(measures, targetDate, targetMeasures);
-  const { measuresData, targetData, highlightData } = data;
-
-  const setLastPointRadius = (radiusSize, measures) => {
-    const array = measures.filter(value => value === 0 || value).map(() => 0);
-    array.splice(-1, 1, radiusSize);
-    return array;
-  };
+  const { labels, measuresData, targetData } = formatMeasureProgress(
+    measures,
+    targetDate,
+    targetMeasures
+  );
 
   const toggleMeasures = e => {
     e.preventDefault();
     setMeasureLineShow(!measureLineShow);
-    updateData(
-      graph,
-      labels,
-      measuresData,
-      targetData,
-      highlightData,
-      measureLineShow,
-      targetLineShow
-    );
+    updateData(graph, labels, measuresData, targetData, measureLineShow, targetLineShow);
   };
 
   const toggleTarget = e => {
     e.preventDefault();
     setTargetLineShow(!targetLineShow);
-    updateData(
-      graph,
-      labels,
-      measuresData,
-      targetData,
-      highlightData,
-      measureLineShow,
-      targetLineShow
-    );
+    updateData(graph, labels, measuresData, targetData, measureLineShow, targetLineShow);
   };
 
   useEffect(() => {
@@ -85,23 +64,12 @@ export default function MeasuresOverTime(props) {
                 data: measuresData,
                 borderColor: 'rgba(250, 191, 44, 1)',
                 borderWidth: 2,
-                pointRadius: setLastPointRadius(5, measuresData),
+                pointRadius: 3,
                 pointBorderWidth: 0,
                 pointBackgroundColor: 'rgba(250, 191, 44, 1)',
                 fill: false,
                 steppedLine: true,
                 showLine: measureLineShow
-              },
-              {
-                data: highlightData,
-                borderColor: 'green',
-                borderWidth: 3,
-                pointRadius: 4,
-                pointBorderWidth: 4,
-                pointBackgroundColor: 'green',
-                fill: false,
-                showLine: false,
-                hitRadius: 5
               },
               {
                 data: targetData,
@@ -127,23 +95,16 @@ export default function MeasuresOverTime(props) {
               bodyFontSize: 18,
               titleFontSize: 20,
               callbacks: {
-                title: tooltipItem => {
-                  return tooltipItem[0].label === moment().format('YYYY-MM-DD')
-                    ? `Today (${tooltipItem[0].label})`
-                    : tooltipItem[0].label;
-                },
                 label: (tooltipItem, data) => {
                   const { datasetIndex, value, index } = tooltipItem;
-
-                  if (datasetIndex === 1 || data.labels[index] === moment().format('YYYY-MM-DD')) {
+                  if (datasetIndex === 0) {
                     return `Completed: ${value} Target: ${Math.round(
-                      data.datasets[2].data[index]
+                      data.datasets[1].data[index]
                     )}`;
                   }
-                  if (datasetIndex === 2 && index > 0) {
+                  if (datasetIndex === 1 && index > 0) {
                     return `Target: ${Math.round(value)}`;
                   }
-
                   return null;
                 }
               }
@@ -154,11 +115,8 @@ export default function MeasuresOverTime(props) {
                   ticks: {
                     autoSkip: true,
                     maxTicksLimit: 500,
-                    callback(value, index, values) {
-                      if (index % 7 === 0 || index === values[index.length]) {
-                        return moment(value).format('MMMM DD');
-                      }
-                      return null;
+                    callback(value) {
+                      return moment(value).format('MMMM DD');
                     }
                   }
                 }
@@ -186,15 +144,7 @@ export default function MeasuresOverTime(props) {
         })
       );
     } else {
-      updateData(
-        graph,
-        labels,
-        measuresData,
-        targetData,
-        highlightData,
-        measureLineShow,
-        targetLineShow
-      );
+      updateData(graph, labels, measuresData, targetData, measureLineShow, targetLineShow);
     }
   });
 
