@@ -81,6 +81,10 @@ export default function MeasuresOverTime(props) {
     );
   };
 
+  const filterRenderByDate = (measuresData, labels) => {
+    return measuresData;
+  };
+
   useEffect(() => {
     const detailsChartRef = chartRef.current.getContext('2d');
     Chart.defaults.global.defaultFontColor = '#7C7C7C';
@@ -94,7 +98,7 @@ export default function MeasuresOverTime(props) {
             labels,
             datasets: [
               {
-                data: measuresData,
+                data: filterRenderByDate(measuresData, labels),
                 borderColor: 'rgba(250, 191, 44, 1)',
                 borderWidth: 2,
                 pointRadius: 3,
@@ -102,7 +106,7 @@ export default function MeasuresOverTime(props) {
                 pointBackgroundColor: 'rgba(250, 191, 44, 1)',
                 fill: false,
                 showLine: measureLineShow,
-                lineTension: 0.4
+                lineTension: 0
               },
               {
                 data: targetData,

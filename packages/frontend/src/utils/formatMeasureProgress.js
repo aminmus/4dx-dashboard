@@ -26,25 +26,40 @@ const setInterval = (startDate = null, targetDate = null) => {
 };
 
 const setDataPointsMeasure = (interval = null, measures = null) => {
-  return !measures || !interval
-    ? []
-    : interval.reduce((dataPointArray, date) => {
-        let i = 0;
-        measures.forEach(measureDate => {
-          if (moment(date).isSameOrAfter(measureDate)) {
-            i += 1;
-          }
-        });
-        dataPointArray.push(i);
-        return dataPointArray;
-      }, []);
+  if (measures && interval) {
+    return (
+      interval
+        // Filter away dates after current date
+        .filter(date => moment(date).isSameOrBefore(moment()))
+        /* 
+          Compare array with succesful measures with interval dates.
+          Reduce array of dates into corresponding measures completed at that date
+        */
+        .reduce((dataPointArray, date) => {
+          let i = 0;
+          measures.forEach(measureDate => {
+            if (moment(date).isSameOrAfter(measureDate)) {
+              i += 1;
+            }
+          });
+          dataPointArray.push(i);
+          return dataPointArray;
+        }, [])
+    );
+  }
+  return [];
 };
 
-const setDataPointsTarget = (data = null, targetMeasures = null, targetDate = null) => {
-  if (data || targetMeasures || targetDate) {
+const setDataPointsTarget = (
+  interval = null,
+  measures = null,
+  targetMeasures = null,
+  targetDate = null
+) => {
+  if (interval && targetMeasures && targetDate && measures) {
     const targetArray = [];
-    const yDelta = targetMeasures - data[0];
-    const xDelta = data.length - 1;
+    const yDelta = targetMeasures - measures[0];
+    const xDelta = interval.length - 1;
     const slope = yDelta / xDelta;
     for (let i = 0; i <= xDelta; i += 1) {
       targetArray.push(i * slope);
@@ -57,7 +72,12 @@ const setDataPointsTarget = (data = null, targetMeasures = null, targetDate = nu
 export default function(measures, targetDate, targetMeasures) {
   const interval = setInterval(null, targetDate);
   const datapointsMeasure = setDataPointsMeasure(interval, measures);
-  const dataPointsTarget = setDataPointsTarget(datapointsMeasure, targetMeasures, targetDate);
+  const dataPointsTarget = setDataPointsTarget(
+    interval,
+    datapointsMeasure,
+    targetMeasures,
+    targetDate
+  );
   return {
     measuresData: datapointsMeasure,
     targetData: dataPointsTarget,
