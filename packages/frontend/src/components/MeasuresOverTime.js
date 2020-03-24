@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Chart from 'chart.js';
 import moment from 'moment';
 import { Button } from 'react-bootstrap';
-import formatMeasureProgress from './utils/formatMeasureProgress';
+import formatMeasureProgress from '../utils/formatMeasureProgress';
 
 const updateData = (
   graphInstance,

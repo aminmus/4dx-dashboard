@@ -3,7 +3,7 @@ import { Admin as ReactAdmin, Resource } from 'react-admin';
 import { createMuiTheme } from '@material-ui/core/styles';
 import jsonapiClient from 'ra-jsonapi-client';
 import { ClientList, ClientEdit, ClientShow, ClientCreate } from '../components/admin/client';
-import authProvider from '../components/utils/authProvider';
+import authProvider from '../utils/authProvider';
 import Dashboard from '../components/admin/Dashboard';
 import { CsatEdit, CsatCreate } from '../components/admin/csat';
 import { MeasureEdit, MeasureCreate } from '../components/admin/measure';

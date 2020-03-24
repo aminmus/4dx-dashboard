@@ -6,18 +6,18 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import fetchData from './components/utils/fetchData';
-import reformatClientData from './components/utils/reformatClientData';
-import calcDefineClients from './components/utils/calcDefineClients';
-import calcLeads from './components/utils/calcLeads';
-import reformatNps from './components/utils/reformatNps';
+import fetchData from './utils/fetchData';
+import reformatClientData from './utils/reformatClientData';
+import calcDefineClients from './utils/calcDefineClients';
+import calcLeads from './utils/calcLeads';
+import reformatNps from './utils/reformatNps';
 import StateContext from './context/state-context';
 import Header from './components/Header';
 import Home from './layouts/Home';
 import Admin from './layouts/Admin';
-import reformatChart from './components/utils/reformatChart';
-import reformatMeasureGoals from './components/utils/reformatMeasureGoals';
-import reformatMeasures from './components/utils/reformatMeasures';
+import reformatChart from './utils/reformatChart';
+import reformatMeasureGoals from './utils/reformatMeasureGoals';
+import reformatMeasures from './utils/reformatMeasures';
 
 export default function App() {
   const [clients, setClients] = useState([

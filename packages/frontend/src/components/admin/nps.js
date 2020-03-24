@@ -13,7 +13,7 @@ import {
   NumberInput,
   DateInput
 } from 'react-admin';
-import { validateNps, validateDate } from '../utils/adminValidation';
+import { validateNps, validateDate } from '../../utils/adminValidation';
 
 export const NpsList = props => (
   <List {...props} bulkActionButtons={false}>
