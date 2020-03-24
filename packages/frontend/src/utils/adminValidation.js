@@ -1,12 +1,38 @@
-import { required, minLength, maxLength, number, minValue, maxValue, regex } from 'react-admin';
+import { required, minLength, maxLength, number, minValue, maxValue } from 'react-admin';
 import moment from 'moment';
 
-const compareToCurrentDate = value => {
-  if (!value) {
+const isWeekAfterCurrentDate = value => {
+  if (!moment(value).isValid()) {
     return 'Must be a valid date';
   }
   if (moment(value).diff(moment(), 'days') < 7) {
     return 'Must be set at least a week after current date';
+  }
+  return [];
+};
+
+const isNullOrDate = value => {
+  if (value && !moment(value).isValid()) {
+    return 'Must be a valid date';
+  }
+  if (moment(value).isBefore('2000-01-01')) {
+    return 'Lower date limit 2000-01-01';
+  }
+  if (moment(value).isAfter('2030-01-01')) {
+    return 'Upper date limit 2030-01-01';
+  }
+  return [];
+};
+
+const isDate = value => {
+  if (!moment(value).isValid()) {
+    return 'Must be a valid date';
+  }
+  if (moment(value).isBefore('2000-01-01')) {
+    return 'Lower date limit 2000-01-01';
+  }
+  if (moment(value).isAfter('2030-01-01')) {
+    return 'Upper date limit 2030-01-01';
   }
   return [];
 };
@@ -16,16 +42,6 @@ export const validateRequired = [required()];
 export const validateDescription = [required(), minLength(5), maxLength(100)];
 export const validateScore = [required(), number(), minValue(1), maxValue(10)];
 export const validateNps = [required(), number(), minValue(-100), maxValue(100)];
-export const validateDate = [
-  regex(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/, 'Must be a valid date')
-];
-export const validateDateRequired = [
-  required(),
-  regex(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/, 'Must be a valid date')
-];
-
-export const validateGoalDate = [
-  compareToCurrentDate,
-  required(),
-  regex(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/, 'Must be a valid date')
-];
+export const validateDate = [isNullOrDate];
+export const validateDateRequired = [required(), isDate];
+export const validateGoalDate = [required(), isWeekAfterCurrentDate];
