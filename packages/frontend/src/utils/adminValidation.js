@@ -19,7 +19,7 @@ const isNullOrDate = value => {
     return 'Lower date limit 2000-01-01';
   }
   if (moment(value).isAfter('2030-01-01')) {
-    return 'Lower date limit 2030-01-01';
+    return 'Upper date limit 2030-01-01';
   }
   return [];
 };
@@ -32,7 +32,7 @@ const isDate = value => {
     return 'Lower date limit 2000-01-01';
   }
   if (moment(value).isAfter('2030-01-01')) {
-    return 'Lower date limit 2030-01-01';
+    return 'Upper date limit 2030-01-01';
   }
   return [];
 };
