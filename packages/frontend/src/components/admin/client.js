@@ -151,7 +151,7 @@ export const ClientShow = props => {
             <Datagrid rowClick={editCsatClick}>
               <NumberField label="Score" source="score" />
               <DateField label="Date of Score" source="date" />
-              <EditClientScore c_id="CID" {...props} />
+              <EditClientScore {...props} clientId={props.id} />
               <DeleteButton redirect={`/clients/${props.id}/show/csat`} />
             </Datagrid>
           </ReferenceManyField>
