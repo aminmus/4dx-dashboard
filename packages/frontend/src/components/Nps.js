@@ -86,7 +86,7 @@ export default function Monitor(props) {
     } else {
       updateData(graph, chart.months, chart.values, targetValues);
     }
-  });
+  }, [chartRef, chart.target, chart.values, chart.months, graph]);
 
   return (
     <div className="chart__nps">
