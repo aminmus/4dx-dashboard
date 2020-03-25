@@ -5,25 +5,25 @@ import LinearProgressBar from '@material-ui/core/LinearProgress';
 import { withStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const LinearProgress = withStyles({
-  barColorPrimary: {
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)'
-  },
-  root: {
-    flexBasis: '60%',
-    height: '10px',
-    margin: '10px',
-    borderRadius: '10px',
-    fill: 'red',
-    background: 'black'
-  }
-})(LinearProgressBar);
-
 export default function ProgressBar(props) {
   const { clientScore, clientName } = props;
   const [value, total] = clientScore.split('/');
-  const progress = (parseInt(value) / parseInt(total)) * 100;
+  const progress = parseInt(value) ? (parseInt(value) / parseInt(total)) * 100 : 0;
   const matches = useMediaQuery('(min-width:600px)');
+
+  const LinearProgress = withStyles({
+    barColorPrimary: {
+      background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)'
+    },
+    root: {
+      flexBasis: '60%',
+      height: '10px',
+      margin: '10px',
+      borderRadius: '10px',
+      fill: 'red',
+      background: 'black'
+    }
+  })(LinearProgressBar);
 
   const ContainerStyle = {
     display: 'flex',
@@ -36,7 +36,8 @@ export default function ProgressBar(props) {
   };
 
   const clientNameStyle = {
-    flex: 1
+    flex: 1,
+    color: progress ? 'white' : 'darkGray'
   };
 
   return (
