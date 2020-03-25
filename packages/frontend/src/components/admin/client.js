@@ -1,4 +1,4 @@
-/* eslint-disable  react/jsx-props-no-spreading, react/prop-types, react/destructuring-assignment */
+/* eslint-disable  react/jsx-props-no-spreading, react/prop-types, react/destructuring-assignment, no-unused-vars */
 import React from 'react';
 import {
   List,
@@ -131,6 +131,14 @@ const CustomBooleanField = ({ record }) => {
 };
 
 export const ClientShow = props => {
+  const editCsatClick = (id, _basePath, _record) => {
+    return `/csat/${id}?client_id=${props.id}`;
+  };
+
+  const editMeasuresClick = (id, _basePath, _record) => {
+    return `/measures/${id}?client_id=${props.id}`;
+  };
+
   return (
     <Show {...props}>
       <TabbedShowLayout>
@@ -140,10 +148,10 @@ export const ClientShow = props => {
         <Tab label="Client Satisfaction" path="csat">
           <AddNewClientScore />
           <ReferenceManyField reference="csat" target="clientId" addLabel={false}>
-            <Datagrid rowClick="edit">
+            <Datagrid rowClick={editCsatClick}>
               <NumberField label="Score" source="score" />
               <DateField label="Date of Score" source="date" />
-              <EditClientScore {...props} clientId={props.id} />
+              <EditClientScore c_id="CID" {...props} />
               <DeleteButton redirect={`/clients/${props.id}/show/csat`} />
             </Datagrid>
           </ReferenceManyField>
@@ -151,7 +159,7 @@ export const ClientShow = props => {
         <Tab label="Measures" path="measures">
           <AddNewClientMeasure />
           <ReferenceManyField reference="measures" target="clientId" addLabel={false}>
-            <Datagrid rowClick="edit">
+            <Datagrid rowClick={editMeasuresClick}>
               <TextField source="description" />
               <CustomBooleanField label="Success" {...props} />
               <EditClientMeasure {...props} clientId={props.id} />
