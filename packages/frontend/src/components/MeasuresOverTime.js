@@ -191,7 +191,17 @@ export default function MeasuresOverTime(props) {
         lineTension
       );
     }
-  });
+  }, [
+    chartRef,
+    graph,
+    labels,
+    measuresData,
+    measureLineShow,
+    targetData,
+    targetLineShow,
+    targetMeasures,
+    lineTension
+  ]);
 
   return (
     <div className="chart__nps">
