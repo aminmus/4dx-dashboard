@@ -1,108 +1,156 @@
-/* eslint-disable no-param-reassign */
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Chart from 'chart.js';
 import PropTypes from 'prop-types';
+import OptionsToggleButton from './elements/OptionsToggleButton';
+import OptionsButton from './elements/OptionsButton';
+import COLORS from '../style/COLORS';
 
-export default function Monitor(props) {
+const { primary, light, success, gray } = COLORS;
+
+const ChartHeaderStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  color: primary
+};
+
+const ContainerStyle = {
+  margin: '10px'
+};
+
+const OptionsContainerStyle = {
+  margin: '10px',
+  border: `1px solid ${light}`,
+  borderRadius: '10px'
+};
+
+const Nps = props => {
   const { chart } = props;
-  const chartRef = React.createRef();
-  const [graph, setGraph] = useState(null);
+  const { months, target, values } = chart;
 
-  const updateData = (graphData, newLabels, newData, newTarget) => {
-    graphData.data.datasets[0].data = newData;
-    graphData.data.datasets[1].data = newTarget;
-    graphData.data.labels = newLabels;
-    graphData.update();
+  const chartContainer = useRef(null);
+  const [optionsShow, setOptionsShow] = useState(false);
+  const [chartInstance, setChartInstance] = useState(null);
+  const [displayTarget, setDisplayTarget] = useState(true);
+
+  const [npsDatasetData, setNpsDatasetData] = useState([]);
+  const [targetDatasetData, setTargetDatasetData] = useState([]);
+  const [labelsData, setLabelsData] = useState([]);
+
+  const toggleOptions = e => {
+    e.preventDefault();
+    setOptionsShow(!optionsShow);
+  };
+  const optionsToggleTarget = e => {
+    e.preventDefault();
+    setDisplayTarget(!displayTarget);
+  };
+
+  const chartConfig = {
+    type: 'line',
+    data: {
+      labels: labelsData,
+      datasets: [
+        {
+          data: npsDatasetData,
+          borderColor: primary,
+          borderWidth: 3,
+          pointRadius: 5,
+          pointBorderWidth: 3,
+          pointBackgroundColor: primary,
+          fill: false
+        },
+        {
+          data: targetDatasetData,
+          spanGaps: true,
+          borderWidth: 2,
+          borderColor: success,
+          fill: false,
+          showLine: displayTarget,
+          pointRadius: displayTarget ? 2 : 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        yAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: 'NPS',
+              fontColor: primary
+            },
+            ticks: {
+              beginAtZero: false,
+              suggestedMax: 30,
+              suggestedMin: -30
+            }
+          }
+        ]
+      },
+      legend: {
+        display: false
+      },
+      fill: false
+    }
   };
 
   useEffect(() => {
-    const detailsChartRef = chartRef.current.getContext('2d');
-    Chart.defaults.global.defaultFontColor = '#7C7C7C';
+    Chart.defaults.global.defaultFontColor = gray;
     Chart.defaults.global.defaultFontSize = 14;
 
-    let targetValues = [];
-    if (chart.target) {
-      targetValues = chart.values.map(() => null);
-      targetValues[0] = chart.target;
-      targetValues[chart.values.length - 1] = chart.target;
+    let targetArray = [];
+    if (target) {
+      targetArray = values.map(() => null);
+      targetArray[0] = target;
+      targetArray[values.length - 1] = target;
     }
 
-    if (graph === null) {
-      setGraph(
-        new Chart(detailsChartRef, {
-          type: 'line',
-          data: {
-            labels: chart.months,
-            datasets: [
-              {
-                data: chart.values,
-                borderColor: ['rgba(250, 191, 44, 1)'],
-                borderWidth: 3,
-                pointRadius: 5,
-                pointBorderWidth: 3,
-                pointBackgroundColor: 'rgba(250, 191, 44, 1)',
-                fill: false
-              },
-              {
-                data: targetValues,
-                spanGaps: true,
-                borderWidth: 2,
-                borderColor: 'lightgreen',
-                fill: false
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            title: {
-              display: true,
-              text: 'NPS Over Time (monthly)',
-              fontColor: 'rgba(250, 191, 44, 1)'
-            },
-            scales: {
-              yAxes: [
-                {
-                  scaleLabel: {
-                    display: true,
-                    labelString: 'NPS',
-                    fontColor: 'rgba(250, 191, 44, 1)'
-                  },
-                  ticks: {
-                    beginAtZero: false,
-                    suggestedMax: 30,
-                    suggestedMin: -60
-                  }
-                }
-              ]
-            },
-            legend: {
-              display: false
-            },
-            fill: false
-          }
-        })
-      );
-    } else {
-      updateData(graph, chart.months, chart.values, targetValues);
+    setTargetDatasetData(targetArray);
+    setLabelsData(months);
+    setNpsDatasetData(values);
+
+    if (chartContainer && chartContainer.current) {
+      const newChartInstance = new Chart(chartContainer.current, chartConfig);
+      setChartInstance(newChartInstance);
     }
-  }, [chartRef, chart.target, chart.values, chart.months, graph]);
+    if (chartInstance) {
+      chartInstance.data.datasets[0].data = npsDatasetData;
+      chartInstance.data.datasets[1].data = targetDatasetData;
+      chartInstance.data.labels = labelsData;
+    }
+  }, [chartContainer, months, values, target, displayTarget, npsDatasetData]);
 
   return (
-    <div className="chart__nps">
-      <canvas id="chart__nps" ref={chartRef} />
+    <div style={ContainerStyle}>
+      <div style={ChartHeaderStyle}>
+        <div className="chart-title">Nps (Monthly)</div>
+        <OptionsToggleButton onClick={toggleOptions} />
+      </div>
+      {optionsShow && (
+        <div style={OptionsContainerStyle}>
+          <OptionsButton
+            text={displayTarget ? 'Hide Target' : 'Show Target'}
+            onClick={optionsToggleTarget}
+          />
+        </div>
+      )}
+      <canvas ref={chartContainer} />
     </div>
   );
-}
+};
 
-Monitor.defaultProps = {
+Nps.defaultProps = {
   chart: {}
 };
 
-Monitor.propTypes = {
+Nps.propTypes = {
   chart: PropTypes.shape({
     months: PropTypes.array,
     values: PropTypes.array,
     target: PropTypes.number
   })
 };
+
+export default Nps;
