@@ -18,14 +18,27 @@ export default function Header() {
     history.push('/');
   };
 
+  const NavbarCollapseStyle = {
+    justifyContent: 'space-between',
+    width: '100%'
+  };
+
+  const HeaderStyle = {
+    backgroundColor: '#333333'
+  };
+
+  const LogoStyle = {
+    height: '105px'
+  };
+
   return (
-    <header>
+    <header style={HeaderStyle}>
       <Navbar className="py-0" expand="lg" variant="dark">
         <Navbar.Brand href="/">
-          <img className="logo navbar-brand" src={logo} alt="" />
+          <img style={LogoStyle} className="logo navbar-brand" src={logo} alt="" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="navbar-nav">
+        <Navbar.Collapse style={NavbarCollapseStyle} id="navbar-nav">
           <Nav className="navbar-nav-left">
             <Link className="nav-link text-light" style={{ textDecoration: 'none' }} to="/">
               Home

@@ -9,6 +9,13 @@ export default function Lead(props) {
   const { definedClients, totalClients } = definedStatus;
   const { defineClients, defineText, implementText } = nps;
 
+  const LeadNumberStyle = {
+    fontSize: '60px',
+    fontWeight: 700,
+    letterSpacing: '1px',
+    marginBottom: '40px'
+  };
+
   const setDefineLeadClassName = () => {
     if (defineClients < 7) {
       return 'text-danger';
@@ -33,7 +40,7 @@ export default function Lead(props) {
     return (
       <div>
         <h3 className="define">{defineText}</h3>
-        <div className="define lead__number">
+        <div style={LeadNumberStyle}>
           <span className={setDefineLeadClassName()}>{`${definedClients}/${totalClients}`}</span>
         </div>
       </div>
@@ -44,14 +51,15 @@ export default function Lead(props) {
     return (
       <div>
         <h3 className="implement">{implementText}</h3>
-        <div className="implement lead__number">
+        <div style={LeadNumberStyle}>
           <span className={setImplementLeadClassName()}>{`${leads}/${leadsTotal}`}</span>
         </div>
       </div>
     );
   };
+
   return (
-    <div className="lead__measures bg-container">
+    <div className="mt-3">
       <h2>LEAD</h2>
       {renderDefineSuccess()}
       {renderImplementSuccess()}
