@@ -51,7 +51,7 @@ export default function Wig(props) {
   })(CircularProgress);
 
   return (
-    <div className="wig bg-container text-center">
+    <div className="mt-3">
       <h2>WIG</h2>
       <h3 className="wig__statement">{description}</h3>
       <div style={{ position: 'relative' }}>
