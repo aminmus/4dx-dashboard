@@ -1,30 +1,36 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Chart from 'chart.js';
 import PropTypes from 'prop-types';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import RefreshButton from './elements/RefreshButton';
 import OptionsToggleButton from './elements/OptionsToggleButton';
 import OptionsButton from './elements/OptionsButton';
 import COLORS from '../style/COLORS';
 
 const { primary, light, success, gray } = COLORS;
 
-const ChartHeaderStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  color: primary
-};
-
-const ContainerStyle = {
-  margin: '10px'
-};
-
-const OptionsContainerStyle = {
-  margin: '10px',
-  border: `1px solid ${light}`,
-  borderRadius: '10px'
-};
-
 const Nps = props => {
+  const match = useMediaQuery('(min-width:600px)');
+
+  const ChartHeaderStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: primary
+  };
+
+  const ContainerStyle = {
+    margin: '10px'
+  };
+
+  const OptionsContainerStyle = {
+    margin: '10px',
+    border: `1px solid ${light}`,
+    borderRadius: '10px',
+    justifyContent: 'center',
+    flexDirection: match ? 'row' : 'column'
+  };
+
   const { chart } = props;
   const { months, target, values } = chart;
 
@@ -37,15 +43,6 @@ const Nps = props => {
   const [targetDatasetData, setTargetDatasetData] = useState([]);
   const [labelsData, setLabelsData] = useState([]);
 
-  const toggleOptions = e => {
-    e.preventDefault();
-    setOptionsShow(!optionsShow);
-  };
-  const optionsToggleTarget = e => {
-    e.preventDefault();
-    setDisplayTarget(!displayTarget);
-  };
-
   const chartConfig = {
     type: 'line',
     data: {
@@ -55,7 +52,7 @@ const Nps = props => {
           data: npsDatasetData,
           borderColor: primary,
           borderWidth: 3,
-          pointRadius: 5,
+          pointRadius: match ? 5 : 1,
           pointBorderWidth: 3,
           pointBackgroundColor: primary,
           fill: false
@@ -77,7 +74,7 @@ const Nps = props => {
         yAxes: [
           {
             scaleLabel: {
-              display: true,
+              display: match,
               labelString: 'NPS',
               fontColor: primary
             },
@@ -90,11 +87,6 @@ const Nps = props => {
         ],
         xAxes: [
           {
-            scaleLabel: {
-              display: true,
-              labelString: 'NPS',
-              fontColor: primary
-            },
             ticks: {
               callback(value, _index, _values) {
                 return value.split(' ')[0];
@@ -108,6 +100,21 @@ const Nps = props => {
       },
       fill: false
     }
+  };
+
+  const toggleOptions = e => {
+    e.preventDefault();
+    setOptionsShow(!optionsShow);
+  };
+  const optionsToggleTarget = e => {
+    e.preventDefault();
+    setDisplayTarget(!displayTarget);
+  };
+
+  const updateChart = e => {
+    e.preventDefault();
+    const newChartInstance = new Chart(chartContainer.current, chartConfig);
+    setChartInstance(newChartInstance);
   };
 
   useEffect(() => {
@@ -141,6 +148,7 @@ const Nps = props => {
       <div style={ChartHeaderStyle}>
         <div className="chart-title">Nps (Monthly)</div>
         <OptionsToggleButton onClick={toggleOptions} />
+        <RefreshButton onClick={updateChart} />
       </div>
       {optionsShow && (
         <div style={OptionsContainerStyle}>
