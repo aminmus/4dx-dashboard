@@ -1,21 +1,39 @@
 /* eslint-disable no-param-reassign */
 import moment from 'moment';
 
-const setInterval = (startDate = null, targetDate = null) => {
+const setInterval = (startDate = null, targetDate = null, intervalSpan = 'weekly') => {
   const array = [];
+
+  let weeksToAddAndSubtract = 2;
+  let intervalTickSpan = 1;
+
+  if (intervalSpan === 'weekly') {
+    weeksToAddAndSubtract = 2;
+    intervalTickSpan = 1;
+  }
+  if (intervalSpan === 'biweekly') {
+    weeksToAddAndSubtract = 4;
+    intervalTickSpan = 2;
+  }
+  if (intervalSpan === 'monthly') {
+    weeksToAddAndSubtract = 8;
+    intervalTickSpan = 4;
+  }
+
   const start = startDate
     ? moment(startDate).format('YYYY-MM-DD')
     : moment()
-        .subtract(2, 'w')
+        .subtract(weeksToAddAndSubtract, 'w')
         .format('YYYY-MM-DD');
   const end = targetDate
     ? moment(targetDate).format('YYYY-MM-DD')
     : moment()
-        .add(2, 'w')
+        .add(weeksToAddAndSubtract, 'w')
         .format('YYYY-MM-DD');
 
   const span = moment(end).diff(start, 'w');
-  for (let i = 0; i <= span; i += 1) {
+
+  for (let i = 0; i <= span; i += intervalTickSpan) {
     array.push(
       moment(start)
         .add(i, 'w')
@@ -69,8 +87,8 @@ const setDataPointsTarget = (
   return [];
 };
 
-export default function(measures, targetDate, targetMeasures) {
-  const interval = setInterval(null, targetDate);
+export default function(measures, targetDate, targetMeasures, intervalSpan) {
+  const interval = setInterval(null, targetDate, intervalSpan);
   const datapointsMeasure = setDataPointsMeasure(interval, measures);
   const dataPointsTarget = setDataPointsTarget(
     interval,
