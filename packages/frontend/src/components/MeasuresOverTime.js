@@ -2,31 +2,38 @@ import React, { useEffect, useState, useRef } from 'react';
 import Chart from 'chart.js';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import formatMeasureProgress from '../utils/formatMeasureProgress';
+import RefreshButton from './elements/RefreshButton';
 import OptionsToggleButton from './elements/OptionsToggleButton';
 import OptionsButton from './elements/OptionsButton';
 import COLORS from '../style/COLORS';
 
 const { primary, light, danger, gray } = COLORS;
 
-const ChartHeaderStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  color: primary
-};
-
-const ContainerStyle = {
-  margin: '10px'
-};
-
-const OptionsContainerStyle = {
-  margin: '10px',
-  border: `1px solid ${light}`,
-  borderRadius: '10px'
-};
-
 const MeasuresOverTime = props => {
+  const match = useMediaQuery('(min-width:600px)');
+
+  const ChartHeaderStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: primary
+  };
+
+  const ContainerStyle = {
+    margin: '10px'
+  };
+
+  const OptionsContainerStyle = {
+    display: 'flex',
+    margin: '10px',
+    border: `1px solid ${light}`,
+    borderRadius: '10px',
+    justifyContent: 'center',
+    flexDirection: match ? 'row' : 'column'
+  };
+
   const { measures, measuresGoal } = props;
   const { targetDate, targetMeasures } = measuresGoal;
 
@@ -49,24 +56,6 @@ const MeasuresOverTime = props => {
   const chartContainer = useRef(null);
   const [chartInstance, setChartInstance] = useState(null);
 
-  const toggleOptions = e => {
-    e.preventDefault();
-    setOptionsShow(!optionsShow);
-  };
-
-  const optionsToggleMeasures = e => {
-    e.preventDefault();
-    setDisplayMeasures(!displayMeasures);
-  };
-  const optionsToggleTarget = e => {
-    e.preventDefault();
-    setDisplayTarget(!displayTarget);
-  };
-  const optionsToggleSmooth = e => {
-    e.preventDefault();
-    setSmoothLine(!smoothLine);
-  };
-
   const chartConfig = {
     type: 'line',
     data: {
@@ -76,8 +65,8 @@ const MeasuresOverTime = props => {
           data: measureDatasetData,
           borderColor: primary,
           borderWidth: 2,
-          pointRadius: 3,
-          pointBorderWidth: 0,
+          pointRadius: match ? 5 : 1,
+          pointBorderWidth: 3,
           pointBackgroundColor: primary,
           fill: false,
           showLine: displayMeasures,
@@ -129,7 +118,7 @@ const MeasuresOverTime = props => {
         yAxes: [
           {
             scaleLabel: {
-              display: true,
+              display: match,
               labelString: 'Measures Completed',
               fontColor: primary
             },
@@ -146,6 +135,30 @@ const MeasuresOverTime = props => {
       },
       fill: false
     }
+  };
+
+  const toggleOptions = e => {
+    e.preventDefault();
+    setOptionsShow(!optionsShow);
+  };
+
+  const optionsToggleMeasures = e => {
+    e.preventDefault();
+    setDisplayMeasures(!displayMeasures);
+  };
+  const optionsToggleTarget = e => {
+    e.preventDefault();
+    setDisplayTarget(!displayTarget);
+  };
+  const optionsToggleSmooth = e => {
+    e.preventDefault();
+    setSmoothLine(!smoothLine);
+  };
+
+  const updateChart = e => {
+    e.preventDefault();
+    const newChartInstance = new Chart(chartContainer.current, chartConfig);
+    setChartInstance(newChartInstance);
   };
 
   useEffect(() => {
@@ -177,10 +190,9 @@ const MeasuresOverTime = props => {
   return (
     <div style={ContainerStyle}>
       <div style={ChartHeaderStyle}>
-        <div className="chart-title">Measures Over Time (Weekly)</div>
-        <div>
-          <OptionsToggleButton onClick={toggleOptions} />
-        </div>
+        <div className="chart-title">Measures (Weekly)</div>
+        <OptionsToggleButton onClick={toggleOptions} />
+        <RefreshButton onClick={updateChart} />
       </div>
       {optionsShow && (
         <div style={OptionsContainerStyle}>
