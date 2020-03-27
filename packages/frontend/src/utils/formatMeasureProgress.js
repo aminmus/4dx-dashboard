@@ -7,10 +7,6 @@ const setInterval = (startDate = null, targetDate = null, intervalSpan = 'weekly
   let weeksToAddAndSubtract = 2;
   let intervalTickSpan = 1;
 
-  if (intervalSpan === 'weekly') {
-    weeksToAddAndSubtract = 2;
-    intervalTickSpan = 1;
-  }
   if (intervalSpan === 'biweekly') {
     weeksToAddAndSubtract = 4;
     intervalTickSpan = 2;

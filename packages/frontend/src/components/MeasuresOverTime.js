@@ -187,7 +187,8 @@ const MeasuresOverTime = props => {
     measures,
     measuresGoal,
     targetDate,
-    targetMeasures
+    targetMeasures,
+    intervalSpan
   ]);
 
   return (
