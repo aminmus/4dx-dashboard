@@ -74,7 +74,7 @@ const Nps = props => {
         yAxes: [
           {
             scaleLabel: {
-              display: match,
+              display: true,
               labelString: 'NPS',
               fontColor: primary
             },

@@ -118,8 +118,8 @@ const MeasuresOverTime = props => {
         yAxes: [
           {
             scaleLabel: {
-              display: match,
-              labelString: 'Measures Completed',
+              display: true,
+              labelString: 'Completed',
               fontColor: primary
             },
             ticks: {
