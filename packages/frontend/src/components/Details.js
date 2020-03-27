@@ -5,7 +5,7 @@ import ClientDetails from './ClientDetails';
 export default function Details(props) {
   const { clients } = props;
   return (
-    <div className="mt-5">
+    <div className="mt-3">
       {clients.map(client => (
         <ClientDetails key={client.id} client={client} />
       ))}
