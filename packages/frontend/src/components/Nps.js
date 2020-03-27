@@ -87,6 +87,20 @@ const Nps = props => {
               suggestedMin: -30
             }
           }
+        ],
+        xAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: 'NPS',
+              fontColor: primary
+            },
+            ticks: {
+              callback(value, _index, _values) {
+                return value.split(' ')[0];
+              }
+            }
+          }
         ]
       },
       legend: {
