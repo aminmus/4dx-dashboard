@@ -51,7 +51,7 @@ export default nps => {
   const convertDate = date => {
     return new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'long'
+      month: 'short'
     });
   };
 
