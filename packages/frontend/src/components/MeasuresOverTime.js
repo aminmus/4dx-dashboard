@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import React, { useEffect, useState, useRef } from 'react';
 import Chart from 'chart.js';
 import moment from 'moment';
@@ -7,6 +8,8 @@ import formatMeasureProgress from '../utils/formatMeasureProgress';
 import RefreshButton from './elements/RefreshButton';
 import OptionsToggleButton from './elements/OptionsToggleButton';
 import OptionsButton from './elements/OptionsButton';
+import IntervalSpanDialog from './elements/IntervalSpanDialog';
+
 import COLORS from '../style/COLORS';
 
 const { primary, light, danger, gray } = COLORS;
@@ -34,13 +37,15 @@ const MeasuresOverTime = props => {
     flexDirection: match ? 'row' : 'column'
   };
 
+  const [intervalSpan, setIntervalSpan] = React.useState('weekly');
   const { measures, measuresGoal } = props;
   const { targetDate, targetMeasures } = measuresGoal;
 
   const { labels, measuresData, targetData } = formatMeasureProgress(
     measures,
     targetDate,
-    targetMeasures
+    targetMeasures,
+    intervalSpan
   );
 
   const [measureDatasetData, setMeasureDatasetData] = useState(measuresData);
@@ -50,9 +55,7 @@ const MeasuresOverTime = props => {
   const [displayMeasures, setDisplayMeasures] = useState(true);
   const [displayTarget, setDisplayTarget] = useState(true);
   const [smoothLine, setSmoothLine] = useState(true);
-
   const [optionsShow, setOptionsShow] = useState(false);
-
   const chartContainer = useRef(null);
   const [chartInstance, setChartInstance] = useState(null);
 
@@ -190,7 +193,7 @@ const MeasuresOverTime = props => {
   return (
     <div style={ContainerStyle}>
       <div style={ChartHeaderStyle}>
-        <div className="chart-title">Measures (Weekly)</div>
+        <div className="chart-title">Measures ({intervalSpan})</div>
         <OptionsToggleButton onClick={toggleOptions} />
         <RefreshButton onClick={updateChart} />
       </div>
@@ -208,6 +211,7 @@ const MeasuresOverTime = props => {
             text={displayTarget ? 'Hide Target' : 'Show Target'}
             onClick={optionsToggleTarget}
           />
+          <IntervalSpanDialog setIntervalSpan={setIntervalSpan} intervalSpan={intervalSpan} />
         </div>
       )}
       <canvas ref={chartContainer} />
