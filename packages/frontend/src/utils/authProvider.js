@@ -1,4 +1,3 @@
-// in src/authProvider.js
 export default {
   // called when the user attempts to log in
   login: async ({ username, password }) => {

@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Button } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 import StateContext from '../context/state-context';
 import Wig from '../components/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/Details';
 import Nps from '../components/Nps';
 import MeasuresOverTime from '../components/MeasuresOverTime';
+import authProvider from '../utils/authProvider';
 
 export default function Home() {
+  const [editMode, setEditMode] = useState(false);
+
+  const toggleEditMode = _e => {
+    // Make sure user is signed in
+    if (authProvider.checkAuth()) {
+      // Toggle on/off edit mode
+      setEditMode(!editMode);
+    }
+  };
+
   return (
     <StateContext.Consumer>
       {context => (
         <div className="p-4">
+          <Button color="secondary" onClick={toggleEditMode} startIcon={<EditIcon />}>
+            Toggle Edit Mode
+          </Button>
           <div className="row">
             <div className="col-sm">
               <Wig nps={context.nps} />
