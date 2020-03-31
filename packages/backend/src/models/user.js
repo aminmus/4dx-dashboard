@@ -12,17 +12,24 @@ module.exports = (sequelize, DataTypes) => {
       return bcrypt.compare(password, this.password);
     }
   }
-  User.init({
-    email: {
-      type: DataTypes.STRING,
-      unique: true,
-      required: true,
+  User.init(
+    {
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
+        required: true,
+      },
+      password: {
+        type: DataTypes.STRING,
+        required: true,
+      },
+      role: {
+        type: DataTypes.STRING,
+        required: true,
+      },
     },
-    password: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-  }, { sequelize });
+    { sequelize },
+  );
 
   User.associate = function (_models) {
     // associations can be defined here
