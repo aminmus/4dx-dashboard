@@ -20,7 +20,11 @@ const login = async (req, res, next) => {
       if (!user) return res.status(400).json(info);
 
       // Sign and populate token
-      const token = jwt.sign({ user: { id: user.id, email: user.email } }, process.env.JWT_SECRET, { expiresIn: '24h' });
+      const token = jwt.sign(
+        { user: { id: user.id, email: user.email, role: user.role } },
+        process.env.JWT_SECRET,
+        { expiresIn: '24h' },
+      );
       return res.json({ message: info.message, token });
     } catch (error) {
       return next(error);

@@ -7,13 +7,14 @@ const {
   updateById,
 } = require('../controllers/client');
 const { checkAuth } = require('../middleware/authentication');
+const { canEdit } = require('../middleware/permissions');
 
 router.get('/', getAll);
 router.get('/:clientId', getById);
 
 // Protected routes
-router.put('/:clientId', checkAuth, updateById);
-router.post('/', checkAuth, createOne);
-router.delete('/:clientId', checkAuth, deleteById);
+router.put('/:clientId', checkAuth, canEdit, updateById);
+router.post('/', checkAuth, canEdit, createOne);
+router.delete('/:clientId', checkAuth, canEdit, deleteById);
 
 module.exports = router;

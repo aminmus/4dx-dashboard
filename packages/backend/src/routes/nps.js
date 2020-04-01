@@ -1,15 +1,20 @@
 const router = require('express').Router();
 const {
-  createOne, deleteById, getAll, getById, updateById,
+  createOne,
+  deleteById,
+  getAll,
+  getById,
+  updateById,
 } = require('../controllers/nps');
 const { checkAuth } = require('../middleware/authentication');
+const { canEdit } = require('../middleware/permissions');
 
 router.get('/', getAll);
 router.get('/:npsId', getById);
 
 // Protected routes
-router.put('/:npsId', checkAuth, updateById);
-router.post('/', checkAuth, createOne);
-router.delete('/:npsId', checkAuth, deleteById);
+router.put('/:npsId', checkAuth, canEdit, updateById);
+router.post('/', checkAuth, canEdit, createOne);
+router.delete('/:npsId', checkAuth, canEdit, deleteById);
 
 module.exports = router;
