@@ -1,26 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
+import PropTypes from 'prop-types';
+
 import StateContext from '../context/state-context';
 import Wig from '../components/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/Details';
 import Nps from '../components/Nps';
 import MeasuresOverTime from '../components/MeasuresOverTime';
-import isAuthenticated from '../utils/authentication';
 
-export default function Home() {
+export default function Home({ isAuth }) {
   const [editMode, setEditMode] = useState(false);
-  const [isAuth, setAuth] = useState(false);
 
   const toggleEditMode = _e => {
     if (isAuth) return setEditMode(!editMode);
     return console.warn('Not Authenticated');
   };
-
-  useEffect(() => {
-    setAuth(isAuthenticated());
-  }, []);
 
   return (
     <StateContext.Consumer>
@@ -63,3 +59,7 @@ export default function Home() {
     </StateContext.Consumer>
   );
 }
+
+Home.propTypes = {
+  isAuth: PropTypes.bool.isRequired
+};

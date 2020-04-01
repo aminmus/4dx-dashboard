@@ -1,10 +1,11 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import logo from '../logo.png';
 import authProvider from '../utils/authProvider';
 
-export default function Header() {
+export default function Header({ handleAuthChange }) {
   const { logout } = authProvider;
   const history = useHistory();
 
@@ -15,6 +16,7 @@ export default function Header() {
   const handleClick = e => {
     e.preventDefault();
     logout();
+    handleAuthChange();
     history.push('/');
   };
 
@@ -63,3 +65,7 @@ export default function Header() {
     </header>
   );
 }
+
+Header.propTypes = {
+  handleAuthChange: PropTypes.func.isRequired
+};
