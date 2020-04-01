@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import StateContext from '../context/state-context';
@@ -11,17 +11,22 @@ import isAuthenticated from '../utils/authentication';
 
 export default function Home() {
   const [editMode, setEditMode] = useState(false);
+  const [isAuth, setAuth] = useState(false);
 
   const toggleEditMode = _e => {
-    if (isAuthenticated()) return setEditMode(!editMode);
+    if (isAuth) return setEditMode(!editMode);
     return console.warn('Not Authenticated');
   };
+
+  useEffect(() => {
+    setAuth(isAuthenticated());
+  }, []);
 
   return (
     <StateContext.Consumer>
       {context => (
         <div className="p-4">
-          {isAuthenticated() && (
+          {isAuth && (
             <Button color="secondary" onClick={toggleEditMode} startIcon={<EditIcon />}>
               Toggle Edit Mode
             </Button>
