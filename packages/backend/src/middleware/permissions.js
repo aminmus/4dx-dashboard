@@ -9,7 +9,7 @@ const canEdit = async (req, res, next) => {
       data: null,
     });
   }
-  if (role !== ROLES.Admin) {
+  if (role !== ROLES.admin) {
     return res.status(404).json({
       error: { title: 'Invalid user permission' },
       data: null,
