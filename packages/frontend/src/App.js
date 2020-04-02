@@ -18,6 +18,7 @@ import Admin from './layouts/Admin';
 import reformatChart from './utils/reformatChart';
 import reformatMeasureGoals from './utils/reformatMeasureGoals';
 import reformatMeasures from './utils/reformatMeasures';
+import isAuthenticated from './utils/authentication';
 
 export default function App() {
   const [clients, setClients] = useState([
@@ -46,6 +47,13 @@ export default function App() {
     values: [],
     target: null
   });
+
+  const [isAuth, setAuth] = useState(isAuthenticated());
+  useEffect(() => {
+    setAuth(isAuthenticated());
+  });
+
+  const handleAuthChange = () => setAuth(isAuthenticated());
 
   useEffect(() => {
     async function setAppState() {
@@ -87,13 +95,13 @@ export default function App() {
       }}
     >
       <Router>
-        <Header />
+        <Header handleAuthChange={handleAuthChange} />
         <Switch>
           <Route path="/admin">
             <Admin />
           </Route>
           <Route path="/">
-            <Home />
+            <Home isAuth={isAuth} />
           </Route>
         </Switch>
       </Router>
