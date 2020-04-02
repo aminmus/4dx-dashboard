@@ -4,14 +4,17 @@ import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import { adminReducer, adminSaga, USER_LOGOUT } from 'react-admin';
 
-import appState from './reducers/appState';
-import initialState from './initialState';
+import dashboard from './reducers/dashboard';
+import data from './reducers/data';
+import initialDashboardState from './initialDashboardState';
+import initialDataState from './initialDataState';
 
 export default ({ authProvider, dataProvider, history }) => {
   const reducer = combineReducers({
     admin: adminReducer,
     router: connectRouter(history),
-    appState
+    dashboard,
+    data
     //  add reducers here
   });
   const resettableAppReducer = (state, action) =>
@@ -41,7 +44,8 @@ export default ({ authProvider, dataProvider, history }) => {
     resettableAppReducer,
     {
       /* set initial state here */
-      appState: initialState
+      dashboard: initialDashboardState,
+      data: initialDataState
     },
     composeEnhancers(
       applyMiddleware(
