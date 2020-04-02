@@ -1,4 +1,3 @@
-// in src/createAdminStore.js
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { routerMiddleware, connectRouter } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
