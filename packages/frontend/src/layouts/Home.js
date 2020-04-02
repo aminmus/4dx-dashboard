@@ -26,12 +26,6 @@ const Home = props => {
     props.toggleEdit();
   };
 
-  // const [editMode, setEditMode] = useState(false);
-  // const toggleEditMode = _e => {
-  //   if (isAuth) return setEditMode(!editMode);
-  //   return console.warn('Not Authenticated');
-  // };
-
   return (
     <StateContext.Consumer>
       {context => (
