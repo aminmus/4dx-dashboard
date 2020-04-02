@@ -11,6 +11,7 @@ import Details from '../components/Details';
 import Nps from '../components/Nps';
 import MeasuresOverTime from '../components/MeasuresOverTime';
 import isAuthenticated from '../utils/authentication';
+import { TOGGLE_EDIT } from '../actions/types';
 
 const Home = props => {
   const { isAuth, isAdmin, isLoggedIn } = props;
@@ -84,7 +85,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleEdit: () => dispatch({ type: 'TOGGLE_EDIT' })
+    toggleEdit: () => dispatch({ type: TOGGLE_EDIT })
   };
 };
 
