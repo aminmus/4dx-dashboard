@@ -1,6 +1,8 @@
 import React from 'react';
 import { Admin as ReactAdmin, Resource } from 'react-admin';
+import PropTypes from 'prop-types';
 import { createMuiTheme } from '@material-ui/core/styles';
+
 import { ClientList, ClientEdit, ClientShow, ClientCreate } from '../components/admin/client';
 import authProvider from '../utils/react-admin/authProvider';
 import dataProvider from '../utils/react-admin/dataProvider';
@@ -16,7 +18,7 @@ import {
 } from '../components/admin/measureGoal';
 import CustomLayout from '../components/admin/CustomLayout';
 
-export default function Login() {
+export default function Login({ history }) {
   const theme = createMuiTheme({
     palette: {
       type: 'dark'
@@ -25,6 +27,7 @@ export default function Login() {
 
   return (
     <ReactAdmin
+      history={history}
       authProvider={authProvider}
       dataProvider={dataProvider}
       dashboard={Dashboard}
@@ -52,3 +55,8 @@ export default function Login() {
     </ReactAdmin>
   );
 }
+
+Login.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  history: PropTypes.object.isRequired
+};
