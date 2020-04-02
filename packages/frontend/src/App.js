@@ -1,11 +1,6 @@
 /* eslint-disable no-console, no-unused-vars, no-shadow */
 import React, { useState, useEffect } from 'react';
-import {
-  // eslint-disable-next-line indent
-  BrowserRouter as Router,
-  Route,
-  Switch
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createHashHistory } from 'history';
 
@@ -26,7 +21,7 @@ import authProvider from './utils/react-admin/authProvider';
 import dataProvider from './utils/react-admin/dataProvider';
 import createReduxStore from './createReduxStore';
 
-export default function App() {
+const App = () => {
   const [clients, setClients] = useState([
     { id: 0, name: 'No Clients Available', measures: [], csats: [] }
   ]);
@@ -123,4 +118,6 @@ export default function App() {
       </StateContext.Provider>
     </Provider>
   );
-}
+};
+
+export default App;
