@@ -1,10 +1,10 @@
-import initialState from '../initialDashboardState';
+import initialState from '../initialDataState';
 
-const dashboard = (state = initialState, action) => {
+const data = (state = initialState, action) => {
   switch (action.type) {
     default:
       return state;
   }
 };
 
-export default dashboard;
+export default data;
