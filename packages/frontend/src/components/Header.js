@@ -2,21 +2,23 @@ import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import logo from '../logo.png';
-import authProvider from '../utils/authProvider';
+import authProvider from '../utils/react-admin/authProvider';
 
-export default function Header({ handleAuthChange }) {
+const Header = props => {
+  // PASSED DOWN PROPS
+  const { handleAuthChange } = props;
+  // REDUX STATE PROPS FROM STORE
+  const { logOut, isLoggedIn } = props;
   const { logout } = authProvider;
   const history = useHistory();
 
-  const isLoggedIn = () => {
-    return localStorage.getItem('token');
-  };
-
-  const handleClick = e => {
+  const handleLogoutClick = e => {
     e.preventDefault();
     logout();
     handleAuthChange();
+    logOut();
     history.push('/');
   };
 
@@ -50,11 +52,11 @@ export default function Header({ handleAuthChange }) {
             </Link>
           </Nav>
           <Nav className="navbar-nav-right">
-            {isLoggedIn() ? (
+            {isLoggedIn ? (
               <Nav.Item
                 className="nav-link btn-logout text-light"
                 style={{ textDecoration: 'none' }}
-                onClick={handleClick}
+                onClick={handleLogoutClick}
               >
                 Logout
               </Nav.Item>
@@ -64,8 +66,23 @@ export default function Header({ handleAuthChange }) {
       </Navbar>
     </header>
   );
-}
+};
 
 Header.propTypes = {
-  handleAuthChange: PropTypes.func.isRequired
+  handleAuthChange: PropTypes.func.isRequired,
+  logOut: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
 };
+
+const mapStateToProps = state => ({
+  editMode: state.editMode,
+  isLoggedIn: state.isLoggedIn
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logOut: () => dispatch({ type: 'LOGOUT' })
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

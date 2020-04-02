@@ -1,11 +1,9 @@
 /* eslint-disable no-console, no-unused-vars, no-shadow */
 import React, { useState, useEffect } from 'react';
-import {
-  // eslint-disable-next-line indent
-  BrowserRouter as Router,
-  Route,
-  Switch
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createHashHistory } from 'history';
+
 import fetchData from './utils/fetchData';
 import reformatClientData from './utils/reformatClientData';
 import calcDefineClients from './utils/calcDefineClients';
@@ -19,8 +17,11 @@ import reformatChart from './utils/reformatChart';
 import reformatMeasureGoals from './utils/reformatMeasureGoals';
 import reformatMeasures from './utils/reformatMeasures';
 import isAuthenticated from './utils/authentication';
+import authProvider from './utils/react-admin/authProvider';
+import dataProvider from './utils/react-admin/dataProvider';
+import createReduxStore from './createReduxStore';
 
-export default function App() {
+const App = () => {
   const [clients, setClients] = useState([
     { id: 0, name: 'No Clients Available', measures: [], csats: [] }
   ]);
@@ -82,29 +83,41 @@ export default function App() {
     setAppState();
   }, []);
 
+  const history = createHashHistory();
+
   return (
-    <StateContext.Provider
-      value={{
-        clients,
-        nps,
-        chart,
-        leadStatus,
-        definedStatus,
-        measuresGoal,
-        measures
-      }}
+    <Provider
+      store={createReduxStore({
+        authProvider,
+        dataProvider,
+        history
+      })}
     >
-      <Router>
-        <Header handleAuthChange={handleAuthChange} />
-        <Switch>
-          <Route path="/admin">
-            <Admin />
-          </Route>
-          <Route path="/">
-            <Home isAuth={isAuth} />
-          </Route>
-        </Switch>
-      </Router>
-    </StateContext.Provider>
+      <StateContext.Provider
+        value={{
+          clients,
+          nps,
+          chart,
+          leadStatus,
+          definedStatus,
+          measuresGoal,
+          measures
+        }}
+      >
+        <Router>
+          <Header handleAuthChange={handleAuthChange} />
+          <Switch>
+            <Route path="/admin">
+              <Admin history={history} />
+            </Route>
+            <Route path="/">
+              <Home isAuth={isAuth} />
+            </Route>
+          </Switch>
+        </Router>
+      </StateContext.Provider>
+    </Provider>
   );
-}
+};
+
+export default App;
