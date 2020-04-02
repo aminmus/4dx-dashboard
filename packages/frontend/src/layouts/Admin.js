@@ -1,9 +1,9 @@
 import React from 'react';
 import { Admin as ReactAdmin, Resource } from 'react-admin';
 import { createMuiTheme } from '@material-ui/core/styles';
-import jsonapiClient from 'ra-jsonapi-client';
 import { ClientList, ClientEdit, ClientShow, ClientCreate } from '../components/admin/client';
-import authProvider from '../utils/authProvider';
+import authProvider from '../utils/react-admin/authProvider';
+import dataProvider from '../utils/react-admin/dataProvider';
 import Dashboard from '../components/admin/Dashboard';
 import { CsatEdit, CsatCreate } from '../components/admin/csat';
 import { MeasureEdit, MeasureCreate } from '../components/admin/measure';
@@ -23,20 +23,10 @@ export default function Login() {
     }
   });
 
-  const settings = {
-    updateMethod: 'PUT',
-    headers: {
-      Accept: 'application/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json'
-    }
-  };
-
-  const baseUrl = `${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_SERVER_PORT}`;
-
   return (
     <ReactAdmin
       authProvider={authProvider}
-      dataProvider={jsonapiClient(`${baseUrl}/api`, settings)}
+      dataProvider={dataProvider}
       dashboard={Dashboard}
       theme={theme}
       layout={CustomLayout}

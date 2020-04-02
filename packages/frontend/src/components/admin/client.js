@@ -25,7 +25,7 @@ import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
 
 import { Link } from 'react-router-dom';
-import { validateName } from '../../utils/adminValidation';
+import { validateName } from '../../utils/react-admin/adminValidation';
 
 export const ClientList = props => (
   <List {...props} bulkActionButtons={false}>

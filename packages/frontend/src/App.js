@@ -6,6 +6,7 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
+
 import fetchData from './utils/fetchData';
 import reformatClientData from './utils/reformatClientData';
 import calcDefineClients from './utils/calcDefineClients';

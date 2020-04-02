@@ -3,7 +3,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import logo from '../logo.png';
-import authProvider from '../utils/authProvider';
+import authProvider from '../utils/react-admin/authProvider';
 
 export default function Header({ handleAuthChange }) {
   const { logout } = authProvider;

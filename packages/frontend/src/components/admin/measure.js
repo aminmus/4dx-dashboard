@@ -3,7 +3,7 @@
 import React from 'react';
 import { Edit, Create, SimpleForm, TextInput, DateInput } from 'react-admin';
 import { parse } from 'query-string';
-import { validateDescription, validateDate } from '../../utils/adminValidation';
+import { validateDescription, validateDate } from '../../utils/react-admin/adminValidation';
 
 export const MeasureEdit = props => {
   const { client_id } = parse(props.location.search);
