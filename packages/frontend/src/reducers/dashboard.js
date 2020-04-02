@@ -1,6 +1,7 @@
 import { TOGGLE_EDIT, LOGIN, LOGOUT } from '../actions/types';
+import initialState from '../initialDashboardState';
 
-const appState = (state = [], action) => {
+const dashboard = (state = initialState, action) => {
   switch (action.type) {
     case TOGGLE_EDIT:
       console.log('TOGGLE_EDIT ACTION SENT');
@@ -12,9 +13,8 @@ const appState = (state = [], action) => {
       console.log('LOGOUT ACTION SENT');
       return { ...state, isLoggedIn: false };
     default:
-      console.log(state);
       return state;
   }
 };
 
-export default appState;
+export default dashboard;
