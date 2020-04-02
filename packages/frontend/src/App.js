@@ -6,6 +6,7 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import fetchData from './utils/fetchData';
 import reformatClientData from './utils/reformatClientData';
 import calcDefineClients from './utils/calcDefineClients';
@@ -19,8 +20,9 @@ import reformatChart from './utils/reformatChart';
 import reformatMeasureGoals from './utils/reformatMeasureGoals';
 import reformatMeasures from './utils/reformatMeasures';
 import isAuthenticated from './utils/authentication';
+import store from './store';
 
-export default function App() {
+const App = () => {
   const [clients, setClients] = useState([
     { id: 0, name: 'No Clients Available', measures: [], csats: [] }
   ]);
@@ -95,16 +97,22 @@ export default function App() {
       }}
     >
       <Router>
-        <Header handleAuthChange={handleAuthChange} />
+        <Provider store={store}>
+          <Header handleAuthChange={handleAuthChange} />
+        </Provider>
         <Switch>
           <Route path="/admin">
             <Admin />
           </Route>
           <Route path="/">
-            <Home isAuth={isAuth} />
+            <Provider store={store}>
+              <Home isAuth={isAuth} />
+            </Provider>
           </Route>
         </Switch>
       </Router>
     </StateContext.Provider>
   );
-}
+};
+
+export default App;
