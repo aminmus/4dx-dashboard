@@ -1,29 +1,43 @@
-import React, { useState } from 'react';
+/* eslint-disable no-console, no-unused-vars, react/no-unused-prop-types */
+import React, { useEffect } from 'react';
 import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
-
+import { connect } from 'react-redux';
 import StateContext from '../context/state-context';
 import Wig from '../components/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/Details';
 import Nps from '../components/Nps';
 import MeasuresOverTime from '../components/MeasuresOverTime';
+import isAuthenticated from '../utils/authentication';
 
-export default function Home({ isAuth }) {
-  const [editMode, setEditMode] = useState(false);
+const Home = props => {
+  const { isAuth, isAdmin, isLoggedIn } = props;
 
-  const toggleEditMode = _e => {
-    if (isAuth) return setEditMode(!editMode);
-    return console.warn('Not Authenticated');
+  useEffect(() => {
+    console.log('isLoggedIn', isLoggedIn);
+    console.log('isAdmin', isAdmin);
+    console.log('isAuth', isAuthenticated());
+  }, [isLoggedIn]);
+
+  const handleEditClick = e => {
+    e.preventDefault();
+    props.toggleEdit();
   };
+
+  // const [editMode, setEditMode] = useState(false);
+  // const toggleEditMode = _e => {
+  //   if (isAuth) return setEditMode(!editMode);
+  //   return console.warn('Not Authenticated');
+  // };
 
   return (
     <StateContext.Consumer>
       {context => (
         <div className="p-4">
-          {isAuth && (
-            <Button color="secondary" onClick={toggleEditMode} startIcon={<EditIcon />}>
+          {isAuthenticated() && (
+            <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
               Toggle Edit Mode
             </Button>
           )}
@@ -58,8 +72,26 @@ export default function Home({ isAuth }) {
       )}
     </StateContext.Consumer>
   );
-}
+};
 
 Home.propTypes = {
-  isAuth: PropTypes.bool.isRequired
+  isAuth: PropTypes.bool.isRequired,
+  toggleEdit: PropTypes.func.isRequired,
+  editMode: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired
 };
+
+const mapStateToProps = state => ({
+  editMode: state.editMode,
+  isLoggedIn: state.isLoggedIn,
+  isAdmin: state.isAdmin
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleEdit: () => dispatch({ type: 'TOGGLE_EDIT' })
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
