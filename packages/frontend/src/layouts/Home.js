@@ -10,32 +10,28 @@ import Lead from '../components/Lead';
 import Details from '../components/Details';
 import Nps from '../components/Nps';
 import MeasuresOverTime from '../components/MeasuresOverTime';
-import isAuthenticated from '../utils/authentication';
-import { TOGGLE_EDIT } from '../actions/types';
+import { toggleEdit } from '../actions/dashboard';
 
 const Home = props => {
-  const { isAuth, isAdmin, isLoggedIn } = props;
-
-  useEffect(() => {
-    console.log('isLoggedIn', isLoggedIn);
-    console.log('isAdmin', isAdmin);
-    console.log('isAuth', isAuthenticated());
-  }, [isLoggedIn]);
+  const { isAuth, isAdmin, dispatch } = props;
 
   const handleEditClick = e => {
     e.preventDefault();
-    props.toggleEdit();
+    dispatch(toggleEdit());
   };
 
   return (
     <StateContext.Consumer>
       {context => (
         <div className="p-4">
-          {isAuthenticated() && (
-            <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
-              Toggle Edit Mode
-            </Button>
-          )}
+          {
+            (isAuth,
+            isAdmin && (
+              <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
+                Toggle Edit Mode
+              </Button>
+            ))
+          }
           <div className="row">
             <div className="col-sm">
               <Wig nps={context.nps} />
@@ -71,22 +67,15 @@ const Home = props => {
 
 Home.propTypes = {
   isAuth: PropTypes.bool.isRequired,
-  toggleEdit: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  isAdmin: PropTypes.bool.isRequired
+  isAdmin: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  editMode: state.editMode,
-  isLoggedIn: state.isLoggedIn,
-  isAdmin: state.isAdmin
+  editMode: state.dashboard.editMode,
+  isLoggedIn: state.dashboard.isLoggedIn,
+  isAdmin: state.dashboard.isAdmin
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    toggleEdit: () => dispatch({ type: TOGGLE_EDIT })
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, null)(Home);
