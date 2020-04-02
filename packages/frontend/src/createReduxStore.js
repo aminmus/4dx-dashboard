@@ -4,11 +4,15 @@ import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import { adminReducer, adminSaga, USER_LOGOUT } from 'react-admin';
 
+import appState from './reducers/appState';
+import initialState from './initialState';
+
 export default ({ authProvider, dataProvider, history }) => {
   const reducer = combineReducers({
     admin: adminReducer,
-    router: connectRouter(history)
-    // { /* add your own reducers here */ },
+    router: connectRouter(history),
+    appState
+    //  add reducers here
   });
   const resettableAppReducer = (state, action) =>
     reducer(action.type !== USER_LOGOUT ? state : undefined, action);
@@ -17,7 +21,7 @@ export default ({ authProvider, dataProvider, history }) => {
     yield all(
       [
         adminSaga(dataProvider, authProvider)
-        // add your own sagas here
+        // add sagas here
       ].map(fork)
     );
   };
@@ -36,15 +40,16 @@ export default ({ authProvider, dataProvider, history }) => {
   const store = createStore(
     resettableAppReducer,
     {
-      /* set your initial state here */
+      /* set initial state here */
+      appState: initialState
     },
     composeEnhancers(
       applyMiddleware(
         sagaMiddleware,
         routerMiddleware(history)
-        // add your own middlewares here
+        // add middleware here
       )
-      // add your own enhancers here
+      // add enhancers here
     )
   );
   sagaMiddleware.run(saga);

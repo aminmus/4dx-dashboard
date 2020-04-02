@@ -4,7 +4,7 @@ const appState = (state = [], action) => {
       console.log('TOGGLE_EDIT ACTION SENT');
       return { ...state, editMode: !state.editMode };
     case 'LOGIN':
-      console.log('LGOIN ACTION SENT');
+      console.log('LOGIN ACTION SENT');
       return { ...state, isLoggedIn: true };
     case 'LOGOUT':
       console.log('LOGOUT ACTION SENT');
