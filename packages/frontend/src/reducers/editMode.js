@@ -5,7 +5,7 @@ const editModeReducer = (state = editModeState, action) => {
   switch (action.type) {
     case TOGGLE_EDIT:
       console.log('TOGGLE_EDIT ACTION SENT');
-      return { ...state, editMode: !state.editMode };
+      return { ...state, editModeEnabled: !state.editModeEnabled };
     default:
       return state;
   }

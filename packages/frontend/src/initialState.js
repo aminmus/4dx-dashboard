@@ -4,7 +4,7 @@ export const authState = {
 };
 
 export const editModeState = {
-  editMode: false
+  editModeEnabled: false
 };
 
 export const dataState = {

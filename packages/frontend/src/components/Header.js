@@ -76,7 +76,7 @@ Header.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  editMode: state.editMode,
+  editMode: state.editMode.editModeEnabled,
   isLoggedIn: state.auth.isLoggedIn
 });
 
