@@ -1,4 +1,5 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import thunk from 'redux-thunk';
 import { routerMiddleware, connectRouter } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
@@ -50,11 +51,7 @@ export default ({ authProvider, dataProvider, history }) => {
       auth: authState
     },
     composeEnhancers(
-      applyMiddleware(
-        sagaMiddleware,
-        routerMiddleware(history)
-        // add middleware here
-      )
+      applyMiddleware(sagaMiddleware, routerMiddleware(history), thunk)
       // add enhancers here
     )
   );
