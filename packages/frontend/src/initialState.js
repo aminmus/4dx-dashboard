@@ -1,4 +1,13 @@
-const initialState = {
+export const authState = {
+  isLoggedIn: false,
+  isAdmin: false
+};
+
+export const editModeState = {
+  editMode: false
+};
+
+export const dataState = {
   clients: [{ id: 0, name: 'No Clients Available', measures: [], csats: [] }],
   measures: [],
   measuresGoal: { targetMeasures: null, targetDate: null },
@@ -14,5 +23,3 @@ const initialState = {
   },
   chart: { months: [], values: [], target: null }
 };
-
-export default initialState;

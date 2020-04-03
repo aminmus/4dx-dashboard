@@ -1,10 +1,10 @@
-import initialState from '../initialDataState';
+import { dataState } from '../initialState';
 
-const data = (state = initialState, action) => {
+const dataReducer = (state = dataState, action) => {
   switch (action.type) {
     default:
       return state;
   }
 };
 
-export default data;
+export default dataReducer;

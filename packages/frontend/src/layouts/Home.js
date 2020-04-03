@@ -1,5 +1,5 @@
 /* eslint-disable no-console, no-unused-vars, react/no-unused-prop-types */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
@@ -10,7 +10,7 @@ import Lead from '../components/Lead';
 import Details from '../components/Details';
 import Nps from '../components/Nps';
 import MeasuresOverTime from '../components/MeasuresOverTime';
-import { toggleEdit } from '../actions/dashboard';
+import { toggleEdit } from '../actions/editMode';
 
 const Home = props => {
   const { isAuth, isAdmin, dispatch } = props;
@@ -24,14 +24,11 @@ const Home = props => {
     <StateContext.Consumer>
       {context => (
         <div className="p-4">
-          {
-            (isAuth,
-            isAdmin && (
-              <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
-                Toggle Edit Mode
-              </Button>
-            ))
-          }
+          {isAdmin && isAuth && (
+            <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
+              Toggle Edit Mode
+            </Button>
+          )}
           <div className="row">
             <div className="col-sm">
               <Wig nps={context.nps} />
@@ -73,9 +70,9 @@ Home.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  editMode: state.dashboard.editMode,
-  isLoggedIn: state.dashboard.isLoggedIn,
-  isAdmin: state.dashboard.isAdmin
+  editMode: state.editMode,
+  isLoggedIn: state.auth.isLoggedIn,
+  isAdmin: state.auth.isAdmin
 });
 
 export default connect(mapStateToProps, null)(Home);
