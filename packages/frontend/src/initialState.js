@@ -1,5 +1,13 @@
-const initialState = {
-  // DATA
+export const authState = {
+  isLoggedIn: false,
+  isAdmin: false
+};
+
+export const editModeState = {
+  editModeEnabled: false
+};
+
+export const dataState = {
   clients: [{ id: 0, name: 'No Clients Available', measures: [], csats: [] }],
   measures: [],
   measuresGoal: { targetMeasures: null, targetDate: null },
@@ -13,11 +21,5 @@ const initialState = {
     defineText: 'Define the Success factors for listed clients',
     implementText: 'Implement Client Success Program for listed clients'
   },
-  chart: { months: [], values: [], target: null },
-  // AUTH AND EDIT MODE
-  isLoggedIn: false,
-  isAdmin: false,
-  editMode: false
+  chart: { months: [], values: [], target: null }
 };
-
-export default initialState;

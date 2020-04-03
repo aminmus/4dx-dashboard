@@ -1,5 +1,5 @@
 /* eslint-disable no-console, no-unused-vars, react/no-unused-prop-types */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
@@ -10,28 +10,21 @@ import Lead from '../components/Lead';
 import Details from '../components/Details';
 import Nps from '../components/Nps';
 import MeasuresOverTime from '../components/MeasuresOverTime';
-import isAuthenticated from '../utils/authentication';
-import { TOGGLE_EDIT } from '../actions/types';
+import { toggleEdit } from '../actions/editMode';
 
 const Home = props => {
-  const { isAuth, isAdmin, isLoggedIn } = props;
-
-  useEffect(() => {
-    console.log('isLoggedIn', isLoggedIn);
-    console.log('isAdmin', isAdmin);
-    console.log('isAuth', isAuthenticated());
-  }, [isLoggedIn]);
+  const { isAuth, isAdmin, dispatch } = props;
 
   const handleEditClick = e => {
     e.preventDefault();
-    props.toggleEdit();
+    dispatch(toggleEdit());
   };
 
   return (
     <StateContext.Consumer>
       {context => (
         <div className="p-4">
-          {isAuthenticated() && (
+          {isAdmin && isAuth && (
             <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
               Toggle Edit Mode
             </Button>
@@ -71,22 +64,15 @@ const Home = props => {
 
 Home.propTypes = {
   isAuth: PropTypes.bool.isRequired,
-  toggleEdit: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  isAdmin: PropTypes.bool.isRequired
+  isAdmin: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  editMode: state.editMode,
-  isLoggedIn: state.isLoggedIn,
-  isAdmin: state.isAdmin
+  editMode: state.editMode.editModeEnabled,
+  isLoggedIn: state.auth.isLoggedIn,
+  isAdmin: state.auth.isAdmin
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    toggleEdit: () => dispatch({ type: TOGGLE_EDIT })
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, null)(Home);

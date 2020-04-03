@@ -5,12 +5,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import logo from '../logo.png';
 import authProvider from '../utils/react-admin/authProvider';
+import { setLogoutStatus } from '../actions/auth';
 
 const Header = props => {
   // PASSED DOWN PROPS
-  const { handleAuthChange } = props;
+  const { handleAuthChange, isLoggedIn } = props;
   // REDUX STATE PROPS FROM STORE
-  const { logOut, isLoggedIn } = props;
+  const { dispatch } = props;
   const { logout } = authProvider;
   const history = useHistory();
 
@@ -18,7 +19,7 @@ const Header = props => {
     e.preventDefault();
     logout();
     handleAuthChange();
-    logOut();
+    dispatch(setLogoutStatus());
     history.push('/');
   };
 
@@ -52,7 +53,7 @@ const Header = props => {
             </Link>
           </Nav>
           <Nav className="navbar-nav-right">
-            {isLoggedIn ? (
+            {isLoggedIn && (
               <Nav.Item
                 className="nav-link btn-logout text-light"
                 style={{ textDecoration: 'none' }}
@@ -60,7 +61,7 @@ const Header = props => {
               >
                 Logout
               </Nav.Item>
-            ) : null}
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -70,19 +71,13 @@ const Header = props => {
 
 Header.propTypes = {
   handleAuthChange: PropTypes.func.isRequired,
-  logOut: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  editMode: state.editMode,
-  isLoggedIn: state.isLoggedIn
+  editMode: state.editMode.editModeEnabled,
+  isLoggedIn: state.auth.isLoggedIn
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    logOut: () => dispatch({ type: 'LOGOUT' })
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, null)(Header);
