@@ -1,3 +1,7 @@
+/* eslint-disable import/no-cycle */
+import store from '../../index';
+import { setLogoutStatus, setLoginStatus } from '../../actions/auth';
+
 export default {
   // called when the user attempts to log in
   login: async ({ username, password }) => {
@@ -12,12 +16,14 @@ export default {
     if (response.status < 200 || response.status >= 300) throw new Error(response.statusText);
     const { token } = await response.json();
     localStorage.setItem('email', username);
+    store.dispatch(setLoginStatus());
     return localStorage.setItem('token', token);
   },
   // called when the user clicks on the logout button
   logout: () => {
     localStorage.removeItem('email');
     localStorage.removeItem('token');
+    store.dispatch(setLogoutStatus());
     return Promise.resolve();
   },
   // called when the API returns an error
