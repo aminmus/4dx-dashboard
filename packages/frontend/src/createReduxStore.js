@@ -5,17 +5,15 @@ import { all, fork } from 'redux-saga/effects';
 import { adminReducer, adminSaga, USER_LOGOUT } from 'react-admin';
 
 import editModeReducer from './reducers/editMode';
-import dataReducer from './reducers/data';
 import authReducer from './reducers/auth';
 import resourcesReducer from './reducers/resources';
-import { authState, editModeState, dataState } from './initialState';
+import initialState from './initialState';
 
 export default ({ authProvider, dataProvider, history }) => {
   const reducer = combineReducers({
     admin: adminReducer,
     router: connectRouter(history),
     editMode: editModeReducer,
-    data: dataReducer,
     auth: authReducer,
     resources: resourcesReducer
     //  add reducers here
@@ -45,12 +43,8 @@ export default ({ authProvider, dataProvider, history }) => {
 
   const store = createStore(
     resettableAppReducer,
-    {
-      /* set initial state here */
-      editMode: editModeState,
-      data: dataState,
-      auth: authState
-    },
+    /* set initial state here */
+    initialState,
     composeEnhancers(
       applyMiddleware(
         sagaMiddleware,

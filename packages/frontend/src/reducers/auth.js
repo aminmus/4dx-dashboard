@@ -1,7 +1,6 @@
 import { LOGIN, LOGOUT } from '../actions/types';
-import { authState } from '../initialState';
 
-const authReducer = (state = authState, action) => {
+const authReducer = (state = null, action) => {
   switch (action.type) {
     case LOGIN:
       console.log('LOGIN ACTION SENT');
