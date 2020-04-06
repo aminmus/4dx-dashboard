@@ -7,6 +7,7 @@ import { adminReducer, adminSaga, USER_LOGOUT } from 'react-admin';
 import editModeReducer from './reducers/editMode';
 import dataReducer from './reducers/data';
 import authReducer from './reducers/auth';
+import resourcesReducer from './reducers/resources';
 import { authState, editModeState, dataState } from './initialState';
 
 export default ({ authProvider, dataProvider, history }) => {
@@ -15,7 +16,8 @@ export default ({ authProvider, dataProvider, history }) => {
     router: connectRouter(history),
     editMode: editModeReducer,
     data: dataReducer,
-    auth: authReducer
+    auth: authReducer,
+    resources: resourcesReducer
     //  add reducers here
   });
   const resettableAppReducer = (state, action) =>
