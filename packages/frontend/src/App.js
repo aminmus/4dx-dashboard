@@ -1,8 +1,8 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, import/no-cycle */
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import fetchData from './utils/fetchData';
 import reformatClientData from './utils/reformatClientData';
 import calcDefineClients from './utils/calcDefineClients';
@@ -106,7 +106,7 @@ const App = props => {
 };
 
 App.propTypes = {
-  history: PropTypes.objectOf(PropTypes.shape()).isRequired
+  history: ReactRouterPropTypes.history.isRequired
 };
 
 export default connect(null, null)(App);
