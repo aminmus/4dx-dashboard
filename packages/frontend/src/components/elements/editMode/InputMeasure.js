@@ -86,7 +86,7 @@ InputMeasure.propTypes = {
   setIsEditingMeasure: PropTypes.func.isRequired,
   measure: PropTypes.shape({
     description: PropTypes.string,
-    success: PropTypes.instanceOf(Date)
+    success: PropTypes.string
   })
 };
 
