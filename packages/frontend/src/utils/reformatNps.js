@@ -1,5 +1,5 @@
 export default nps => {
-  const npsEntries = nps.data.map(entry => entry.attributes);
+  const npsEntries = nps.map(entry => entry.attributes);
 
   const latestNps = npsEntries.reduce((r, a) => {
     return r.date > a.date ? r : a;

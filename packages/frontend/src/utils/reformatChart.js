@@ -9,7 +9,7 @@
 */
 
 export default nps => {
-  const npsEntries = nps.data.map(entry => {
+  const npsEntries = nps.map(entry => {
     return {
       date: entry.attributes.date,
       nps: entry.attributes['current-nps'],
