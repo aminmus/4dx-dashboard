@@ -5,24 +5,26 @@ import { connect } from 'react-redux';
 import Progressbar from './Progressbar';
 import MeasureCheckList from './admin/MeasureCheckList';
 import EditButton from './elements/EditButton';
+import InputClientTitle from './elements/editMode/InputClientTitle';
 
 const ClientDetails = props => {
   const { client, editMode } = props;
   const [renderChecklist, setRenderChecklist] = useState(false);
   const [hoverState, setHoverState] = useState(false);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
 
   const OuterContainerStyle = {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    cursor: hoverState ? 'pointer' : 'auto'
+    cursor: hoverState ? 'pointer' : 'auto',
+    marginBottom: '10px'
   };
 
   const ProgressBarContainerStyle = {
     flex: 1,
-    justifyContent: 'center',
-    padding: '10px'
+    justifyContent: 'center'
   };
 
   const EditButtonContainerStyle = {
@@ -52,26 +54,34 @@ const ClientDetails = props => {
 
   const onClickEdit = e => {
     e.preventDefault();
-    console.log('EDIT');
+    setIsEditingTitle(true);
   };
 
   return (
     <div style={OuterContainerStyle}>
       <div
-        onMouseEnter={toggleHoverState}
-        onMouseLeave={toggleHoverState}
-        onClick={handleToggleClick}
-        onKeyDown={handleToggleClick}
+        onMouseEnter={!isEditingTitle ? toggleHoverState : () => true}
+        onMouseLeave={!isEditingTitle ? toggleHoverState : () => true}
+        onClick={!isEditingTitle ? handleToggleClick : () => true}
+        onKeyDown={!isEditingTitle ? handleToggleClick : () => true}
         style={ProgressBarContainerStyle}
       >
-        <Progressbar style={{ flex: 1 }} clientName={client.name} clientScore={client.progress} />
+        {isEditingTitle ? (
+          <InputClientTitle
+            setIsEditingTitle={setIsEditingTitle}
+            clientName={client.name}
+            clientScore={client.progress}
+          />
+        ) : (
+          <Progressbar style={{ flex: 1 }} clientName={client.name} clientScore={client.progress} />
+        )}
       </div>
-      {editMode && (
+      {editMode && !isEditingTitle && (
         <div style={EditButtonContainerStyle}>
           <EditButton onClick={onClickEdit} />
         </div>
       )}
-      {renderChecklist && client.measures.length > 0 && (
+      {!isEditingTitle && renderChecklist && client.measures.length > 0 && (
         <div style={MeasureCheckListContainerStyle}>
           <MeasureCheckList measures={client.measures} />
         </div>

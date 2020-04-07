@@ -5,24 +5,33 @@ import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 
 const InputClientTitle = props => {
-  const { clientName } = props;
+  const { clientName, setIsEditingTitle } = props;
 
   const handleCancelClick = e => {
     e.preventDefault();
     console.log('CANCEL');
+    setIsEditingTitle(false);
   };
 
   const handleSaveClick = e => {
     e.preventDefault();
     console.log('SAVE');
+    setIsEditingTitle(false);
+  };
+
+  const formStyle = {
+    border: '2px dotted white',
+    borderRadius: '10px',
+    padding: '5px'
   };
 
   return (
-    <form style={{ border: '1px dotted white', padding: '5px' }}>
+    <form style={formStyle}>
       <TextField
         label="Label"
-        style={{ margin: 8, color: '#ffff' }}
-        value={clientName}
+        style={{ color: '#ffff' }}
+        placeholder={clientName}
+        default={clientName}
         fullWidth
         variant="filled"
         margin="normal"
@@ -43,7 +52,8 @@ InputClientTitle.defaultProps = {
 };
 
 InputClientTitle.propTypes = {
-  clientName: PropTypes.string
+  clientName: PropTypes.string,
+  setIsEditingTitle: PropTypes.func.isRequired
 };
 
 export default InputClientTitle;
