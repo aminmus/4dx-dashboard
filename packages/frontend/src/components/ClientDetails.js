@@ -50,6 +50,11 @@ const ClientDetails = props => {
     setHoverState(!hoverState);
   };
 
+  const onClickEdit = e => {
+    e.preventDefault();
+    console.log('EDIT');
+  };
+
   return (
     <div style={OuterContainerStyle}>
       <div
@@ -59,21 +64,16 @@ const ClientDetails = props => {
         onKeyDown={handleToggleClick}
         style={ProgressBarContainerStyle}
       >
-        <Progressbar
-          style={{ flex: 1 }}
-          key={client.id}
-          clientName={client.name}
-          clientScore={client.progress}
-        />
+        <Progressbar style={{ flex: 1 }} clientName={client.name} clientScore={client.progress} />
       </div>
       {editMode && (
         <div style={EditButtonContainerStyle}>
-          <EditButton />
+          <EditButton onClick={onClickEdit} />
         </div>
       )}
       {renderChecklist && client.measures.length > 0 && (
         <div style={MeasureCheckListContainerStyle}>
-          <MeasureCheckList key={`${client.id}-checklist`} measures={client.measures} />
+          <MeasureCheckList measures={client.measures} />
         </div>
       )}
     </div>
