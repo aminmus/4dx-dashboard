@@ -68,9 +68,9 @@ Home.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  editMode: state.editMode.editModeEnabled,
-  isLoggedIn: state.auth.isLoggedIn
+const mapStateToProps = ({ editMode, auth }) => ({
+  editMode: editMode?.editModeEnabled,
+  isLoggedIn: auth?.isLoggedIn
 });
 
 export default connect(mapStateToProps, null)(Home);
