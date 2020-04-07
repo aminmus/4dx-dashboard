@@ -16,9 +16,14 @@ const collectClients = (clients, allMeasures, allCsats) => {
     const matchingCsatIds = csats.data.map(csat => csat.id);
 
     // Filter away all measures not macthing ids
-    const clientMeasures = allMeasures.map(measure =>
-      matchingMeasureIds.includes(measure.id) ? measure.attributes : null
-    );
+    const clientMeasures = allMeasures.map(measure => {
+      const measureMatch = matchingMeasureIds.includes(measure.id) ? measure.attributes : null;
+      if (measureMatch) {
+        measureMatch.id = measure.id;
+      }
+      return measureMatch;
+    });
+
     const filteredMeasures = clientMeasures.filter(entry => entry != null);
 
     const clientCsats = allCsats.map(csat =>
