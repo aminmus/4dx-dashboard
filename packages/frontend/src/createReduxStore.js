@@ -1,13 +1,13 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import thunk from 'redux-thunk';
 import { routerMiddleware, connectRouter } from 'connected-react-router';
-import createSagaMiddleware from 'redux-saga';
-import { all, fork } from 'redux-saga/effects';
 import { adminReducer, adminSaga, USER_LOGOUT } from 'react-admin';
+import { all, fork } from 'redux-saga/effects';
+import createSagaMiddleware from 'redux-saga';
+import thunk from 'redux-thunk';
 
+import resourcesReducer from './reducers/resources';
 import editModeReducer from './reducers/editMode';
 import authReducer from './reducers/auth';
-import resourcesReducer from './reducers/resources';
 import initialState from './initialState';
 
 export default ({ authProvider, dataProvider, history }) => {
@@ -15,20 +15,14 @@ export default ({ authProvider, dataProvider, history }) => {
     admin: adminReducer,
     router: connectRouter(history),
     editMode: editModeReducer,
-    auth: authReducer,
-    resources: resourcesReducer
-    //  add reducers here
+    resources: resourcesReducer,
+    auth: authReducer
   });
   const resettableAppReducer = (state, action) =>
     reducer(action.type !== USER_LOGOUT ? state : undefined, action);
 
   const saga = function* rootSaga() {
-    yield all(
-      [
-        adminSaga(dataProvider, authProvider)
-        // add sagas here
-      ].map(fork)
-    );
+    yield all([adminSaga(dataProvider, authProvider)].map(fork));
   };
   const sagaMiddleware = createSagaMiddleware();
 
@@ -44,12 +38,8 @@ export default ({ authProvider, dataProvider, history }) => {
 
   const store = createStore(
     resettableAppReducer,
-    /* set initial state here */
     initialState,
-    composeEnhancers(
-      applyMiddleware(sagaMiddleware, routerMiddleware(history), thunk)
-      // add enhancers here
-    )
+    composeEnhancers(applyMiddleware(sagaMiddleware, routerMiddleware(history), thunk))
   );
   sagaMiddleware.run(saga);
   return store;
