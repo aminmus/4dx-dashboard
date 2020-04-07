@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
@@ -5,21 +6,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import logo from '../logo.png';
 import authProvider from '../utils/react-admin/authProvider';
-import { setLogoutStatus } from '../actions/auth';
 
 const Header = props => {
-  // PASSED DOWN PROPS
-  const { handleAuthChange, isLoggedIn } = props;
-  // REDUX STATE PROPS FROM STORE
-  const { dispatch } = props;
+  const { isLoggedIn } = props;
   const { logout } = authProvider;
   const history = useHistory();
 
   const handleLogoutClick = e => {
     e.preventDefault();
     logout();
-    handleAuthChange();
-    dispatch(setLogoutStatus());
     history.push('/');
   };
 
@@ -70,13 +65,10 @@ const Header = props => {
 };
 
 Header.propTypes = {
-  handleAuthChange: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  dispatch: PropTypes.func.isRequired
+  isLoggedIn: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
-  editMode: state.editMode.editModeEnabled,
   isLoggedIn: state.auth.isLoggedIn
 });
 
