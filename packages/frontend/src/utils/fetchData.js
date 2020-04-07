@@ -9,7 +9,7 @@ const labelResultsWithKey = (data, url) => {
   return reformattedResult;
 };
 
-export default () => {
+export default async () => {
   const baseUrl = `${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_SERVER_PORT}`;
   const urls = [
     `${baseUrl}/api/nps`,
@@ -26,7 +26,7 @@ export default () => {
     redirect: 'follow'
   };
 
-  return Promise.all(
+  const responseArr = await Promise.all(
     urls.map(url =>
       fetch(url, requestOptions)
         .then(response => response.json())
@@ -35,4 +35,7 @@ export default () => {
         })
     )
   );
+
+  // Reshape into object with shape of: {nps: {...}, clients: {...} etc}
+  return responseArr.reduce((accumulator, current) => ({ ...accumulator, ...current }), {});
 };

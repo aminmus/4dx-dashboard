@@ -13,7 +13,7 @@ import MeasuresOverTime from '../components/MeasuresOverTime';
 import { toggleEdit } from '../actions/editMode';
 
 const Home = props => {
-  const { isAuth, isAdmin, dispatch } = props;
+  const { isLoggedIn, dispatch } = props;
 
   const handleEditClick = e => {
     e.preventDefault();
@@ -24,7 +24,7 @@ const Home = props => {
     <StateContext.Consumer>
       {context => (
         <div className="p-4">
-          {isAdmin && isAuth && (
+          {isLoggedIn && (
             <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
               Toggle Edit Mode
             </Button>
@@ -63,16 +63,14 @@ const Home = props => {
 };
 
 Home.propTypes = {
-  isAuth: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
   editMode: PropTypes.bool.isRequired,
-  isAdmin: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   editMode: state.editMode.editModeEnabled,
-  isLoggedIn: state.auth.isLoggedIn,
-  isAdmin: state.auth.isAdmin
+  isLoggedIn: state.auth.isLoggedIn
 });
 
 export default connect(mapStateToProps, null)(Home);

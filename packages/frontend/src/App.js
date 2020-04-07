@@ -1,9 +1,8 @@
-/* eslint-disable no-console, no-unused-vars, no-shadow */
+/* eslint-disable no-console, import/no-cycle */
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { createHashHistory } from 'history';
-
+import { connect } from 'react-redux';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import fetchData from './utils/fetchData';
 import reformatClientData from './utils/reformatClientData';
 import calcDefineClients from './utils/calcDefineClients';
@@ -16,12 +15,10 @@ import Admin from './layouts/Admin';
 import reformatChart from './utils/reformatChart';
 import reformatMeasureGoals from './utils/reformatMeasureGoals';
 import reformatMeasures from './utils/reformatMeasures';
-import isAuthenticated from './utils/authentication';
-import authProvider from './utils/react-admin/authProvider';
-import dataProvider from './utils/react-admin/dataProvider';
-import createReduxStore from './createReduxStore';
 
-const App = () => {
+const App = props => {
+  const { history } = props;
+
   const [clients, setClients] = useState([
     { id: 0, name: 'No Clients Available', measures: [], csats: [] }
   ]);
@@ -49,32 +46,31 @@ const App = () => {
     target: null
   });
 
-  const [isAuth, setAuth] = useState(isAuthenticated());
-  useEffect(() => {
-    setAuth(isAuthenticated());
-  });
-
-  const handleAuthChange = () => setAuth(isAuthenticated());
-
   useEffect(() => {
     async function setAppState() {
       try {
-        const [npsData, clientsData, measures, measureGoals] = await fetchData();
-        if (clientsData.clients.data.length > 0) {
-          const clientData = reformatClientData(clientsData.clients);
-          setClients(clientData);
-          setDefinedStatus(calcDefineClients(clientData));
-          setLeadStatus(calcLeads(clientData));
+        const {
+          nps: { data: npsData },
+          clients: fetchedClients,
+          measures: { data: measuresData },
+          measureGoals: { data: measureGoalsData }
+        } = await fetchData();
+
+        if (fetchedClients.data.length > 0) {
+          const reformattedClients = reformatClientData(fetchedClients);
+          setClients(reformattedClients);
+          setDefinedStatus(calcDefineClients(reformattedClients));
+          setLeadStatus(calcLeads(reformattedClients));
         }
-        if (npsData.nps.data.length > 0) {
-          setNps(reformatNps(npsData.nps));
-          setChart(reformatChart(npsData.nps));
+        if (npsData.length > 0) {
+          setNps(reformatNps(npsData));
+          setChart(reformatChart(npsData));
         }
-        if (measureGoals.measureGoals.data.length > 0) {
-          setMeasuresGoal(reformatMeasureGoals(measureGoals.measureGoals));
+        if (measureGoalsData.length > 0) {
+          setMeasuresGoal(reformatMeasureGoals(measureGoalsData));
         }
-        if (measures.measures.data.length > 0) {
-          setMeasures(reformatMeasures(measures.measures));
+        if (measuresData.length > 0) {
+          setMeasures(reformatMeasures(measuresData));
         }
       } catch (e) {
         console.error(e);
@@ -83,41 +79,35 @@ const App = () => {
     setAppState();
   }, []);
 
-  const history = createHashHistory();
-
   return (
-    <Provider
-      store={createReduxStore({
-        authProvider,
-        dataProvider,
-        history
-      })}
+    <StateContext.Provider
+      value={{
+        clients,
+        nps,
+        chart,
+        leadStatus,
+        definedStatus,
+        measuresGoal,
+        measures
+      }}
     >
-      <StateContext.Provider
-        value={{
-          clients,
-          nps,
-          chart,
-          leadStatus,
-          definedStatus,
-          measuresGoal,
-          measures
-        }}
-      >
-        <Router>
-          <Header handleAuthChange={handleAuthChange} />
-          <Switch>
-            <Route path="/admin">
-              <Admin history={history} />
-            </Route>
-            <Route path="/">
-              <Home isAuth={isAuth} />
-            </Route>
-          </Switch>
-        </Router>
-      </StateContext.Provider>
-    </Provider>
+      <Router>
+        <Header />
+        <Switch>
+          <Route path="/admin">
+            <Admin history={history} />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </Router>
+    </StateContext.Provider>
   );
 };
 
-export default App;
+App.propTypes = {
+  history: ReactRouterPropTypes.history.isRequired
+};
+
+export default connect(null, null)(App);
