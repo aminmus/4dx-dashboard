@@ -28,7 +28,8 @@ export default function ProgressBar(props) {
   const ContainerStyle = {
     display: 'flex',
     flexDirection: matches ? 'row' : 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    padding: '10px'
   };
 
   const InnerContainerStyle = {
