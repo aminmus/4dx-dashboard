@@ -1,22 +1,24 @@
-/* eslint-disable no-console */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 
 const InputClientTitle = props => {
-  const { clientName, setIsEditingTitle } = props;
+  const { name, setIsEditingTitle } = props;
+  const [clientName, setClientName] = useState(name);
 
   const handleCancelClick = e => {
     e.preventDefault();
-    console.log('CANCEL');
     setIsEditingTitle(false);
   };
 
   const handleSaveClick = e => {
     e.preventDefault();
-    console.log('SAVE');
     setIsEditingTitle(false);
+  };
+
+  const handleNameChange = input => {
+    setClientName(input.target.value);
   };
 
   const formStyle = {
@@ -35,6 +37,7 @@ const InputClientTitle = props => {
         fullWidth
         variant="filled"
         margin="normal"
+        onChange={handleNameChange}
         InputLabelProps={{
           shrink: true
         }}
@@ -48,11 +51,11 @@ const InputClientTitle = props => {
 };
 
 InputClientTitle.defaultProps = {
-  clientName: ''
+  name: ''
 };
 
 InputClientTitle.propTypes = {
-  clientName: PropTypes.string,
+  name: PropTypes.string,
   setIsEditingTitle: PropTypes.func.isRequired
 };
 

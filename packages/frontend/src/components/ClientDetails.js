@@ -9,6 +9,7 @@ import InputClientTitle from './elements/editMode/InputClientTitle';
 
 const ClientDetails = props => {
   const { client, editMode } = props;
+  const { name, measures, progress } = client;
   const [renderChecklist, setRenderChecklist] = useState(false);
   const [hoverState, setHoverState] = useState(false);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -67,13 +68,9 @@ const ClientDetails = props => {
         style={ProgressBarContainerStyle}
       >
         {isEditingTitle ? (
-          <InputClientTitle
-            setIsEditingTitle={setIsEditingTitle}
-            clientName={client.name}
-            clientScore={client.progress}
-          />
+          <InputClientTitle setIsEditingTitle={setIsEditingTitle} name={name} />
         ) : (
-          <Progressbar style={{ flex: 1 }} clientName={client.name} clientScore={client.progress} />
+          <Progressbar style={{ flex: 1 }} clientName={name} clientScore={progress} />
         )}
       </div>
       {editMode && !isEditingTitle && (
@@ -81,9 +78,9 @@ const ClientDetails = props => {
           <EditButton onClick={onClickEdit} />
         </div>
       )}
-      {!isEditingTitle && renderChecklist && client.measures.length > 0 && (
+      {!isEditingTitle && renderChecklist && measures.length > 0 && (
         <div style={MeasureCheckListContainerStyle}>
-          <MeasureCheckList measures={client.measures} />
+          <MeasureCheckList measures={measures} />
         </div>
       )}
     </div>
