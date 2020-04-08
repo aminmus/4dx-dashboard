@@ -7,6 +7,12 @@ const editMode = {
   editModeEnabled: false
 };
 
+const loading = {
+  isLoading: false,
+  requestType: null,
+  requestStatus: null
+};
+
 // Other state that is generated client side
 const computed = {
   definedStatus: { totalClients: 0, definedClients: 0 },
@@ -32,5 +38,6 @@ export default {
   auth,
   editMode,
   computed,
-  resources
+  resources,
+  loading
 };
