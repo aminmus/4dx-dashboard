@@ -1,28 +1,28 @@
-/* eslint-disable no-console */
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
-
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { TextField } from '@material-ui/core';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
 import moment from 'moment';
+import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 
 const InputMeasure = props => {
-  const { setIsEditingMeasure, measure } = props;
-  const { description, success } = measure;
+  const { setIsEditingMeasure, description, success } = props;
+  const [measureDescription, setMeasureDescription] = useState(description);
   const [selectedDate, setSelectedDate] = useState(success);
 
   const handleCancelClick = e => {
     e.preventDefault();
-    console.log('CANCEL');
     setIsEditingMeasure(false);
   };
 
   const handleSaveClick = e => {
     e.preventDefault();
-    console.log('SAVE');
     setIsEditingMeasure(false);
+  };
+
+  const handleDescriptionChange = input => {
+    setMeasureDescription(input.target.value);
   };
 
   const handleDateChange = date => {
@@ -42,18 +42,18 @@ const InputMeasure = props => {
         <TextField
           label="Measure description"
           style={{ color: '#ffff', marign: '10px' }}
-          placeholder={description}
-          default={description}
+          placeholder={measureDescription}
+          default={measureDescription}
           variant="filled"
           margin="normal"
           fullWidth
+          onChange={handleDescriptionChange}
           InputLabelProps={{
             shrink: true
           }}
         />
         <KeyboardDatePicker
           label="Date of successs"
-          //   disableToolbar
           format="YYYY-MM-DD"
           fullWidth
           margin="normal"
@@ -76,18 +76,15 @@ const InputMeasure = props => {
 };
 
 InputMeasure.defaultProps = {
-  measure: {
-    description: null,
-    success: null
-  }
+  description: null,
+  success: null
 };
 
 InputMeasure.propTypes = {
   setIsEditingMeasure: PropTypes.func.isRequired,
-  measure: PropTypes.shape({
-    description: PropTypes.string,
-    success: PropTypes.string
-  })
+
+  description: PropTypes.string,
+  success: PropTypes.string
 };
 
 export default InputMeasure;

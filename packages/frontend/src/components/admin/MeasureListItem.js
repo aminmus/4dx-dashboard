@@ -9,6 +9,7 @@ import InputMeasure from '../elements/editMode/InputMeasure';
 
 const MeasureListItem = props => {
   const { measure, editMode } = props;
+  const { success, description } = measure;
   const [isEditingMeasure, setIsEditingMeasure] = useState(false);
 
   const onClickEdit = e => {
@@ -20,17 +21,21 @@ const MeasureListItem = props => {
     <ListItem className="text-light">
       {!isEditingMeasure ? (
         <div>
-          {measure.success ? (
+          {success ? (
             <CheckCircleIcon className="mr-2 text-success" />
           ) : (
             <CancelIcon className="mr-2 text-danger" />
           )}
-          {measure.description}
+          {description}
           {editMode && <EditButton onClick={onClickEdit} />}
         </div>
       ) : (
         <div>
-          <InputMeasure measure={measure} setIsEditingMeasure={setIsEditingMeasure} />
+          <InputMeasure
+            description={description}
+            success={success}
+            setIsEditingMeasure={setIsEditingMeasure}
+          />
         </div>
       )}
     </ListItem>
