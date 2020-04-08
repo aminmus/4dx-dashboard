@@ -1,13 +1,17 @@
+// Disabling prop types errors for now as the structure might change soon
+/* eslint-disable react/prop-types */
 /* eslint-disable radix */ /* eslint-disable no-restricted-syntax */
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import calcDefineClients from '../utils/calcDefineClients';
 
 export default function Lead(props) {
-  const { nps, leadStatus, definedStatus } = props;
+  const { clients, leadStatus, definedStatus } = props;
   const { leads, leadsTotal } = leadStatus;
   const { definedClients, totalClients } = definedStatus;
-  const { defineClients, defineText, implementText } = nps;
+
+  const defineClients = calcDefineClients(clients);
 
   const LeadNumberStyle = {
     fontSize: '60px',
@@ -39,7 +43,7 @@ export default function Lead(props) {
   const renderDefineSuccess = () => {
     return (
       <div>
-        <h3 className="define">{defineText}</h3>
+        <h3 className="define">Define the Success factors for listed clients</h3>
         <div style={LeadNumberStyle}>
           <span className={setDefineLeadClassName()}>{`${definedClients}/${totalClients}`}</span>
         </div>
@@ -50,7 +54,7 @@ export default function Lead(props) {
   const renderImplementSuccess = () => {
     return (
       <div>
-        <h3 className="implement">{implementText}</h3>
+        <h3 className="implement">Implement Client Success Program for listed clients</h3>
         <div style={LeadNumberStyle}>
           <span className={setImplementLeadClassName()}>{`${leads}/${leadsTotal}`}</span>
         </div>
@@ -68,7 +72,6 @@ export default function Lead(props) {
 }
 
 Lead.defaultProps = {
-  nps: {},
   leadStatus: {},
   definedStatus: {}
 };
@@ -78,13 +81,5 @@ Lead.propTypes = {
   definedStatus: PropTypes.shape({
     definedClients: PropTypes.number,
     totalClients: PropTypes.number
-  }),
-  nps: PropTypes.shape({
-    description: PropTypes.string,
-    current: PropTypes.number,
-    goal: PropTypes.number,
-    defineClients: PropTypes.string,
-    defineText: PropTypes.string,
-    implementText: PropTypes.string
   })
 };
