@@ -1,5 +1,5 @@
 export default measureGoals => {
-  const measureGoalEntries = measureGoals.data.map(entry => entry.attributes);
+  const measureGoalEntries = measureGoals.map(entry => entry.attributes);
 
   const latestMeasureGoalEntry = measureGoalEntries.reduce((currentEntry, nextEntry) => {
     return currentEntry.date > nextEntry.date ? currentEntry : nextEntry;

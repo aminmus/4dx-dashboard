@@ -49,27 +49,28 @@ const App = props => {
   useEffect(() => {
     async function setAppState() {
       try {
-        const [
-          npsDataResponse,
-          clientsDataResponse,
-          measuresResponse,
-          measureGoalsResponse
-        ] = await fetchData();
-        if (clientsDataResponse.clients.data.length > 0) {
-          const clientData = reformatClientData(clientsDataResponse.clients);
-          setClients(clientData);
-          setDefinedStatus(calcDefineClients(clientData));
-          setLeadStatus(calcLeads(clientData));
+        const {
+          nps: { data: npsData },
+          clients: fetchedClients,
+          measures: { data: measuresData },
+          measureGoals: { data: measureGoalsData }
+        } = await fetchData();
+
+        if (fetchedClients.data.length > 0) {
+          const reformattedClients = reformatClientData(fetchedClients);
+          setClients(reformattedClients);
+          setDefinedStatus(calcDefineClients(reformattedClients));
+          setLeadStatus(calcLeads(reformattedClients));
         }
-        if (npsDataResponse.nps.data.length > 0) {
-          setNps(reformatNps(npsDataResponse.nps));
-          setChart(reformatChart(npsDataResponse.nps));
+        if (npsData.length > 0) {
+          setNps(reformatNps(npsData));
+          setChart(reformatChart(npsData));
         }
-        if (measureGoalsResponse.measureGoals.data.length > 0) {
-          setMeasuresGoal(reformatMeasureGoals(measureGoalsResponse.measureGoals));
+        if (measureGoalsData.length > 0) {
+          setMeasuresGoal(reformatMeasureGoals(measureGoalsData));
         }
-        if (measuresResponse.measures.data.length > 0) {
-          setMeasures(reformatMeasures(measuresResponse.measures));
+        if (measuresData.length > 0) {
+          setMeasures(reformatMeasures(measuresData));
         }
       } catch (e) {
         console.error(e);

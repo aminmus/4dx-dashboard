@@ -1,5 +1,5 @@
 export default measures => {
-  return measures.data.map(entry => {
+  return measures.map(entry => {
     return entry.attributes.success;
   });
 };
