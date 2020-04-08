@@ -1,6 +1,7 @@
 /* eslint-disable no-console, import/no-cycle */
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import fetchData from './utils/fetchData';
@@ -15,9 +16,10 @@ import Admin from './layouts/Admin';
 import reformatChart from './utils/reformatChart';
 import reformatMeasureGoals from './utils/reformatMeasureGoals';
 import reformatMeasures from './utils/reformatMeasures';
+import { startLoading, finishLoading } from './actions/loading';
 
 const App = props => {
-  const { history } = props;
+  const { history, dispatch } = props;
 
   const [clients, setClients] = useState([
     { id: 0, name: 'No Clients Available', measures: [], csats: [] }
@@ -45,6 +47,15 @@ const App = props => {
     values: [],
     target: null
   });
+
+  const sendRequest = e => {
+    e.preventDefault();
+    dispatch(startLoading('FETCH RESOURCES'));
+
+    setTimeout(() => {
+      dispatch(finishLoading('FETCH RESOURCES', 'success'));
+    }, 3000);
+  };
 
   useEffect(() => {
     async function setAppState() {
@@ -93,6 +104,9 @@ const App = props => {
     >
       <Router>
         <Header />
+        <button type="button" onClick={sendRequest}>
+          Send Request
+        </button>
         <Switch>
           <Route path="/admin">
             <Admin history={history} />
@@ -107,7 +121,8 @@ const App = props => {
 };
 
 App.propTypes = {
-  history: ReactRouterPropTypes.history.isRequired
+  history: ReactRouterPropTypes.history.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
 export default connect(null, null)(App);
