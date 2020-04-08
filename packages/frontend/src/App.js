@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import fetchData from './utils/fetchData';
 import reformatClientData from './utils/reformatClientData';
@@ -15,9 +16,12 @@ import Admin from './layouts/Admin';
 import reformatChart from './utils/reformatChart';
 import reformatMeasureGoals from './utils/reformatMeasureGoals';
 import reformatMeasures from './utils/reformatMeasures';
+import isAuthenticated from './utils/authentication';
+
+import { setLogoutStatus, setLoginStatus } from './actions/auth';
 
 const App = props => {
-  const { history } = props;
+  const { history, dispatch } = props;
 
   const [clients, setClients] = useState([
     { id: 0, name: 'No Clients Available', measures: [], csats: [] }
@@ -47,6 +51,11 @@ const App = props => {
   });
 
   useEffect(() => {
+    if (isAuthenticated()) {
+      dispatch(setLoginStatus());
+    } else {
+      dispatch(setLogoutStatus());
+    }
     async function setAppState() {
       try {
         const {
@@ -107,7 +116,8 @@ const App = props => {
 };
 
 App.propTypes = {
-  history: ReactRouterPropTypes.history.isRequired
+  history: ReactRouterPropTypes.history.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
 export default connect(null, null)(App);
