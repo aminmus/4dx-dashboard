@@ -97,8 +97,8 @@ const InputWig = props => {
 };
 
 InputWig.defaultProps = {
-  current: '0',
-  goal: '0',
+  current: 0,
+  goal: 0,
   targetDate: null
 };
 
