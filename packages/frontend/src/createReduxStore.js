@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 import resourcesReducer from './reducers/resources';
 import editModeReducer from './reducers/editMode';
 import authReducer from './reducers/auth';
+import loadingReducer from './reducers/loading';
 import initialState from './initialState';
 
 export default ({ authProvider, dataProvider, history }) => {
@@ -16,7 +17,8 @@ export default ({ authProvider, dataProvider, history }) => {
     router: connectRouter(history),
     editMode: editModeReducer,
     resources: resourcesReducer,
-    auth: authReducer
+    auth: authReducer,
+    loading: loadingReducer
   });
   const resettableAppReducer = (state, action) =>
     reducer(action.type !== USER_LOGOUT ? state : undefined, action);
