@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow, no-console */
-
 import React, { useState } from 'react';
 import { ListItem } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -11,11 +9,11 @@ import InputMeasure from '../elements/editMode/InputMeasure';
 
 const MeasureListItem = props => {
   const { measure, editMode } = props;
-  const [isEditingMeasure, setIsEditingMeasure] = useState(true);
+  const [isEditingMeasure, setIsEditingMeasure] = useState(false);
 
   const onClickEdit = e => {
     e.preventDefault();
-    console.log('EDIT');
+    setIsEditingMeasure(true);
   };
 
   return (
