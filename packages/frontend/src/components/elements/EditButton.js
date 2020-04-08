@@ -7,8 +7,8 @@ const EditButton = props => {
   const { onClick } = props;
 
   return (
-    <IconButton onClick={onClick} aria-label="edit" style={{ marginLeft: '10px' }}>
-      <EditIcon />
+    <IconButton onClick={onClick} aria-label="edit" style={{ marginLeft: '10px', padding: '5px' }}>
+      <EditIcon fontSize="small" />
     </IconButton>
   );
 };
