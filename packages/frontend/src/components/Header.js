@@ -68,8 +68,8 @@ Header.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired
 };
 
-const mapStateToProps = state => ({
-  isLoggedIn: state.auth.isLoggedIn
+const mapStateToProps = ({ auth }) => ({
+  isLoggedIn: auth?.isLoggedIn
 });
 
 export default connect(mapStateToProps, null)(Header);

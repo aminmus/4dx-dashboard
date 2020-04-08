@@ -1,6 +1,4 @@
-import { dataState } from '../initialState';
-
-const dataReducer = (state = dataState, action) => {
+const dataReducer = (state = null, action) => {
   switch (action.type) {
     default:
       return state;
