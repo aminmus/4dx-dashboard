@@ -1,13 +1,25 @@
 /* eslint-disable no-console, import/no-cycle */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import Header from './components/Header';
 import Home from './layouts/Home';
 import Admin from './layouts/Admin';
+import isAuthenticated from './utils/authentication';
 
-const App = ({ history }) => {
+import { setLogoutStatus, setLoginStatus } from './actions/auth';
+
+const App = ({ history, dispatch }) => {
+  useEffect(() => {
+    if (isAuthenticated()) {
+      dispatch(setLoginStatus());
+    } else {
+      dispatch(setLogoutStatus());
+    }
+  }, []);
+
   return (
     <Router>
       <Header />
@@ -24,7 +36,8 @@ const App = ({ history }) => {
 };
 
 App.propTypes = {
-  history: ReactRouterPropTypes.history.isRequired
+  history: ReactRouterPropTypes.history.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
 export default connect(null, null)(App);
