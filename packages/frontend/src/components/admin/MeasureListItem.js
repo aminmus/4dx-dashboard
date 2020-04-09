@@ -8,8 +8,11 @@ import EditButton from '../elements/EditButton';
 import InputMeasure from '../elements/editMode/InputMeasure';
 
 const MeasureListItem = props => {
-  const { measure, editMode } = props;
-  const { success, description } = measure;
+  const {
+    measure: { success, description },
+    editMode
+  } = props;
+
   const [isEditingMeasure, setIsEditingMeasure] = useState(false);
 
   const onClickEdit = e => {
