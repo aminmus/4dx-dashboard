@@ -19,7 +19,7 @@ import reformatMeasures from './utils/reformatMeasures';
 import { requestResources, recieveResources } from './actions/resources';
 
 const App = props => {
-  const { history, dispatch } = props;
+  const { history, dispatch, isFetching } = props;
 
   const [clients, setClients] = useState([
     { id: 0, name: 'No Clients Available', measures: [], csats: [] }
@@ -48,14 +48,10 @@ const App = props => {
     target: null
   });
 
-  const sendRequest = e => {
-    e.preventDefault();
-    console.log('USELESS NOW');
-  };
-
   useEffect(() => {
     dispatch(requestResources());
     dispatch(recieveResources());
+
     async function setAppState() {
       try {
         const {
@@ -102,9 +98,7 @@ const App = props => {
     >
       <Router>
         <Header />
-        <button type="button" onClick={sendRequest}>
-          Send Request
-        </button>
+        {isFetching && <h1>FETCHING</h1>}
         <Switch>
           <Route path="/admin">
             <Admin history={history} />
@@ -120,7 +114,12 @@ const App = props => {
 
 App.propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired
 };
 
-export default connect(null, null)(App);
+const mapStateToProps = ({ resources: { isFetching } }) => ({
+  isFetching
+});
+
+export default connect(mapStateToProps, null)(App);
