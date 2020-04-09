@@ -7,8 +7,10 @@ import EditButton from './elements/EditButton';
 import InputWig from './elements/editMode/InputWig';
 
 const Wig = props => {
-  const { nps, editMode } = props;
-  const { current, description, goal, targetDate } = nps;
+  const {
+    nps: { current, description, goal, targetDate },
+    editMode
+  } = props;
   const currentInt = parseInt(current, 10);
   const goalInt = parseInt(goal, 10);
   const progress = currentInt && goalInt ? (currentInt / goalInt) * 100 : 0;
