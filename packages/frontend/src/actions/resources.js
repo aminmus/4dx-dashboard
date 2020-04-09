@@ -14,13 +14,13 @@ export default function fetchResources() {
     try {
       const {
         nps,
-        clients: fetchedClients,
+        clients,
         measures: { data: measuresData },
         measureGoals: { data: measureGoalsData }
       } = await fetchData();
 
       const formattedData = {
-        clients: await deserializer.deserialize(fetchedClients),
+        clients: await deserializer.deserialize(clients),
         nps: await deserializer.deserialize(nps),
         measures: reformatMeasures(measuresData),
         measureGoals: reformatMeasureGoals(measureGoalsData)
