@@ -1,23 +1,20 @@
 import fetchData from '../utils/fetchData';
-import { REQUEST_RESOURCES, RECEIVE_RESOURCES, RESOURCES_ERROR } from './types';
+import { FETCH_RESOURCES_START, FETCH_RESOURCES_SUCCESS, FETCH_RESOURCES_ERROR } from './types';
 
-export const recieveResources = () => {
-  return async function recieveResourcesThunk(dispatch) {
+export default function requestResources() {
+  return async function requestResourcesThunk(dispatch) {
+    dispatch({ type: FETCH_RESOURCES_START });
     try {
       const data = await fetchData();
       return dispatch({
-        type: RECEIVE_RESOURCES,
+        type: FETCH_RESOURCES_SUCCESS,
         payload: data
       });
     } catch (error) {
       return dispatch({
-        type: RESOURCES_ERROR,
+        type: FETCH_RESOURCES_ERROR,
         payload: error
       });
     }
   };
-};
-
-export const requestResources = () => ({
-  type: REQUEST_RESOURCES
-});
+}
