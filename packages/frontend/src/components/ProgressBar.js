@@ -5,12 +5,10 @@ import LinearProgressBar from '@material-ui/core/LinearProgress';
 import { withStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-export default function ProgressBar(props) {
-  const { clientName, clientMeasures } = props;
-
+export default function ProgressBar({ clientName, clientMeasures }) {
   const [progress, setProgress] = useState(0);
 
-  // Set client measure success progress
+  // Set client measures success progress
   useEffect(() => {
     const successfulMeasures = clientMeasures.reduce(
       (successTotal, measure) => (measure.success ? successTotal + 1 : successTotal),
