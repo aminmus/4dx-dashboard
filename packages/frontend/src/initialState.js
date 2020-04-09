@@ -7,12 +7,6 @@ const editMode = {
   editModeEnabled: false
 };
 
-const loading = {
-  isLoading: false,
-  requestType: null,
-  requestStatus: null
-};
-
 // Other state that is generated client side
 const computed = {
   definedStatus: { totalClients: 0, definedClients: 0 },
@@ -21,23 +15,25 @@ const computed = {
 };
 
 const resources = {
-  clients: [{ id: 0, name: 'No Clients Available', measures: [], csats: [] }],
-  measures: [],
-  measuresGoal: { targetMeasures: null, targetDate: null },
-  nps: {
-    description: 'N/A',
-    current: 0,
-    goal: 0,
-    targetDate: 'N/A',
-    defineText: 'Define the Success factors for listed clients',
-    implementText: 'Implement Client Success Program for listed clients'
-  }
+  resources: {
+    clients: [{ id: 0, name: 'No Clients Available', measures: [], csats: [] }],
+    measures: [],
+    measuresGoal: { targetMeasures: null, targetDate: null },
+    nps: {
+      description: 'N/A',
+      current: 0,
+      goal: 0,
+      targetDate: 'N/A',
+      defineText: 'Define the Success factors for listed clients',
+      implementText: 'Implement Client Success Program for listed clients'
+    }
+  },
+  isFetching: false
 };
 
 export default {
   auth,
   editMode,
   computed,
-  resources,
-  loading
+  resources
 };
