@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
-import moment from 'moment';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
+import formatDate from '../../../utils/formatDate';
 
 const InputMeasuresGoal = props => {
   const { setIsEditingMeasuresGoal, measures, date } = props;
@@ -25,8 +25,8 @@ const InputMeasuresGoal = props => {
     setTargetMeasures(parseInt(input.target.value, 10));
   };
 
-  const handleDateChange = input => {
-    setSelectedDate(moment(input).format('YYYY-MM-DD'));
+  const handleDateChange = inputDate => {
+    setSelectedDate(formatDate(inputDate));
   };
 
   const formStyle = {

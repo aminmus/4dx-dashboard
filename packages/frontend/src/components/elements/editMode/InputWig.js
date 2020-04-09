@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
-import moment from 'moment';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
+import formatDate from '../../../utils/formatDate';
 
 const InputWig = props => {
   const { current, goal, targetDate, setIsEditingWig } = props;
@@ -30,7 +30,7 @@ const InputWig = props => {
   };
 
   const handleDateChange = date => {
-    setSelectedDate(moment(date).format('YYYY-MM-DD'));
+    setSelectedDate(formatDate(date));
   };
 
   const formStyle = {
