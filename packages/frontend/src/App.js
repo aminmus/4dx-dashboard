@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import fetchData from './utils/fetchData';
 import reformatClientData from './utils/reformatClientData';
 import calcDefineClients from './utils/calcDefineClients';
@@ -103,14 +104,11 @@ const App = props => {
     >
       <Router>
         <Header />
-        {isFetching && <h1>FETCHING</h1>}
         <Switch>
           <Route path="/admin">
-            <Admin history={history} />
+            {isFetching ? <CircularProgress /> : <Admin history={history} />}
           </Route>
-          <Route path="/">
-            <Home />
-          </Route>
+          <Route path="/">{isFetching ? <CircularProgress /> : <Home />}</Route>
         </Switch>
       </Router>
     </StateContext.Provider>
