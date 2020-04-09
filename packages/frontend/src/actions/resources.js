@@ -2,7 +2,6 @@ import { Deserializer } from 'jsonapi-serializer';
 
 import { GET_RESOURCES } from './types';
 import fetchData from '../utils/fetchData';
-import reformatClientData from '../utils/reformatClientData';
 import reformatMeasureGoals from '../utils/reformatMeasureGoals';
 import reformatMeasures from '../utils/reformatMeasures';
 
@@ -21,7 +20,7 @@ export default function fetchResources() {
       } = await fetchData();
 
       const formattedData = {
-        clients: reformatClientData(fetchedClients),
+        clients: await deserializer.deserialize(fetchedClients),
         nps: await deserializer.deserialize(nps),
         measures: reformatMeasures(measuresData),
         measureGoals: reformatMeasureGoals(measureGoalsData)
