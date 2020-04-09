@@ -16,7 +16,7 @@ import Admin from './layouts/Admin';
 import reformatChart from './utils/reformatChart';
 import reformatMeasureGoals from './utils/reformatMeasureGoals';
 import reformatMeasures from './utils/reformatMeasures';
-import { startLoading, finishLoading } from './actions/loading';
+import { requestResources, recieveResources } from './actions/resources';
 
 const App = props => {
   const { history, dispatch } = props;
@@ -50,14 +50,12 @@ const App = props => {
 
   const sendRequest = e => {
     e.preventDefault();
-    dispatch(startLoading('FETCH RESOURCES'));
-
-    setTimeout(() => {
-      dispatch(finishLoading('FETCH RESOURCES', 'success'));
-    }, 3000);
+    console.log('USELESS NOW');
   };
 
   useEffect(() => {
+    dispatch(requestResources());
+    dispatch(recieveResources());
     async function setAppState() {
       try {
         const {
