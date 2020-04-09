@@ -19,8 +19,11 @@ const { primary, light, danger, gray } = COLORS;
 
 const MeasuresOverTime = props => {
   const match = useMediaQuery('(min-width:600px)');
-  const { measures, measuresGoal, editMode } = props;
-  const { targetDate, targetMeasures } = measuresGoal;
+  const {
+    measures,
+    measuresGoal: { targetDate, targetMeasures },
+    editMode
+  } = props;
   const [isEditingMeasuresGoal, setIsEditingMeasuresGoal] = useState(false);
 
   const ChartHeaderStyle = {
@@ -194,7 +197,6 @@ const MeasuresOverTime = props => {
     displayTarget,
     smoothLine,
     measures,
-    measuresGoal,
     targetDate,
     targetMeasures,
     intervalSpan,
