@@ -8,8 +8,11 @@ import EditButton from './elements/EditButton';
 import InputClientTitle from './elements/editMode/InputClientTitle';
 
 const ClientDetails = props => {
-  const { client, editMode } = props;
-  const { name, measures, progress } = client;
+  const {
+    client: { name, measures, progress },
+    editMode
+  } = props;
+
   const [renderChecklist, setRenderChecklist] = useState(false);
   const [hoverState, setHoverState] = useState(false);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -58,13 +61,16 @@ const ClientDetails = props => {
     setIsEditingTitle(true);
   };
 
+  const handleContainerHover = () => (!isEditingTitle ? toggleHoverState : () => true);
+  const handleContainerClick = () => (!isEditingTitle ? handleToggleClick : () => true);
+
   return (
     <div style={OuterContainerStyle}>
       <div
-        onMouseEnter={!isEditingTitle ? toggleHoverState : () => true}
-        onMouseLeave={!isEditingTitle ? toggleHoverState : () => true}
-        onClick={!isEditingTitle ? handleToggleClick : () => true}
-        onKeyDown={!isEditingTitle ? handleToggleClick : () => true}
+        onMouseEnter={handleContainerHover()}
+        onMouseLeave={handleContainerHover()}
+        onClick={handleContainerClick()}
+        onKeyDown={handleContainerClick()}
         style={ProgressBarContainerStyle}
       >
         {isEditingTitle ? (
