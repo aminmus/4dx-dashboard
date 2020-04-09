@@ -16,7 +16,7 @@ import Admin from './layouts/Admin';
 import reformatChart from './utils/reformatChart';
 import reformatMeasureGoals from './utils/reformatMeasureGoals';
 import reformatMeasures from './utils/reformatMeasures';
-import { requestResources, recieveResources } from './actions/resources';
+import requestResources from './actions/resources';
 
 const App = props => {
   const { history, dispatch, isFetching } = props;
@@ -50,8 +50,6 @@ const App = props => {
 
   useEffect(() => {
     dispatch(requestResources());
-    dispatch(recieveResources());
-
     async function setAppState() {
       try {
         const {
