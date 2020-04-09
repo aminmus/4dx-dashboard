@@ -1,9 +1,13 @@
 import { combineReducers } from 'redux';
-import { REQUEST_RESOURCES, RECEIVE_RESOURCES, RESOURCES_ERROR } from '../actions/types';
+import {
+  FETCH_RESOURCES_START,
+  FETCH_RESOURCES_SUCCESS,
+  FETCH_RESOURCES_ERROR
+} from '../actions/types';
 
 const resources = (state = null, action) => {
   switch (action.type) {
-    case RECEIVE_RESOURCES:
+    case FETCH_RESOURCES_SUCCESS:
       return action.payload;
     default:
       return state;
@@ -12,7 +16,7 @@ const resources = (state = null, action) => {
 
 const error = (state = null, action) => {
   switch (action.type) {
-    case RESOURCES_ERROR:
+    case FETCH_RESOURCES_ERROR:
       return action.error;
     default:
       return state;
@@ -21,9 +25,11 @@ const error = (state = null, action) => {
 
 const isFetching = (state = false, action) => {
   switch (action.type) {
-    case REQUEST_RESOURCES:
+    case FETCH_RESOURCES_START:
       return true;
-    case RECEIVE_RESOURCES:
+    case FETCH_RESOURCES_ERROR:
+      return false;
+    case FETCH_RESOURCES_SUCCESS:
       return false;
     default:
       return state;
