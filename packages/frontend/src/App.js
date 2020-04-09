@@ -17,6 +17,8 @@ import reformatChart from './utils/reformatChart';
 import reformatMeasureGoals from './utils/reformatMeasureGoals';
 import reformatMeasures from './utils/reformatMeasures';
 import requestResources from './actions/resources';
+import isAuthenticated from './utils/authentication';
+import { setLogoutStatus, setLoginStatus } from './actions/auth';
 
 const App = props => {
   const { history, dispatch, isFetching } = props;
@@ -50,6 +52,11 @@ const App = props => {
 
   useEffect(() => {
     dispatch(requestResources());
+    if (isAuthenticated()) {
+      dispatch(setLoginStatus());
+    } else {
+      dispatch(setLogoutStatus());
+    }
     async function setAppState() {
       try {
         const {
