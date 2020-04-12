@@ -11,9 +11,9 @@
 export default nps => {
   const npsEntries = nps.map(entry => {
     return {
-      date: entry.attributes.date,
-      nps: entry.attributes['current-nps'],
-      goal: entry.attributes['goal-nps']
+      date: entry.date,
+      nps: entry.currentNps,
+      goal: entry.goalNps
     };
   });
 

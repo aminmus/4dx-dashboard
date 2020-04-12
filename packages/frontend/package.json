@@ -12,6 +12,7 @@
         "chart.js": "^2.9.3",
         "connected-react-router": "^6.8.0",
         "history": "^4.10.1",
+        "jsonapi-serializer": "^3.6.6",
         "moment": "^2.24.0",
         "prop-types": "^15.7.2",
         "ra-data-json-server": "^3.2.0",
