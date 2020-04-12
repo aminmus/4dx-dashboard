@@ -64,7 +64,7 @@ ClientDetails.defaultProps = {
 
 ClientDetails.propTypes = {
   client: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     name: PropTypes.string,
     measures: PropTypes.array,
     progress: PropTypes.string
