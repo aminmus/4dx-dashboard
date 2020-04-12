@@ -1,5 +1,4 @@
 // Disabling prop types errors for now as the structure might change soon
-/* eslint-disable react/prop-types */
 /* eslint-disable no-console, no-unused-vars, react/no-unused-prop-types */
 import React, { useEffect, useState } from 'react';
 import { Button } from '@material-ui/core';
@@ -85,7 +84,8 @@ const Home = ({ isLoggedIn, dispatch, resources: { clients, nps, measures, measu
 Home.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   editMode: PropTypes.bool.isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  resources: PropTypes.objectOf(PropTypes.object).isRequired
 };
 
 const mapStateToProps = ({ editMode, auth, resources }) => ({
