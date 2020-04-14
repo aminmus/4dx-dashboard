@@ -1,12 +1,8 @@
-// Disabling prop types errors for now as the structure might change soon
-/* eslint-disable react/prop-types */
-/* eslint-disable no-console, no-unused-vars, react/no-unused-prop-types */
 import React, { useEffect, useState } from 'react';
 import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import StateContext from '../context/state-context';
 import Wig from '../components/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/Details';
@@ -16,9 +12,9 @@ import { toggleEdit } from '../actions/editMode';
 import fetchResourcesAction from '../actions/resources';
 import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
-import reformatChart from '../utils/reformatChart';
+import reformatNps from '../utils/reformatNps';
 
-const Home = ({ isLoggedIn, dispatch, resources: { clients, nps, measures, measuresGoal } }) => {
+const Home = ({ isLoggedIn, dispatch, resources: { clients, nps, measures, measureGoals } }) => {
   const [definedStatus, setDefinedStatus] = useState({ totalClients: 0, definedClients: 0 });
   const [leadStatus, setLeadStatus] = useState({ leads: 0, leadsTotal: 0 });
   const [chart, setChart] = useState({
@@ -40,7 +36,7 @@ const Home = ({ isLoggedIn, dispatch, resources: { clients, nps, measures, measu
 
   useEffect(() => {
     if (nps.length > 0) {
-      setChart(reformatChart(nps));
+      setChart(reformatNps(nps));
     }
   }, [nps]);
 
@@ -71,7 +67,7 @@ const Home = ({ isLoggedIn, dispatch, resources: { clients, nps, measures, measu
             </div>
           )}
           {measures.length > 0 ? (
-            <MeasuresOverTime measures={measures} measuresGoal={measuresGoal} />
+            <MeasuresOverTime measures={measures} measureGoals={measureGoals} />
           ) : (
             <div className="my-5 p-4 jumbotron text-light bg-dark">
               No Measure Data Available For Measure Over Time Graph
@@ -85,8 +81,9 @@ const Home = ({ isLoggedIn, dispatch, resources: { clients, nps, measures, measu
 
 Home.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  editMode: PropTypes.bool.isRequired,
-  dispatch: PropTypes.func.isRequired
+  // editMode: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  resources: PropTypes.objectOf(PropTypes.object).isRequired
 };
 
 const mapStateToProps = ({ editMode, auth, resources }) => ({

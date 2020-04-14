@@ -1,10 +1,9 @@
-/* eslint-disable react/jsx-one-expression-per-line */
 import React, { useEffect, useState, useRef } from 'react';
 import Chart from 'chart.js';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import formatMeasureProgress from '../utils/formatMeasureProgress';
+import formatMeasureProgress from '../utils/charts/formatMeasureProgress';
 import RefreshButton from './elements/RefreshButton';
 import OptionsToggleButton from './elements/OptionsToggleButton';
 import OptionsButton from './elements/OptionsButton';
@@ -38,13 +37,23 @@ const MeasuresOverTime = props => {
   };
 
   const [intervalSpan, setIntervalSpan] = React.useState('weekly');
-  const { measures, measuresGoal } = props;
-  const { targetDate, targetMeasures } = measuresGoal;
+  const { measures, measureGoals } = props;
+
+  const latestMeasureGoal = measureGoals.reduce((currentEntry, nextEntry) => {
+    return currentEntry.date > nextEntry.date ? currentEntry : nextEntry;
+  });
+
+  const { targetDate, measuresAmount } = latestMeasureGoal;
+  console.log('latest', latestMeasureGoal);
+
+  const allMeasureSuccess = measures.map(entry => {
+    return entry.success;
+  });
 
   const { labels, measuresData, targetData } = formatMeasureProgress(
-    measures,
+    allMeasureSuccess,
     targetDate,
-    targetMeasures,
+    measuresAmount,
     intervalSpan
   );
 
@@ -127,7 +136,7 @@ const MeasuresOverTime = props => {
             },
             ticks: {
               beginAtZero: false,
-              suggestedMax: targetMeasures,
+              suggestedMax: measuresAmount,
               suggestedMin: measuresData[0]
             }
           }
@@ -185,16 +194,16 @@ const MeasuresOverTime = props => {
     displayTarget,
     smoothLine,
     measures,
-    measuresGoal,
+    measureGoals,
     targetDate,
-    targetMeasures,
+    measuresAmount,
     intervalSpan
   ]);
 
   return (
     <div style={ContainerStyle}>
       <div style={ChartHeaderStyle}>
-        <div className="chart-title">Measures ({intervalSpan})</div>
+        <div className="chart-title">{`Measures ${intervalSpan}`}</div>
         <OptionsToggleButton onClick={toggleOptions} />
         <RefreshButton onClick={updateChart} />
       </div>
@@ -222,18 +231,22 @@ const MeasuresOverTime = props => {
 
 MeasuresOverTime.defaultProps = {
   measures: [],
-  measuresGoal: {
+  measureGoals: {
     targetDate: '',
-    targetMeasures: 0
+    measuresAmount: 0
   }
 };
 
 MeasuresOverTime.propTypes = {
-  measures: PropTypes.arrayOf(PropTypes.string),
-  measuresGoal: PropTypes.shape({
-    targetDate: PropTypes.string,
-    targetMeasures: PropTypes.number
-  })
+  measures: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.object]))
+  ),
+  measureGoals: PropTypes.arrayOf(
+    PropTypes.shape({
+      targetDate: PropTypes.string,
+      measuresAmount: PropTypes.number
+    })
+  )
 };
 
 export default MeasuresOverTime;

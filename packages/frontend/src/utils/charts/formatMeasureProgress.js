@@ -1,7 +1,6 @@
-/* eslint-disable no-param-reassign */
 import moment from 'moment';
 
-const setInterval = (startDate = null, targetDate = null, intervalSpan = 'weekly') => {
+const setInterval = (startDate = null, goalDate = null, intervalSpan = 'weekly') => {
   const array = [];
 
   let weeksToAddAndSubtract = 2;
@@ -21,8 +20,8 @@ const setInterval = (startDate = null, targetDate = null, intervalSpan = 'weekly
     : moment()
         .subtract(weeksToAddAndSubtract, 'w')
         .format('YYYY-MM-DD');
-  const end = targetDate
-    ? moment(targetDate).format('YYYY-MM-DD')
+  const end = goalDate
+    ? moment(goalDate).format('YYYY-MM-DD')
     : moment()
         .add(weeksToAddAndSubtract, 'w')
         .format('YYYY-MM-DD');
@@ -39,20 +38,20 @@ const setInterval = (startDate = null, targetDate = null, intervalSpan = 'weekly
   return array;
 };
 
-const setDataPointsMeasure = (interval = null, measures = null) => {
-  if (measures && interval) {
+const setDataPointsMeasure = (interval = null, measureSuccessDates = null) => {
+  if (measureSuccessDates && interval) {
     return (
       interval
         // Filter away dates after current date
         .filter(date => moment(date).isSameOrBefore(moment()))
         /* 
-          Compare array with succesful measures with interval dates.
-          Reduce array of dates into corresponding measures completed at that date
+          Compare array with succesful measureSuccessDates with interval dates.
+          Reduce array of dates into corresponding measureSuccessDates completed at that date
         */
         .reduce((dataPointArray, date) => {
           let i = 0;
-          measures.forEach(measureDate => {
-            if (moment(date).isSameOrAfter(measureDate)) {
+          measureSuccessDates.forEach(successDate => {
+            if (moment(date).isSameOrAfter(successDate)) {
               i += 1;
             }
           });
@@ -66,13 +65,13 @@ const setDataPointsMeasure = (interval = null, measures = null) => {
 
 const setDataPointsTarget = (
   interval = null,
-  measures = null,
-  targetMeasures = null,
-  targetDate = null
+  measureSuccessDates = null,
+  goalAmountOfMeasures = null,
+  goalDate = null
 ) => {
-  if (interval && targetMeasures && targetDate && measures) {
+  if (interval && goalAmountOfMeasures && goalDate && measureSuccessDates) {
     const targetArray = [];
-    const yDelta = targetMeasures - measures[0];
+    const yDelta = goalAmountOfMeasures - measureSuccessDates[0];
     const xDelta = interval.length - 1;
     const slope = yDelta / xDelta;
     for (let i = 0; i <= xDelta; i += 1) {
@@ -83,14 +82,14 @@ const setDataPointsTarget = (
   return [];
 };
 
-export default function(measures, targetDate, targetMeasures, intervalSpan) {
-  const interval = setInterval(null, targetDate, intervalSpan);
-  const datapointsMeasure = setDataPointsMeasure(interval, measures);
+export default function(measureSuccessDates, goalDate, goalAmountOfMeasures, intervalSpan) {
+  const interval = setInterval(null, goalDate, intervalSpan);
+  const datapointsMeasure = setDataPointsMeasure(interval, measureSuccessDates);
   const dataPointsTarget = setDataPointsTarget(
     interval,
     datapointsMeasure,
-    targetMeasures,
-    targetDate
+    goalAmountOfMeasures,
+    goalDate
   );
   return {
     measuresData: datapointsMeasure,

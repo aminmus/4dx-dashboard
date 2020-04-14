@@ -15,9 +15,9 @@ const computed = {
 };
 
 const resources = {
-  clients: [{ id: 0, name: 'No Clients Available', measures: [], csats: [] }],
+  clients: [],
   measures: [],
-  measuresGoal: { targetMeasures: null, targetDate: null },
+  measureGoals: [],
   nps: []
 };
 

@@ -2,34 +2,23 @@ import { Deserializer } from 'jsonapi-serializer';
 
 import { GET_RESOURCES } from './types';
 import fetchData from '../utils/fetchData';
-import reformatMeasureGoals from '../utils/reformatMeasureGoals';
-import reformatMeasures from '../utils/reformatMeasures';
 
-const deserializer = new Deserializer({
+const { deserialize } = new Deserializer({
   keyForAttribute: 'camelCase'
 });
 
 export default function fetchResources() {
   return async function fetchResourcesThunk(dispatch) {
     try {
-      const {
-        nps,
-        clients,
-        measures: { data: measuresData },
-        measureGoals: { data: measureGoalsData }
-      } = await fetchData();
-
-      const formattedData = {
-        clients: await deserializer.deserialize(clients),
-        nps: await deserializer.deserialize(nps),
-        measures: reformatMeasures(measuresData),
-        measureGoals: reformatMeasureGoals(measureGoalsData)
-      };
-      console.log(formattedData);
-
+      const { nps, clients, measures, measureGoals } = await fetchData();
       return dispatch({
         type: GET_RESOURCES,
-        payload: formattedData
+        payload: {
+          clients: await deserialize(clients),
+          nps: await deserialize(nps),
+          measures: await deserialize(measures),
+          measureGoals: await deserialize(measureGoals)
+        }
       });
     } catch (error) {
       console.error(error);

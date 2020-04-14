@@ -1,7 +1,3 @@
-// Disabling prop types errors for now as the structure might change soon
-/* eslint-disable react/prop-types */
-/* eslint-disable radix */ /* eslint-disable no-restricted-syntax */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import calcDefineClients from '../utils/calcDefineClients';
@@ -73,7 +69,8 @@ export default function Lead(props) {
 
 Lead.defaultProps = {
   leadStatus: {},
-  definedStatus: {}
+  definedStatus: {},
+  clients: []
 };
 
 Lead.propTypes = {
@@ -81,5 +78,6 @@ Lead.propTypes = {
   definedStatus: PropTypes.shape({
     definedClients: PropTypes.number,
     totalClients: PropTypes.number
-  })
+  }),
+  clients: PropTypes.arrayOf(PropTypes.object)
 };
