@@ -27,6 +27,7 @@ services:
         ports:
             - "${ADMINER_PORT}:8080"
     fe-dev:
+        tty: true
         build: ./packages/frontend
         volumes:
             - ./packages/frontend:/app
