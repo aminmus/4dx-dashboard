@@ -1,6 +1,3 @@
-// Disabling prop types errors for now as the structure might change soon
-/* eslint-disable radix */ /* eslint-disable no-restricted-syntax */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import calcDefineClients from '../utils/calcDefineClients';

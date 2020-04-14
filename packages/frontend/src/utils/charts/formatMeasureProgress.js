@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import moment from 'moment';
 
 const setInterval = (startDate = null, goalDate = null, intervalSpan = 'weekly') => {

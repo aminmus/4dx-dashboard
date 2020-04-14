@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-one-expression-per-line */
 import React, { useEffect, useState, useRef } from 'react';
 import Chart from 'chart.js';
 import moment from 'moment';
@@ -204,7 +203,7 @@ const MeasuresOverTime = props => {
   return (
     <div style={ContainerStyle}>
       <div style={ChartHeaderStyle}>
-        <div className="chart-title">Measures ({intervalSpan})</div>
+        <div className="chart-title">{`Measures ${intervalSpan}`}</div>
         <OptionsToggleButton onClick={toggleOptions} />
         <RefreshButton onClick={updateChart} />
       </div>
