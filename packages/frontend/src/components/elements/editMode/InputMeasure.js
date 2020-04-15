@@ -35,7 +35,7 @@ const InputMeasure = props => {
           }}
         />
         <KeyboardDatePicker
-          label="Date of successs"
+          label="Date of success"
           format="YYYY-MM-DD"
           fullWidth
           margin="normal"

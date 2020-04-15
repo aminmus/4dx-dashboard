@@ -1,18 +1,19 @@
 import { Deserializer } from 'jsonapi-serializer';
-
-import { GET_RESOURCES } from './types';
+import { serializeError } from 'serialize-error';
 import fetchData from '../utils/fetchData';
+import { FETCH_RESOURCES_START, FETCH_RESOURCES_SUCCESS, FETCH_RESOURCES_ERROR } from './types';
 
 const { deserialize } = new Deserializer({
   keyForAttribute: 'camelCase'
 });
 
-export default function fetchResources() {
-  return async function fetchResourcesThunk(dispatch) {
+export default function requestResources() {
+  return async function requestResourcesThunk(dispatch) {
+    dispatch({ type: FETCH_RESOURCES_START });
     try {
       const { nps, clients, measures, measureGoals } = await fetchData();
       return dispatch({
-        type: GET_RESOURCES,
+        type: FETCH_RESOURCES_SUCCESS,
         payload: {
           clients: await deserialize(clients),
           nps: await deserialize(nps),
@@ -21,8 +22,10 @@ export default function fetchResources() {
         }
       });
     } catch (error) {
-      console.error(error);
-      throw error;
+      return dispatch({
+        type: FETCH_RESOURCES_ERROR,
+        payload: serializeError(error)
+      });
     }
   };
 }

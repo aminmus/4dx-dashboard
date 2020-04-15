@@ -15,10 +15,13 @@ const computed = {
 };
 
 const resources = {
-  clients: [],
-  measures: [],
-  measureGoals: [],
-  nps: []
+  data: {
+    clients: [],
+    measures: [],
+    measureGoals: [],
+    nps: []
+  },
+  isFetching: false
 };
 
 export default {

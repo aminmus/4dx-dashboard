@@ -1,13 +1,20 @@
-import { GET_RESOURCES } from '../actions/types';
+import {
+  FETCH_RESOURCES_START,
+  FETCH_RESOURCES_SUCCESS,
+  FETCH_RESOURCES_ERROR
+} from '../actions/types';
 
-const resourcesReducer = (state = null, action) => {
+const resources = (state = null, action) => {
   switch (action.type) {
-    case GET_RESOURCES:
-      console.log('GET_RESOURCES ACTION SENT');
-      return action.payload;
+    case FETCH_RESOURCES_START:
+      return { ...state, isFetching: true };
+    case FETCH_RESOURCES_SUCCESS:
+      return { ...state, data: action.payload, isFetching: false };
+    case FETCH_RESOURCES_ERROR:
+      return { ...state, error: action.payload, isFetching: false };
     default:
       return state;
   }
 };
 
-export default resourcesReducer;
+export default resources;

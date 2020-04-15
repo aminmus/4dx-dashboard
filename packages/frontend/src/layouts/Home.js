@@ -17,8 +17,16 @@ import fetchResourcesAction from '../actions/resources';
 import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
 import reformatNps from '../utils/reformatNps';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-const Home = ({ isLoggedIn, dispatch, resources: { clients, nps, measures, measureGoals } }) => {
+const Home = ({
+  isLoggedIn,
+  dispatch,
+  resources: {
+    data: { clients, nps, measures, measureGoals },
+    isFetching
+  }
+}) => {
   const [definedStatus, setDefinedStatus] = useState({ totalClients: 0, definedClients: 0 });
   const [leadStatus, setLeadStatus] = useState({ leads: 0, leadsTotal: 0 });
   const [chart, setChart] = useState({
@@ -52,39 +60,45 @@ const Home = ({ isLoggedIn, dispatch, resources: { clients, nps, measures, measu
   return (
     <ThemeProvider theme={theme}>
       <div className="p-4">
-        {isLoggedIn && (
-          <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
-            Toggle Edit Mode
-          </Button>
+        {isFetching ? (
+          <CircularProgress />
+        ) : (
+          <div>
+            {isLoggedIn && (
+              <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
+                Toggle Edit Mode
+              </Button>
+            )}
+            <div className="row">
+              <div className="col-sm">
+                <Wig nps={nps} />
+                <Lead
+                  nps={nps}
+                  clients={clients}
+                  definedStatus={definedStatus}
+                  leadStatus={leadStatus}
+                />
+              </div>
+              <div className="col-sm">
+                <Details clients={clients} />
+                {chart.values.length > 0 ? (
+                  <Nps chart={chart} />
+                ) : (
+                  <div className="my-5 p-4 jumbotron text-light bg-dark">
+                    No Measure Data Available For NPS graph
+                  </div>
+                )}
+                {measures.length > 0 ? (
+                  <MeasuresOverTime measures={measures} measureGoals={measureGoals} />
+                ) : (
+                  <div className="my-5 p-4 jumbotron text-light bg-dark">
+                    No Measure Data Available For Measure Over Time Graph
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         )}
-        <div className="row">
-          <div className="col-sm">
-            <Wig nps={nps} />
-            <Lead
-              nps={nps}
-              clients={clients}
-              definedStatus={definedStatus}
-              leadStatus={leadStatus}
-            />
-          </div>
-          <div className="col-sm">
-            <Details clients={clients} />
-            {chart.values.length > 0 ? (
-              <Nps chart={chart} />
-            ) : (
-              <div className="my-5 p-4 jumbotron text-light bg-dark">
-                No Measure Data Available For NPS graph
-              </div>
-            )}
-            {measures.length > 0 ? (
-              <MeasuresOverTime measures={measures} measureGoals={measureGoals} />
-            ) : (
-              <div className="my-5 p-4 jumbotron text-light bg-dark">
-                No Measure Data Available For Measure Over Time Graph
-              </div>
-            )}
-          </div>
-        </div>
       </div>
     </ThemeProvider>
   );

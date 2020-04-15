@@ -7,9 +7,7 @@ import MeasureCheckList from './MeasureCheckList';
 import EditButton from './elements/EditButton';
 import InputClientTitle from './elements/editMode/InputClientTitle';
 
-const ClientDetails = props => {
-  const { client, editMode } = props;
-
+const ClientDetails = ({ client, editMode }) => {
   const [renderChecklist, setRenderChecklist] = useState(false);
   const [hoverState, setHoverState] = useState(false);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
