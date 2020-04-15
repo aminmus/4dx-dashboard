@@ -7,10 +7,6 @@ const InputClientTitle = props => {
   const { name, setIsEditingTitle } = props;
   const [clientName, setClientName] = useState(name);
 
-  const handleNameChange = input => {
-    setClientName(input.target.value);
-  };
-
   const formStyle = {
     border: '2px dotted white',
     borderRadius: '10px',
@@ -27,7 +23,7 @@ const InputClientTitle = props => {
         fullWidth
         variant="filled"
         margin="normal"
-        onChange={handleNameChange}
+        onChange={input => setClientName(input.target.value)}
         InputLabelProps={{
           shrink: true
         }}
