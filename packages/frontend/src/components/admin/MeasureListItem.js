@@ -22,7 +22,15 @@ const MeasureListItem = props => {
 
   return (
     <ListItem className="text-light">
-      {!isEditingMeasure ? (
+      {isEditingMeasure ? (
+        <div>
+          <InputMeasure
+            description={description}
+            success={success}
+            setIsEditingMeasure={setIsEditingMeasure}
+          />
+        </div>
+      ) : (
         <div>
           {success ? (
             <CheckCircleIcon className="mr-2 text-success" />
@@ -31,14 +39,6 @@ const MeasureListItem = props => {
           )}
           {description}
           {editMode && <EditButton onClick={onClickEdit} />}
-        </div>
-      ) : (
-        <div>
-          <InputMeasure
-            description={description}
-            success={success}
-            setIsEditingMeasure={setIsEditingMeasure}
-          />
         </div>
       )}
     </ListItem>

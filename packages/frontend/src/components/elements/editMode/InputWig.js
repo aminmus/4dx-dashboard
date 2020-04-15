@@ -12,27 +12,6 @@ const InputWig = props => {
   const [currentNps, setCurrentNps] = useState(current);
   const [goalNps, setGoalNps] = useState(goal);
 
-  const handleCancelClick = e => {
-    e.preventDefault();
-    setIsEditingWig(false);
-  };
-
-  const handleSaveClick = e => {
-    e.preventDefault();
-    setIsEditingWig(false);
-  };
-
-  const handleCurrentNpsChange = input => {
-    setCurrentNps(parseInt(input.target.value, 10));
-  };
-  const handleGoalNpsChange = input => {
-    setGoalNps(parseInt(input.target.value, 10));
-  };
-
-  const handleDateChange = date => {
-    setSelectedDate(formatDate(date));
-  };
-
   const formStyle = {
     border: '2px dotted white',
     borderRadius: '10px',
@@ -53,7 +32,7 @@ const InputWig = props => {
           fullWidth
           variant="filled"
           margin="normal"
-          onChange={handleCurrentNpsChange}
+          onChange={input => setCurrentNps(parseInt(input.target.value, 10))}
           InputLabelProps={{
             shrink: true
           }}
@@ -68,7 +47,7 @@ const InputWig = props => {
           fullWidth
           variant="filled"
           margin="normal"
-          onChange={handleGoalNpsChange}
+          onChange={input => setGoalNps(parseInt(input.target.value, 10))}
           InputLabelProps={{
             shrink: true
           }}
@@ -82,15 +61,15 @@ const InputWig = props => {
           id="date-picker-inline"
           variant="filled"
           value={selectedDate}
-          onChange={handleDateChange}
+          onChange={date => setSelectedDate(formatDate(date))}
           KeyboardButtonProps={{
             'aria-label': 'change date'
           }}
         />
       </MuiPickersUtilsProvider>
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={handleSaveClick} />
-        <OptionsButton text="Cancel" onClick={handleCancelClick} />
+        <OptionsButton text="Save" onClick={() => setIsEditingWig(false)} />
+        <OptionsButton text="Cancel" onClick={() => setIsEditingWig(false)} />
       </div>
     </form>
   );

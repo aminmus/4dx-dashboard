@@ -79,7 +79,14 @@ const Wig = ({ nps, editMode }) => {
             WIG
             {editMode && <EditButton onClick={onClickEdit} />}
           </h2>
-          {!isEditingWig ? (
+          {isEditingWig ? (
+            <InputWig
+              current={latestNps.currentNps}
+              goal={latestNps.goalNps}
+              targetDate={latestNps.targetDate}
+              setIsEditingWig={setIsEditingWig}
+            />
+          ) : (
             <div>
               <h3 className="wig__statement">{`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}</h3>
               <div style={{ position: 'relative' }}>
@@ -90,13 +97,6 @@ const Wig = ({ nps, editMode }) => {
                 </div>
               </div>
             </div>
-          ) : (
-            <InputWig
-              current={latestNps.currentNps}
-              goal={latestNps.goalNps}
-              targetDate={latestNps.targetDate}
-              setIsEditingWig={setIsEditingWig}
-            />
           )}
         </>
       )}

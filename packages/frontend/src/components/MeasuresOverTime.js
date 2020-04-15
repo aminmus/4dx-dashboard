@@ -238,14 +238,14 @@ const MeasuresOverTime = props => {
             <IntervalSpanDialog setIntervalSpan={setIntervalSpan} intervalSpan={intervalSpan} />
           </div>
         )}
-        {!isEditingMeasuresGoal ? (
-          <canvas ref={chartContainer} />
-        ) : (
+        {isEditingMeasuresGoal ? (
           <InputMeasuresGoal
             measures={measuresAmount}
             date={targetDate}
             setIsEditingMeasuresGoal={setIsEditingMeasuresGoal}
           />
+        ) : (
+          <canvas ref={chartContainer} />
         )}
       </div>
     </div>

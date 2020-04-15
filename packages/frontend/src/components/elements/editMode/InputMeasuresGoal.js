@@ -11,24 +11,6 @@ const InputMeasuresGoal = props => {
   const [targetMeasures, setTargetMeasures] = useState(measures);
   const [selectedDate, setSelectedDate] = useState(date);
 
-  const handleCancelClick = e => {
-    e.preventDefault();
-    setIsEditingMeasuresGoal(false);
-  };
-
-  const handleSaveClick = e => {
-    e.preventDefault();
-    setIsEditingMeasuresGoal(false);
-  };
-
-  const handleTargetMeasuresChange = input => {
-    setTargetMeasures(parseInt(input.target.value, 10));
-  };
-
-  const handleDateChange = inputDate => {
-    setSelectedDate(formatDate(inputDate));
-  };
-
   const formStyle = {
     border: '2px dotted white',
     borderRadius: '10px',
@@ -48,7 +30,7 @@ const InputMeasuresGoal = props => {
           margin="normal"
           type="number"
           fullWidth
-          onChange={handleTargetMeasuresChange}
+          onChange={input => setTargetMeasures(parseInt(input.target.value, 10))}
           InputLabelProps={{
             shrink: true
           }}
@@ -61,7 +43,7 @@ const InputMeasuresGoal = props => {
           id="date-picker-inline"
           variant="filled"
           value={selectedDate}
-          onChange={handleDateChange}
+          onChange={inputDate => setSelectedDate(formatDate(inputDate))}
           KeyboardButtonProps={{
             'aria-label': 'change date'
           }}
@@ -69,8 +51,8 @@ const InputMeasuresGoal = props => {
       </MuiPickersUtilsProvider>
 
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={handleSaveClick} />
-        <OptionsButton text="Cancel" onClick={handleCancelClick} />
+        <OptionsButton text="Save" onClick={() => setIsEditingMeasuresGoal(false)} />
+        <OptionsButton text="Cancel" onClick={() => setIsEditingMeasuresGoal(false)} />
       </div>
     </form>
   );

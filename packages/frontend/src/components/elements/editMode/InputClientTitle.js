@@ -7,16 +7,6 @@ const InputClientTitle = props => {
   const { name, setIsEditingTitle } = props;
   const [clientName, setClientName] = useState(name);
 
-  const handleCancelClick = e => {
-    e.preventDefault();
-    setIsEditingTitle(false);
-  };
-
-  const handleSaveClick = e => {
-    e.preventDefault();
-    setIsEditingTitle(false);
-  };
-
   const handleNameChange = input => {
     setClientName(input.target.value);
   };
@@ -43,8 +33,8 @@ const InputClientTitle = props => {
         }}
       />
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={handleSaveClick} />
-        <OptionsButton text="Cancel" onClick={handleCancelClick} />
+        <OptionsButton text="Save" onClick={() => setIsEditingTitle(false)} />
+        <OptionsButton text="Cancel" onClick={() => setIsEditingTitle(false)} />
       </div>
     </form>
   );
