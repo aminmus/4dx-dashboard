@@ -1,14 +1,13 @@
 /* eslint-disable no-console, import/no-cycle */
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import Header from './components/Header';
 import Home from './layouts/Home';
 import Admin from './layouts/Admin';
 import isAuthenticated from './utils/authentication';
-
 import { setLogoutStatus, setLoginStatus } from './actions/auth';
 
 const App = ({ history, dispatch }) => {

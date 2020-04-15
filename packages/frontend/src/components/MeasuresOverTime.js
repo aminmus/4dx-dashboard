@@ -39,12 +39,14 @@ const MeasuresOverTime = props => {
   const [intervalSpan, setIntervalSpan] = React.useState('weekly');
   const { measures, measureGoals } = props;
 
-  const latestMeasureGoal = measureGoals.reduce((currentEntry, nextEntry) => {
-    return currentEntry.date > nextEntry.date ? currentEntry : nextEntry;
-  });
+  const latestMeasureGoal =
+    measureGoals.length > 0
+      ? measureGoals.reduce((currentEntry, nextEntry) => {
+          return currentEntry.date > nextEntry.date ? currentEntry : nextEntry;
+        })
+      : [];
 
   const { targetDate, measuresAmount } = latestMeasureGoal;
-  console.log('latest', latestMeasureGoal);
 
   const allMeasureSuccess = measures.map(entry => {
     return entry.success;
