@@ -10,7 +10,7 @@ export const backendFetch = async (urlPath, httpMethod = 'GET', body = undefined
       Authorization: token ? `Bearer ${token}` : undefined
     }),
     redirect: 'follow',
-    body: JSON.stringify(body)
+    body: body ? JSON.stringify(body) : undefined
   };
   try {
     const response = await fetch(url, options);
