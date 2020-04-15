@@ -40,7 +40,8 @@ export default function ProgressBar({ clientName, clientMeasures }) {
   const ContainerStyle = {
     display: 'flex',
     flexDirection: matches ? 'row' : 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    padding: '10px'
   };
 
   const InnerContainerStyle = {

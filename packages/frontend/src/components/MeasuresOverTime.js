@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { connect } from 'react-redux';
 import Chart from 'chart.js';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -8,13 +9,17 @@ import RefreshButton from './elements/RefreshButton';
 import OptionsToggleButton from './elements/OptionsToggleButton';
 import OptionsButton from './elements/OptionsButton';
 import IntervalSpanDialog from './elements/IntervalSpanDialog';
-
+import EditButton from './elements/EditButton';
 import COLORS from '../style/COLORS';
+
+import InputMeasuresGoal from './elements/editMode/InputMeasuresGoal';
 
 const { primary, light, danger, gray } = COLORS;
 
 const MeasuresOverTime = props => {
   const match = useMediaQuery('(min-width:600px)');
+  const { measures, measureGoals, editMode } = props;
+  const [isEditingMeasuresGoal, setIsEditingMeasuresGoal] = useState(false);
 
   const ChartHeaderStyle = {
     display: 'flex',
@@ -37,7 +42,6 @@ const MeasuresOverTime = props => {
   };
 
   const [intervalSpan, setIntervalSpan] = React.useState('weekly');
-  const { measures, measureGoals } = props;
 
   const latestMeasureGoal =
     measureGoals.length > 0
@@ -169,6 +173,11 @@ const MeasuresOverTime = props => {
     setSmoothLine(!smoothLine);
   };
 
+  const onClickEdit = e => {
+    e.preventDefault();
+    setIsEditingMeasuresGoal(true);
+  };
+
   const updateChart = e => {
     e.preventDefault();
     const newChartInstance = new Chart(chartContainer.current, chartConfig);
@@ -199,7 +208,8 @@ const MeasuresOverTime = props => {
     measureGoals,
     targetDate,
     measuresAmount,
-    intervalSpan
+    intervalSpan,
+    isEditingMeasuresGoal
   ]);
 
   return (
@@ -208,25 +218,36 @@ const MeasuresOverTime = props => {
         <div className="chart-title">{`Measures ${intervalSpan}`}</div>
         <OptionsToggleButton onClick={toggleOptions} />
         <RefreshButton onClick={updateChart} />
+        {editMode && <EditButton onClick={onClickEdit} />}
       </div>
-      {optionsShow && (
-        <div style={OptionsContainerStyle}>
-          <OptionsButton
-            text={smoothLine ? 'Set Tense' : 'Set Smooth'}
-            onClick={optionsToggleSmooth}
+      <div>
+        {optionsShow && (
+          <div style={OptionsContainerStyle}>
+            <OptionsButton
+              text={smoothLine ? 'Set Tense' : 'Set Smooth'}
+              onClick={optionsToggleSmooth}
+            />
+            <OptionsButton
+              text={displayMeasures ? 'Hide Measures' : 'Show Measures'}
+              onClick={optionsToggleMeasures}
+            />
+            <OptionsButton
+              text={displayTarget ? 'Hide Target' : 'Show Target'}
+              onClick={optionsToggleTarget}
+            />
+            <IntervalSpanDialog setIntervalSpan={setIntervalSpan} intervalSpan={intervalSpan} />
+          </div>
+        )}
+        {isEditingMeasuresGoal ? (
+          <InputMeasuresGoal
+            measures={measuresAmount}
+            date={targetDate}
+            setIsEditingMeasuresGoal={setIsEditingMeasuresGoal}
           />
-          <OptionsButton
-            text={displayMeasures ? 'Hide Measures' : 'Show Measures'}
-            onClick={optionsToggleMeasures}
-          />
-          <OptionsButton
-            text={displayTarget ? 'Hide Target' : 'Show Target'}
-            onClick={optionsToggleTarget}
-          />
-          <IntervalSpanDialog setIntervalSpan={setIntervalSpan} intervalSpan={intervalSpan} />
-        </div>
-      )}
-      <canvas ref={chartContainer} />
+        ) : (
+          <canvas ref={chartContainer} />
+        )}
+      </div>
     </div>
   );
 };
@@ -240,6 +261,7 @@ MeasuresOverTime.defaultProps = {
 };
 
 MeasuresOverTime.propTypes = {
+  editMode: PropTypes.bool.isRequired,
   measures: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.object]))
   ),
@@ -251,4 +273,8 @@ MeasuresOverTime.propTypes = {
   )
 };
 
-export default MeasuresOverTime;
+const mapStateToProps = state => ({
+  editMode: state.editMode.editModeEnabled
+});
+
+export default connect(mapStateToProps, null)(MeasuresOverTime);

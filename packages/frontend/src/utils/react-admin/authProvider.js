@@ -36,7 +36,12 @@ export default {
   },
   // called when the user navigates to a new location, to check for authentication
   checkAuth: () => {
-    return localStorage.getItem('email') ? Promise.resolve() : Promise.reject();
+    if (localStorage.getItem('email')) {
+      store.dispatch(setLoginStatus());
+      return Promise.resolve();
+    }
+    store.dispatch(setLogoutStatus());
+    return Promise.reject();
   },
   // called when the user navigates to a new location, to check for permissions / roles
   getPermissions: () => Promise.resolve()

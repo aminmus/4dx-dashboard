@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
+import EditButton from './elements/EditButton';
+import InputWig from './elements/editMode/InputWig';
 
-export default function Wig({ nps }) {
+const Wig = ({ nps, editMode }) => {
   const [latestNps, setLatestNps] = useState();
   const [progress, setProgress] = useState();
-
+  const [isEditingWig, setIsEditingWig] = useState(false);
   useEffect(() => {
     if (nps.length > 0) {
       setLatestNps(
@@ -63,30 +66,50 @@ export default function Wig({ nps }) {
     }
   })(CircularProgress);
 
+  const onClickEdit = e => {
+    e.preventDefault();
+    setIsEditingWig(true);
+  };
+
   return (
     <div className="mt-3">
       {latestNps && (
         <>
-          <h2>WIG</h2>
-          <h3 className="wig__statement">{`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}</h3>
-          <div style={{ position: 'relative' }}>
-            <CircularProgressBar size={150} thickness={5} variant="static" value={progress} />
-            <div style={ChartLabelContainerStyle}>
-              <span style={LabelText}>NPS</span>
-              <span style={LabelValue}>{latestNps.currentNps}</span>
+          <h2>
+            WIG
+            {editMode && <EditButton onClick={onClickEdit} />}
+          </h2>
+          {isEditingWig ? (
+            <InputWig
+              current={latestNps.currentNps}
+              goal={latestNps.goalNps}
+              targetDate={latestNps.targetDate}
+              setIsEditingWig={setIsEditingWig}
+            />
+          ) : (
+            <div>
+              <h3 className="wig__statement">{`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}</h3>
+              <div style={{ position: 'relative' }}>
+                <CircularProgressBar size={150} thickness={5} variant="static" value={progress} />
+                <div style={ChartLabelContainerStyle}>
+                  <span style={LabelText}>NPS</span>
+                  <span style={LabelValue}>{latestNps.currentNps}</span>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </>
       )}
     </div>
   );
-}
+};
 
 Wig.defaultProps = {
   nps: []
 };
 
 Wig.propTypes = {
+  editMode: PropTypes.bool.isRequired,
   nps: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
@@ -97,3 +120,9 @@ Wig.propTypes = {
     })
   )
 };
+
+const mapStateToProps = state => ({
+  editMode: state.editMode.editModeEnabled
+});
+
+export default connect(mapStateToProps, null)(Wig);

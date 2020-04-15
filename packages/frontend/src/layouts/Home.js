@@ -1,5 +1,8 @@
+/* eslint-disable no-console, no-unused-vars, react/no-unused-prop-types */
+
 import React, { useEffect, useState } from 'react';
-import { Button } from '@material-ui/core';
+import { Button, ThemeProvider } from '@material-ui/core';
+
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -9,6 +12,7 @@ import Details from '../components/Details';
 import Nps from '../components/Nps';
 import MeasuresOverTime from '../components/MeasuresOverTime';
 import { toggleEdit } from '../actions/editMode';
+import theme from '../style/muiTheme';
 import fetchResourcesAction from '../actions/resources';
 import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
@@ -54,59 +58,60 @@ const Home = ({
   };
 
   return (
-    <div className="p-4">
-      {isFetching ? (
-        <CircularProgress />
-      ) : (
-        <div>
-          {isLoggedIn && (
-            <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
-              Toggle Edit Mode
-            </Button>
-          )}
-          <div className="row">
-            <div className="col-sm">
-              <Wig nps={nps} />
-              <Lead
-                nps={nps}
-                clients={clients}
-                definedStatus={definedStatus}
-                leadStatus={leadStatus}
-              />
-            </div>
-            <div className="col-sm">
-              <Details clients={clients} />
-              {chart.values.length > 0 ? (
-                <Nps chart={chart} />
-              ) : (
-                <div className="my-5 p-4 jumbotron text-light bg-dark">
-                  No Measure Data Available For NPS graph
-                </div>
-              )}
-              {measures.length > 0 ? (
-                <MeasuresOverTime measures={measures} measureGoals={measureGoals} />
-              ) : (
-                <div className="my-5 p-4 jumbotron text-light bg-dark">
-                  No Measure Data Available For Measure Over Time Graph
-                </div>
-              )}
+    <ThemeProvider theme={theme}>
+      <div className="p-4">
+        {isFetching ? (
+          <CircularProgress />
+        ) : (
+          <div>
+            {isLoggedIn && (
+              <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
+                Toggle Edit Mode
+              </Button>
+            )}
+            <div className="row">
+              <div className="col-sm">
+                <Wig nps={nps} />
+                <Lead
+                  nps={nps}
+                  clients={clients}
+                  definedStatus={definedStatus}
+                  leadStatus={leadStatus}
+                />
+              </div>
+              <div className="col-sm">
+                <Details clients={clients} />
+                {chart.values.length > 0 ? (
+                  <Nps chart={chart} />
+                ) : (
+                  <div className="my-5 p-4 jumbotron text-light bg-dark">
+                    No Measure Data Available For NPS graph
+                  </div>
+                )}
+                {measures.length > 0 ? (
+                  <MeasuresOverTime measures={measures} measureGoals={measureGoals} />
+                ) : (
+                  <div className="my-5 p-4 jumbotron text-light bg-dark">
+                    No Measure Data Available For Measure Over Time Graph
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </ThemeProvider>
   );
 };
 
 Home.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  // editMode: PropTypes.bool.isRequired,
+
   dispatch: PropTypes.func.isRequired,
   resources: PropTypes.objectOf(PropTypes.object).isRequired
 };
 
-const mapStateToProps = ({ editMode, auth, resources }) => ({
-  editMode: editMode?.editModeEnabled,
+const mapStateToProps = ({ auth, resources }) => ({
   isLoggedIn: auth?.isLoggedIn,
   resources
 });
