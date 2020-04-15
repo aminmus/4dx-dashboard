@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ProgressBar from './ProgressBar';
+import ProgressBar from './elements/ProgressBar';
 import MeasureCheckList from './admin/MeasureCheckList';
 import EditButton from './elements/EditButton';
 import InputClientTitle from './elements/editMode/InputClientTitle';
