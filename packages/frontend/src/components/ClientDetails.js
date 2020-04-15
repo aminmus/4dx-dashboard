@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Progressbar from './Progressbar';
+import ProgressBar from './ProgressBar';
 import MeasureCheckList from './admin/MeasureCheckList';
 
 export default function ClientDetails(props) {
@@ -43,7 +43,12 @@ export default function ClientDetails(props) {
       onKeyDown={handleToggleClick}
       style={ContainerStyle}
     >
-      <Progressbar key={client.id} clientName={client.name} clientScore={client.progress} />
+      <ProgressBar
+        key={client.id}
+        clientName={client.name}
+        clientScore={client.progress}
+        clientMeasures={client?.measures}
+      />
       {renderChecklist && client.measures.length > 0 && (
         <div style={MeasureCheckListContainerStyle}>
           <MeasureCheckList key={`${client.id}-checklist`} measures={client.measures} />
@@ -59,7 +64,7 @@ ClientDetails.defaultProps = {
 
 ClientDetails.propTypes = {
   client: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     name: PropTypes.string,
     measures: PropTypes.array,
     progress: PropTypes.string

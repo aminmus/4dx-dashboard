@@ -5,7 +5,7 @@ import {
   FETCH_RESOURCES_ERROR
 } from '../actions/types';
 
-const resources = (state = null, action) => {
+const data = (state = null, action) => {
   switch (action.type) {
     case FETCH_RESOURCES_SUCCESS:
       return action.payload;
@@ -37,7 +37,7 @@ const isFetching = (state = false, action) => {
 };
 
 const resourcesReducer = combineReducers({
-  resources,
+  data,
   isFetching,
   error
 });

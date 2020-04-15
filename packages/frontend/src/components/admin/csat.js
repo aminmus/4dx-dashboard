@@ -1,4 +1,4 @@
-/* eslint-disable camelcase, import/no-extraneous-dependencies, react/destructuring-assignment, react/jsx-props-no-spreading, react/prop-types */
+/* eslint-disable camelcase, react/destructuring-assignment, react/jsx-props-no-spreading, react/prop-types */
 
 import React from 'react';
 import { Edit, Create, SimpleForm, TextInput, DateInput, NumberInput } from 'react-admin';

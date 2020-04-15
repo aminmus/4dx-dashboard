@@ -15,18 +15,11 @@ const computed = {
 };
 
 const resources = {
-  resources: {
-    clients: [{ id: 0, name: 'No Clients Available', measures: [], csats: [] }],
+  data: {
+    clients: [],
     measures: [],
-    measuresGoal: { targetMeasures: null, targetDate: null },
-    nps: {
-      description: 'N/A',
-      current: 0,
-      goal: 0,
-      targetDate: 'N/A',
-      defineText: 'Define the Success factors for listed clients',
-      implementText: 'Implement Client Success Program for listed clients'
-    }
+    measureGoals: [],
+    nps: []
   },
   isFetching: false
 };

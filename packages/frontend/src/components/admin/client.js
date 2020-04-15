@@ -1,4 +1,4 @@
-/* eslint-disable  react/jsx-props-no-spreading, react/prop-types, react/destructuring-assignment, no-unused-vars */
+/* eslint-disable  react/jsx-props-no-spreading, react/prop-types, react/destructuring-assignment */
 import React from 'react';
 import {
   List,
