@@ -4,8 +4,8 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import EditButton from '../elements/EditButton';
-import InputMeasure from '../elements/editMode/InputMeasure';
+import EditButton from './elements/EditButton';
+import InputMeasure from './elements/editMode/InputMeasure';
 
 const MeasureListItem = props => {
   const {
