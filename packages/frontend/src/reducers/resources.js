@@ -1,45 +1,20 @@
-import { combineReducers } from 'redux';
 import {
   FETCH_RESOURCES_START,
   FETCH_RESOURCES_SUCCESS,
   FETCH_RESOURCES_ERROR
 } from '../actions/types';
 
-const data = (state = null, action) => {
-  switch (action.type) {
-    case FETCH_RESOURCES_SUCCESS:
-      return action.payload;
-    default:
-      return state;
-  }
-};
-
-const error = (state = null, action) => {
-  switch (action.type) {
-    case FETCH_RESOURCES_ERROR:
-      return action.error;
-    default:
-      return state;
-  }
-};
-
-const isFetching = (state = false, action) => {
+const resources = (state = null, action) => {
   switch (action.type) {
     case FETCH_RESOURCES_START:
-      return true;
-    case FETCH_RESOURCES_ERROR:
-      return false;
+      return { ...state, isFetching: true };
     case FETCH_RESOURCES_SUCCESS:
-      return false;
+      return { ...state, data: action.payload, isFetching: false };
+    case FETCH_RESOURCES_ERROR:
+      return { ...state, error: action.payload, isFetching: false };
     default:
       return state;
   }
 };
 
-const resourcesReducer = combineReducers({
-  data,
-  isFetching,
-  error
-});
-
-export default resourcesReducer;
+export default resources;

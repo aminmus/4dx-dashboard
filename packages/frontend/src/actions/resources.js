@@ -1,4 +1,5 @@
 import { Deserializer } from 'jsonapi-serializer';
+import { serializeError } from 'serialize-error';
 import fetchData from '../utils/fetchData';
 import { FETCH_RESOURCES_START, FETCH_RESOURCES_SUCCESS, FETCH_RESOURCES_ERROR } from './types';
 
@@ -23,7 +24,7 @@ export default function requestResources() {
     } catch (error) {
       return dispatch({
         type: FETCH_RESOURCES_ERROR,
-        payload: error
+        payload: serializeError(error)
       });
     }
   };
