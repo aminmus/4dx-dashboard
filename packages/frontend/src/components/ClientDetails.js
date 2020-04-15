@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import ProgressBar from './ProgressBar';
+import ProgressBar from './elements/ProgressBar';
 import MeasureCheckList from './admin/MeasureCheckList';
 
 export default function ClientDetails(props) {
