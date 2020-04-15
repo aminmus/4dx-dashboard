@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-
 import { store } from '../../index';
 import { setLogoutStatus, setLoginStatus } from '../../actions/auth';
 

@@ -2,16 +2,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Progressbar from './Progressbar';
+import ProgressBar from './ProgressBar';
 import MeasureCheckList from './admin/MeasureCheckList';
 import EditButton from './elements/EditButton';
 import InputClientTitle from './elements/editMode/InputClientTitle';
 
 const ClientDetails = props => {
-  const {
-    client: { name, measures, progress },
-    editMode
-  } = props;
+  const { client, editMode } = props;
 
   const [renderChecklist, setRenderChecklist] = useState(false);
   const [hoverState, setHoverState] = useState(false);
@@ -74,9 +71,15 @@ const ClientDetails = props => {
         style={ProgressBarContainerStyle}
       >
         {isEditingTitle ? (
-          <InputClientTitle setIsEditingTitle={setIsEditingTitle} name={name} />
+          <InputClientTitle setIsEditingTitle={setIsEditingTitle} name={client.name} />
         ) : (
-          <Progressbar style={{ flex: 1 }} clientName={name} clientScore={progress} />
+          <ProgressBar
+            style={{ flex: 1 }}
+            key={client.id}
+            clientName={client.name}
+            clientScore={client.progress}
+            clientMeasures={client?.measures}
+          />
         )}
       </div>
       {editMode && !isEditingTitle && (
@@ -84,9 +87,9 @@ const ClientDetails = props => {
           <EditButton onClick={onClickEdit} />
         </div>
       )}
-      {!isEditingTitle && renderChecklist && measures.length > 0 && (
+      {renderChecklist && client.measures.length > 0 && !isEditingTitle && (
         <div style={MeasureCheckListContainerStyle}>
-          <MeasureCheckList measures={measures} />
+          <MeasureCheckList measures={client.measures} />
         </div>
       )}
     </div>
@@ -100,7 +103,7 @@ ClientDetails.defaultProps = {
 ClientDetails.propTypes = {
   editMode: PropTypes.bool.isRequired,
   client: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     name: PropTypes.string,
     measures: PropTypes.array,
     progress: PropTypes.string

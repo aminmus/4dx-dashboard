@@ -1,11 +1,10 @@
-/* eslint-disable react/jsx-one-expression-per-line */
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import Chart from 'chart.js';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import formatMeasureProgress from '../utils/formatMeasureProgress';
+import formatMeasureProgress from '../utils/charts/formatMeasureProgress';
 import RefreshButton from './elements/RefreshButton';
 import OptionsToggleButton from './elements/OptionsToggleButton';
 import OptionsButton from './elements/OptionsButton';
@@ -19,11 +18,7 @@ const { primary, light, danger, gray } = COLORS;
 
 const MeasuresOverTime = props => {
   const match = useMediaQuery('(min-width:600px)');
-  const {
-    measures,
-    measuresGoal: { targetDate, targetMeasures },
-    editMode
-  } = props;
+  const { measures, measureGoals, editMode } = props;
   const [isEditingMeasuresGoal, setIsEditingMeasuresGoal] = useState(false);
 
   const ChartHeaderStyle = {
@@ -48,10 +43,23 @@ const MeasuresOverTime = props => {
 
   const [intervalSpan, setIntervalSpan] = React.useState('weekly');
 
+  const latestMeasureGoal =
+    measureGoals.length > 0
+      ? measureGoals.reduce((currentEntry, nextEntry) => {
+          return currentEntry.date > nextEntry.date ? currentEntry : nextEntry;
+        })
+      : [];
+
+  const { targetDate, measuresAmount } = latestMeasureGoal;
+
+  const allMeasureSuccess = measures.map(entry => {
+    return entry.success;
+  });
+
   const { labels, measuresData, targetData } = formatMeasureProgress(
-    measures,
+    allMeasureSuccess,
     targetDate,
-    targetMeasures,
+    measuresAmount,
     intervalSpan
   );
 
@@ -134,7 +142,7 @@ const MeasuresOverTime = props => {
             },
             ticks: {
               beginAtZero: false,
-              suggestedMax: targetMeasures,
+              suggestedMax: measuresAmount,
               suggestedMin: measuresData[0]
             }
           }
@@ -197,8 +205,9 @@ const MeasuresOverTime = props => {
     displayTarget,
     smoothLine,
     measures,
+    measureGoals,
     targetDate,
-    targetMeasures,
+    measuresAmount,
     intervalSpan,
     isEditingMeasuresGoal
   ]);
@@ -206,7 +215,7 @@ const MeasuresOverTime = props => {
   return (
     <div style={ContainerStyle}>
       <div style={ChartHeaderStyle}>
-        <div className="chart-title">Measures ({intervalSpan})</div>
+        <div className="chart-title">{`Measures ${intervalSpan}`}</div>
         <OptionsToggleButton onClick={toggleOptions} />
         <RefreshButton onClick={updateChart} />
         {editMode && <EditButton onClick={onClickEdit} />}
@@ -233,7 +242,7 @@ const MeasuresOverTime = props => {
           <canvas ref={chartContainer} />
         ) : (
           <InputMeasuresGoal
-            measures={targetMeasures}
+            measures={measuresAmount}
             date={targetDate}
             setIsEditingMeasuresGoal={setIsEditingMeasuresGoal}
           />
@@ -245,19 +254,23 @@ const MeasuresOverTime = props => {
 
 MeasuresOverTime.defaultProps = {
   measures: [],
-  measuresGoal: {
+  measureGoals: {
     targetDate: '',
-    targetMeasures: 0
+    measuresAmount: 0
   }
 };
 
 MeasuresOverTime.propTypes = {
   editMode: PropTypes.bool.isRequired,
-  measures: PropTypes.arrayOf(PropTypes.string),
-  measuresGoal: PropTypes.shape({
-    targetDate: PropTypes.string,
-    targetMeasures: PropTypes.number
-  })
+  measures: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.object]))
+  ),
+  measureGoals: PropTypes.arrayOf(
+    PropTypes.shape({
+      targetDate: PropTypes.string,
+      measuresAmount: PropTypes.number
+    })
+  )
 };
 
 const mapStateToProps = state => ({

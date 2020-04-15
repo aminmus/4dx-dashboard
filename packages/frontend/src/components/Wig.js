@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -6,15 +6,25 @@ import { withStyles } from '@material-ui/core/styles';
 import EditButton from './elements/EditButton';
 import InputWig from './elements/editMode/InputWig';
 
-const Wig = props => {
-  const {
-    nps: { current, description, goal, targetDate },
-    editMode
-  } = props;
-  const currentInt = parseInt(current, 10);
-  const goalInt = parseInt(goal, 10);
-  const progress = currentInt && goalInt ? (currentInt / goalInt) * 100 : 0;
+const Wig = ({ nps, editMode }) => {
+  const [latestNps, setLatestNps] = useState();
+  const [progress, setProgress] = useState();
   const [isEditingWig, setIsEditingWig] = useState(false);
+  useEffect(() => {
+    if (nps.length > 0) {
+      setLatestNps(
+        nps.reduce((r, a) => {
+          return r.date > a.date ? r : a;
+        })
+      );
+    }
+  }, [nps]);
+
+  useEffect(() => {
+    const currentInt = parseInt(latestNps?.currentNps, 10);
+    const goalInt = parseInt(latestNps?.goalNps, 10);
+    setProgress(currentInt && goalInt ? (currentInt / goalInt) * 100 : 0);
+  }, [latestNps]);
 
   const setColorBasedOnProgress = score => {
     if (score > 70) {
@@ -63,48 +73,52 @@ const Wig = props => {
 
   return (
     <div className="mt-3">
-      <h2>
-        WIG
-        {editMode && <EditButton onClick={onClickEdit} />}
-      </h2>
-      {!isEditingWig ? (
-        <div>
-          <h3 className="wig__statement">{description}</h3>
-          <div style={{ position: 'relative' }}>
-            <CircularProgressBar size={150} thickness={5} variant="static" value={progress} />
-            <div style={ChartLabelContainerStyle}>
-              <span style={LabelText}>NPS</span>
-              <span style={LabelValue}>{current}</span>
+      {latestNps && (
+        <>
+          <h2>
+            WIG
+            {editMode && <EditButton onClick={onClickEdit} />}
+          </h2>
+          {!isEditingWig ? (
+            <div>
+              <h3 className="wig__statement">{`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}</h3>
+              <div style={{ position: 'relative' }}>
+                <CircularProgressBar size={150} thickness={5} variant="static" value={progress} />
+                <div style={ChartLabelContainerStyle}>
+                  <span style={LabelText}>NPS</span>
+                  <span style={LabelValue}>{latestNps.currentNps}</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      ) : (
-        <InputWig
-          current={current}
-          goal={goal}
-          targetDate={targetDate}
-          setIsEditingWig={setIsEditingWig}
-        />
+          ) : (
+            <InputWig
+              current={latestNps.currentNps}
+              goal={latestNps.goalNps}
+              targetDate={latestNps.targetDate}
+              setIsEditingWig={setIsEditingWig}
+            />
+          )}
+        </>
       )}
     </div>
   );
 };
 
 Wig.defaultProps = {
-  nps: {}
+  nps: []
 };
 
 Wig.propTypes = {
   editMode: PropTypes.bool.isRequired,
-  nps: PropTypes.shape({
-    description: PropTypes.string,
-    current: PropTypes.number,
-    goal: PropTypes.number,
-    targetDate: PropTypes.string,
-    defineClients: PropTypes.string,
-    defineText: PropTypes.string,
-    implementText: PropTypes.string
-  })
+  nps: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      currentNps: PropTypes.number,
+      goalNps: PropTypes.number,
+      date: PropTypes.string,
+      targetDate: PropTypes.string
+    })
+  )
 };
 
 const mapStateToProps = state => ({

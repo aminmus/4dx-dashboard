@@ -1,14 +1,26 @@
 /* eslint-disable radix */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgressBar from '@material-ui/core/LinearProgress';
 import { withStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-export default function ProgressBar(props) {
-  const { clientScore, clientName } = props;
-  const [value, total] = clientScore.split('/');
-  const progress = parseInt(value) ? (parseInt(value) / parseInt(total)) * 100 : 0;
+export default function ProgressBar({ clientName, clientMeasures }) {
+  const [progress, setProgress] = useState(0);
+
+  // Set client measures success progress
+  useEffect(() => {
+    const successfulMeasures = clientMeasures.reduce(
+      (successTotal, measure) => (measure.success ? successTotal + 1 : successTotal),
+      0
+    );
+    setProgress(
+      parseInt(successfulMeasures)
+        ? (parseInt(successfulMeasures) / parseInt(clientMeasures.length)) * 100
+        : 0
+    );
+  }, [clientMeasures]);
+
   const matches = useMediaQuery('(min-width:600px)');
 
   const LinearProgress = withStyles({
@@ -53,10 +65,10 @@ export default function ProgressBar(props) {
 
 ProgressBar.defaultProps = {
   clientName: '',
-  clientScore: ''
+  clientMeasures: [{ success: null }]
 };
 
 ProgressBar.propTypes = {
   clientName: PropTypes.string,
-  clientScore: PropTypes.string
+  clientMeasures: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
 };
