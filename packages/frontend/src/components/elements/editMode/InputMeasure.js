@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -6,8 +7,7 @@ import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
 
-const InputMeasure = props => {
-  const { setIsEditingMeasure, description, success } = props;
+const InputMeasure = ({ setIsEditingMeasure, id, description, success }) => {
   const [measureDescription, setMeasureDescription] = useState(description);
   const [selectedDate, setSelectedDate] = useState(success);
 
@@ -58,15 +58,16 @@ const InputMeasure = props => {
 };
 
 InputMeasure.defaultProps = {
+  id: null,
   description: null,
   success: null
 };
 
 InputMeasure.propTypes = {
-  setIsEditingMeasure: PropTypes.func.isRequired,
-
+  id: PropTypes.string,
   description: PropTypes.string,
-  success: PropTypes.string
+  success: PropTypes.string,
+  setIsEditingMeasure: PropTypes.func.isRequired
 };
 
 export default InputMeasure;

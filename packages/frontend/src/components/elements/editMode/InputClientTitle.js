@@ -1,12 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 
-const InputClientTitle = props => {
-  const { name, setIsEditingTitle } = props;
+const InputClientTitle = ({ id, name, setIsEditingTitle }) => {
   const [clientName, setClientName] = useState(name);
-
   const formStyle = {
     border: '2px dotted white',
     borderRadius: '10px',
@@ -37,10 +36,12 @@ const InputClientTitle = props => {
 };
 
 InputClientTitle.defaultProps = {
-  name: ''
+  id: null,
+  name: null
 };
 
 InputClientTitle.propTypes = {
+  id: PropTypes.string,
   name: PropTypes.string,
   setIsEditingTitle: PropTypes.func.isRequired
 };

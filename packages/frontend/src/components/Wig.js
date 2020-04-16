@@ -81,6 +81,7 @@ const Wig = ({ nps, editMode }) => {
           </h2>
           {isEditingWig ? (
             <InputWig
+              id={latestNps.id}
               current={latestNps.currentNps}
               goal={latestNps.goalNps}
               targetDate={latestNps.targetDate}
