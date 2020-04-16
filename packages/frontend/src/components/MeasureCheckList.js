@@ -5,14 +5,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import MeasureListItem from './MeasureListItem';
+import InputMeasure from './elements/editMode/InputMeasure';
 
-const MeasureCheckList = ({ measures, editMode }) => {
-  const [isAddingMeasure, setIsAddingMeasure] = useState(false);
+const MeasureCheckList = ({ measures, editMode, clientId }) => {
+  const [IsEditingMeasure, setIsEditingMeasure] = useState(false);
 
-  const onClickEdit = e => {
-    e.preventDefault();
-    setIsAddingMeasure(true);
-  };
   return (
     <div>
       <List>
@@ -21,10 +18,14 @@ const MeasureCheckList = ({ measures, editMode }) => {
         })}
         {editMode && (
           <ListItem className="text-light">
-            <Button onClick={onClickEdit} className="px-0">
-              <AddCircleIcon className="mr-2 text-warning" />
-              Add New Measure
-            </Button>
+            {IsEditingMeasure ? (
+              <InputMeasure clientId={clientId} setIsEditingMeasure={setIsEditingMeasure} />
+            ) : (
+              <Button onClick={() => setIsEditingMeasure(true)} className="px-0">
+                <AddCircleIcon className="mr-2 text-warning" />
+                Add New Measure
+              </Button>
+            )}
           </ListItem>
         )}
       </List>
@@ -37,6 +38,7 @@ MeasureCheckList.defaultProps = {
 };
 
 MeasureCheckList.propTypes = {
+  clientId: PropTypes.string.isRequired,
   editMode: PropTypes.bool.isRequired,
   measures: PropTypes.arrayOf(
     PropTypes.shape({

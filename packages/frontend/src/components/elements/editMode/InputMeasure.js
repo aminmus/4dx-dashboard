@@ -7,7 +7,7 @@ import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
 
-const InputMeasure = ({ setIsEditingMeasure, id, description, success }) => {
+const InputMeasure = ({ setIsEditingMeasure, id, clientId, description, success }) => {
   const [measureDescription, setMeasureDescription] = useState(description);
   const [selectedDate, setSelectedDate] = useState(success);
 
@@ -59,12 +59,14 @@ const InputMeasure = ({ setIsEditingMeasure, id, description, success }) => {
 
 InputMeasure.defaultProps = {
   id: null,
+  clientId: null,
   description: null,
   success: null
 };
 
 InputMeasure.propTypes = {
   id: PropTypes.string,
+  clientId: PropTypes.string,
   description: PropTypes.string,
   success: PropTypes.string,
   setIsEditingMeasure: PropTypes.func.isRequired
