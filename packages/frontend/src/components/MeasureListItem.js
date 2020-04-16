@@ -8,22 +8,22 @@ import EditButton from './elements/EditButton';
 import InputMeasure from './elements/editMode/InputMeasure';
 
 const MeasureListItem = ({ measure: { id, success, description }, editMode }) => {
-  const [isEditingMeasure, setIsEditingMeasure] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const onClickEdit = e => {
     e.preventDefault();
-    setIsEditingMeasure(true);
+    setIsEditing(true);
   };
 
   return (
     <ListItem className="text-light">
-      {isEditingMeasure ? (
+      {isEditing ? (
         <div>
           <InputMeasure
             id={id}
             description={description}
             success={success}
-            setIsEditingMeasure={setIsEditingMeasure}
+            setIsEditing={setIsEditing}
           />
         </div>
       ) : (

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 
-const InputClientTitle = ({ id, name, setIsEditingTitle }) => {
+const InputClient = ({ id, name, setIsEditing }) => {
   const [clientName, setClientName] = useState(name);
   const formStyle = {
     border: '2px dotted white',
@@ -15,7 +15,7 @@ const InputClientTitle = ({ id, name, setIsEditingTitle }) => {
   return (
     <form style={formStyle}>
       <TextField
-        label="Label"
+        label="Client Name"
         style={{ color: '#ffff' }}
         placeholder={clientName}
         default={clientName}
@@ -28,22 +28,22 @@ const InputClientTitle = ({ id, name, setIsEditingTitle }) => {
         }}
       />
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={() => setIsEditingTitle(false)} />
-        <OptionsButton text="Cancel" onClick={() => setIsEditingTitle(false)} />
+        <OptionsButton text="Save" onClick={() => setIsEditing(false)} />
+        <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>
     </form>
   );
 };
 
-InputClientTitle.defaultProps = {
+InputClient.defaultProps = {
   id: null,
   name: null
 };
 
-InputClientTitle.propTypes = {
+InputClient.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
-  setIsEditingTitle: PropTypes.func.isRequired
+  setIsEditing: PropTypes.func.isRequired
 };
 
-export default InputClientTitle;
+export default InputClient;

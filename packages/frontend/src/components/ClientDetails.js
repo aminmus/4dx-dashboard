@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import ProgressBar from './elements/ProgressBar';
 import MeasureCheckList from './MeasureCheckList';
 import EditButton from './elements/EditButton';
-import InputClientTitle from './elements/editMode/InputClientTitle';
+import InputClient from './elements/editMode/InputClient';
 
 const ClientDetails = ({ client, editMode }) => {
   const [renderChecklist, setRenderChecklist] = useState(false);
   const [hoverState, setHoverState] = useState(false);
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const OuterContainerStyle = {
     display: 'flex',
@@ -53,11 +53,11 @@ const ClientDetails = ({ client, editMode }) => {
 
   const onClickEdit = e => {
     e.preventDefault();
-    setIsEditingTitle(true);
+    setIsEditing(true);
   };
 
-  const handleContainerHover = () => (!isEditingTitle ? toggleHoverState : () => true);
-  const handleContainerClick = () => (!isEditingTitle ? handleToggleClick : () => true);
+  const handleContainerHover = () => (!isEditing ? toggleHoverState : () => true);
+  const handleContainerClick = () => (!isEditing ? handleToggleClick : () => true);
 
   return (
     <div style={OuterContainerStyle}>
@@ -68,12 +68,8 @@ const ClientDetails = ({ client, editMode }) => {
         onKeyDown={handleContainerClick()}
         style={ProgressBarContainerStyle}
       >
-        {isEditingTitle ? (
-          <InputClientTitle
-            id={client.id}
-            setIsEditingTitle={setIsEditingTitle}
-            name={client.name}
-          />
+        {isEditing ? (
+          <InputClient id={client.id} setIsEditing={setIsEditing} name={client.name} />
         ) : (
           <ProgressBar
             style={{ flex: 1 }}
@@ -84,14 +80,14 @@ const ClientDetails = ({ client, editMode }) => {
           />
         )}
       </div>
-      {editMode && !isEditingTitle && (
+      {editMode && !isEditing && (
         <div style={EditButtonContainerStyle}>
           <EditButton onClick={onClickEdit} />
         </div>
       )}
-      {renderChecklist && client.measures.length > 0 && !isEditingTitle && (
+      {renderChecklist && client.measures.length > 0 && !isEditing && (
         <div style={MeasureCheckListContainerStyle}>
-          <MeasureCheckList measures={client.measures} />
+          <MeasureCheckList clientId={client.id} measures={client.measures} />
         </div>
       )}
     </div>
