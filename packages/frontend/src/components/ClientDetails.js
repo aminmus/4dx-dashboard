@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import ProgressBar from './elements/ProgressBar';
 import MeasureCheckList from './MeasureCheckList';
 import EditButton from './elements/EditButton';
-import InputClientTitle from './elements/editMode/InputClientTitle';
+import InputClient from './elements/editMode/InputClient';
 
 const ClientDetails = ({ client, editMode }) => {
   const [renderChecklist, setRenderChecklist] = useState(false);
@@ -69,11 +69,7 @@ const ClientDetails = ({ client, editMode }) => {
         style={ProgressBarContainerStyle}
       >
         {isEditingTitle ? (
-          <InputClientTitle
-            id={client.id}
-            setIsEditingTitle={setIsEditingTitle}
-            name={client.name}
-          />
+          <InputClient id={client.id} setIsEditingTitle={setIsEditingTitle} name={client.name} />
         ) : (
           <ProgressBar
             style={{ flex: 1 }}

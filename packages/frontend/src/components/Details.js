@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import PropTypes from 'prop-types';
 import ClientDetails from './ClientDetails';
-import InputClientTitle from './elements/editMode/InputClientTitle';
+import InputClient from './elements/editMode/InputClient';
 
 const Details = ({ clients, editMode }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -16,7 +16,7 @@ const Details = ({ clients, editMode }) => {
       {editMode && (
         <div>
           {isEditingTitle ? (
-            <InputClientTitle setIsEditingTitle={setIsEditingTitle} />
+            <InputClient setIsEditingTitle={setIsEditingTitle} />
           ) : (
             <Button onClick={() => setIsEditingTitle(true)} className="px-0">
               <AddCircleIcon className="mr-2 text-warning" />
