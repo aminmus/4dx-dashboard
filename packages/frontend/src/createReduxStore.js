@@ -4,8 +4,7 @@ import { routerMiddleware, connectRouter } from 'connected-react-router';
 import { adminReducer, adminSaga, USER_LOGOUT } from 'react-admin';
 import { all, fork } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
-
-import resourcesReducer from './reducers/resources';
+import resourcesReducer from './slices/resources';
 import editModeReducer from './reducers/editMode';
 import authReducer from './reducers/auth';
 import preloadedState from './initialState';
