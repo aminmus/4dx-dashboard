@@ -1,11 +1,16 @@
 // Helper for making requests to the backend
 export const backendFetch = async (urlPath, httpMethod = 'GET', body = undefined) => {
   const url = `${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_SERVER_PORT}/api/${urlPath}`;
+  const token = localStorage.getItem('token');
   const options = {
     method: httpMethod,
-    headers: new Headers({ 'Content-Type': 'application/vnd.api+json' }),
+    headers: new Headers({
+      'Content-Type': 'application/vnd.api+json',
+      Accept: 'application/vnd.api+json',
+      Authorization: token ? `Bearer ${token}` : undefined
+    }),
     redirect: 'follow',
-    body
+    body: body ? JSON.stringify(body) : undefined
   };
   try {
     const response = await fetch(url, options);
