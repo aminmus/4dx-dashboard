@@ -7,12 +7,7 @@ import { connect } from 'react-redux';
 import EditButton from './elements/EditButton';
 import InputMeasure from './elements/editMode/InputMeasure';
 
-const MeasureListItem = props => {
-  const {
-    measure: { success, description },
-    editMode
-  } = props;
-
+const MeasureListItem = ({ measure: { id, success, description }, editMode }) => {
   const [isEditingMeasure, setIsEditingMeasure] = useState(false);
 
   const onClickEdit = e => {
@@ -25,6 +20,7 @@ const MeasureListItem = props => {
       {isEditingMeasure ? (
         <div>
           <InputMeasure
+            id={id}
             description={description}
             success={success}
             setIsEditingMeasure={setIsEditingMeasure}
@@ -52,6 +48,7 @@ MeasureListItem.defaultProps = {
 MeasureListItem.propTypes = {
   editMode: PropTypes.bool.isRequired,
   measure: PropTypes.shape({
+    id: PropTypes.string,
     success: PropTypes.string,
     description: PropTypes.string
   })

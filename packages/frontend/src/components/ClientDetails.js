@@ -69,7 +69,11 @@ const ClientDetails = ({ client, editMode }) => {
         style={ProgressBarContainerStyle}
       >
         {isEditingTitle ? (
-          <InputClientTitle setIsEditingTitle={setIsEditingTitle} name={client.name} />
+          <InputClientTitle
+            id={client.id}
+            setIsEditingTitle={setIsEditingTitle}
+            name={client.name}
+          />
         ) : (
           <ProgressBar
             style={{ flex: 1 }}

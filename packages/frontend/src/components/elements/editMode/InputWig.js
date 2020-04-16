@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -6,8 +7,7 @@ import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
 
-const InputWig = props => {
-  const { current, goal, targetDate, setIsEditingWig } = props;
+const InputWig = ({ id, current, goal, targetDate, setIsEditingWig }) => {
   const [selectedDate, setSelectedDate] = useState(targetDate);
   const [currentNps, setCurrentNps] = useState(current);
   const [goalNps, setGoalNps] = useState(goal);
@@ -76,12 +76,14 @@ const InputWig = props => {
 };
 
 InputWig.defaultProps = {
+  id: null,
   current: 0,
   goal: 0,
   targetDate: null
 };
 
 InputWig.propTypes = {
+  id: PropTypes.string,
   current: PropTypes.number,
   goal: PropTypes.number,
   targetDate: PropTypes.string,
