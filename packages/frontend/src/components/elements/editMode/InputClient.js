@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 
-const InputClient = ({ id, name, setIsEditingTitle }) => {
+const InputClient = ({ id, name, setIsEditing }) => {
   const [clientName, setClientName] = useState(name);
   const formStyle = {
     border: '2px dotted white',
@@ -28,8 +28,8 @@ const InputClient = ({ id, name, setIsEditingTitle }) => {
         }}
       />
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={() => setIsEditingTitle(false)} />
-        <OptionsButton text="Cancel" onClick={() => setIsEditingTitle(false)} />
+        <OptionsButton text="Save" onClick={() => setIsEditing(false)} />
+        <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>
     </form>
   );
@@ -43,7 +43,7 @@ InputClient.defaultProps = {
 InputClient.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
-  setIsEditingTitle: PropTypes.func.isRequired
+  setIsEditing: PropTypes.func.isRequired
 };
 
 export default InputClient;

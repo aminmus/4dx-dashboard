@@ -7,7 +7,7 @@ import ClientDetails from './ClientDetails';
 import InputClient from './elements/editMode/InputClient';
 
 const Details = ({ clients, editMode }) => {
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   return (
     <div className="mt-3">
       {clients.map(client => (
@@ -15,10 +15,10 @@ const Details = ({ clients, editMode }) => {
       ))}
       {editMode && (
         <div>
-          {isEditingTitle ? (
-            <InputClient setIsEditingTitle={setIsEditingTitle} />
+          {isEditing ? (
+            <InputClient setIsEditing={setIsEditing} />
           ) : (
-            <Button onClick={() => setIsEditingTitle(true)} className="px-0">
+            <Button onClick={() => setIsEditing(true)} className="px-0">
               <AddCircleIcon className="mr-2 text-warning" />
               Add New Client
             </Button>

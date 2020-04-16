@@ -7,7 +7,7 @@ import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
 
 const InputMeasuresGoal = props => {
-  const { setIsEditingMeasuresGoal, measures, date } = props;
+  const { setIsEditing, measures, date } = props;
   const [targetMeasures, setTargetMeasures] = useState(measures);
   const [selectedDate, setSelectedDate] = useState(date);
 
@@ -51,8 +51,8 @@ const InputMeasuresGoal = props => {
       </MuiPickersUtilsProvider>
 
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={() => setIsEditingMeasuresGoal(false)} />
-        <OptionsButton text="Cancel" onClick={() => setIsEditingMeasuresGoal(false)} />
+        <OptionsButton text="Save" onClick={() => setIsEditing(false)} />
+        <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>
     </form>
   );
@@ -64,7 +64,7 @@ InputMeasuresGoal.defaultProps = {
 };
 
 InputMeasuresGoal.propTypes = {
-  setIsEditingMeasuresGoal: PropTypes.func.isRequired,
+  setIsEditing: PropTypes.func.isRequired,
   measures: PropTypes.number,
   date: PropTypes.string
 };

@@ -8,7 +8,7 @@ import MeasureListItem from './MeasureListItem';
 import InputMeasure from './elements/editMode/InputMeasure';
 
 const MeasureCheckList = ({ measures, editMode, clientId }) => {
-  const [IsEditingMeasure, setIsEditingMeasure] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
     <div>
@@ -18,10 +18,10 @@ const MeasureCheckList = ({ measures, editMode, clientId }) => {
         })}
         {editMode && (
           <ListItem className="text-light">
-            {IsEditingMeasure ? (
-              <InputMeasure clientId={clientId} setIsEditingMeasure={setIsEditingMeasure} />
+            {isEditing ? (
+              <InputMeasure clientId={clientId} setIsEditing={setIsEditing} />
             ) : (
-              <Button onClick={() => setIsEditingMeasure(true)} className="px-0">
+              <Button onClick={() => setIsEditing(true)} className="px-0">
                 <AddCircleIcon className="mr-2 text-warning" />
                 Add New Measure
               </Button>

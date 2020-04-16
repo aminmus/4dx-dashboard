@@ -19,7 +19,7 @@ const { primary, light, danger, gray } = COLORS;
 const MeasuresOverTime = props => {
   const match = useMediaQuery('(min-width:600px)');
   const { measures, measureGoals, editMode } = props;
-  const [isEditingMeasuresGoal, setIsEditingMeasuresGoal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const ChartHeaderStyle = {
     display: 'flex',
@@ -175,7 +175,7 @@ const MeasuresOverTime = props => {
 
   const onClickEdit = e => {
     e.preventDefault();
-    setIsEditingMeasuresGoal(true);
+    setIsEditing(true);
   };
 
   const updateChart = e => {
@@ -209,7 +209,7 @@ const MeasuresOverTime = props => {
     targetDate,
     measuresAmount,
     intervalSpan,
-    isEditingMeasuresGoal
+    isEditing
   ]);
 
   return (
@@ -238,11 +238,11 @@ const MeasuresOverTime = props => {
             <IntervalSpanDialog setIntervalSpan={setIntervalSpan} intervalSpan={intervalSpan} />
           </div>
         )}
-        {isEditingMeasuresGoal ? (
+        {isEditing ? (
           <InputMeasuresGoal
             measures={measuresAmount}
             date={targetDate}
-            setIsEditingMeasuresGoal={setIsEditingMeasuresGoal}
+            setIsEditing={setIsEditing}
           />
         ) : (
           <canvas ref={chartContainer} />
