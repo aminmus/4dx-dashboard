@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 
-const InputClientTitle = ({ id, name, setIsEditingTitle }) => {
+const InputClient = ({ id, name, setIsEditingTitle }) => {
   const [clientName, setClientName] = useState(name);
   const formStyle = {
     border: '2px dotted white',
@@ -35,15 +35,15 @@ const InputClientTitle = ({ id, name, setIsEditingTitle }) => {
   );
 };
 
-InputClientTitle.defaultProps = {
+InputClient.defaultProps = {
   id: null,
   name: null
 };
 
-InputClientTitle.propTypes = {
+InputClient.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   setIsEditingTitle: PropTypes.func.isRequired
 };
 
-export default InputClientTitle;
+export default InputClient;
