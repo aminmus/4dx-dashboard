@@ -15,7 +15,7 @@ const InputClient = ({ id, name, setIsEditing }) => {
   return (
     <form style={formStyle}>
       <TextField
-        label="Label"
+        label="Client Name"
         style={{ color: '#ffff' }}
         placeholder={clientName}
         default={clientName}
