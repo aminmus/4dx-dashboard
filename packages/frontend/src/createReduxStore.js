@@ -5,6 +5,7 @@ import { all, fork } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
 import thunk from 'redux-thunk';
 
+import computedReducer from './reducers/computed';
 import resourcesReducer from './reducers/resources';
 import editModeReducer from './reducers/editMode';
 import authReducer from './reducers/auth';
@@ -16,7 +17,8 @@ export default ({ authProvider, dataProvider, history }) => {
     router: connectRouter(history),
     editMode: editModeReducer,
     resources: resourcesReducer,
-    auth: authReducer
+    auth: authReducer,
+    computed: computedReducer
   });
   const resettableAppReducer = (state, action) =>
     reducer(action.type !== USER_LOGOUT ? state : undefined, action);
