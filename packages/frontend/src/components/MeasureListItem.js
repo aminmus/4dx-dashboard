@@ -5,15 +5,13 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import EditButton from './elements/EditButton';
+import DeleteButton from './elements/DeleteButton';
 import InputMeasure from './elements/editMode/InputMeasure';
+import DeleteDialog from './elements/editMode/DeleteDialog';
 
 const MeasureListItem = ({ measure: { id, success, description }, editMode }) => {
   const [isEditing, setIsEditing] = useState(false);
-
-  const onClickEdit = e => {
-    e.preventDefault();
-    setIsEditing(true);
-  };
+  const [isDeleting, setIsDeleting] = useState(false);
 
   return (
     <ListItem className="text-light">
@@ -27,14 +25,28 @@ const MeasureListItem = ({ measure: { id, success, description }, editMode }) =>
           />
         </div>
       ) : (
-        <div>
+        <div style={{ display: 'flex' }}>
           {success ? (
             <CheckCircleIcon className="mr-2 text-success" />
           ) : (
             <CancelIcon className="mr-2 text-danger" />
           )}
           {description}
-          {editMode && <EditButton onClick={onClickEdit} />}
+          {editMode && (
+            <div>
+              <EditButton onClick={() => setIsEditing(true)} />
+              <DeleteButton onClick={() => setIsDeleting(true)} />
+              {isDeleting && (
+                <DeleteDialog
+                  _id={id}
+                  type="measure"
+                  content={description}
+                  isDeleting={isDeleting}
+                  setIsDeleting={setIsDeleting}
+                />
+              )}
+            </div>
+          )}
         </div>
       )}
     </ListItem>
