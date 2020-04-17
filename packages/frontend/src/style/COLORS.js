@@ -5,6 +5,7 @@ const COLORS = {
   dark: 'rgba(0, 0, 0 , 1)',
   success: 'rgb(144, 238, 144)',
   danger: 'rgba(217, 83, 79, 1)',
+  dangerDark: 'rgba(195, 74, 71, 1)',
   gray: 'rgba(124, 124, 124, 1)',
   darkGray: 'rgba(51, 51, 51, 1)',
   lightGray: 'rgba(48, 48, 48, 1)'
