@@ -9,7 +9,7 @@ import InputWig from './elements/editMode/InputWig';
 const Wig = ({ nps, editMode }) => {
   const [latestNps, setLatestNps] = useState();
   const [progress, setProgress] = useState();
-  const [isEditingWig, setIsEditingWig] = useState(false);
+  const [IsEditing, setIsEditing] = useState(false);
   useEffect(() => {
     if (nps.length > 0) {
       setLatestNps(
@@ -68,7 +68,7 @@ const Wig = ({ nps, editMode }) => {
 
   const onClickEdit = e => {
     e.preventDefault();
-    setIsEditingWig(true);
+    setIsEditing(true);
   };
 
   return (
@@ -79,13 +79,13 @@ const Wig = ({ nps, editMode }) => {
             WIG
             {editMode && <EditButton onClick={onClickEdit} />}
           </h2>
-          {isEditingWig ? (
+          {IsEditing ? (
             <InputWig
               id={latestNps.id}
               current={latestNps.currentNps}
               goal={latestNps.goalNps}
               targetDate={latestNps.targetDate}
-              setIsEditingWig={setIsEditingWig}
+              setIsEditing={setIsEditing}
             />
           ) : (
             <div>

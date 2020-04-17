@@ -8,7 +8,7 @@ import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
 import { updateResource } from '../../../slices/resources';
 
-const InputWig = ({ id, current, goal, targetDate, setIsEditingWig, dispatch }) => {
+const InputWig = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => {
   const [selectedDate, setSelectedDate] = useState(targetDate);
   const [currentNps, setCurrentNps] = useState(current);
   const [goalNps, setGoalNps] = useState(goal);
@@ -32,7 +32,7 @@ const InputWig = ({ id, current, goal, targetDate, setIsEditingWig, dispatch }) 
       }
     };
     dispatch(updateResource(data));
-    setIsEditingWig(false);
+    setIsEditing(false);
   };
 
   return (
@@ -85,7 +85,7 @@ const InputWig = ({ id, current, goal, targetDate, setIsEditingWig, dispatch }) 
       </MuiPickersUtilsProvider>
       <div style={{ display: 'flex' }}>
         <OptionsButton text="Save" onClick={handleSaveClick} />
-        <OptionsButton text="Cancel" onClick={() => setIsEditingWig(false)} />
+        <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>
     </form>
   );
@@ -103,7 +103,7 @@ InputWig.propTypes = {
   current: PropTypes.number,
   goal: PropTypes.number,
   targetDate: PropTypes.string,
-  setIsEditingWig: PropTypes.func.isRequired,
+  setIsEditing: PropTypes.func.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
