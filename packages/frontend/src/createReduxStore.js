@@ -1,18 +1,17 @@
-import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { combineReducers } from 'redux';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { routerMiddleware, connectRouter } from 'connected-react-router';
 import { adminReducer, adminSaga, USER_LOGOUT } from 'react-admin';
 import { all, fork } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
-import thunk from 'redux-thunk';
-
+import resourcesReducer from './slices/resources';
 import computedReducer from './reducers/computed';
-import resourcesReducer from './reducers/resources';
 import editModeReducer from './reducers/editMode';
 import authReducer from './reducers/auth';
-import initialState from './initialState';
+import preloadedState from './initialState';
 
 export default ({ authProvider, dataProvider, history }) => {
-  const reducer = combineReducers({
+  const rootReducer = combineReducers({
     admin: adminReducer,
     router: connectRouter(history),
     editMode: editModeReducer,
@@ -21,28 +20,19 @@ export default ({ authProvider, dataProvider, history }) => {
     computed: computedReducer
   });
   const resettableAppReducer = (state, action) =>
-    reducer(action.type !== USER_LOGOUT ? state : undefined, action);
+    rootReducer(action.type !== USER_LOGOUT ? state : undefined, action);
 
   const saga = function* rootSaga() {
     yield all([adminSaga(dataProvider, authProvider)].map(fork));
   };
   const sagaMiddleware = createSagaMiddleware();
 
-  const composeEnhancers =
-    (process.env.NODE_ENV === 'development' &&
-      typeof window !== 'undefined' &&
-      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        trace: true,
-        traceLimit: 25
-      })) ||
-    compose;
-
-  const store = createStore(
-    resettableAppReducer,
-    initialState,
-    composeEnhancers(applyMiddleware(sagaMiddleware, routerMiddleware(history), thunk))
-  );
+  const store = configureStore({
+    reducer: resettableAppReducer,
+    preloadedState,
+    middleware: [sagaMiddleware, routerMiddleware(history), ...getDefaultMiddleware()]
+  });
   sagaMiddleware.run(saga);
+
   return store;
 };

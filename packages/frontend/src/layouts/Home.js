@@ -1,8 +1,5 @@
-/* eslint-disable no-console, no-unused-vars, react/no-unused-prop-types */
-
 import React, { useEffect, useState } from 'react';
 import { Button, ThemeProvider } from '@material-ui/core';
-
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -14,7 +11,7 @@ import Nps from '../components/Nps';
 import MeasuresOverTime from '../components/MeasuresOverTime';
 import { toggleEdit } from '../actions/editMode';
 import theme from '../style/muiTheme';
-import fetchResourcesAction from '../actions/resources';
+import { fetchResources } from '../slices/resources';
 import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
 import reformatNps from '../utils/reformatNps';
@@ -36,7 +33,7 @@ const Home = ({
   });
 
   useEffect(() => {
-    dispatch(fetchResourcesAction());
+    dispatch(fetchResources());
   }, []);
 
   useEffect(() => {
