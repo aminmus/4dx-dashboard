@@ -1,11 +1,9 @@
-/* eslint-disable no-console, no-unused-vars, react/no-unused-prop-types */
-
 import React, { useEffect, useState } from 'react';
 import { Button, ThemeProvider } from '@material-ui/core';
-
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Wig from '../components/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/Details';
@@ -13,11 +11,10 @@ import Nps from '../components/Nps';
 import MeasuresOverTime from '../components/MeasuresOverTime';
 import { toggleEdit } from '../actions/editMode';
 import theme from '../style/muiTheme';
-import fetchResourcesAction from '../actions/resources';
+import { fetchResources } from '../slices/resources';
 import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
 import reformatNps from '../utils/reformatNps';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Home = ({
   isLoggedIn,
@@ -36,7 +33,7 @@ const Home = ({
   });
 
   useEffect(() => {
-    dispatch(fetchResourcesAction());
+    dispatch(fetchResources());
   }, []);
 
   useEffect(() => {
@@ -106,9 +103,16 @@ const Home = ({
 
 Home.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-
   dispatch: PropTypes.func.isRequired,
-  resources: PropTypes.objectOf(PropTypes.object).isRequired
+  resources: PropTypes.shape({
+    data: PropTypes.shape({
+      clients: PropTypes.arrayOf(PropTypes.object).isRequired,
+      nps: PropTypes.arrayOf(PropTypes.object).isRequired,
+      measures: PropTypes.arrayOf(PropTypes.object).isRequired,
+      measureGoals: PropTypes.arrayOf(PropTypes.object).isRequired
+    }),
+    isFetching: PropTypes.bool.isRequired
+  }).isRequired
 };
 
 const mapStateToProps = ({ auth, resources }) => ({

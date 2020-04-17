@@ -1,19 +1,35 @@
-/* eslint-disable no-shadow, no-console */
-
-import React from 'react';
-import { List } from '@material-ui/core';
+/* eslint-disable no-shadow, no-unused-vars */
+import React, { useState } from 'react';
+import { List, ListItem, Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import MeasureListItem from './MeasureListItem';
+import InputMeasure from './elements/editMode/InputMeasure';
 
-const MeasureCheckList = props => {
-  const { measures } = props;
+const MeasureCheckList = ({ measures, editMode, clientId }) => {
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <List>
-      {measures.map(measure => {
-        return <MeasureListItem measure={measure} key={`${measure.id}`} />;
-      })}
-    </List>
+    <div>
+      <List>
+        {measures.map(measure => {
+          return <MeasureListItem measure={measure} key={`${measure.id}`} />;
+        })}
+        {editMode && (
+          <ListItem className="text-light">
+            {isEditing ? (
+              <InputMeasure clientId={clientId} setIsEditing={setIsEditing} />
+            ) : (
+              <Button onClick={() => setIsEditing(true)} className="px-0">
+                <AddCircleIcon className="mr-2 text-warning" />
+                Add New Measure
+              </Button>
+            )}
+          </ListItem>
+        )}
+      </List>
+    </div>
   );
 };
 
@@ -22,6 +38,8 @@ MeasureCheckList.defaultProps = {
 };
 
 MeasureCheckList.propTypes = {
+  clientId: PropTypes.string.isRequired,
+  editMode: PropTypes.bool.isRequired,
   measures: PropTypes.arrayOf(
     PropTypes.shape({
       success: PropTypes.string,
@@ -30,4 +48,8 @@ MeasureCheckList.propTypes = {
   )
 };
 
-export default MeasureCheckList;
+const mapStateToProps = state => ({
+  editMode: state.editMode.editModeEnabled
+});
+
+export default connect(mapStateToProps, null)(MeasureCheckList);

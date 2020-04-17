@@ -7,7 +7,7 @@ import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
 
-const InputMeasure = ({ setIsEditingMeasure, id, description, success }) => {
+const InputMeasure = ({ setIsEditing, id, clientId, description, success }) => {
   const [measureDescription, setMeasureDescription] = useState(description);
   const [selectedDate, setSelectedDate] = useState(success);
 
@@ -50,8 +50,8 @@ const InputMeasure = ({ setIsEditingMeasure, id, description, success }) => {
       </MuiPickersUtilsProvider>
 
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={() => setIsEditingMeasure(false)} />
-        <OptionsButton text="Cancel" onClick={() => setIsEditingMeasure(false)} />
+        <OptionsButton text="Save" onClick={() => setIsEditing(false)} />
+        <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>
     </form>
   );
@@ -59,15 +59,17 @@ const InputMeasure = ({ setIsEditingMeasure, id, description, success }) => {
 
 InputMeasure.defaultProps = {
   id: null,
+  clientId: null,
   description: null,
   success: null
 };
 
 InputMeasure.propTypes = {
   id: PropTypes.string,
+  clientId: PropTypes.string,
   description: PropTypes.string,
   success: PropTypes.string,
-  setIsEditingMeasure: PropTypes.func.isRequired
+  setIsEditing: PropTypes.func.isRequired
 };
 
 export default InputMeasure;
