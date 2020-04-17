@@ -1,11 +1,6 @@
-import { Deserializer } from 'jsonapi-serializer';
-import { serializeError } from 'serialize-error';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import fetchData from '../utils/fetchData';
-
-const { deserialize } = new Deserializer({
-  keyForAttribute: 'camelCase'
-});
+import fetchData, { backendFetch } from '../utils/fetchData';
+import { serializePerType, deserialize } from '../utils/jsonapiSerializing';
 
 export const fetchResources = createAsyncThunk('resources/fetchResources', async () => {
   const { nps, clients, measures, measureGoals } = await fetchData();
@@ -18,6 +13,14 @@ export const fetchResources = createAsyncThunk('resources/fetchResources', async
   return deserialized;
 });
 
+export const updateResource = createAsyncThunk('resources/update', async ({ id, type, data }) => {
+  const serializedRequest = await serializePerType(type, data);
+  const response = await backendFetch(`${type}/${id}`, 'PUT', serializedRequest);
+  const deserializedResponse = await deserialize(response);
+  const payload = { data: deserializedResponse, type };
+  return payload;
+});
+
 const resourcesSlice = createSlice({
   name: 'resources',
   initialState: null,
@@ -26,11 +29,29 @@ const resourcesSlice = createSlice({
     [fetchResources.pending]: state => {
       return { ...state, isFetching: true };
     },
-    [fetchResources.fulfilled]: (state, action) => {
-      return { ...state, data: action.payload, isFetching: false };
+    [fetchResources.fulfilled]: (state, { payload }) => {
+      return { ...state, data: payload, isFetching: false };
     },
-    [fetchResources.rejected]: (state, action) => {
-      return { ...state, error: serializeError(action.payload), isFetching: false };
+    [fetchResources.rejected]: (state, { payload }) => {
+      return { ...state, error: payload, isFetching: false };
+    },
+    [updateResource.pending]: state => {
+      return { ...state, isFetching: true };
+    },
+    [updateResource.fulfilled]: (state, { payload }) => {
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [payload.type]: state.data[payload.type].map(entry =>
+            entry.id === payload.data.id ? payload.data : entry
+          )
+        },
+        isFetching: false
+      };
+    },
+    [updateResource.rejected]: (state, { payload }) => {
+      return { ...state, error: payload, isFetching: false };
     }
   }
 });
