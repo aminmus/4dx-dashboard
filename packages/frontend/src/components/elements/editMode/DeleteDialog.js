@@ -31,10 +31,7 @@ const DeleteDialog = ({ _id, type, content, isDeleting, setIsDeleting }) => {
       aria-labelledby="confirmation-delete-dialog"
       open={isDeleting}
     >
-      <DialogTitle id="confirmation-delete-title">
-        Delete
-        {type}
-      </DialogTitle>
+      <DialogTitle id="confirmation-delete-title">{`Delete ${type}`}</DialogTitle>
       <DialogContent dividers>
         <p>Are you sure you want to delete?</p>
         <p style={{ fontWeight: 'bold' }}>{content}</p>
