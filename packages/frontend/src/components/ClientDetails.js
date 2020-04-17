@@ -6,11 +6,14 @@ import ProgressBar from './elements/ProgressBar';
 import MeasureCheckList from './MeasureCheckList';
 import EditButton from './elements/EditButton';
 import InputClient from './elements/editMode/InputClient';
+import DeleteButton from './elements/DeleteButton';
+import DeleteDialog from './elements/editMode/DeleteDialog';
 
 const ClientDetails = ({ client, editMode }) => {
   const [renderChecklist, setRenderChecklist] = useState(false);
   const [hoverState, setHoverState] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const OuterContainerStyle = {
     display: 'flex',
@@ -41,23 +44,9 @@ const ClientDetails = ({ client, editMode }) => {
     width: '100%'
   };
 
-  const handleToggleClick = e => {
-    e.preventDefault();
-    setRenderChecklist(!renderChecklist);
-  };
-
-  const toggleHoverState = e => {
-    e.preventDefault();
-    setHoverState(!hoverState);
-  };
-
-  const onClickEdit = e => {
-    e.preventDefault();
-    setIsEditing(true);
-  };
-
-  const handleContainerHover = () => (!isEditing ? toggleHoverState : () => true);
-  const handleContainerClick = () => (!isEditing ? handleToggleClick : () => true);
+  const handleContainerHover = () => (!isEditing ? () => setHoverState(!hoverState) : () => true);
+  const handleContainerClick = () =>
+    !isEditing ? () => setRenderChecklist(!renderChecklist) : () => true;
 
   return (
     <div style={OuterContainerStyle}>
@@ -82,7 +71,19 @@ const ClientDetails = ({ client, editMode }) => {
       </div>
       {editMode && !isEditing && (
         <div style={EditButtonContainerStyle}>
-          <EditButton onClick={onClickEdit} />
+          <div>
+            <EditButton onClick={() => setIsEditing(true)} />
+            <DeleteButton onClick={() => setIsDeleting(true)} />
+            {isDeleting && (
+              <DeleteDialog
+                _id={client.id}
+                type="client"
+                content={client.name}
+                isDeleting={isDeleting}
+                setIsDeleting={setIsDeleting}
+              />
+            )}
+          </div>
         </div>
       )}
       {renderChecklist && client.measures.length > 0 && !isEditing && (
