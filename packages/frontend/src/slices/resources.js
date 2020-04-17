@@ -1,5 +1,4 @@
 import { Deserializer, Serializer } from 'jsonapi-serializer';
-import { serializeError } from 'serialize-error';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import fetchData, { backendFetch } from '../utils/fetchData';
 
@@ -57,7 +56,7 @@ const resourcesSlice = createSlice({
       return { ...state, data: payload, isFetching: false };
     },
     [fetchResources.rejected]: (state, { payload }) => {
-      return { ...state, error: serializeError(payload), isFetching: false };
+      return { ...state, error: payload, isFetching: false };
     },
     [updateResource.pending]: state => {
       return { ...state, isFetching: true };
@@ -76,7 +75,7 @@ const resourcesSlice = createSlice({
       return { ...state, isFetching: false };
     },
     [updateResource.rejected]: (state, { payload }) => {
-      return { ...state, error: serializeError(payload), isFetching: false };
+      return { ...state, error: payload, isFetching: false };
     }
   }
 });
