@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return, no-param-reassign */
+
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import fetchData, { backendFetch } from '../utils/fetchData';
 import { serializePerType, deserialize } from '../utils/jsonapiSerializing';
@@ -38,17 +40,51 @@ const resourcesSlice = createSlice({
     [updateResource.pending]: state => {
       return { ...state, isFetching: true };
     },
+    // Immer (via redux toolkit) creates a proxy state that prevents direct mutation
     [updateResource.fulfilled]: (state, { payload }) => {
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [payload.type]: state.data[payload.type].map(entry =>
-            entry.id === payload.data.id ? payload.data : entry
+      if (payload.type === 'measures') {
+        state.data.measures = [
+          ...state.data.measures.map(measure =>
+            measure.id === payload.data.id ? payload.data : measure
           )
-        },
-        isFetching: false
-      };
+        ];
+        state.data.clients = [
+          ...state.data.clients.map(client => {
+            const updatedMeasures = client.measures.map(measure =>
+              measure.id === payload.data.id ? payload.data : measure
+            );
+            client.measures = updatedMeasures;
+            return client;
+          })
+        ];
+        state.isFetching = false;
+      } else if (payload.type === 'clients') {
+        state.data.clients = [
+          ...state.data.clients.map(client =>
+            client.id === payload.data.id ? payload.data : client
+          )
+        ];
+        state.data.measures = [
+          ...state.data.measures.map(measure => {
+            const updatedClient =
+              measure.client.id === payload.data.id ? payload.data : measure.client;
+            measure.client = updatedClient;
+            return measure;
+          })
+        ];
+        state.isFetching = false;
+      } else {
+        return {
+          ...state,
+          data: {
+            ...state.data,
+            [payload.type]: state.data[payload.type].map(entry =>
+              entry.id === payload.data.id ? payload.data : entry
+            )
+          },
+          isFetching: false
+        };
+      }
     },
     [updateResource.rejected]: (state, { payload }) => {
       return { ...state, error: payload, isFetching: false };
