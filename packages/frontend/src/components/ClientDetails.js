@@ -76,8 +76,8 @@ const ClientDetails = ({ client, editMode }) => {
             <DeleteButton onClick={() => setIsDeleting(true)} />
             {isDeleting && (
               <DeleteDialog
-                _id={client.id}
-                type="client"
+                id={client.id}
+                type="clients"
                 content={client.name}
                 isDeleting={isDeleting}
                 setIsDeleting={setIsDeleting}
