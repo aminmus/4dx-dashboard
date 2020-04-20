@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { CircularProgress, Button } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { withStyles } from '@material-ui/core/styles';
 import EditButton from './elements/EditButton';
 import InputNps from './elements/editMode/InputNps';
+import AddNps from './elements/editMode/AddNps';
 
 const Wig = ({ nps, editMode }) => {
   const [latestNps, setLatestNps] = useState();
   const [progress, setProgress] = useState();
   const [isEditing, setIsEditing] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   useEffect(() => {
     if (nps.length > 0) {
       setLatestNps(
@@ -100,6 +103,18 @@ const Wig = ({ nps, editMode }) => {
             </div>
           )}
         </>
+      )}
+      {editMode && (
+        <div className="mt-2">
+          {isAdding ? (
+            <AddNps setIsEditing={setIsAdding} />
+          ) : (
+            <Button onClick={() => setIsAdding(true)} className="px-0 mx-auto">
+              <AddCircleIcon className="mr-2 text-warning" />
+              Add New NPS Data
+            </Button>
+          )}
+        </div>
       )}
     </div>
   );
