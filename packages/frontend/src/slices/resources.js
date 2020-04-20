@@ -66,11 +66,40 @@ const resourcesSlice = createSlice({
       return state;
     },
     [deleteResource.fulfilled]: (state, { payload }) => {
+      if (payload.type === 'measures') {
+        state.data.measures = [
+          // Remove targeted Measures resource
+          ...state.data.measures.filter(measure => measure.id !== payload.id)
+        ];
+        state.data.clients = [
+          // Remove all measures owned by Client from Client resource
+          ...state.data.clients.map(client => {
+            const updatedMeasures = client.measures.filter(measure => measure.id !== payload.id);
+            client.measures = updatedMeasures;
+            return client;
+          })
+        ];
+        state.isFetching = false;
+        return state;
+      }
+      if (payload.type === 'clients') {
+        console.log(payload);
+        state.data.clients = [
+          // Remove targeted Client resource
+          ...state.data.clients.filter(client => client.id !== payload.id)
+        ];
+        state.data.measures = [
+          // Remove all measures associated to the Client from Measures resource
+          ...state.data.measures.filter(measure => measure.client.id !== payload.id)
+        ];
+        state.isFetching = false;
+        return state;
+      }
       return {
         ...state,
         data: {
           ...state.data,
-          [payload.type]: state.data[payload.type].filter(entry => entry.id !== payload.data.id)
+          [payload.type]: state.data[payload.type].filter(entry => entry.id !== payload.id)
         },
         isFetching: false
       };
