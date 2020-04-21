@@ -107,7 +107,11 @@ const resourcesSlice = createSlice({
       state.isFetching = false;
     },
     [addResource.fulfilled]: (state, { payload }) => {
-      state.data.nps.push(payload.data);
+      if (payload.type === 'nps ') {
+        state.data.nps.push(payload.data);
+      } else if (payload.type === 'clients') {
+        state.data.clients.push(payload.data);
+      }
       state.isFetching = false;
     },
     [addResource.rejected]: (state, { payload }) => {
