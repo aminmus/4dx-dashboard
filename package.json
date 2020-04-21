@@ -1,32 +1,35 @@
 {
-    "name": "4dx",
-    "version": "0.1.0",
-    "description": "New 4DX site in React and Node JS",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lerna run --concurrency 1 --stream precommit"
-        }
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+ssh://git@bitbucket.org/vaimo/4dx.git"
-    },
-    "workspaces": [
-        "packages/*"
-    ],
-    "contributors": [
-        "Amin Mushehid",
-        "Daniel Salin"
-    ],
-    "license": "ISC",
-    "homepage": "https://bitbucket.org/vaimo/4dx#readme",
-    "devDependencies": {
-        "husky": "^4.2.1",
-        "lerna": "^3.20.2",
-        "lint-staged": "^10.0.7"
-    },
-    "dependencies": {}
+	"name": "4dx",
+	"version": "0.1.0",
+	"description": "New 4DX site in React and Node JS",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"doc": "jsdoc -c jsdoc.json"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lerna run --concurrency 1 --stream precommit"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@bitbucket.org/vaimo/4dx.git"
+	},
+	"workspaces": [
+		"packages/*"
+	],
+	"contributors": [
+		"Amin Mushehid",
+		"Daniel Salin"
+	],
+	"license": "ISC",
+	"homepage": "https://bitbucket.org/vaimo/4dx#readme",
+	"devDependencies": {
+		"better-docs": "^1.4.7",
+		"husky": "^4.2.1",
+		"jsdoc": "^3.6.4",
+		"lerna": "^3.20.2",
+		"lint-staged": "^10.0.7"
+	},
+	"dependencies": {}
 }
