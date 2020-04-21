@@ -76,8 +76,8 @@ const ClientDetails = ({ client, editMode }) => {
             <DeleteButton onClick={() => setIsDeleting(true)} />
             {isDeleting && (
               <DeleteDialog
-                _id={client.id}
-                type="client"
+                id={client.id}
+                type="clients"
                 content={client.name}
                 isDeleting={isDeleting}
                 setIsDeleting={setIsDeleting}
@@ -86,7 +86,7 @@ const ClientDetails = ({ client, editMode }) => {
           </div>
         </div>
       )}
-      {renderChecklist && client.measures.length > 0 && !isEditing && (
+      {renderChecklist && !isEditing && (
         <div style={MeasureCheckListContainerStyle}>
           <MeasureCheckList clientId={client.id} measures={client.measures} />
         </div>
