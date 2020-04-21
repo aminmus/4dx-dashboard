@@ -140,9 +140,11 @@ const resourcesSlice = createSlice({
 
         state.data.clients.splice(clientIndex, 1);
 
-        state.data.measures = state.data.measures.filter(
+        const measureIndex = state.data.measures.findIndex(
           measure => measure.client.id !== payload.data.id
         );
+        if (measureIndex > -1) state.data.measures.splice(measureIndex, 1);
+
         state.isFetching = false;
       } else {
         const typeIndex = state.data[payload.type].findIndex(entry => entry.id === payload.data.id);
