@@ -139,7 +139,6 @@ const resourcesSlice = createSlice({
     [deleteResource.rejected]: (state, { payload }) => {
       state.isFetching = false;
       state.error = payload;
-      return state;
     }
   }
 });
