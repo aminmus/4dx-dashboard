@@ -5,9 +5,15 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import PropTypes from 'prop-types';
 import ClientDetails from './ClientDetails';
 import InputClient from './elements/editMode/InputClient';
+import { addResource } from '../slices/resources';
 
-const Details = ({ clients, editMode }) => {
+const Details = ({ clients, editMode, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
+
+  const addNewClient = data => {
+    dispatch(addResource(data));
+    setIsEditing(false);
+  };
   return (
     <div className="mt-3">
       {clients.map(client => (
@@ -16,7 +22,7 @@ const Details = ({ clients, editMode }) => {
       {editMode && (
         <div>
           {isEditing ? (
-            <InputClient setIsEditing={setIsEditing} />
+            <InputClient handleSave={addNewClient} setIsEditing={setIsEditing} />
           ) : (
             <Button onClick={() => setIsEditing(true)} className="px-0">
               <AddCircleIcon className="mr-2 text-warning" />
@@ -35,7 +41,8 @@ Details.defaultProps = {
 
 Details.propTypes = {
   editMode: PropTypes.bool.isRequired,
-  clients: PropTypes.arrayOf(PropTypes.object)
+  clients: PropTypes.arrayOf(PropTypes.object),
+  dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
