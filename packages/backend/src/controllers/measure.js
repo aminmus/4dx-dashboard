@@ -65,14 +65,11 @@ const updateById = async (req, res, next) => {
         .status(404)
         .json({ error: { title: 'Measure not found' }, data: null });
     }
-    const { description, success } = await MeasureDeserializer.deserialize(
+
+    const deserializedMeasure = await MeasureDeserializer.deserialize(
       req.body,
     );
-
-    // TODO: use measure.update instead of manual updating
-    measure.description = description;
-    measure.success = success;
-    await measure.save();
+    await measure.update(deserializedMeasure);
 
     return res.status(200).json(MeasureSerializer.serialize(measure));
   } catch (err) {
@@ -86,9 +83,11 @@ const createOne = async (req, res, next) => {
   console.log('POST REQUEST - MEASURES');
   console.log('*************************');
   try {
-    const { description, success, clientId: ClientId } = await MeasureDeserializer.deserialize(
-      req.body,
-    );
+    const {
+      description,
+      success,
+      clientId: ClientId,
+    } = await MeasureDeserializer.deserialize(req.body);
     const measure = await Measure.create({
       description,
       success,

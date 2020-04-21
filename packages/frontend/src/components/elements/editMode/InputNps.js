@@ -1,13 +1,14 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
+import { updateResource } from '../../../slices/resources';
 
-const InputWig = ({ id, current, goal, targetDate, setIsEditingWig }) => {
+const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => {
   const [selectedDate, setSelectedDate] = useState(targetDate);
   const [currentNps, setCurrentNps] = useState(current);
   const [goalNps, setGoalNps] = useState(goal);
@@ -17,6 +18,21 @@ const InputWig = ({ id, current, goal, targetDate, setIsEditingWig }) => {
     borderRadius: '10px',
     padding: '10px',
     width: '100%'
+  };
+
+  const handleSaveClick = e => {
+    e.preventDefault();
+    const data = {
+      id,
+      type: 'nps',
+      data: {
+        currentNps,
+        goalNps,
+        targetDate: selectedDate
+      }
+    };
+    dispatch(updateResource(data));
+    setIsEditing(false);
   };
 
   return (
@@ -68,26 +84,27 @@ const InputWig = ({ id, current, goal, targetDate, setIsEditingWig }) => {
         />
       </MuiPickersUtilsProvider>
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={() => setIsEditingWig(false)} />
-        <OptionsButton text="Cancel" onClick={() => setIsEditingWig(false)} />
+        <OptionsButton text="Save" onClick={handleSaveClick} />
+        <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>
     </form>
   );
 };
 
-InputWig.defaultProps = {
+InputNps.defaultProps = {
   id: null,
   current: 0,
   goal: 0,
   targetDate: null
 };
 
-InputWig.propTypes = {
+InputNps.propTypes = {
   id: PropTypes.string,
   current: PropTypes.number,
   goal: PropTypes.number,
   targetDate: PropTypes.string,
-  setIsEditingWig: PropTypes.func.isRequired
+  setIsEditing: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
-export default InputWig;
+export default connect(null, null)(InputNps);

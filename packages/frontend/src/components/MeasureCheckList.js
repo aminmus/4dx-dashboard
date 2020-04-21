@@ -4,32 +4,39 @@ import { List, ListItem, Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { styled } from '@material-ui/core/styles';
 import MeasureListItem from './MeasureListItem';
 import InputMeasure from './elements/editMode/InputMeasure';
+
+const MeasureList = styled(List)({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'strech',
+  flexBasis: '100%',
+  width: '100%'
+});
 
 const MeasureCheckList = ({ measures, editMode, clientId }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <div>
-      <List>
-        {measures.map(measure => {
-          return <MeasureListItem measure={measure} key={`${measure.id}`} />;
-        })}
-        {editMode && (
-          <ListItem className="text-light">
-            {isEditing ? (
-              <InputMeasure clientId={clientId} setIsEditing={setIsEditing} />
-            ) : (
-              <Button onClick={() => setIsEditing(true)} className="px-0">
-                <AddCircleIcon className="mr-2 text-warning" />
-                Add New Measure
-              </Button>
-            )}
-          </ListItem>
-        )}
-      </List>
-    </div>
+    <MeasureList>
+      {measures.map(measure => {
+        return <MeasureListItem measure={measure} key={`${measure.id}`} />;
+      })}
+      {editMode && (
+        <ListItem className="text-light">
+          {isEditing ? (
+            <InputMeasure clientId={clientId} setIsEditing={setIsEditing} />
+          ) : (
+            <Button onClick={() => setIsEditing(true)} className="px-0 mx-auto">
+              <AddCircleIcon className="mr-2 text-warning" />
+              Add New Measure
+            </Button>
+          )}
+        </ListItem>
+      )}
+    </MeasureList>
   );
 };
 
