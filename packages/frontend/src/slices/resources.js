@@ -43,35 +43,40 @@ const resourcesSlice = createSlice({
     // Immer (via redux toolkit) creates a proxy state that prevents direct mutation
     [updateResource.fulfilled]: (state, { payload }) => {
       if (payload.type === 'measures') {
-        state.data.measures = [
-          ...state.data.measures.map(measure =>
-            measure.id === payload.data.id ? payload.data : measure
-          )
-        ];
-        state.data.clients = [
-          ...state.data.clients.map(client => {
-            const updatedMeasures = client.measures.map(measure =>
-              measure.id === payload.data.id ? payload.data : measure
-            );
-            client.measures = updatedMeasures;
-            return client;
-          })
-        ];
+        const measureIndex = state.data.measures.findIndex(
+          measure => measure.id === payload.data.id
+        );
+
+        // UPDATE MATCHING MEASURE WITH PAYLOAD
+        // CAN'T DIRECTLY OVERWRITE WITH PAYLOAD AS IT DOES NOT CONTAIN CLIENT PROPERTY
+        // AND OVERWRITING IT WOULD REMOVE CLIENT PROPERTY FROM MEASURE (USED BELOW)
+        state.data.measures[measureIndex].id = payload.data.id;
+        state.data.measures[measureIndex].success = payload.data.success;
+        state.data.measures[measureIndex].description = payload.data.description;
+        state.data.measures[measureIndex].updatedAt = payload.data.updatedAt;
+
+        // FIND AND UPDATE MEASURE IN CLIENT WITH PAYLOAD
+        state.data.clients.forEach(client => {
+          client.measures.forEach(measure => {
+            if (measure.id === payload.data.id) {
+              const clientIndex = state.data.clients.indexOf(client);
+              const clientMeasureIndex = state.data.clients[clientIndex].measures.indexOf(measure);
+              state.data.clients[clientIndex].measures[clientMeasureIndex] = payload.data;
+            }
+          });
+        });
         state.isFetching = false;
       } else if (payload.type === 'clients') {
-        state.data.clients = [
-          ...state.data.clients.map(client =>
-            client.id === payload.data.id ? payload.data : client
-          )
-        ];
-        state.data.measures = [
-          ...state.data.measures.map(measure => {
-            const updatedClient =
-              measure.client.id === payload.data.id ? payload.data : measure.client;
-            measure.client = updatedClient;
-            return measure;
-          })
-        ];
+        // UPDATE CLIENT WITH PAYLOAD
+        const clientIndex = state.data.clients.findIndex(client => client.id === payload.data.id);
+        state.data.clients[clientIndex] = payload.data;
+        // UPDATE MATCHING MEASURES BELONGING TO CLIENT WITH PAYLOAD
+        state.data.measures.forEach(measure => {
+          if (measure.client.id === payload.data.id) {
+            const measureIndex = state.data.measures.indexOf(measure);
+            state.data.measures[measureIndex].client = payload.data;
+          }
+        });
         state.isFetching = false;
       } else {
         return {
