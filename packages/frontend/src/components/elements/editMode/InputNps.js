@@ -8,7 +8,7 @@ import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
 import { updateResource } from '../../../slices/resources';
 
-const InputWig = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => {
+const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => {
   const [selectedDate, setSelectedDate] = useState(targetDate);
   const [currentNps, setCurrentNps] = useState(current);
   const [goalNps, setGoalNps] = useState(goal);
@@ -91,14 +91,14 @@ const InputWig = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => 
   );
 };
 
-InputWig.defaultProps = {
+InputNps.defaultProps = {
   id: null,
   current: 0,
   goal: 0,
   targetDate: null
 };
 
-InputWig.propTypes = {
+InputNps.propTypes = {
   id: PropTypes.string,
   current: PropTypes.number,
   goal: PropTypes.number,
@@ -107,4 +107,4 @@ InputWig.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-export default connect(null, null)(InputWig);
+export default connect(null, null)(InputNps);
