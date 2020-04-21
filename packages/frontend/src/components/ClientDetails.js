@@ -86,7 +86,7 @@ const ClientDetails = ({ client, editMode }) => {
           </div>
         </div>
       )}
-      {renderChecklist && client.measures.length > 0 && !isEditing && (
+      {renderChecklist && !isEditing && (
         <div style={MeasureCheckListContainerStyle}>
           <MeasureCheckList clientId={client.id} measures={client.measures} />
         </div>
