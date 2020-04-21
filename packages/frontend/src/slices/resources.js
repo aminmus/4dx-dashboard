@@ -31,6 +31,12 @@ export const addResource = createAsyncThunk('resources/create', async ({ type, d
   return payload;
 });
 
+export const deleteResource = createAsyncThunk('resources/delete', async ({ id, type }) => {
+  await backendFetch(`${type}/${id}`, 'DELETE');
+  const payload = { data: { id }, type };
+  return payload;
+});
+
 const resourcesSlice = createSlice({
   name: 'resources',
   initialState: null,
@@ -107,6 +113,46 @@ const resourcesSlice = createSlice({
     [addResource.rejected]: (state, { payload }) => {
       state.error = payload;
       state.isFetching = false;
+    },
+    [deleteResource.pending]: state => {
+      state.isFetching = true;
+    },
+    [deleteResource.fulfilled]: (state, { payload }) => {
+      if (payload.type === 'measures') {
+        const measureIndex = state.data.measures.findIndex(
+          measure => measure.id === payload.data.id
+        );
+
+        state.data.measures.splice(measureIndex, 1);
+
+        state.data.clients.forEach(client => {
+          client.measures.forEach(measure => {
+            if (measure.id === payload.data.id) {
+              const clientIndex = state.data.clients.indexOf(client);
+              const clientMeasureIndex = state.data.clients[clientIndex].measures.indexOf(measure);
+              state.data.clients[clientIndex].measures.splice(clientMeasureIndex, 1);
+            }
+          });
+        });
+        state.isFetching = false;
+      } else if (payload.type === 'clients') {
+        const clientIndex = state.data.clients.findIndex(client => client.id === payload.data.id);
+
+        state.data.clients.splice(clientIndex, 1);
+
+        state.data.measures = state.data.measures.filter(
+          measure => measure.client.id !== payload.data.id
+        );
+        state.isFetching = false;
+      } else {
+        const typeIndex = state.data[payload.type].findIndex(entry => entry.id === payload.data.id);
+        state.data[payload.type].splice(typeIndex, 1);
+        state.isFetching = false;
+      }
+    },
+    [deleteResource.rejected]: (state, { payload }) => {
+      state.isFetching = false;
+      state.error = payload;
     }
   }
 });

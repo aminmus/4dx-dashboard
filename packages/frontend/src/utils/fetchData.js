@@ -14,7 +14,7 @@ export const backendFetch = async (urlPath, httpMethod = 'GET', body = undefined
   };
   try {
     const response = await fetch(url, options);
-    return response.json();
+    return httpMethod !== 'DELETE' ? response.json() : response;
   } catch (error) {
     return console.error(error);
   }

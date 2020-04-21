@@ -38,8 +38,8 @@ const MeasureListItem = ({ measure: { id, success, description }, editMode }) =>
               <DeleteButton onClick={() => setIsDeleting(true)} />
               {isDeleting && (
                 <DeleteDialog
-                  _id={id}
-                  type="measure"
+                  id={id}
+                  type="measures"
                   content={description}
                   isDeleting={isDeleting}
                   setIsDeleting={setIsDeleting}
