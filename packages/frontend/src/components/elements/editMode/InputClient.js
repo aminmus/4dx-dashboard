@@ -14,7 +14,7 @@ const InputClient = ({ id, name, setIsEditing, dispatch }) => {
     padding: '5px'
   };
 
-  const handleSaveClick = e => {
+  const handleUpdateSaveClick = e => {
     e.preventDefault();
     const data = {
       id,
@@ -43,7 +43,7 @@ const InputClient = ({ id, name, setIsEditing, dispatch }) => {
         }}
       />
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={handleSaveClick} />
+        <OptionsButton text="Save" onClick={handleUpdateSaveClick} />
         <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>
     </form>
