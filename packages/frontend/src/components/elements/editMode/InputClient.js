@@ -2,14 +2,29 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
+import { connect } from 'react-redux';
 import OptionsButton from '../OptionsButton';
+import { updateResource } from '../../../slices/resources';
 
-const InputClient = ({ id, name, setIsEditing }) => {
+const InputClient = ({ id, name, setIsEditing, dispatch }) => {
   const [clientName, setClientName] = useState(name);
   const formStyle = {
     border: '2px dotted white',
     borderRadius: '10px',
     padding: '5px'
+  };
+
+  const handleUpdateSaveClick = e => {
+    e.preventDefault();
+    const data = {
+      id,
+      type: 'clients',
+      data: {
+        name: clientName
+      }
+    };
+    dispatch(updateResource(data));
+    setIsEditing(false);
   };
 
   return (
@@ -28,7 +43,7 @@ const InputClient = ({ id, name, setIsEditing }) => {
         }}
       />
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={() => setIsEditing(false)} />
+        <OptionsButton text="Save" onClick={handleUpdateSaveClick} />
         <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>
     </form>
@@ -43,7 +58,8 @@ InputClient.defaultProps = {
 InputClient.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
-  setIsEditing: PropTypes.func.isRequired
+  setIsEditing: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
-export default InputClient;
+export default connect(null, null)(InputClient);
