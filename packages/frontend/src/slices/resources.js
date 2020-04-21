@@ -23,9 +23,8 @@ export const updateResource = createAsyncThunk('resources/update', async ({ id, 
 });
 
 export const deleteResource = createAsyncThunk('resources/delete', async ({ id, type }) => {
-  const response = await backendFetch(`${type}/${id}`, 'DELETE');
-  const deserializedResponse = await deserialize(response);
-  const payload = { data: deserializedResponse, type };
+  await backendFetch(`${type}/${id}`, 'DELETE');
+  const payload = { data: { id }, type };
   return payload;
 });
 
@@ -69,12 +68,14 @@ const resourcesSlice = createSlice({
       if (payload.type === 'measures') {
         state.data.measures = [
           // Remove targeted Measures resource
-          ...state.data.measures.filter(measure => measure.id !== payload.id)
+          ...state.data.measures.filter(measure => measure.id !== payload.data.id)
         ];
         state.data.clients = [
           // Remove all measures owned by Client from Client resource
           ...state.data.clients.map(client => {
-            const updatedMeasures = client.measures.filter(measure => measure.id !== payload.id);
+            const updatedMeasures = client.measures.filter(
+              measure => measure.id !== payload.data.id
+            );
             client.measures = updatedMeasures;
             return client;
           })
@@ -83,14 +84,13 @@ const resourcesSlice = createSlice({
         return state;
       }
       if (payload.type === 'clients') {
-        console.log(payload);
         state.data.clients = [
           // Remove targeted Client resource
-          ...state.data.clients.filter(client => client.id !== payload.id)
+          ...state.data.clients.filter(client => client.id !== payload.data.id)
         ];
         state.data.measures = [
           // Remove all measures associated to the Client from Measures resource
-          ...state.data.measures.filter(measure => measure.client.id !== payload.id)
+          ...state.data.measures.filter(measure => measure.client.id !== payload.data.id)
         ];
         state.isFetching = false;
         return state;
@@ -99,7 +99,7 @@ const resourcesSlice = createSlice({
         ...state,
         data: {
           ...state.data,
-          [payload.type]: state.data[payload.type].filter(entry => entry.id !== payload.id)
+          [payload.type]: state.data[payload.type].filter(entry => entry.id !== payload.data.id)
         },
         isFetching: false
       };

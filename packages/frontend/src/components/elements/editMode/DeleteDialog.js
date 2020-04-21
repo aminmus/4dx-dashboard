@@ -26,7 +26,6 @@ const ConfirmDelete = withStyles({
 
 const DeleteDialog = ({ id, type, content, isDeleting, setIsDeleting, dispatch }) => {
   const handleConfirmDelete = e => {
-    console.log(id);
     e.preventDefault();
     const data = {
       id,
