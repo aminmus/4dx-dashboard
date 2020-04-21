@@ -25,7 +25,7 @@ export const updateResource = createAsyncThunk('resources/update', async ({ id, 
 
 export const addResource = createAsyncThunk('resources/create', async ({ type, data }) => {
   const serializedRequest = await serializePerType(type, data);
-  const response = await backendFetch(`${type}`, 'POST', serializedRequest);
+  const response = await backendFetch(type, 'POST', serializedRequest);
   const deserializedResponse = await deserialize(response);
   const payload = { data: deserializedResponse, type };
   return payload;
@@ -37,18 +37,19 @@ const resourcesSlice = createSlice({
   reducers: {},
   extraReducers: {
     [fetchResources.pending]: state => {
-      return { ...state, isFetching: true };
+      state.isFetching = true;
     },
     [fetchResources.fulfilled]: (state, { payload }) => {
-      return { ...state, data: payload, isFetching: false };
+      state.data = payload;
+      state.isFetching = false;
     },
     [fetchResources.rejected]: (state, { payload }) => {
-      return { ...state, error: payload, isFetching: false };
+      state.error = payload;
+      state.isFetching = false;
     },
     [updateResource.pending]: state => {
-      return { ...state, isFetching: true };
+      state.isFetching = true;
     },
-    // Immer (via redux toolkit) creates a proxy state that prevents direct mutation
     [updateResource.fulfilled]: (state, { payload }) => {
       if (payload.type === 'measures') {
         const measureIndex = state.data.measures.findIndex(
@@ -87,34 +88,25 @@ const resourcesSlice = createSlice({
         });
         state.isFetching = false;
       } else {
-        return {
-          ...state,
-          data: {
-            ...state.data,
-            [payload.type]: state.data[payload.type].map(entry =>
-              entry.id === payload.data.id ? payload.data : entry
-            )
-          },
-          isFetching: false
-        };
+        const typeIndex = state.data[payload.type].findIndex(entry => entry.id === payload.data.id);
+        state.data[payload.type][typeIndex] = payload.data;
+        state.isFetching = false;
       }
     },
     [updateResource.rejected]: (state, { payload }) => {
-      return { ...state, error: payload, isFetching: false };
+      state.isFetching = false;
+      state.error = payload;
     },
     [addResource.pending]: state => {
       state.isFetching = false;
-      return state;
     },
     [addResource.fulfilled]: (state, { payload }) => {
       state.data.nps.push(payload.data);
       state.isFetching = false;
-      return state;
     },
     [addResource.rejected]: (state, { payload }) => {
       state.error = payload;
       state.isFetching = false;
-      return state;
     }
   }
 });
