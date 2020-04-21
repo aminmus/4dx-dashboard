@@ -2,12 +2,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import { connect } from 'react-redux';
 import MomentUtils from '@date-io/moment';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
+import { updateResource } from '../../../slices/resources';
 
-const InputMeasure = ({ setIsEditing, id, clientId, description, success }) => {
+const InputMeasure = ({ setIsEditing, id, clientId, description, success, dispatch }) => {
   const [measureDescription, setMeasureDescription] = useState(description);
   const [selectedDate, setSelectedDate] = useState(success);
 
@@ -16,6 +18,20 @@ const InputMeasure = ({ setIsEditing, id, clientId, description, success }) => {
     borderRadius: '10px',
     padding: '10px',
     width: '100%'
+  };
+
+  const handleSaveClick = e => {
+    e.preventDefault();
+    const data = {
+      id,
+      type: 'measures',
+      data: {
+        description: measureDescription,
+        success: selectedDate
+      }
+    };
+    dispatch(updateResource(data));
+    setIsEditing(false);
   };
 
   return (
@@ -50,7 +66,7 @@ const InputMeasure = ({ setIsEditing, id, clientId, description, success }) => {
       </MuiPickersUtilsProvider>
 
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={() => setIsEditing(false)} />
+        <OptionsButton text="Save" onClick={handleSaveClick} />
         <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>
     </form>
@@ -69,7 +85,8 @@ InputMeasure.propTypes = {
   clientId: PropTypes.string,
   description: PropTypes.string,
   success: PropTypes.string,
-  setIsEditing: PropTypes.func.isRequired
+  setIsEditing: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
-export default InputMeasure;
+export default connect(null, null)(InputMeasure);
