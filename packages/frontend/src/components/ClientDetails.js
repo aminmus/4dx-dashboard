@@ -8,12 +8,22 @@ import EditButton from './elements/EditButton';
 import InputClient from './elements/editMode/InputClient';
 import DeleteButton from './elements/DeleteButton';
 import DeleteDialog from './elements/editMode/DeleteDialog';
+import { updateResource } from '../slices/resources';
 
-const ClientDetails = ({ client, editMode }) => {
+const ClientDetails = ({ client, editMode, dispatch }) => {
   const [renderChecklist, setRenderChecklist] = useState(false);
   const [hoverState, setHoverState] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const updateClient = data => {
+    dispatch(updateResource(data));
+    setIsEditing(false);
+  };
+
+  const handleContainerHover = () => (!isEditing ? () => setHoverState(!hoverState) : () => true);
+  const handleContainerClick = () =>
+    !isEditing ? () => setRenderChecklist(!renderChecklist) : () => true;
 
   const OuterContainerStyle = {
     display: 'flex',
@@ -44,10 +54,6 @@ const ClientDetails = ({ client, editMode }) => {
     width: '100%'
   };
 
-  const handleContainerHover = () => (!isEditing ? () => setHoverState(!hoverState) : () => true);
-  const handleContainerClick = () =>
-    !isEditing ? () => setRenderChecklist(!renderChecklist) : () => true;
-
   return (
     <div style={OuterContainerStyle}>
       <div
@@ -58,7 +64,12 @@ const ClientDetails = ({ client, editMode }) => {
         style={ProgressBarContainerStyle}
       >
         {isEditing ? (
-          <InputClient id={client.id} setIsEditing={setIsEditing} name={client.name} />
+          <InputClient
+            id={client.id}
+            setIsEditing={setIsEditing}
+            name={client.name}
+            handleSave={updateClient}
+          />
         ) : (
           <ProgressBar
             style={{ flex: 1 }}
@@ -106,7 +117,8 @@ ClientDetails.propTypes = {
     name: PropTypes.string,
     measures: PropTypes.array,
     progress: PropTypes.string
-  })
+  }),
+  dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

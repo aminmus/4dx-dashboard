@@ -8,9 +8,11 @@ export default clients => {
     []
   );
   return {
-    leads: flatMeasuresArray.reduce((successfulMeasure, measure) => {
-      return measure.success ? successfulMeasure + 1 : successfulMeasure;
-    }, 0),
+    leads: flatMeasuresArray.reduce(
+      (successfulMeasure, measure) =>
+        measure?.success ? successfulMeasure + 1 : successfulMeasure,
+      0
+    ),
     leadsTotal: flatMeasuresArray.length
   };
 };
