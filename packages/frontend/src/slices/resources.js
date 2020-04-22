@@ -63,12 +63,8 @@ const resourcesSlice = createSlice({
         );
 
         // UPDATE MATCHING MEASURE WITH PAYLOAD
-        // CAN'T DIRECTLY OVERWRITE WITH PAYLOAD AS IT DOES NOT CONTAIN CLIENT PROPERTY
-        // AND OVERWRITING IT WOULD REMOVE CLIENT PROPERTY FROM MEASURE (USED BELOW)
-        state.data.measures[measureIndex].id = payload.data.id;
-        state.data.measures[measureIndex].success = payload.data.success;
-        state.data.measures[measureIndex].description = payload.data.description;
-        state.data.measures[measureIndex].updatedAt = payload.data.updatedAt;
+        const newMeasure = { ...state.data.measures[measureIndex], ...payload.data };
+        state.data.measures[measureIndex] = newMeasure;
 
         // FIND AND UPDATE MEASURE IN CLIENT WITH PAYLOAD
         state.data.clients.forEach(client => {
@@ -85,6 +81,7 @@ const resourcesSlice = createSlice({
         // UPDATE CLIENT WITH PAYLOAD
         const clientIndex = state.data.clients.findIndex(client => client.id === payload.data.id);
         state.data.clients[clientIndex] = payload.data;
+
         // UPDATE MATCHING MEASURES BELONGING TO CLIENT WITH PAYLOAD
         state.data.measures.forEach(measure => {
           if (measure.client.id === payload.data.id) {
@@ -111,6 +108,8 @@ const resourcesSlice = createSlice({
         state.data.nps.push(payload.data);
       } else if (payload.type === 'clients') {
         state.data.clients.push(payload.data);
+      } else {
+        state.data[payload.type].push(payload.data);
       }
       state.isFetching = false;
     },
