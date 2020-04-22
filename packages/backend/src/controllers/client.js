@@ -1,7 +1,35 @@
+/**
+ * Controller for Client Routes
+ * @module controllers_client
+ * @requires jsonapi-serializer
+ * @requires ../models/client
+
+ */
+
 /* eslint-disable no-console, consistent-return */
-const { Serializer: JSONAPISerializer, Deserializer: JSONAPIDeserializer } = require('jsonapi-serializer');
+const {
+  /**
+     * Serialize JSON Data
+     * @const
+     */
+  Serializer: JSONAPISerializer,
+  /**
+     * Deserialize JSON Data
+     * @const
+     */
+  Deserializer: JSONAPIDeserializer,
+} = require('jsonapi-serializer');
+
+/**
+ * Client model
+ * @const
+ */
 const { Client } = require('../models');
 
+/**
+ * Serialize Clients according to specified format
+ * @const
+ */
 const ClientSerializer = new JSONAPISerializer('Clients', {
   attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
   Csats: {
@@ -13,8 +41,23 @@ const ClientSerializer = new JSONAPISerializer('Clients', {
     ref: 'id',
   },
 });
-const ClientDeserializer = new JSONAPIDeserializer({ keyForAttribute: 'camelCase' });
 
+/**
+ * Deserialize Clients with camelCase formatting
+ * @const
+ */
+const ClientDeserializer = new JSONAPIDeserializer({
+  keyForAttribute: 'camelCase',
+});
+
+/**
+ * GET All Clients
+ * @function
+ * @memberof module:controllers_client
+ * @param {Object} _req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
@@ -32,6 +75,14 @@ const getAll = async (_req, res, next) => {
   }
 };
 
+/**
+ * GET One Client by Id
+ * @function
+ * @memberof module:controllers_client
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const getById = async (req, res, next) => {
   console.log('*************************');
   console.log('GET ONE REQUEST - CLIENTS');
@@ -52,6 +103,14 @@ const getById = async (req, res, next) => {
   }
 };
 
+/**
+ * UPDATE One Client by Id
+ * @function
+ * @memberof module:controllers_client
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const updateById = async (req, res, next) => {
   console.log('*************************');
   console.log('PUT REQUEST - CLIENTS');
@@ -73,11 +132,23 @@ const updateById = async (req, res, next) => {
   }
 };
 
+/**
+ * CREATE One Client
+ * @function
+ * @memberof module:controllers_client
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const createOne = async (req, res, next) => {
   console.log('*************************');
   console.log('POST REQUEST - CLIENTS');
   console.log('*************************');
   try {
+    /**
+         * Client name
+         * @const
+         */
     const { name } = await ClientDeserializer.deserialize(req.body);
     const [client, isCreated] = await Client.findOrCreate({
       where: { name },
@@ -95,6 +166,14 @@ const createOne = async (req, res, next) => {
   }
 };
 
+/**
+ * DELETE One Client
+ * @function
+ * @memberof module:controllers_client
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const deleteById = async (req, res, next) => {
   console.log('*************************');
   console.log('DELETE REQUEST - CLIENTS');
