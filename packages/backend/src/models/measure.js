@@ -1,4 +1,15 @@
 /* eslint-disable func-names */
+
+/**
+ * Measure Model
+ * @module model_measure
+ */
+
+/**
+ * Return Sequelize Measure Model
+ * @param {Object} sequelize - sequelize module
+ * @param {Object} DataTypes - Type definitions for model properties
+ */
 module.exports = (sequelize, DataTypes) => {
   const Measure = sequelize.define(
     'Measure',
