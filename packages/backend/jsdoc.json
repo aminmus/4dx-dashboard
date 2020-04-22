@@ -4,18 +4,18 @@
 		"dictionaries": ["jsdoc", "closure"]
 	},
 	"source": {
-		"include": ["packages/frontend/src"],
+		"include": ["./packages/backend/src"],
 		"includePattern": ".+\\.js(doc|x)?$",
 		"excludePattern": "(^|\\/|\\\\)_"
 	},
 	"plugins": ["plugins/markdown", "better-docs/component"],
 	"templates": {
 		"better-docs": {
-			"name": "4dx react components"
+			"name": "4dx backend"
 		}
 	},
 	"opts": {
-		"destination": "./docs",
+		"destination": "./docs/backend",
 		"recurse": true,
 		"readme": "README.md"
 	}

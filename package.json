@@ -4,7 +4,8 @@
 	"description": "New 4DX site in React and Node JS",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"doc": "jsdoc -c jsdoc.json"
+		"doc-fe": "jsdoc -c ./packages/frontend/jsdoc.json",
+		"doc-be": "jsdoc -c ./packages/backend/jsdoc.json"
 	},
 	"husky": {
 		"hooks": {
