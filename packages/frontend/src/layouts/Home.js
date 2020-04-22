@@ -113,7 +113,6 @@ Home.propTypes = {
     data: PropTypes.shape({
       clients: PropTypes.arrayOf(PropTypes.object).isRequired,
       nps: PropTypes.arrayOf(PropTypes.object).isRequired,
-      measures: PropTypes.arrayOf(PropTypes.object).isRequired,
       measureGoals: PropTypes.arrayOf(PropTypes.object).isRequired
     }),
     isFetching: PropTypes.bool.isRequired

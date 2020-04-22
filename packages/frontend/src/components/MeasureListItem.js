@@ -8,19 +8,29 @@ import EditButton from './elements/EditButton';
 import DeleteButton from './elements/DeleteButton';
 import InputMeasure from './elements/editMode/InputMeasure';
 import DeleteDialog from './elements/editMode/DeleteDialog';
+import { updateMeasure } from '../slices/clients/measures';
 
-const MeasureListItem = ({ measure: { id, success, description }, editMode }) => {
+const MeasureListItem = ({ measure, editMode, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const { id, success, description } = measure;
+
+  const handleSave = data => {
+    dispatch(updateMeasure(data));
+    setIsEditing(false);
+  };
 
   return (
     <ListItem className="text-light">
       {isEditing ? (
         <div>
           <InputMeasure
-            id={id}
-            description={description}
-            success={success}
+            id={measure.id}
+            clientId={measure.clientId}
+            success={measure.success}
+            description={measure.description}
+            handleSave={handleSave}
             setIsEditing={setIsEditing}
           />
         </div>
@@ -62,8 +72,10 @@ MeasureListItem.propTypes = {
   measure: PropTypes.shape({
     id: PropTypes.string,
     success: PropTypes.string,
-    description: PropTypes.string
-  })
+    description: PropTypes.string,
+    clientId: PropTypes.string
+  }),
+  dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
