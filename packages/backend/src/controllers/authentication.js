@@ -1,5 +1,5 @@
 /**
- * @namespace controllers_authentication
+ * @module controllers_authentication
  * @requires passport
  * @requires jsonwebtoken
  */
@@ -19,7 +19,7 @@ const jwt = require('jsonwebtoken');
 /**
  * Authenticate and sign in user with passport
  * @function
- * @memberof controllers_authentication
+ * @memberof module:controllers_authentication
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -39,7 +39,7 @@ const signup = async (req, res, next) => {
 /**
  * Authenticate and log in user with passport
  * @function
- * @memberof controllers_authentication
+ * @memberof module:controllers_authentication
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -50,9 +50,9 @@ const login = async (req, res, next) => {
       if (err) return next(err);
       if (!user) return res.status(400).json(info);
       /**
-       * User token signed with JWT
-       * @const
-       */
+             * User token signed with JWT
+             * @const
+             */
       const token = jwt.sign(
         { user: { id: user.id, email: user.email, role: user.role } },
         process.env.JWT_SECRET,
