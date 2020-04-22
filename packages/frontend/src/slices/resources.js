@@ -5,7 +5,7 @@ import fetchData, { backendFetch } from '../utils/fetchData';
 import { serializePerType, deserialize } from '../utils/jsonapiSerializing';
 
 export const fetchResources = createAsyncThunk('resources/fetchResources', async () => {
-  const { nps, clients, measures, measureGoals } = await fetchData();
+  const { nps, clients, measureGoals } = await fetchData();
   const deserialized = {
     clients: await deserialize(clients),
     nps: await deserialize(nps),
