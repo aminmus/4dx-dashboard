@@ -82,7 +82,7 @@ const Home = ({
                 />
               </div>
               <div className="col-sm">
-                <Details clients={clients} />
+                <Details />
                 {chart.values.length > 0 ? (
                   <Nps chart={chart} />
                 ) : (

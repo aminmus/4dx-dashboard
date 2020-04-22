@@ -8,7 +8,7 @@ import EditButton from './elements/EditButton';
 import DeleteButton from './elements/DeleteButton';
 import InputMeasure from './elements/editMode/InputMeasure';
 import DeleteDialog from './elements/editMode/DeleteDialog';
-import { updateMeasure } from '../slices/clients/measures';
+import { updateMeasure } from '../slices/resources';
 
 const MeasureListItem = ({ measure, editMode, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);

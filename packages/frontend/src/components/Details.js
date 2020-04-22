@@ -35,18 +35,20 @@ const Details = ({ clients, editMode, dispatch }) => {
   );
 };
 
-Details.defaultProps = {
-  clients: []
-};
-
 Details.propTypes = {
   editMode: PropTypes.bool.isRequired,
-  clients: PropTypes.arrayOf(PropTypes.object),
+  clients: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  editMode: state.editMode.editModeEnabled
+const mapStateToProps = ({
+  editMode,
+  resources: {
+    data: { clients }
+  }
+}) => ({
+  editMode: editMode.editModeEnabled,
+  clients
 });
 
 export default connect(mapStateToProps, null)(Details);

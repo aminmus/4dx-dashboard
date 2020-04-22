@@ -7,7 +7,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { styled } from '@material-ui/core/styles';
 import MeasureListItem from './MeasureListItem';
 import InputMeasure from './elements/editMode/InputMeasure';
-import { addMeasure } from '../slices/clients/measures';
+import { addMeasure } from '../slices/resources';
 
 const MeasureList = styled(List)({
   display: 'flex',
