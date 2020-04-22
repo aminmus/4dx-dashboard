@@ -85,7 +85,7 @@ const Home = ({
                     No Measure Data Available For NPS graph
                   </div>
                 )}
-                {measures.length > 0 ? (
+                {measures?.length > 0 ? (
                   <MeasuresOverTime measures={measures} measureGoals={measureGoals} />
                 ) : (
                   <div className="my-5 p-4 jumbotron text-light bg-dark">
