@@ -2,7 +2,7 @@
 
 /**
  * Csat Model
- * @module model_csat
+ * @module Model_csat
  */
 
 /**

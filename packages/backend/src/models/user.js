@@ -2,7 +2,7 @@
 
 /**
  * User Model
- * @module model_user
+ * @module Model_user
  * @requires sequelize
  * @requires bcryptjs
  */

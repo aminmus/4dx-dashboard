@@ -2,7 +2,7 @@
 
 /**
  * Nps Model
- * @module model_nps
+ * @module Model_nps
  */
 
 /**

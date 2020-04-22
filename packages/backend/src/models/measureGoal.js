@@ -1,6 +1,6 @@
 /**
  * Measure Goal Model
- * @module model_measure_goal
+ * @module Model_measure_goal
  */
 
 /**

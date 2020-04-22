@@ -1,6 +1,6 @@
 /**
  * Controller for Measure Goals Routes
- * @module controllers_measure_goals
+ * @module Controllers_measure_goals
  * @requires jsonapi-serializer
  * @requires ../models/measureGoal
  */
@@ -43,7 +43,7 @@ const MeasureGoalDeserializer = new JSONAPIDeserializer({
 /**
  * GET All Measure Goals
  * @function
- * @memberof module:controllers_measure_goals
+ * @memberof module:Controllers_measure_goals
  * @param {Object} _req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -68,7 +68,7 @@ const getAll = async (_req, res, next) => {
 /**
  * GET One Measure Goal by Id
  * @function
- * @memberof module:controllers_measure_goals
+ * @memberof module:Controllers_measure_goals
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -99,7 +99,7 @@ const getById = async (req, res, next) => {
 /**
  * UPDATE One Measure Goal by Id
  * @function
- * @memberof module:controllers_measure_goals
+ * @memberof module:Controllers_measure_goals
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -134,7 +134,7 @@ const updateById = async (req, res, next) => {
 /**
  * CREATE One Measure Goal
  * @function
- * @memberof module:controllers_measure_goals
+ * @memberof module:Controllers_measure_goals
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -166,7 +166,7 @@ const createOne = async (req, res, next) => {
 /**
  * DELETE One Measure Goal
  * @function
- * @memberof module:controllers_measure_goals
+ * @memberof module:Controllers_measure_goals
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.

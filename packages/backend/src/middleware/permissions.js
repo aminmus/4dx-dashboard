@@ -1,6 +1,6 @@
 /**
  * Permissions middlware
- * @module middleware_permissions
+ * @module Middleware_permissions
  * @requires ../utils/roles
  */
 
@@ -13,7 +13,7 @@ const ROLES = require('../utils/roles');
 /**
  * Check if user role permits them to edit data
  * @function
- * @memberof module:middleware_permissions
+ * @memberof module:Middleware_permissions
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.

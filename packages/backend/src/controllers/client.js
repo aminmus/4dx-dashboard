@@ -1,6 +1,6 @@
 /**
  * Controller for Client Routes
- * @module controllers_client
+ * @module Controllers_client
  * @requires jsonapi-serializer
  * @requires ../models/client
 
@@ -53,7 +53,7 @@ const ClientDeserializer = new JSONAPIDeserializer({
 /**
  * GET All Clients
  * @function
- * @memberof module:controllers_client
+ * @memberof module:Controllers_client
  * @param {Object} _req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -78,7 +78,7 @@ const getAll = async (_req, res, next) => {
 /**
  * GET One Client by Id
  * @function
- * @memberof module:controllers_client
+ * @memberof module:Controllers_client
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -106,7 +106,7 @@ const getById = async (req, res, next) => {
 /**
  * UPDATE One Client by Id
  * @function
- * @memberof module:controllers_client
+ * @memberof module:Controllers_client
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -135,7 +135,7 @@ const updateById = async (req, res, next) => {
 /**
  * CREATE One Client
  * @function
- * @memberof module:controllers_client
+ * @memberof module:Controllers_client
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -169,7 +169,7 @@ const createOne = async (req, res, next) => {
 /**
  * DELETE One Client
  * @function
- * @memberof module:controllers_client
+ * @memberof module:Controllers_client
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.

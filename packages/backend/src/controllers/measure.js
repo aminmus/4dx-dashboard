@@ -1,6 +1,6 @@
 /**
  * Controller for Measure Routes
- * @module controllers_measure
+ * @module Controllers_measure
  * @requires jsonapi-serializer
  * @requires ../models/measure
  */
@@ -47,7 +47,7 @@ const MeasureDeserializer = new JSONAPIDeserializer({
 /**
  * GET All Measures
  * @function
- * @memberof module:controllers_measure
+ * @memberof module:Controllers_measure
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -74,7 +74,7 @@ const getAll = async (req, res, next) => {
 /**
  * GET One Measure by Id
  * @function
- * @memberof module:controllers_measure
+ * @memberof module:Controllers_measure
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -102,7 +102,7 @@ const getById = async (req, res, next) => {
 /**
  * UPDATE One Measure by Id
  * @function
- * @memberof module:controllers_measure
+ * @memberof module:Controllers_measure
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -134,7 +134,7 @@ const updateById = async (req, res, next) => {
 /**
  * CREATE One Measure
  * @function
- * @memberof module:controllers_measure
+ * @memberof module:Controllers_measure
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -164,7 +164,7 @@ const createOne = async (req, res, next) => {
 /**
  * DELETE One Measure
  * @function
- * @memberof module:controllers_measure
+ * @memberof module:Controllers_measure
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.

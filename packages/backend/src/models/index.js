@@ -2,7 +2,7 @@
 
 /**
  * Return database connection object
- * @module model_database
+ * @module Model_database
  * @requires fs
  * @requires path
  * @requires sequelize

@@ -1,6 +1,6 @@
 /**
  * Controller for User Routes
- * @module controllers_user
+ * @module Controllers_user
  * @requires jsonapi-serializer
  * @requires ../models/user
  */
@@ -43,7 +43,7 @@ const UserDeserializer = new JSONAPIDeserializer('users', {
 /**
  * GET All Users
  * @function
- * @memberof module:controllers_user
+ * @memberof module:Controllers_user
  * @param {Object} _req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -66,7 +66,7 @@ const getAll = async (_req, res, next) => {
 /**
  * GET One User by Id
  * @function
- * @memberof module:controllers_user
+ * @memberof module:Controllers_user
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -92,7 +92,7 @@ const getById = async (req, res, next) => {
 /**
  * UPDATE One User by Id
  * @function
- * @memberof module:controllers_user
+ * @memberof module:Controllers_user
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -119,7 +119,7 @@ const updateById = async (req, res, next) => {
 /**
  * CREATE One User
  * @function
- * @memberof module:controllers_user
+ * @memberof module:Controllers_user
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -152,7 +152,7 @@ const createOne = async (req, res, next) => {
 /**
  * DELETE One User
  * @function
- * @memberof module:controllers_user
+ * @memberof module:Controllers_user
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.

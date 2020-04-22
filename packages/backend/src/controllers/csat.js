@@ -1,6 +1,6 @@
 /**
  * Controller for Client Satisfaction Score Routes
- * @module controllers_csat
+ * @module Controllers_csat
  * @requires jsonapi-serializer
  * @requires ../models/csat
  */
@@ -47,7 +47,7 @@ const CsatDeserializer = new JSONAPIDeserializer({
 /**
  * GET All Csats
  * @function
- * @memberof module:controllers_csat
+ * @memberof module:Controllers_csat
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -74,7 +74,7 @@ const getAll = async (req, res, next) => {
 /**
  * GET One Csat by Id
  * @function
- * @memberof module:controllers_csat
+ * @memberof module:Controllers_csat
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -102,7 +102,7 @@ const getById = async (req, res, next) => {
 /**
  * UPDATE One Csat by Id
  * @function
- * @memberof module:controllers_csat
+ * @memberof module:Controllers_csat
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -131,7 +131,7 @@ const updateById = async (req, res, next) => {
 /**
  * CREATE One Csat
  * @function
- * @memberof module:controllers_csat
+ * @memberof module:Controllers_csat
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -161,7 +161,7 @@ const createOne = async (req, res, next) => {
 /**
  * DELETE One Csat
  * @function
- * @memberof module:controllers_csat
+ * @memberof module:Controllers_csat
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.

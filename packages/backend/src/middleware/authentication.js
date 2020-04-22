@@ -1,6 +1,6 @@
 /**
  * Authentication middlware
- * @module middleware_authentication
+ * @module Middleware_authentication
  * @requires passport
  * @requires passport-local
  * @requires passport-jwt
@@ -114,7 +114,7 @@ passport.use(
 /**
  * Middleware to check authentication of JTW token using passport
  * @function
- * @memberof module:middleware_authentication
+ * @memberof module:Middleware_authentication
  */
 const checkAuth = passport.authenticate('jwt', { session: false });
 

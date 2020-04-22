@@ -2,7 +2,7 @@
 
 /**
  * Measure Model
- * @module model_measure
+ * @module Model_measure
  */
 
 /**

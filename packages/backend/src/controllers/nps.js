@@ -1,6 +1,6 @@
 /**
  * Controller for Nps Satisfaction Score Routes
- * @module controllers_nps
+ * @module Controllers_nps
  * @requires jsonapi-serializer
  * @requires ../models/nps
  */
@@ -50,7 +50,7 @@ const NpsDeserializer = new JSONAPIDeserializer({
 /**
  * GET All Nps entries
  * @function
- * @memberof module:controllers_nps
+ * @memberof module:Controllers_nps
  * @param {Object} _req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -73,7 +73,7 @@ const getAll = async (_req, res, next) => {
 /**
  * GET One Nps entry by Id
  * @function
- * @memberof module:controllers_nps
+ * @memberof module:Controllers_nps
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -99,7 +99,7 @@ const getById = async (req, res, next) => {
 /**
  * UPDATE One Nps entry by Id
  * @function
- * @memberof module:controllers_nps
+ * @memberof module:Controllers_nps
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -127,7 +127,7 @@ const updateById = async (req, res, next) => {
 /**
  * CREATE One Nps entry
  * @function
- * @memberof module:controllers_nps
+ * @memberof module:Controllers_nps
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -161,7 +161,7 @@ const createOne = async (req, res, next) => {
 /**
  * DELETE One Nps Entry
  * @function
- * @memberof module:controllers_nps
+ * @memberof module:Controllers_nps
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.

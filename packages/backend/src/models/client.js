@@ -2,7 +2,7 @@
 
 /**
  * Client Model
- * @module model_client
+ * @module Model_client
  */
 
 /**

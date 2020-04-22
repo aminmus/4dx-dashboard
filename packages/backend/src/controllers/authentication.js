@@ -1,6 +1,6 @@
 /**
  * Controller for Authentication Routes
- * @module controllers_authentication
+ * @module Controllers_authentication
  * @requires passport
  * @requires jsonwebtoken
  */
@@ -20,7 +20,7 @@ const jwt = require('jsonwebtoken');
 /**
  * Authenticate and sign in user with passport
  * @function
- * @memberof module:controllers_authentication
+ * @memberof module:Controllers_authentication
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
@@ -40,7 +40,7 @@ const signup = async (req, res, next) => {
 /**
  * Authenticate and log in user with passport
  * @function
- * @memberof module:controllers_authentication
+ * @memberof module:Controllers_authentication
  * @param {Object} req Request Object
  * @param {Object} res - Express Request Object
  * @param {Function} next - Express middleware.
