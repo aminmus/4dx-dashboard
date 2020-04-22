@@ -18,7 +18,7 @@ const { checkAuth } = require('../middleware/authentication');
 const { canEdit } = require('../middleware/permissions');
 
 /**
- * Get All Clients
+ * GET All Clients
  *
  * @name GetAllClients
  * @route {GET} /api/clients

@@ -18,7 +18,7 @@ const { checkAuth } = require('../middleware/authentication');
 const { canEdit } = require('../middleware/permissions');
 
 /**
- * Get All Csat entries
+ * GET All Csat entries
  *
  * @name GetAllCsat
  * @route {GET} /api/csat
