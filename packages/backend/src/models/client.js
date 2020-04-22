@@ -1,4 +1,16 @@
 /* eslint-disable func-names */
+
+/**
+ * Client Model
+ * @module model_client
+ */
+
+/**
+ * Return Sequelize Client Model
+ * @param {Object} sequelize - sequelize module
+ * @param {Object} DataTypes - Type definitions for model properties
+ */
+
 module.exports = (sequelize, DataTypes) => {
   const Client = sequelize.define(
     'Client',
