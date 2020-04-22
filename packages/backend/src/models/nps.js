@@ -1,4 +1,15 @@
 /* eslint-disable func-names */
+
+/**
+ * Nps Model
+ * @module model_nps
+ */
+
+/**
+ * Return Sequelize Nps Model
+ * @param {Object} sequelize - sequelize module
+ * @param {Object} DataTypes - Type definitions for model properties
+ */
 module.exports = (sequelize, DataTypes) => {
   const Nps = sequelize.define(
     'Nps',
