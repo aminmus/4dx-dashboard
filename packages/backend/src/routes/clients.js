@@ -30,6 +30,7 @@ router.get('/', getAll);
  *
  * @name GetClient
  * @route {GET} /api/clients/:id
+ * @routeparam {String} :id is the unique identifier for client
  */
 router.get('/:clientId', getById);
 
@@ -38,6 +39,9 @@ router.get('/:clientId', getById);
  *
  * @name UpdateClient
  * @route {PUT} /api/clients/:id
+ * @routeparam {String} :id is the unique identifier for client
+ * @bodyparam {Object} data Sequelized Client Data containing
+ *  type and attributes properties for resource
  * @authentication This route requires JWT Authentication.
  */
 router.put('/:clientId', checkAuth, canEdit, updateById);
@@ -48,6 +52,8 @@ router.put('/:clientId', checkAuth, canEdit, updateById);
  * @name PostClient
  * @route {POST} /api/clients
  * @authentication This route requires JWT Authentication.
+ * @bodyparam {Object} data Sequelized Client Data containing
+ *  type and attribute properties for resource
  */
 router.post('/', checkAuth, canEdit, createOne);
 
@@ -56,6 +62,7 @@ router.post('/', checkAuth, canEdit, createOne);
  *
  * @name DeleteClient
  * @route {DELETE} /api/clients/:id
+ * @routeparam {String} :id is the unique identifier for client
  * @authentication This route requires JWT Authentication.
  */
 router.delete('/:clientId', checkAuth, canEdit, deleteById);
