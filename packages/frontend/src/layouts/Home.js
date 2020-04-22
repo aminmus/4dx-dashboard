@@ -20,7 +20,7 @@ const Home = ({
   isLoggedIn,
   dispatch,
   resources: {
-    data: { clients, nps, measures, measureGoals },
+    data: { clients, nps, measureGoals },
     isFetching
   }
 }) => {
@@ -31,6 +31,11 @@ const Home = ({
     values: [],
     target: null
   });
+
+  const measures = clients.reduce((accumulator, client) => {
+    if (client?.measures) accumulator.push(...client.measures);
+    return accumulator;
+  }, []);
 
   useEffect(() => {
     dispatch(fetchResources());
