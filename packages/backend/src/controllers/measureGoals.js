@@ -2,7 +2,7 @@
  * Controller for Measure Goals Routes
  * @module controllers_measure_goals
  * @requires jsonapi-serializer
- * @requires ../models/client
+ * @requires ../models/measureGoal
  */
 
 const {

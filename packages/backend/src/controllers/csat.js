@@ -2,7 +2,7 @@
  * Controller for Client Satisfaction Score Routes
  * @module controllers_csat
  * @requires jsonapi-serializer
- * @requires ../models/client
+ * @requires ../models/csat
  */
 
 const {

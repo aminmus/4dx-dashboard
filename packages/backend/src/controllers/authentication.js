@@ -1,4 +1,5 @@
 /**
+ * Controller for Authentication Routes
  * @module controllers_authentication
  * @requires passport
  * @requires jsonwebtoken

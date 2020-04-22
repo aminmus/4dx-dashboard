@@ -2,7 +2,7 @@
  * Controller for Measure Routes
  * @module controllers_measure
  * @requires jsonapi-serializer
- * @requires ../models/client
+ * @requires ../models/measure
  */
 
 const {
