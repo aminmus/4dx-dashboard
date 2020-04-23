@@ -62,11 +62,14 @@ export const addMeasure = createAsyncThunk('clients/measures/create', async ({ d
   return payload;
 });
 
-export const deleteMeasure = createAsyncThunk('clients/measures/delete', async ({ id }) => {
-  await backendFetch(`measures/${id}`, 'DELETE');
-  const payload = { data: { id } };
-  return payload;
-});
+export const deleteMeasure = createAsyncThunk(
+  'clients/measures/delete',
+  async ({ id, clientId }) => {
+    await backendFetch(`measures/${id}`, 'DELETE');
+    const payload = { id, clientId };
+    return payload;
+  }
+);
 
 const resourcesSlice = createSlice({
   name: 'resources',
@@ -108,7 +111,7 @@ const resourcesSlice = createSlice({
       state.isFetching = false;
     },
     [addResource.fulfilled]: (state, { payload }) => {
-      if (payload.type === 'nps ') {
+      if (payload.type === 'nps') {
         state.data.nps.push(payload.data);
       } else if (payload.type === 'clients') {
         state.data.clients.push(payload.data);
@@ -162,7 +165,9 @@ const resourcesSlice = createSlice({
       state.isFetching = false;
     },
     [addMeasure.fulfilled]: (state, { payload }) => {
-      state.data.clients[payload.clientId].measures.push(payload.data);
+      const clientIndex = state.data.clients.findIndex(client => client.id === payload.clientId);
+
+      state.data.clients[clientIndex].measures.push(payload.data);
       state.isFetching = false;
     },
     [addMeasure.rejected]: (state, { payload }) => {
@@ -173,15 +178,12 @@ const resourcesSlice = createSlice({
       state.isFetching = true;
     },
     [deleteMeasure.fulfilled]: (state, { payload }) => {
-      state.data.clients.forEach(client => {
-        client.measures.forEach(measure => {
-          if (measure.id === payload.data.id) {
-            const clientIndex = state.data.clients.indexOf(client);
-            const clientMeasureIndex = state.data.clients[clientIndex].measures.indexOf(measure);
-            state.data.clients[clientIndex].measures.splice(clientMeasureIndex, 1);
-          }
-        });
-      });
+      const clientIndex = state.data.clients.findIndex(client => client.id === payload.clientId);
+      const clientMeasureIndex = state.data.clients[clientIndex].measures.findIndex(
+        measure => measure.id === payload.id
+      );
+
+      state.data.clients[clientIndex].measures.splice(clientMeasureIndex, 1);
       state.isFetching = false;
     },
     [deleteMeasure.rejected]: (state, { payload }) => {
