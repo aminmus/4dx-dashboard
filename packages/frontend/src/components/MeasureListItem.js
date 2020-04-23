@@ -8,19 +8,38 @@ import EditButton from './elements/EditButton';
 import DeleteButton from './elements/DeleteButton';
 import InputMeasure from './elements/editMode/InputMeasure';
 import DeleteDialog from './elements/editMode/DeleteDialog';
+import { updateMeasure, deleteMeasure } from '../slices/resources';
 
-const MeasureListItem = ({ measure: { id, success, description }, editMode }) => {
+const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const { id, success, description } = measure;
+
+  const handleMeasureUpdate = data => {
+    dispatch(updateMeasure(data));
+    setIsEditing(false);
+  };
+
+  const handleMeasureDelete = () => {
+    dispatch(
+      deleteMeasure({
+        id,
+        clientId
+      })
+    );
+  };
 
   return (
     <ListItem className="text-light">
       {isEditing ? (
         <div>
           <InputMeasure
-            id={id}
-            description={description}
-            success={success}
+            id={measure.id}
+            clientId={clientId}
+            success={measure.success}
+            description={measure.description}
+            handleSave={handleMeasureUpdate}
             setIsEditing={setIsEditing}
           />
         </div>
@@ -42,6 +61,7 @@ const MeasureListItem = ({ measure: { id, success, description }, editMode }) =>
                   type="measures"
                   content={description}
                   isDeleting={isDeleting}
+                  handleDelete={handleMeasureDelete}
                   setIsDeleting={setIsDeleting}
                 />
               )}
@@ -63,7 +83,9 @@ MeasureListItem.propTypes = {
     id: PropTypes.string,
     success: PropTypes.string,
     description: PropTypes.string
-  })
+  }),
+  clientId: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

@@ -8,7 +8,7 @@ import EditButton from './elements/EditButton';
 import InputClient from './elements/editMode/InputClient';
 import DeleteButton from './elements/DeleteButton';
 import DeleteDialog from './elements/editMode/DeleteDialog';
-import { updateResource } from '../slices/resources';
+import { updateResource, deleteResource } from '../slices/resources';
 
 const ClientDetails = ({ client, editMode, dispatch }) => {
   const [renderChecklist, setRenderChecklist] = useState(false);
@@ -19,6 +19,15 @@ const ClientDetails = ({ client, editMode, dispatch }) => {
   const updateClient = data => {
     dispatch(updateResource(data));
     setIsEditing(false);
+  };
+
+  const deleteClient = () => {
+    dispatch(
+      deleteResource({
+        type: 'clients',
+        id: client.id
+      })
+    );
   };
 
   const handleContainerHover = () => (!isEditing ? () => setHoverState(!hoverState) : () => true);
@@ -87,10 +96,10 @@ const ClientDetails = ({ client, editMode, dispatch }) => {
             <DeleteButton onClick={() => setIsDeleting(true)} />
             {isDeleting && (
               <DeleteDialog
-                id={client.id}
                 type="clients"
                 content={client.name}
                 isDeleting={isDeleting}
+                handleDelete={deleteClient}
                 setIsDeleting={setIsDeleting}
               />
             )}

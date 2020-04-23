@@ -7,9 +7,8 @@ import MomentUtils from '@date-io/moment';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
-import { updateResource } from '../../../slices/resources';
 
-const InputMeasure = ({ setIsEditing, id, clientId, description, success, dispatch }) => {
+const InputMeasure = ({ setIsEditing, handleSave, clientId, id, success, description }) => {
   const [measureDescription, setMeasureDescription] = useState(description);
   const [selectedDate, setSelectedDate] = useState(success);
 
@@ -22,16 +21,16 @@ const InputMeasure = ({ setIsEditing, id, clientId, description, success, dispat
 
   const handleSaveClick = e => {
     e.preventDefault();
-    const data = {
+    // Can be create or update, depending on passed in function
+    handleSave({
       id,
       type: 'measures',
       data: {
         description: measureDescription,
-        success: selectedDate
+        success: selectedDate,
+        clientId
       }
-    };
-    dispatch(updateResource(data));
-    setIsEditing(false);
+    });
   };
 
   return (
@@ -86,7 +85,7 @@ InputMeasure.propTypes = {
   description: PropTypes.string,
   success: PropTypes.string,
   setIsEditing: PropTypes.func.isRequired,
-  dispatch: PropTypes.func.isRequired
+  handleSave: PropTypes.func.isRequired
 };
 
 export default connect(null, null)(InputMeasure);

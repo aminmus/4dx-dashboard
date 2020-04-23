@@ -17,7 +17,6 @@ const computed = {
 const resources = {
   data: {
     clients: [],
-    measures: [],
     measureGoals: [],
     nps: []
   },

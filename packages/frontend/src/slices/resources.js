@@ -1,15 +1,14 @@
-/* eslint-disable consistent-return, no-param-reassign */
+/* eslint-disable no-param-reassign */
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import fetchData, { backendFetch } from '../utils/fetchData';
 import { serializePerType, deserialize } from '../utils/jsonapiSerializing';
 
 export const fetchResources = createAsyncThunk('resources/fetchResources', async () => {
-  const { nps, clients, measures, measureGoals } = await fetchData();
+  const { nps, clients, measureGoals } = await fetchData();
   const deserialized = {
     clients: await deserialize(clients),
     nps: await deserialize(nps),
-    measures: await deserialize(measures),
     measureGoals: await deserialize(measureGoals)
   };
   return deserialized;
@@ -37,6 +36,41 @@ export const deleteResource = createAsyncThunk('resources/delete', async ({ id, 
   return payload;
 });
 
+export const updateMeasure = createAsyncThunk('clients/measures/update', async ({ id, data }) => {
+  const requestData = {
+    data: {
+      type: 'measures',
+      attributes: data
+    }
+  };
+  const response = await backendFetch(`measures/${id}`, 'PUT', requestData);
+  const deserializedResponse = await deserialize(response);
+  const payload = { data: deserializedResponse, clientId: data.clientId };
+  return payload;
+});
+
+export const addMeasure = createAsyncThunk('clients/measures/create', async ({ data }) => {
+  const requestData = {
+    data: {
+      type: 'measures',
+      attributes: data
+    }
+  };
+  const response = await backendFetch('measures', 'POST', requestData);
+  const deserializedResponse = await deserialize(response);
+  const payload = { data: deserializedResponse, clientId: data.clientId };
+  return payload;
+});
+
+export const deleteMeasure = createAsyncThunk(
+  'clients/measures/delete',
+  async ({ id, clientId }) => {
+    await backendFetch(`measures/${id}`, 'DELETE');
+    const payload = { id, clientId };
+    return payload;
+  }
+);
+
 const resourcesSlice = createSlice({
   name: 'resources',
   initialState: null,
@@ -57,38 +91,11 @@ const resourcesSlice = createSlice({
       state.isFetching = true;
     },
     [updateResource.fulfilled]: (state, { payload }) => {
-      if (payload.type === 'measures') {
-        const measureIndex = state.data.measures.findIndex(
-          measure => measure.id === payload.data.id
-        );
-
-        // UPDATE MATCHING MEASURE WITH PAYLOAD
-        const newMeasure = { ...state.data.measures[measureIndex], ...payload.data };
-        state.data.measures[measureIndex] = newMeasure;
-
-        // FIND AND UPDATE MEASURE IN CLIENT WITH PAYLOAD
-        state.data.clients.forEach(client => {
-          client.measures.forEach(measure => {
-            if (measure.id === payload.data.id) {
-              const clientIndex = state.data.clients.indexOf(client);
-              const clientMeasureIndex = state.data.clients[clientIndex].measures.indexOf(measure);
-              state.data.clients[clientIndex].measures[clientMeasureIndex] = payload.data;
-            }
-          });
-        });
-        state.isFetching = false;
-      } else if (payload.type === 'clients') {
+      if (payload.type === 'clients') {
         // UPDATE CLIENT WITH PAYLOAD
         const clientIndex = state.data.clients.findIndex(client => client.id === payload.data.id);
-        state.data.clients[clientIndex] = payload.data;
 
-        // UPDATE MATCHING MEASURES BELONGING TO CLIENT WITH PAYLOAD
-        state.data.measures.forEach(measure => {
-          if (measure.client.id === payload.data.id) {
-            const measureIndex = state.data.measures.indexOf(measure);
-            state.data.measures[measureIndex].client = payload.data;
-          }
-        });
+        state.data.clients[clientIndex] = payload.data;
         state.isFetching = false;
       } else {
         const typeIndex = state.data[payload.type].findIndex(entry => entry.id === payload.data.id);
@@ -104,12 +111,10 @@ const resourcesSlice = createSlice({
       state.isFetching = false;
     },
     [addResource.fulfilled]: (state, { payload }) => {
-      if (payload.type === 'nps ') {
+      if (payload.type === 'nps') {
         state.data.nps.push(payload.data);
       } else if (payload.type === 'clients') {
         state.data.clients.push(payload.data);
-      } else {
-        state.data[payload.type].push(payload.data);
       }
       state.isFetching = false;
     },
@@ -121,33 +126,10 @@ const resourcesSlice = createSlice({
       state.isFetching = true;
     },
     [deleteResource.fulfilled]: (state, { payload }) => {
-      if (payload.type === 'measures') {
-        const measureIndex = state.data.measures.findIndex(
-          measure => measure.id === payload.data.id
-        );
-
-        state.data.measures.splice(measureIndex, 1);
-
-        state.data.clients.forEach(client => {
-          client.measures.forEach(measure => {
-            if (measure.id === payload.data.id) {
-              const clientIndex = state.data.clients.indexOf(client);
-              const clientMeasureIndex = state.data.clients[clientIndex].measures.indexOf(measure);
-              state.data.clients[clientIndex].measures.splice(clientMeasureIndex, 1);
-            }
-          });
-        });
-        state.isFetching = false;
-      } else if (payload.type === 'clients') {
+      if (payload.type === 'clients') {
         const clientIndex = state.data.clients.findIndex(client => client.id === payload.data.id);
 
         state.data.clients.splice(clientIndex, 1);
-
-        const measureIndex = state.data.measures.findIndex(
-          measure => measure.client.id !== payload.data.id
-        );
-        if (measureIndex > -1) state.data.measures.splice(measureIndex, 1);
-
         state.isFetching = false;
       } else {
         const typeIndex = state.data[payload.type].findIndex(entry => entry.id === payload.data.id);
@@ -156,6 +138,55 @@ const resourcesSlice = createSlice({
       }
     },
     [deleteResource.rejected]: (state, { payload }) => {
+      state.isFetching = false;
+      state.error = payload;
+    },
+    [updateMeasure.pending]: state => {
+      state.isFetching = true;
+    },
+    [updateMeasure.fulfilled]: (state, { payload }) => {
+      // FIND AND UPDATE MEASURE IN CLIENT WITH PAYLOAD
+      state.data.clients.forEach(client => {
+        client.measures.forEach(measure => {
+          if (measure.id === payload.data.id) {
+            const clientIndex = state.data.clients.indexOf(client);
+            const clientMeasureIndex = state.data.clients[clientIndex].measures.indexOf(measure);
+            state.data.clients[clientIndex].measures[clientMeasureIndex] = payload.data;
+          }
+        });
+      });
+      state.isFetching = false;
+    },
+    [updateMeasure.rejected]: (state, { payload }) => {
+      state.isFetching = false;
+      state.error = payload;
+    },
+    [addMeasure.pending]: state => {
+      state.isFetching = false;
+    },
+    [addMeasure.fulfilled]: (state, { payload }) => {
+      const clientIndex = state.data.clients.findIndex(client => client.id === payload.clientId);
+
+      state.data.clients[clientIndex].measures.push(payload.data);
+      state.isFetching = false;
+    },
+    [addMeasure.rejected]: (state, { payload }) => {
+      state.error = payload;
+      state.isFetching = false;
+    },
+    [deleteMeasure.pending]: state => {
+      state.isFetching = true;
+    },
+    [deleteMeasure.fulfilled]: (state, { payload }) => {
+      const clientIndex = state.data.clients.findIndex(client => client.id === payload.clientId);
+      const clientMeasureIndex = state.data.clients[clientIndex].measures.findIndex(
+        measure => measure.id === payload.id
+      );
+
+      state.data.clients[clientIndex].measures.splice(clientMeasureIndex, 1);
+      state.isFetching = false;
+    },
+    [deleteMeasure.rejected]: (state, { payload }) => {
       state.isFetching = false;
       state.error = payload;
     }

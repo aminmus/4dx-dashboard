@@ -8,7 +8,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
 import { withStyles } from '@material-ui/core/styles';
 import COLORS from '../../../style/COLORS';
-import { deleteResource } from '../../../slices/resources';
 
 const ConfirmDelete = withStyles({
   label: {
@@ -24,14 +23,10 @@ const ConfirmDelete = withStyles({
   }
 })(Button);
 
-const DeleteDialog = ({ id, type, content, isDeleting, setIsDeleting, dispatch }) => {
+const DeleteDialog = ({ type, content, isDeleting, setIsDeleting, handleDelete }) => {
   const handleConfirmDelete = e => {
     e.preventDefault();
-    const data = {
-      id,
-      type
-    };
-    dispatch(deleteResource(data));
+    handleDelete();
   };
   return (
     <Dialog
@@ -57,12 +52,11 @@ const DeleteDialog = ({ id, type, content, isDeleting, setIsDeleting, dispatch }
 };
 
 DeleteDialog.propTypes = {
-  id: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   isDeleting: PropTypes.bool.isRequired,
   setIsDeleting: PropTypes.func.isRequired,
-  dispatch: PropTypes.func.isRequired
+  handleDelete: PropTypes.func.isRequired
 };
 
 export default connect(null, null)(DeleteDialog);

@@ -20,7 +20,7 @@ const Home = ({
   isLoggedIn,
   dispatch,
   resources: {
-    data: { clients, nps, measures, measureGoals },
+    data: { clients, nps, measureGoals },
     isFetching
   }
 }) => {
@@ -31,6 +31,11 @@ const Home = ({
     values: [],
     target: null
   });
+
+  const measures = clients.reduce((accumulator, client) => {
+    if (client?.measures) accumulator.push(...client.measures);
+    return accumulator;
+  }, []);
 
   useEffect(() => {
     dispatch(fetchResources());
@@ -77,7 +82,7 @@ const Home = ({
                 />
               </div>
               <div className="col-sm">
-                <Details clients={clients} />
+                <Details />
                 {chart.values.length > 0 ? (
                   <Nps chart={chart} />
                 ) : (
@@ -85,7 +90,7 @@ const Home = ({
                     No Measure Data Available For NPS graph
                   </div>
                 )}
-                {measures.length > 0 ? (
+                {measures?.length > 0 ? (
                   <MeasuresOverTime measures={measures} measureGoals={measureGoals} />
                 ) : (
                   <div className="my-5 p-4 jumbotron text-light bg-dark">
@@ -108,7 +113,6 @@ Home.propTypes = {
     data: PropTypes.shape({
       clients: PropTypes.arrayOf(PropTypes.object).isRequired,
       nps: PropTypes.arrayOf(PropTypes.object).isRequired,
-      measures: PropTypes.arrayOf(PropTypes.object).isRequired,
       measureGoals: PropTypes.arrayOf(PropTypes.object).isRequired
     }),
     isFetching: PropTypes.bool.isRequired

@@ -7,6 +7,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { styled } from '@material-ui/core/styles';
 import MeasureListItem from './MeasureListItem';
 import InputMeasure from './elements/editMode/InputMeasure';
+import { addMeasure } from '../slices/resources';
 
 const MeasureList = styled(List)({
   display: 'flex',
@@ -16,18 +17,23 @@ const MeasureList = styled(List)({
   width: '100%'
 });
 
-const MeasureCheckList = ({ measures, editMode, clientId }) => {
+const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
+
+  const handleSave = data => {
+    dispatch(addMeasure(data));
+    setIsEditing(false);
+  };
 
   return (
     <MeasureList>
       {measures.map(measure => {
-        return <MeasureListItem measure={measure} key={`${measure.id}`} />;
+        return <MeasureListItem clientId={clientId} measure={measure} key={`${measure.id}`} />;
       })}
       {editMode && (
         <ListItem className="text-light">
           {isEditing ? (
-            <InputMeasure clientId={clientId} setIsEditing={setIsEditing} />
+            <InputMeasure clientId={clientId} handleSave={handleSave} setIsEditing={setIsEditing} />
           ) : (
             <Button onClick={() => setIsEditing(true)} className="px-0 mx-auto">
               <AddCircleIcon className="mr-2 text-warning" />
@@ -52,7 +58,8 @@ MeasureCheckList.propTypes = {
       success: PropTypes.string,
       description: PropTypes.string
     })
-  )
+  ),
+  dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
