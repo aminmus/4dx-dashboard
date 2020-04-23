@@ -1,9 +1,33 @@
+/**
+ * Controller for Measure Routes
+ * @module Controllers_measure
+ * @requires jsonapi-serializer
+ * @requires ../models/measure
+ */
+
 const {
+  /**
+     * Serialize JSON Data
+     * @const
+     */
   Serializer: JSONAPISerializer,
+  /**
+     * Deserialize JSON Data
+     * @const
+     */
   Deserializer: JSONAPIDeserializer,
 } = require('jsonapi-serializer');
+
+/**
+ * Measure model
+ * @const
+ */
 const { Measure } = require('../models');
 
+/**
+ * Serialize Measures according to specified format
+ * @const
+ */
 const MeasureSerializer = new JSONAPISerializer('Measures', {
   attributes: ['description', 'success', 'createdAt', 'updatedAt', 'Client'],
   Client: {
@@ -11,10 +35,23 @@ const MeasureSerializer = new JSONAPISerializer('Measures', {
     ref: 'id',
   },
 });
+
+/**
+ * Deserialize Measures with camelCase formatting
+ * @const
+ */
 const MeasureDeserializer = new JSONAPIDeserializer({
   keyForAttribute: 'camelCase',
 });
 
+/**
+ * GET All Measures
+ * @function
+ * @memberof module:Controllers_measure
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const getAll = async (req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
@@ -34,6 +71,14 @@ const getAll = async (req, res, next) => {
   }
 };
 
+/**
+ * GET One Measure by Id
+ * @function
+ * @memberof module:Controllers_measure
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const getById = async (req, res, next) => {
   console.log('*************************');
   console.log('GET ONE REQUEST - MEASURES');
@@ -54,6 +99,14 @@ const getById = async (req, res, next) => {
   }
 };
 
+/**
+ * UPDATE One Measure by Id
+ * @function
+ * @memberof module:Controllers_measure
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const updateById = async (req, res, next) => {
   console.log('*************************');
   console.log('PUT REQUEST - MEASURES');
@@ -78,6 +131,14 @@ const updateById = async (req, res, next) => {
   }
 };
 
+/**
+ * CREATE One Measure
+ * @function
+ * @memberof module:Controllers_measure
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const createOne = async (req, res, next) => {
   console.log('*************************');
   console.log('POST REQUEST - MEASURES');
@@ -100,6 +161,14 @@ const createOne = async (req, res, next) => {
   }
 };
 
+/**
+ * DELETE One Measure
+ * @function
+ * @memberof module:Controllers_measure
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const deleteById = async (req, res, next) => {
   console.log('*************************');
   console.log('DELETE REQUEST - MEASURES');

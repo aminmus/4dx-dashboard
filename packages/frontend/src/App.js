@@ -10,6 +10,13 @@ import Admin from './layouts/Admin';
 import isAuthenticated from './utils/authentication';
 import { setLogoutStatus, setLoginStatus } from './actions/auth';
 
+/**
+ * Main App Component
+ * @component
+ * @prop {object} history - History Object
+ * @prop {function} dispatch - Redux Dispatch
+ */
+
 const App = ({ history, dispatch }) => {
   useEffect(() => {
     if (isAuthenticated()) {
