@@ -32,7 +32,7 @@ export const serializePerType = (type, data) => {
         }
       });
       break;
-    case 'measureGoals':
+    case 'measuregoals':
       serializer = new Serializer('MeasureGoals', {
         attributes: ['measuresAmount', 'targetDate', 'createdAt', 'updatedAt']
       });
