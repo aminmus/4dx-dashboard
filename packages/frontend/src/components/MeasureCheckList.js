@@ -28,7 +28,7 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
   return (
     <MeasureList>
       {measures.map(measure => {
-        return <MeasureListItem measure={measure} key={`${measure.id}`} />;
+        return <MeasureListItem clientId={clientId} measure={measure} key={`${measure.id}`} />;
       })}
       {editMode && (
         <ListItem className="text-light">

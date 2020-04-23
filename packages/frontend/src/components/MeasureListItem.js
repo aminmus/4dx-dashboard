@@ -8,17 +8,26 @@ import EditButton from './elements/EditButton';
 import DeleteButton from './elements/DeleteButton';
 import InputMeasure from './elements/editMode/InputMeasure';
 import DeleteDialog from './elements/editMode/DeleteDialog';
-import { updateMeasure } from '../slices/resources';
+import { updateMeasure, deleteMeasure } from '../slices/resources';
 
-const MeasureListItem = ({ measure, editMode, dispatch }) => {
+const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { id, success, description } = measure;
 
-  const handleSave = data => {
+  const handleMeasureUpdate = data => {
     dispatch(updateMeasure(data));
     setIsEditing(false);
+  };
+
+  const handleMeasureDelete = () => {
+    dispatch(
+      deleteMeasure({
+        id,
+        clientId
+      })
+    );
   };
 
   return (
@@ -27,10 +36,10 @@ const MeasureListItem = ({ measure, editMode, dispatch }) => {
         <div>
           <InputMeasure
             id={measure.id}
-            clientId={measure.clientId}
+            clientId={clientId}
             success={measure.success}
             description={measure.description}
-            handleSave={handleSave}
+            handleSave={handleMeasureUpdate}
             setIsEditing={setIsEditing}
           />
         </div>
@@ -52,6 +61,7 @@ const MeasureListItem = ({ measure, editMode, dispatch }) => {
                   type="measures"
                   content={description}
                   isDeleting={isDeleting}
+                  handleDelete={handleMeasureDelete}
                   setIsDeleting={setIsDeleting}
                 />
               )}
@@ -72,9 +82,9 @@ MeasureListItem.propTypes = {
   measure: PropTypes.shape({
     id: PropTypes.string,
     success: PropTypes.string,
-    description: PropTypes.string,
-    clientId: PropTypes.string
+    description: PropTypes.string
   }),
+  clientId: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
