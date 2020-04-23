@@ -114,8 +114,12 @@ const resourcesSlice = createSlice({
       if (payload.type === 'nps') {
         state.data.nps.push(payload.data);
       } else if (payload.type === 'clients') {
-        // Handling eventual missing measures property on payload
+        /**
+         * Handling eventual missing measures and client properties on payload
+         * that happens from API response on create requests
+         */
         payload.data.measures = payload.data.measures || [];
+        payload.data.csats = payload.data.csats || [];
         state.data.clients.push(payload.data);
       }
       state.isFetching = false;
