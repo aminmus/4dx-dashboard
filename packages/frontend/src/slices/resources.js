@@ -114,6 +114,8 @@ const resourcesSlice = createSlice({
       if (payload.type === 'nps') {
         state.data.nps.push(payload.data);
       } else if (payload.type === 'clients') {
+        // Handling eventual missing measures property on payload
+        payload.data.measures = payload.data.measures || [];
         state.data.clients.push(payload.data);
       }
       state.isFetching = false;
@@ -166,7 +168,6 @@ const resourcesSlice = createSlice({
     },
     [addMeasure.fulfilled]: (state, { payload }) => {
       const clientIndex = state.data.clients.findIndex(client => client.id === payload.clientId);
-
       state.data.clients[clientIndex].measures.push(payload.data);
       state.isFetching = false;
     },
