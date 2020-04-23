@@ -3,22 +3,22 @@ import { connect } from 'react-redux';
 import Chart from 'chart.js';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useMediaQuery, Button } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import formatMeasureProgress from '../utils/charts/formatMeasureProgress';
 import RefreshButton from './elements/RefreshButton';
 import OptionsToggleButton from './elements/OptionsToggleButton';
 import OptionsButton from './elements/OptionsButton';
 import IntervalSpanDialog from './elements/IntervalSpanDialog';
-import EditButton from './elements/EditButton';
 import COLORS from '../style/COLORS';
+import { addResource } from '../slices/resources';
 
 import InputMeasuresGoal from './elements/editMode/InputMeasuresGoal';
 
 const { primary, light, danger, gray } = COLORS;
 
-const MeasuresOverTime = props => {
+const MeasuresOverTime = ({ measures, measureGoals, editMode, dispatch }) => {
   const match = useMediaQuery('(min-width:600px)');
-  const { measures, measureGoals, editMode } = props;
   const [isEditing, setIsEditing] = useState(false);
 
   const ChartHeaderStyle = {
@@ -173,9 +173,9 @@ const MeasuresOverTime = props => {
     setSmoothLine(!smoothLine);
   };
 
-  const onClickEdit = e => {
-    e.preventDefault();
-    setIsEditing(true);
+  const handleSaveMeasureGoal = data => {
+    dispatch(addResource(data));
+    setIsEditing(false);
   };
 
   const updateChart = e => {
@@ -218,8 +218,13 @@ const MeasuresOverTime = props => {
         <div className="chart-title">{`Measures ${intervalSpan}`}</div>
         <OptionsToggleButton onClick={toggleOptions} />
         <RefreshButton onClick={updateChart} />
-        {editMode && <EditButton onClick={onClickEdit} />}
       </div>
+      {editMode && (
+        <Button onClick={() => setIsEditing(true)} className="px-0 mx-auto">
+          <AddCircleIcon className="mr-2 text-warning" />
+          Add New Measure Goal
+        </Button>
+      )}
       <div>
         {optionsShow && (
           <div style={OptionsContainerStyle}>
@@ -240,6 +245,7 @@ const MeasuresOverTime = props => {
         )}
         {isEditing ? (
           <InputMeasuresGoal
+            handleSaveMeasureGoal={handleSaveMeasureGoal}
             measures={measuresAmount}
             date={targetDate}
             setIsEditing={setIsEditing}
@@ -261,6 +267,7 @@ MeasuresOverTime.defaultProps = {
 };
 
 MeasuresOverTime.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
   measures: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.object]))
