@@ -1,5 +1,23 @@
+/**
+ * Permissions middlware
+ * @module Middleware_permissions
+ * @requires ../utils/roles
+ */
+
+/**
+ * User role types
+ * @type {Object}
+ */
 const ROLES = require('../utils/roles');
 
+/**
+ * Check if user role permits them to edit data
+ * @function
+ * @memberof module:Middleware_permissions
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const canEdit = async (req, res, next) => {
   const { role } = await req.user;
 

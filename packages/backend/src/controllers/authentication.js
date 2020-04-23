@@ -1,6 +1,30 @@
+/**
+ * Controller for Authentication Routes
+ * @module Controllers_authentication
+ * @requires passport
+ * @requires jsonwebtoken
+ */
+
+/**
+ * passport module
+ * @const
+ */
 const passport = require('passport');
+
+/**
+ * jsonwebtoken module
+ * @const
+ */
 const jwt = require('jsonwebtoken');
 
+/**
+ * Authenticate and sign in user with passport
+ * @function
+ * @memberof module:Controllers_authentication
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const signup = async (req, res, next) => {
   passport.authenticate('signup', { session: false }, (err, user, info) => {
     if (err) return next(err);
@@ -13,13 +37,23 @@ const signup = async (req, res, next) => {
   })(req, res, next);
 };
 
+/**
+ * Authenticate and log in user with passport
+ * @function
+ * @memberof module:Controllers_authentication
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const login = async (req, res, next) => {
   passport.authenticate('login', (err, user, info) => {
     try {
       if (err) return next(err);
       if (!user) return res.status(400).json(info);
-
-      // Sign and populate token
+      /**
+             * User token signed with JWT
+             * @const
+             */
       const token = jwt.sign(
         { user: { id: user.id, email: user.email, role: user.role } },
         process.env.JWT_SECRET,

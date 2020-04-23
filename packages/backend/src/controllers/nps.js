@@ -1,9 +1,33 @@
+/**
+ * Controller for Nps Satisfaction Score Routes
+ * @module Controllers_nps
+ * @requires jsonapi-serializer
+ * @requires ../models/nps
+ */
+
 const {
+  /**
+     * Serialize JSON Data
+     * @const
+     */
   Serializer: JSONAPISerializer,
+  /**
+     * Deserialize JSON Data
+     * @const
+     */
   Deserializer: JSONAPIDeserializer,
 } = require('jsonapi-serializer');
+
+/**
+ * Nps model
+ * @const
+ */
 const { Nps } = require('../models');
 
+/**
+ * Serialize Nps according to specified format
+ * @const
+ */
 const NpsSerializer = new JSONAPISerializer('Nps', {
   attributes: [
     'currentNps',
@@ -15,10 +39,22 @@ const NpsSerializer = new JSONAPISerializer('Nps', {
   ],
 });
 
+/**
+ * Deserialize Nps with camelCase formatting
+ * @const
+ */
 const NpsDeserializer = new JSONAPIDeserializer({
   keyForAttribute: 'camelCase',
 });
 
+/**
+ * GET All Nps entries
+ * @function
+ * @memberof module:Controllers_nps
+ * @param {Object} _req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const getAll = async (_req, res, next) => {
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
   res.setHeader('Content-Range', '30');
@@ -34,6 +70,14 @@ const getAll = async (_req, res, next) => {
   }
 };
 
+/**
+ * GET One Nps entry by Id
+ * @function
+ * @memberof module:Controllers_nps
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const getById = async (req, res, next) => {
   console.log('*************************');
   console.log('GET ONE REQUEST - NPS');
@@ -52,6 +96,14 @@ const getById = async (req, res, next) => {
   }
 };
 
+/**
+ * UPDATE One Nps entry by Id
+ * @function
+ * @memberof module:Controllers_nps
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const updateById = async (req, res, next) => {
   console.log('*************************');
   console.log('PUT REQUEST - NPS');
@@ -72,6 +124,14 @@ const updateById = async (req, res, next) => {
   }
 };
 
+/**
+ * CREATE One Nps entry
+ * @function
+ * @memberof module:Controllers_nps
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const createOne = async (req, res, next) => {
   console.log('*************************');
   console.log('POST REQUEST - NPS');
@@ -98,6 +158,14 @@ const createOne = async (req, res, next) => {
   }
 };
 
+/**
+ * DELETE One Nps Entry
+ * @function
+ * @memberof module:Controllers_nps
+ * @param {Object} req Request Object
+ * @param {Object} res - Express Request Object
+ * @param {Function} next - Express middleware.
+ */
 const deleteById = async (req, res, next) => {
   console.log('*************************');
   console.log('DELETE REQUEST - NPS');

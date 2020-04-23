@@ -7,10 +7,21 @@ import { connect } from 'react-redux';
 import logo from '../logo.png';
 import authProvider from '../utils/react-admin/authProvider';
 
+/**
+ * Header Component
+ * @component
+ * @prop {boolean} isLoggedIn - Check if user is logged in
+ */
+
 const Header = props => {
   const { isLoggedIn } = props;
   const { logout } = authProvider;
   const history = useHistory();
+
+  /**
+   * Logs out user and pushes them to the frontpage
+   * @param e - Event Object
+   */
 
   const handleLogoutClick = e => {
     e.preventDefault();
@@ -18,15 +29,27 @@ const Header = props => {
     history.push('/');
   };
 
+  /**
+   * Navbar Collapse Style
+   * @type {object}
+   */
   const NavbarCollapseStyle = {
     justifyContent: 'space-between',
     width: '100%'
   };
 
+  /**
+   * Header Style
+   * @type {object}
+   */
   const HeaderStyle = {
     backgroundColor: '#333333'
   };
 
+  /**
+   * Logo Style
+   * @type {object}
+   */
   const LogoStyle = {
     height: '105px'
   };
