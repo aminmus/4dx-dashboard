@@ -20,7 +20,20 @@ const { primary, light, danger, gray } = COLORS;
 const MeasuresOverTime = ({ measures, measureGoals, editMode, dispatch }) => {
   const match = useMediaQuery('(min-width:600px)');
   const [isEditing, setIsEditing] = useState(false);
+  const [intervalSpan, setIntervalSpan] = React.useState('weekly');
+  const [measureDatasetData, setMeasureDatasetData] = useState();
+  const [targetDatasetData, setTargetDatasetData] = useState();
+  const [labelsData, setLabelsData] = useState();
+  const [displayMeasures, setDisplayMeasures] = useState(true);
+  const [displayTarget, setDisplayTarget] = useState(true);
+  const [smoothLine, setSmoothLine] = useState(true);
+  const [optionsShow, setOptionsShow] = useState(false);
+  const chartContainer = useRef(null);
+  const [chartInstance, setChartInstance] = useState(null);
 
+  /**
+   * Component Styles
+   */
   const ChartHeaderStyle = {
     display: 'flex',
     justifyContent: 'center',
@@ -41,8 +54,12 @@ const MeasuresOverTime = ({ measures, measureGoals, editMode, dispatch }) => {
     flexDirection: match ? 'row' : 'column'
   };
 
-  const [intervalSpan, setIntervalSpan] = React.useState('weekly');
-
+  /**
+   * Get the latest measure goal
+   * Add measure goals can be added on same date- prevent this?
+   * Several measure goals with the same date? Use createdAt? updatedAt?
+   * Overwrite measure goal if one with current date exists?
+   */
   const latestMeasureGoal =
     measureGoals.length > 0
       ? measureGoals.reduce((currentEntry, nextEntry) => {
@@ -50,12 +67,22 @@ const MeasuresOverTime = ({ measures, measureGoals, editMode, dispatch }) => {
         })
       : [];
 
+  /**
+   * The data to render target line
+   */
   const { targetDate, measuresAmount } = latestMeasureGoal;
 
+  /**
+   * Grab only the measures that are successful as they are the only
+   * ones relevant for this graph as it displays Measures Completed
+   */
   const allMeasureSuccess = measures.map(entry => {
     return entry.success;
   });
 
+  /**
+   * Format data to fit the chart config format (ie arrays of values, not objects)
+   */
   const { labels, measuresData, targetData } = formatMeasureProgress(
     allMeasureSuccess,
     targetDate,
@@ -63,23 +90,20 @@ const MeasuresOverTime = ({ measures, measureGoals, editMode, dispatch }) => {
     intervalSpan
   );
 
-  const [measureDatasetData, setMeasureDatasetData] = useState(measuresData);
-  const [targetDatasetData, setTargetDatasetData] = useState(targetData);
-  const [labelsData, setLabelsData] = useState(labels);
-
-  const [displayMeasures, setDisplayMeasures] = useState(true);
-  const [displayTarget, setDisplayTarget] = useState(true);
-  const [smoothLine, setSmoothLine] = useState(true);
-  const [optionsShow, setOptionsShow] = useState(false);
-  const chartContainer = useRef(null);
-  const [chartInstance, setChartInstance] = useState(null);
-
+  /**
+   * Chart configuration object that handles data rendering options
+   *
+   */
   const chartConfig = {
     type: 'line',
     data: {
       labels,
       datasets: [
         {
+          /**
+           * Dataset for measure data. Has conditional options for showLine, lineTension that tie into the
+           * chart options
+           */
           data: measureDatasetData,
           borderColor: primary,
           borderWidth: 2,
@@ -91,6 +115,10 @@ const MeasuresOverTime = ({ measures, measureGoals, editMode, dispatch }) => {
           lineTension: smoothLine ? 0.4 : 0
         },
         {
+          /**
+           * Dataset for target data. Has conditional options for showLine that tie into the
+           * chart options
+           */
           data: targetDatasetData,
           spanGaps: true,
           borderColor: danger,
@@ -109,11 +137,21 @@ const MeasuresOverTime = ({ measures, measureGoals, editMode, dispatch }) => {
         bodyFontSize: 18,
         titleFontSize: 20,
         callbacks: {
+          /**
+           * Dynamic generation of labels that displays when hovering over datapoint.
+           * Rounds the target data as this is calculated (used for slope of target line).
+           */
           label: (tooltipItem, data) => {
             const { datasetIndex, value, index } = tooltipItem;
+            /**
+             * Measures dataset labels
+             */
             if (datasetIndex === 0) {
               return `Completed: ${value} Target: ${Math.round(data.datasets[1].data[index])}`;
             }
+            /**
+             * Target dataset labels
+             */
             if (datasetIndex === 1 && index > 0) {
               return `Target: ${Math.round(value)}`;
             }
@@ -128,6 +166,10 @@ const MeasuresOverTime = ({ measures, measureGoals, editMode, dispatch }) => {
               autoSkip: true,
               maxTicksLimit: 500,
               callback(value) {
+                /**
+                 * Format the x-axis tick values to prevent them from taking
+                 * up too much space
+                 */
                 return moment(value).format('MMMM DD');
               }
             }
@@ -142,6 +184,12 @@ const MeasuresOverTime = ({ measures, measureGoals, editMode, dispatch }) => {
             },
             ticks: {
               beginAtZero: false,
+              /**
+               * Adjust the suggested min and max of the graph for the y-axis.
+               * Max: the total amount of measures
+               * Min: the lowest value of completed measures (as this is organized by ascending values- a measure completed
+               * should not be able to be revoked). Progression of measures SHOULD always be positive.
+               */
               suggestedMax: measuresAmount,
               suggestedMin: measuresData[0]
             }
@@ -155,35 +203,67 @@ const MeasuresOverTime = ({ measures, measureGoals, editMode, dispatch }) => {
     }
   };
 
+  /**
+   * Toggle Options handler
+   * @param {Object} e - Event Input
+   */
   const toggleOptions = e => {
     e.preventDefault();
     setOptionsShow(!optionsShow);
   };
 
+  /**
+   * Toggle Options to display or hide measures line
+   * @param {Object} e - Event Input
+   */
   const optionsToggleMeasures = e => {
     e.preventDefault();
     setDisplayMeasures(!displayMeasures);
   };
+
+  /**
+   * Toggle Options to display or hide target line
+   * @param {Object} e - Event Input
+   */
   const optionsToggleTarget = e => {
     e.preventDefault();
     setDisplayTarget(!displayTarget);
   };
+
+  /**
+   * Toggle Options to smoothen out the line tension
+   * @param {Object} e - Event Input
+   */
   const optionsToggleSmooth = e => {
     e.preventDefault();
     setSmoothLine(!smoothLine);
   };
 
+  /**
+   * Handle saving of measure goals by dispatching
+   * an addResource action
+   * @param {Object} data - Input Data for Added Measure
+   */
   const handleSaveMeasureGoal = data => {
     dispatch(addResource(data));
     setIsEditing(false);
   };
 
+  /**
+   * Manually update chart with new instance
+   * @param {Object} e - Event Input
+   */
   const updateChart = e => {
     e.preventDefault();
     const newChartInstance = new Chart(chartContainer.current, chartConfig);
     setChartInstance(newChartInstance);
   };
 
+  /**
+   * Set defaults for chart instance, set local state for chart data.
+   * If instance of chart exists, use that- otherwise create new instance.
+   * Set datasets in chart instance with data from local state,
+   */
   useEffect(() => {
     Chart.defaults.global.defaultFontColor = gray;
     Chart.defaults.global.defaultFontSize = 14;
