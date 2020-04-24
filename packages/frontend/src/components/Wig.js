@@ -82,7 +82,7 @@ const Wig = ({ nps, editMode }) => {
             WIG
             {editMode && <EditButton onClick={onClickEdit} />}
           </h2>
-          {isEditing ? (
+          {isEditing && editMode ? (
             <InputNps
               id={latestNps.id}
               current={latestNps.currentNps}
