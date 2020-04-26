@@ -4,14 +4,14 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import { Provider } from 'react-redux';
-import { createHashHistory } from 'history';
+import { createBrowserHistory } from 'history';
 import App from './App';
 import createReduxStore from './createReduxStore';
 import * as serviceWorker from './serviceWorker';
 import authProvider from './utils/react-admin/authProvider';
 import dataProvider from './utils/react-admin/dataProvider';
 
-const history = createHashHistory();
+const history = createBrowserHistory();
 
 export const store = createReduxStore({
   authProvider,
