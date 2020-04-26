@@ -1,12 +1,14 @@
-/* eslint-disable no-console, import/no-cycle */
+/* eslint-disable import/no-cycle */
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import Header from './components/Header';
 import Home from './layouts/Home';
 import Admin from './layouts/Admin';
+import Login from './layouts/Login';
 import isAuthenticated from './utils/authentication';
 import { setLogoutStatus, setLoginStatus } from './actions/auth';
 
@@ -27,17 +29,20 @@ const App = ({ history, dispatch }) => {
   }, []);
 
   return (
-    <Router>
+    <ConnectedRouter history={history}>
       <Header />
       <Switch>
         <Route path="/admin">
           <Admin history={history} />
         </Route>
-        <Route path="/">
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route exact path="/">
           <Home />
         </Route>
       </Switch>
-    </Router>
+    </ConnectedRouter>
   );
 };
 

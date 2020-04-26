@@ -33,6 +33,7 @@ export default function Login({ history }) {
       dashboard={Dashboard}
       theme={theme}
       layout={CustomLayout}
+      loginPage={Login}
     >
       <Resource
         name="clients"
