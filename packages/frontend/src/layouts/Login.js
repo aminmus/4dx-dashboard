@@ -20,7 +20,7 @@ const Login = ({ dispatch }) => {
     e.preventDefault();
     try {
       await authProvider.login({ username: email, password });
-      dispatch(push('/admin'));
+      dispatch(push('/'));
     } catch (error) {
       notify('Invalid email or password', 'warning');
     }
