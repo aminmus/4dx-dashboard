@@ -14,6 +14,7 @@ export default {
 
     const response = await fetch(request);
     if (response.status < 200 || response.status >= 300) throw new Error(response.statusText);
+
     const { token } = await response.json();
     localStorage.setItem('email', username);
     store.dispatch(setLoginStatus());
@@ -36,12 +37,12 @@ export default {
   },
   // called when the user navigates to a new location, to check for authentication
   checkAuth: () => {
-    if (localStorage.getItem('email')) {
+    if (localStorage.getItem('token')) {
       store.dispatch(setLoginStatus());
       return Promise.resolve();
     }
     store.dispatch(setLogoutStatus());
-    return Promise.reject();
+    return Promise.reject(new Error('Not signed in'));
   },
   // called when the user navigates to a new location, to check for permissions / roles
   getPermissions: () => Promise.resolve()
