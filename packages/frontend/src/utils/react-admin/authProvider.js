@@ -3,7 +3,8 @@ import { store } from '../../index';
 import { setLogoutStatus, setLoginStatus } from '../../actions/auth';
 
 /**
- * Header Component
+ * Authentication provider
+ * Used by React Admin and custom components for authentication and authorization
  * @type {Object.<string, function>}
  */
 export default {
