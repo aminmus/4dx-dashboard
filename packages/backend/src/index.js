@@ -76,16 +76,7 @@ const startServer = async () => {
   app.use(cors());
   app.use(passport.initialize());
 
-  /**
-   * API base paths
-   * In order to use react-admin on the 4DX frontend on a sub-path to the rest of the frontend site,
-   * react-admin requires the api routes to be on the same path.
-   * Therefore we have two endpoints for the same routes as a workaround for react-admin.
-   * I.e. if react-admin is on  "$FRONTEND_PATH/admin", then it will
-   * use the API base path of "$BACKEND_PATH/api/admin"
-   */
   app.use('/api', routes);
-  app.use('/api/admin', routes);
 
   app.use((error, _req, res, _next) => {
     res.status(error.status || 500);
