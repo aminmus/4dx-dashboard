@@ -1,66 +1,62 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { push } from 'connected-react-router';
-import { useNotify, Notification } from 'react-admin';
-import { ThemeProvider, Button } from '@material-ui/core';
-// eslint-disable-next-line import/no-cycle
-import authProvider from '../utils/react-admin/authProvider';
-import theme from '../style/muiTheme';
+import React from 'react';
+import { Notification, LoginForm } from 'react-admin';
+import { ThemeProvider, Card, Avatar, makeStyles } from '@material-ui/core';
+import LockIcon from '@material-ui/icons/Lock';
+import muiTheme from '../style/muiTheme';
 
 /**
  * Custom Login Page Component
+ * To use our custom theme and control redirect after login
  * @component
  */
-const Login = ({ dispatch }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const notify = useNotify();
-  const submit = async e => {
-    e.preventDefault();
-    try {
-      await authProvider.login({ username: email, password });
-      dispatch(push('/'));
-    } catch (error) {
-      notify('Invalid email or password', 'warning');
-    }
-  };
+const Login = () => {
+  // Base styles copied from default standard react admin login page
+  const useStyles = makeStyles(
+    theme => ({
+      main: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        height: '1px',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundImage:
+          'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)'
+      },
+      card: {
+        minWidth: 300,
+        marginTop: '6em'
+      },
+      avatar: {
+        margin: '1em',
+        display: 'flex',
+        justifyContent: 'center'
+      },
+      icon: {
+        backgroundColor: theme.palette.secondary[500]
+      }
+    }),
+    { name: 'RaLogin' }
+  );
+
+  const classes = useStyles();
 
   return (
-    <ThemeProvider theme={theme}>
-      <form onSubmit={submit}>
-        <div>
-          <label htmlFor="email">
-            Email
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              autoComplete="username"
-            />
-          </label>
+    <ThemeProvider theme={muiTheme}>
+      <Card className={classes.card}>
+        <div className={classes.avatar}>
+          <Avatar className={classes.icon}>
+            <LockIcon />
+          </Avatar>
         </div>
-        <label htmlFor="password">
-          Password
-          <input
-            name="password"
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            autoComplete="current-password"
-          />
-        </label>
-        <Button type="submit">Sign in</Button>
-      </form>
+        <LoginForm redirectTo="/" />
+      </Card>
+
       <Notification />
     </ThemeProvider>
   );
 };
 
-Login.propTypes = {
-  dispatch: PropTypes.func.isRequired
-};
-
-export default connect(null, null)(Login);
+export default Login;
