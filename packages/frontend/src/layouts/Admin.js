@@ -21,18 +21,12 @@ import CustomLayout from '../components/admin/CustomLayout';
 // eslint-disable-next-line import/no-cycle
 import Login from './Login';
 
-export default function Admin({ history }) {
+export default function Admin({ history, customRoutes }) {
   const theme = createMuiTheme({
     palette: {
       type: 'dark'
     }
   });
-
-  /**
-   * React Admin sets both the frontend url and API endpoint to use for a resource
-   * by looking at the name property on the given <Resource /> elements.
-   * To have the resources be sub-paths to the "/admin" page, we set them to "admin/${resourceName}".
-   */
 
   return (
     <ReactAdmin
@@ -43,32 +37,33 @@ export default function Admin({ history }) {
       theme={theme}
       layout={CustomLayout}
       loginPage={Login}
+      customRoutes={customRoutes}
     >
       <Resource
-        name="admin/clients"
+        name="clients"
         create={ClientCreate}
         list={ClientList}
         edit={ClientEdit}
         show={ClientShow}
         options={{ label: 'Clients' }}
       />
-      <Resource name="admin/csat" edit={CsatEdit} create={CsatCreate} options={{ label: 'CSAT' }} />
+      <Resource name="csat" edit={CsatEdit} create={CsatCreate} options={{ label: 'CSAT' }} />
       <Resource
-        name="admin/measures"
+        name="measures"
         edit={MeasureEdit}
         create={MeasureCreate}
         options={{ label: 'Measures' }}
       />
-      <Resource name="admin/users" list={UserList} options={{ label: 'Users' }} />
+      <Resource name="users" list={UserList} options={{ label: 'Users' }} />
       <Resource
-        name="admin/nps"
+        name="nps"
         list={NpsList}
         edit={NpsEdit}
         create={NpsCreate}
         options={{ label: 'NPS' }}
       />
       <Resource
-        name="admin/measureGoals"
+        name="measureGoals"
         options={{ label: 'Measure Goals' }}
         list={MeasureGoalList}
         edit={MeasureGoalEdit}
@@ -78,7 +73,12 @@ export default function Admin({ history }) {
   );
 }
 
+Admin.defaultProps = {
+  customRoutes: []
+};
+
 Admin.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  customRoutes: PropTypes.arrayOf(PropTypes.element)
 };
