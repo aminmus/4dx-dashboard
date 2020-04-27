@@ -31,6 +31,7 @@ export default {
   checkError: ({ status }) => {
     if (status === 401 || status === 403) {
       localStorage.removeItem('email');
+      localStorage.removeItem('token');
       return Promise.reject();
     }
     return Promise.resolve();
