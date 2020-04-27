@@ -27,11 +27,9 @@ export default {
     store.dispatch(setLogoutStatus());
     return Promise.resolve();
   },
-  // called when the API returns an error
+  // called when the API returns an error, will call logout on reject
   checkError: ({ status }) => {
     if (status === 401 || status === 403) {
-      localStorage.removeItem('email');
-      localStorage.removeItem('token');
       return Promise.reject();
     }
     return Promise.resolve();
