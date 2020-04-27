@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
  * Custom Sidebar to pass into React Admin
  * @component
  * @param {object} props
- * @returns
  */
 const CustomSidebar = props => {
   return props.isLoggedIn ? <Sidebar {...props} /> : null;

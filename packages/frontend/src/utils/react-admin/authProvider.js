@@ -2,6 +2,10 @@
 import { store } from '../../index';
 import { setLogoutStatus, setLoginStatus } from '../../actions/auth';
 
+/**
+ * Header Component
+ * @type {Object.<string, function>}
+ */
 export default {
   // called when the user attempts to log in
   login: async ({ username, password }) => {
