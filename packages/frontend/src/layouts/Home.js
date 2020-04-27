@@ -8,13 +8,20 @@ import Wig from '../components/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/Details';
 import Nps from '../components/Nps';
-import MeasuresOverTime from '../components/MeasuresOverTime';
+import MeasuresOverTime from '../components/graphs/MeasuresOverTime';
 import { toggleEdit } from '../actions/editMode';
 import theme from '../style/muiTheme';
 import { fetchResources } from '../slices/resources';
 import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
 import reformatNps from '../utils/reformatNps';
+import formatGraphData from '../utils/formatGraphData';
+
+const getMeasuresFromClient = clients =>
+  clients.reduce((accumulator, client) => {
+    if (client?.measures) accumulator.push(...client.measures);
+    return accumulator;
+  }, []);
 
 const Home = ({
   isLoggedIn,
@@ -26,16 +33,17 @@ const Home = ({
 }) => {
   const [definedStatus, setDefinedStatus] = useState({ totalClients: 0, definedClients: 0 });
   const [leadStatus, setLeadStatus] = useState({ leads: 0, leadsTotal: 0 });
-  const [chart, setChart] = useState({
+  const [npsChartData, setNpsChartData] = useState({
     months: [],
     values: [],
     target: null
   });
+  const [measures, setMeasures] = useState();
 
-  const measures = clients.reduce((accumulator, client) => {
-    if (client?.measures) accumulator.push(...client.measures);
-    return accumulator;
-  }, []);
+  const [measuresChartData, setMeasuresChartData] = useState({
+    graphData: [],
+    graphOptions: {}
+  });
 
   useEffect(() => {
     dispatch(fetchResources());
@@ -43,14 +51,23 @@ const Home = ({
 
   useEffect(() => {
     if (clients) {
+      const measuresFromClients = getMeasuresFromClient(clients);
       setDefinedStatus(calcDefineClients(clients));
       setLeadStatus(calcLeads(clients));
+      setMeasures(measuresFromClients);
+      setMeasuresChartData(formatGraphData(measures, measureGoals, 'monthly', false));
     }
   }, [clients]);
 
   useEffect(() => {
     if (nps.length > 0) {
-      setChart(reformatNps(nps));
+      setNpsChartData(reformatNps(nps));
+    }
+  }, [nps]);
+
+  useEffect(() => {
+    if (nps.length > 0) {
+      setNpsChartData(reformatNps(nps));
     }
   }, [nps]);
 
@@ -83,15 +100,18 @@ const Home = ({
               </div>
               <div className="col-sm">
                 <Details />
-                {chart.values.length > 0 ? (
-                  <Nps chart={chart} />
+                {npsChartData.values.length > 0 ? (
+                  <Nps chart={npsChartData} />
                 ) : (
                   <div className="my-5 p-4 jumbotron text-light bg-dark">
                     No Measure Data Available For NPS graph
                   </div>
                 )}
                 {measures?.length > 0 ? (
-                  <MeasuresOverTime measures={measures} measureGoals={measureGoals} />
+                  <MeasuresOverTime
+                    graphData={measuresChartData.graphData}
+                    graphOptions={measuresChartData.graphOptions}
+                  />
                 ) : (
                   <div className="my-5 p-4 jumbotron text-light bg-dark">
                     No Measure Data Available For Measure Over Time Graph
