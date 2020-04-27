@@ -70,9 +70,6 @@ const Header = ({ isLoggedIn, dispatch }) => {
             <Link className="nav-link text-light" style={{ textDecoration: 'none' }} to="/">
               Home
             </Link>
-            <Link className="nav-link text-light" style={{ textDecoration: 'none' }} to="/admin">
-              Admin
-            </Link>
           </Nav>
           <Nav className="navbar-nav-right">
             {isLoggedIn ? (
