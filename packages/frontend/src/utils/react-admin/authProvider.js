@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 import { store } from '../../index';
 import { setLogoutStatus, setLoginStatus } from '../../actions/auth';
+import { disableEdit } from '../../actions/editMode';
 
 export default {
   // called when the user attempts to log in
@@ -24,6 +25,7 @@ export default {
     localStorage.removeItem('email');
     localStorage.removeItem('token');
     store.dispatch(setLogoutStatus());
+    store.dispatch(disableEdit());
     return Promise.resolve();
   },
   // called when the API returns an error
@@ -41,6 +43,7 @@ export default {
       return Promise.resolve();
     }
     store.dispatch(setLogoutStatus());
+    store.dispatch(disableEdit());
     return Promise.reject();
   },
   // called when the user navigates to a new location, to check for permissions / roles

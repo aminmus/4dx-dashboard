@@ -32,7 +32,7 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
       })}
       {editMode && (
         <ListItem className="text-light">
-          {isEditing ? (
+          {isEditing && editMode ? (
             <InputMeasure clientId={clientId} handleSave={handleSave} setIsEditing={setIsEditing} />
           ) : (
             <Button onClick={() => setIsEditing(true)} className="px-0 mx-auto">

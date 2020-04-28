@@ -32,7 +32,7 @@ const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
 
   return (
     <ListItem className="text-light">
-      {isEditing ? (
+      {isEditing && editMode ? (
         <div>
           <InputMeasure
             id={measure.id}
