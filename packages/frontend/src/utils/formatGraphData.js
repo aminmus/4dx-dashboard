@@ -6,7 +6,7 @@ import moment from 'moment';
  * The step size between dates depends on the interval input
  * @param {string} interval
  */
-const setDates = (interval = 'biweekly') => {
+const setDates = interval => {
   /**
    * Generate the first date for the dataset. It will serve as the
    * midpoint for dataset so that the center of the graph will always
@@ -14,6 +14,7 @@ const setDates = (interval = 'biweekly') => {
    */
   const dates = [];
   let startDate;
+
   let endDate;
 
   /**
@@ -26,25 +27,25 @@ const setDates = (interval = 'biweekly') => {
        */
 
       startDate = moment().subtract(4, 'weeks');
-      // .format('YYYY-MM-DD');
+
       endDate = moment().add(4, 'weeks');
-      //   .format('YYYY-MM-DD');
+
       break;
     case 'biweekly':
       /**
        * x number of weeks ahead * number of days per week
        */
       startDate = moment().subtract(8, 'weeks');
-      // .format('YYYY-MM-DD');
+
       endDate = moment().add(8, 'weeks');
-      //   .format('YYYY-MM-DD');
+
       break;
     case 'monthly':
       /**
        * x number of months ahead * number of weeks per month * number of days per week
        */
       startDate = moment().subtract(4, 'months');
-      // .format('YYYY-MM-DD');
+
       endDate = moment().add(4, 'months');
       break;
     default:
@@ -67,20 +68,127 @@ const setDates = (interval = 'biweekly') => {
 /**
  * Return an array of measure target (amount of successful measures expected)
  *
+ * @param {Object} firstDataPoint - An array of measure objects
+ * @param {Object} lastDataPoint - An array of measure objects
  * @param {Array} measureGoals - An array of measure objects
  */
-const setTarget = measureGoals => {
+const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
   const data = [];
+  const outOfBoundsLeft = [];
+  const outOfBoundsRight = [];
+
   measureGoals.forEach(goal => {
-    data.push({ x: goal.targetDate, y: goal.measuresAmount });
+    if (
+      moment(goal.targetDate).isAfter(firstDataPoint.x) &&
+      moment(goal.targetDate).isBefore(lastDataPoint.x)
+    ) {
+      data.push({ x: goal.targetDate, y: goal.measuresAmount });
+    } else if (moment(goal.targetDate).isAfter(lastDataPoint.x)) {
+      outOfBoundsRight.push({ x: goal.targetDate, y: goal.measuresAmount });
+    } else {
+      outOfBoundsLeft.push({ x: goal.targetDate, y: goal.measuresAmount });
+    }
   });
-  data.sort((a, b) => {
-    return moment(a).diff(b);
-  });
+
+  let x1 = null;
+  let y1 = null;
+  let x2 = null;
+  let y2 = null;
+  let x3 = null;
+  let y3 = null;
+  let x4 = null;
+  let y4 = null;
+
+  /**
+   * Sort the data in order of ascendings dates
+   */
+  if (data.length > 1) {
+    data.sort((a, b) => {
+      return moment(a).diff(b);
+    });
+  }
+
+  /**
+   * Possible cases for available target data points
+   */
+  if (data.length > 0 && outOfBoundsLeft.length > 0 && outOfBoundsRight.length === 0) {
+    x1 = outOfBoundsLeft.slice(-1)[0]?.x;
+    y1 = outOfBoundsLeft.slice(-1)[0]?.y;
+    x2 = data[0]?.x;
+    y2 = data[0]?.y;
+    const xDelta = moment(x2).diff(x1, 'days');
+    const yDelta = y2 - y1;
+    const delta = yDelta / xDelta;
+    const newX1 = firstDataPoint.x;
+    const newXDelta = moment(x2).diff(newX1, 'days');
+    const newY1 = Math.round(y2 - delta * newXDelta);
+    data.unshift({ x: newX1, y: newY1 });
+    return data;
+  }
+  if (data.length > 0 && outOfBoundsRight.length > 0 && outOfBoundsLeft.length === 0) {
+    x1 = data.slice(-1)[0]?.x;
+    y1 = data.slice(-1)[0]?.y;
+    x2 = outOfBoundsRight[0]?.x;
+    y2 = outOfBoundsRight[0]?.y;
+    const xDelta = moment(x2).diff(x1, 'days');
+    const yDelta = y2 - y1;
+    const delta = yDelta / xDelta;
+    const newX2 = lastDataPoint.x;
+    const newXDelta = moment(newX2).diff(x1, 'days');
+    const newY2 = Math.round(y1 + delta * newXDelta);
+    data.push({ x: newX2, y: newY2 });
+    return data;
+  }
+  if (data.length > 0 && outOfBoundsLeft.length > 0 && outOfBoundsRight.length > 0) {
+    x1 = outOfBoundsLeft.slice(-1)[0]?.x;
+    y1 = outOfBoundsLeft.slice(-1)[0]?.y;
+    x2 = data[0]?.x;
+    y2 = data[0]?.y;
+    const x12Delta = moment(x2).diff(x1, 'days');
+    const yDelta = y2 - y1;
+    const delta12 = yDelta / x12Delta;
+    const newX1 = firstDataPoint.x;
+    const newX12Delta = moment(x2).diff(newX1, 'days');
+    const newY1 = Math.round(y2 - delta12 * newX12Delta);
+    data.unshift({ x: newX1, y: newY1 });
+    x2 = data.slice(-1)[0]?.x;
+    y2 = data.slice(-1)[0]?.y;
+    x3 = outOfBoundsRight[0]?.x;
+    y3 = outOfBoundsRight[0]?.y;
+    const x23Delta = moment(x3).diff(x2, 'days');
+    const y23Delta = y3 - y2;
+    const delta23 = y23Delta / x23Delta;
+    const newX3 = lastDataPoint.x;
+    const newX23Delta = moment(newX3).diff(x2, 'days');
+    const newY3 = Math.round(y2 + delta23 * newX23Delta);
+    data.push({ x: newX3, y: newY3 });
+    return data;
+  }
+  if (data.length === 0 && outOfBoundsRight.length > 0 && outOfBoundsLeft.length > 0) {
+    x1 = outOfBoundsLeft.slice(-1)[0]?.x;
+    y1 = outOfBoundsLeft.slice(-1)[0]?.y;
+    x2 = firstDataPoint?.x;
+    x3 = lastDataPoint?.x;
+    x4 = outOfBoundsRight[0]?.x;
+    y4 = outOfBoundsRight[0]?.y;
+    const delta = (y4 - y1) / moment(x4).diff(x1, 'days');
+    y2 = y1 + delta * moment(x2).diff(x1, 'days');
+    y3 = y4 - delta * moment(x4).diff(x3, 'days');
+    data.push({ x: x2, y: y2 });
+    data.push({ x: x3, y: y3 });
+    return data;
+  }
   return data;
 };
 
-const setMeasures = (measures, dates, interpolation) => {
+/**
+ * Returns an array of measure data points (x, y)
+ * where x = date and y = number of measures completed
+ * @param {Object} measures
+ * @param {Array} dates
+ */
+
+const setMeasures = (measures, dates) => {
   const successfulMeasureDate = measures.filter(measure => measure.success).sort();
   const measureData = dates.reduce((accumulator, date) => {
     let i = 0;
@@ -93,13 +201,69 @@ const setMeasures = (measures, dates, interpolation) => {
     return accumulator;
   }, []);
 
-  return interpolation
-    ? measureData.filter((_dataPoint, index) => {
-        return index > 0 && measureData[index].y !== measureData[index - 1].y;
-      })
-    : measureData;
+  return measureData;
 };
 
+/**
+ * Returns the graph data object
+ * @param {Array} measuresData
+ * @param {Array} targetData
+ 
+ */
+const setGraphData = (measuresData, targetData) => {
+  const pointBackgroundColor = [];
+  const pointBorderColor = [];
+  const pointHoverBackgroundColor = 'white';
+  const pointHoverBorderColor = 'red';
+  let radius = 0;
+  let hoverRadius = 0;
+  const measuresValueArray = measuresData.map(measure => measure.y);
+  measuresValueArray.forEach((value, index) => {
+    if (value === measuresValueArray[index - 1] && value === measuresValueArray[index + 1]) {
+      pointBackgroundColor.push('transparent');
+      pointBorderColor.push('transparent');
+    } else {
+      pointBackgroundColor.push('white');
+      pointBorderColor.push('red');
+      radius = 5;
+      hoverRadius = 6;
+    }
+  });
+
+  return {
+    datasets: [
+      {
+        label: 'Measures',
+        data: measuresData || [],
+        fill: false,
+        pointBackgroundColor,
+        pointBorderColor,
+        pointHoverBackgroundColor,
+        pointHoverBorderColor,
+        borderColor: 'green',
+        backgroundColor: 'green',
+
+        radius,
+        hoverRadius
+      },
+      {
+        label: 'Target',
+        data: targetData || [],
+        fill: false,
+        backgroundColor: 'red',
+        borderColor: 'red',
+        spanGaps: true,
+        lineTension: 0
+      }
+    ]
+  };
+};
+
+/**
+ * Returns the tick data formatting object
+ * to use in the graph options object
+ * @param {String} intervalSpan
+ */
 const setTickData = intervalSpan => {
   switch (intervalSpan) {
     case 'weekly':
@@ -120,10 +284,10 @@ const setTickData = intervalSpan => {
       };
     case 'monthly':
       return {
-        unit: 'month',
-        unitStepSize: 1,
+        unit: 'week',
+        unitStepSize: 4,
         displayFormats: {
-          quarter: 'M'
+          week: 'MMM YYYY'
         }
       };
     case 'default':
@@ -131,61 +295,11 @@ const setTickData = intervalSpan => {
   }
 };
 
-const setGraphData = (measuresData, targetData, interpolation) => {
-  const pointBackgroundColor = [];
-  const pointBorderColor = [];
-  const pointHoverBackgroundColor = 'white';
-  const pointHoverBorderColor = 'red';
-  let radius = 0;
-  let hoverRadius = 0;
-  const measuresValueArray = measuresData.map(measure => measure.y);
-  if (!interpolation) {
-    measuresValueArray.forEach((value, index) => {
-      if (value === measuresValueArray[index - 1] && value === measuresValueArray[index + 1]) {
-        pointBackgroundColor.push('transparent');
-        pointBorderColor.push('transparent');
-      } else {
-        pointBackgroundColor.push('white');
-        pointBorderColor.push('red');
-        radius = 5;
-        hoverRadius = 6;
-      }
-    });
-  } else {
-    radius = 5;
-    hoverRadius = 6;
-  }
-
-  return {
-    datasets: [
-      {
-        label: 'Measures',
-        data: measuresData || [],
-        fill: false,
-        pointBackgroundColor,
-        pointBorderColor,
-        pointHoverBackgroundColor,
-        pointHoverBorderColor,
-        borderColor: 'green',
-        backgroundColor: 'green',
-        lineTension: !interpolation ? 0 : 0.5,
-        radius,
-        hoverRadius
-      },
-      {
-        label: 'Target',
-        // data: targetData ? targetData : [],
-        data: [],
-        fill: false,
-        backgroundColor: 'red',
-        borderColor: 'red',
-        spanGaps: true,
-        lineTension: 0
-      }
-    ]
-  };
-};
-
+/**
+ * Returns the options object to use in
+ * rendering the graph
+ * @param {Object} tickData
+ */
 const setGraphOptions = tickData => {
   return {
     scales: {
@@ -212,12 +326,20 @@ const setGraphOptions = tickData => {
   };
 };
 
-export default (measures, measureGoals, interval, interpolation = false) => {
+/**
+ * Returns the data and options object for the Measure Over Time graph
+ * @param {Object} measures
+ * @param {Object} measureGoals
+ * @param {String} interval
+ */
+export default (measures, measureGoals, interval) => {
   const dates = setDates(interval);
-  const measuresData = setMeasures(measures, dates, interpolation);
-  const targetData = setTarget(measureGoals);
+  const measuresData = setMeasures(measures, dates);
+  const firstDataPoint = measuresData[0];
+  const lastDataPoint = measuresData.slice(-1)[0];
+  const targetData = setTarget(firstDataPoint, lastDataPoint, measureGoals);
   const tickData = setTickData(interval);
-  const graphData = setGraphData(measuresData, targetData, interpolation);
+  const graphData = setGraphData(measuresData, targetData);
   const graphOptions = setGraphOptions(tickData);
   return {
     graphData,
