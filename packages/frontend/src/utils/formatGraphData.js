@@ -1,5 +1,8 @@
 /* eslint-disable no-plusplus, consistent-return,  default-case */
 import moment from 'moment';
+import COLORS from '../style/COLORS';
+
+const { primary, success } = COLORS;
 
 /**
  * Return an array of dates consisting of 6 dates
@@ -197,7 +200,15 @@ const setMeasures = (measures, dates) => {
         i += 1;
       }
     });
-    accumulator.push({ y: i, x: date });
+    /**
+     * Null the data value to prevent it from rendering if
+     * the date exceeds the current date
+     */
+    accumulator.push({
+      y: moment(date).isSameOrBefore(moment()) ? i : null,
+      x: date
+    });
+
     return accumulator;
   }, []);
 
@@ -213,8 +224,6 @@ const setMeasures = (measures, dates) => {
 const setGraphData = (measuresData, targetData) => {
   const pointBackgroundColor = [];
   const pointBorderColor = [];
-  const pointHoverBackgroundColor = 'white';
-  const pointHoverBorderColor = 'red';
   let radius = 0;
   let hoverRadius = 0;
   const measuresValueArray = measuresData.map(measure => measure.y);
@@ -223,9 +232,9 @@ const setGraphData = (measuresData, targetData) => {
       pointBackgroundColor.push('transparent');
       pointBorderColor.push('transparent');
     } else {
-      pointBackgroundColor.push('white');
-      pointBorderColor.push('red');
-      radius = 5;
+      pointBackgroundColor.push(primary);
+      pointBorderColor.push(primary);
+      radius = 3;
       hoverRadius = 6;
     }
   });
@@ -236,11 +245,11 @@ const setGraphData = (measuresData, targetData) => {
         label: 'Measures',
         data: measuresData || [],
         fill: false,
+        borderWidth: 3,
+        pointBorderWidth: 3,
         pointBackgroundColor,
         pointBorderColor,
-        pointHoverBackgroundColor,
-        pointHoverBorderColor,
-        borderColor: 'green',
+        borderColor: primary,
         backgroundColor: 'green',
 
         radius,
@@ -250,8 +259,10 @@ const setGraphData = (measuresData, targetData) => {
         label: 'Target',
         data: targetData || [],
         fill: false,
-        backgroundColor: 'red',
-        borderColor: 'red',
+        borderWidth: 3,
+        pointBorderWidth: 3,
+        backgroundColor: success,
+        borderColor: success,
         spanGaps: true,
         lineTension: 0
       }
@@ -307,7 +318,8 @@ const setGraphOptions = tickData => {
         {
           scaleLabel: {
             display: true,
-            labelString: 'Measures'
+            labelString: 'Measures',
+            fontColor: primary
           },
           ticks: {
             stepSize: 1,
@@ -322,6 +334,9 @@ const setGraphOptions = tickData => {
           time: tickData
         }
       ]
+    },
+    legend: {
+      display: false
     }
   };
 };
