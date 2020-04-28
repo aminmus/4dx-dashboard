@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 import { ClientList, ClientEdit, ClientShow, ClientCreate } from '../components/admin/client';
+// eslint-disable-next-line import/no-cycle
 import authProvider from '../utils/react-admin/authProvider';
 import dataProvider from '../utils/react-admin/dataProvider';
 import Dashboard from '../components/admin/Dashboard';
@@ -17,8 +18,10 @@ import {
   MeasureGoalCreate
 } from '../components/admin/measureGoal';
 import CustomLayout from '../components/admin/CustomLayout';
+// eslint-disable-next-line import/no-cycle
+import Login from './Login';
 
-export default function Login({ history }) {
+export default function Admin({ history, customRoutes }) {
   const theme = createMuiTheme({
     palette: {
       type: 'dark'
@@ -33,6 +36,8 @@ export default function Login({ history }) {
       dashboard={Dashboard}
       theme={theme}
       layout={CustomLayout}
+      loginPage={Login}
+      customRoutes={customRoutes}
     >
       <Resource
         name="clients"
@@ -40,13 +45,25 @@ export default function Login({ history }) {
         list={ClientList}
         edit={ClientEdit}
         show={ClientShow}
+        options={{ label: 'Clients' }}
       />
-      <Resource name="csat" edit={CsatEdit} create={CsatCreate} />
-      <Resource name="measures" edit={MeasureEdit} create={MeasureCreate} />
-      <Resource name="users" list={UserList} />
-      <Resource name="nps" list={NpsList} edit={NpsEdit} create={NpsCreate} />
+      <Resource name="csat" edit={CsatEdit} create={CsatCreate} options={{ label: 'CSAT' }} />
       <Resource
-        name="MeasureGoals"
+        name="measures"
+        edit={MeasureEdit}
+        create={MeasureCreate}
+        options={{ label: 'Measures' }}
+      />
+      <Resource name="users" list={UserList} options={{ label: 'Users' }} />
+      <Resource
+        name="nps"
+        list={NpsList}
+        edit={NpsEdit}
+        create={NpsCreate}
+        options={{ label: 'NPS' }}
+      />
+      <Resource
+        name="measureGoals"
         options={{ label: 'Measure Goals' }}
         list={MeasureGoalList}
         edit={MeasureGoalEdit}
@@ -56,7 +73,12 @@ export default function Login({ history }) {
   );
 }
 
-Login.propTypes = {
+Admin.defaultProps = {
+  customRoutes: []
+};
+
+Admin.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  customRoutes: PropTypes.arrayOf(PropTypes.element)
 };

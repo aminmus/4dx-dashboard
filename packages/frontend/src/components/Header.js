@@ -1,7 +1,8 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { push } from 'connected-react-router';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import logo from '../logo.png';
@@ -11,22 +12,25 @@ import authProvider from '../utils/react-admin/authProvider';
  * Header Component
  * @component
  * @prop {boolean} isLoggedIn - Check if user is logged in
+ * @prop {function} dispatch - Redux Dispatch
  */
 
-const Header = props => {
-  const { isLoggedIn } = props;
+const Header = ({ isLoggedIn, dispatch }) => {
   const { logout } = authProvider;
-  const history = useHistory();
 
   /**
    * Logs out user and pushes them to the frontpage
    * @param e - Event Object
    */
-
   const handleLogoutClick = e => {
     e.preventDefault();
     logout();
-    history.push('/');
+    dispatch(push('/'));
+  };
+
+  const handleLoginClick = e => {
+    e.preventDefault();
+    dispatch(push('/login'));
   };
 
   /**
@@ -66,18 +70,23 @@ const Header = props => {
             <Link className="nav-link text-light" style={{ textDecoration: 'none' }} to="/">
               Home
             </Link>
-            <Link className="nav-link text-light" style={{ textDecoration: 'none' }} to="/admin">
-              Admin
-            </Link>
           </Nav>
           <Nav className="navbar-nav-right">
-            {isLoggedIn && (
+            {isLoggedIn ? (
               <Nav.Item
                 className="nav-link btn-logout text-light"
                 style={{ textDecoration: 'none' }}
                 onClick={handleLogoutClick}
               >
                 Logout
+              </Nav.Item>
+            ) : (
+              <Nav.Item
+                className="nav-link btn-login text-light"
+                style={{ textDecoration: 'none' }}
+                onClick={handleLoginClick}
+              >
+                Sign in
               </Nav.Item>
             )}
           </Nav>
@@ -88,7 +97,8 @@ const Header = props => {
 };
 
 Header.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = ({ auth }) => ({
