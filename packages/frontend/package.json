@@ -13,6 +13,7 @@
         "@testing-library/user-event": "^7.1.2",
         "bootstrap": "^4.4.1",
         "chart.js": "^2.9.3",
+        "classnames": "^2.2.6",
         "connected-react-router": "^6.8.0",
         "history": "^4.10.1",
         "jsonapi-serializer": "^3.6.6",
