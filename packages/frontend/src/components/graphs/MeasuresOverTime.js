@@ -16,7 +16,7 @@ const MeasuresOverTime = ({ graphData, graphOptions }) => {
 };
 
 MeasuresOverTime.propTypes = {
-  graphData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  graphData: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.any)).isRequired,
   graphOptions: PropTypes.objectOf(PropTypes.any).isRequired
 };
 
