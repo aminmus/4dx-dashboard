@@ -55,7 +55,7 @@ const Home = ({
       setDefinedStatus(calcDefineClients(clients));
       setLeadStatus(calcLeads(clients));
       setMeasures(measuresFromClients);
-      setMeasuresChartData(formatGraphData(measures, measureGoals, 'monthly', false));
+      setMeasuresChartData(formatGraphData(measuresFromClients, measureGoals, 'monthly'));
     }
   }, [clients]);
 
