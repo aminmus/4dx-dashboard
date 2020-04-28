@@ -9,6 +9,7 @@ import Admin from './layouts/Admin';
 import isAuthenticated from './utils/authentication';
 import { setLogoutStatus, setLoginStatus } from './actions/auth';
 import customRoutes from './customRoutes';
+import { disableEdit } from './actions/editMode';
 
 /**
  * Main App Component
@@ -23,6 +24,7 @@ const App = ({ history, dispatch }) => {
       dispatch(setLoginStatus());
     } else {
       dispatch(setLogoutStatus());
+      dispatch(disableEdit());
     }
   }, []);
 

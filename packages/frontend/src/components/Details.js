@@ -21,7 +21,7 @@ const Details = ({ clients, editMode, dispatch }) => {
       ))}
       {editMode && (
         <div>
-          {isEditing ? (
+          {isEditing && editMode ? (
             <InputClient handleSave={addNewClient} setIsEditing={setIsEditing} />
           ) : (
             <Button onClick={() => setIsEditing(true)} className="px-0">

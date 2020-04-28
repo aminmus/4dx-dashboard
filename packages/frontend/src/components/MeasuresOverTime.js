@@ -238,7 +238,7 @@ const MeasuresOverTime = props => {
             <IntervalSpanDialog setIntervalSpan={setIntervalSpan} intervalSpan={intervalSpan} />
           </div>
         )}
-        {isEditing ? (
+        {isEditing && editMode ? (
           <InputMeasuresGoal
             measures={measuresAmount}
             date={targetDate}
