@@ -4,33 +4,50 @@ import COLORS from '../style/COLORS';
 const { primary, success } = COLORS;
 
 /**
+ * Return an object with the start and end date based on interval and unit input
+ * @param {Number} units The amount of units to add and subtract from the current date
+ * @param {String} intervalType The interval of the graph (week or month)
+ */
+const getStartEndPoints = (units, intervalType) => {
+  return {
+    startDate: moment().subtract(units, intervalType),
+    endDate: moment().add(units, intervalType)
+  };
+};
+
+/**
  * Return an array of dates used to define the span of the graph
  * @param {String} interval The interval of the graph (weekly,biweekly or monthly)
  */
 const setDates = interval => {
   const dates = [];
-  let startDate;
-  let endDate;
+  let units;
+  let intervalType;
 
   /**
    * Set the first and last date based on the interval parameter
+   * Default is set to weekly if no matching case found
    */
   switch (interval) {
     case 'weekly':
-      startDate = moment().subtract(4, 'weeks');
-      endDate = moment().add(4, 'weeks');
+      units = 4;
+      intervalType = 'week';
       break;
     case 'biweekly':
-      startDate = moment().subtract(8, 'weeks');
-      endDate = moment().add(8, 'weeks');
+      units = 8;
+      intervalType = 'week';
       break;
     case 'monthly':
-      startDate = moment().subtract(4, 'months');
-      endDate = moment().add(4, 'months');
+      units = 4;
+      intervalType = 'month';
       break;
     default:
+      units = 4;
+      intervalType = 'week';
       break;
   }
+
+  const { startDate, endDate } = getStartEndPoints(units, intervalType);
 
   const diff = moment(endDate).diff(startDate, 'd');
   dates.push(startDate.format('YYYY-MM-DD'));
@@ -77,7 +94,7 @@ const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
   });
 
   /**
-   * Sort the data in order of ascendings dates
+   * Sort the data in order of ascending dates
    */
   if (data.length > 1) {
     data.sort((a, b) => {
@@ -176,13 +193,13 @@ const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
  * @param {Array} measures Array of measure objects
  * @param {Array} dates Array of dates that constitute the span of the graph
  */
-const setMeasures = (measures, dates) => {
+const setMeasuresGraphPoints = (measures, dates) => {
   const successfulMeasureDate = measures.filter(measure => measure.success).sort();
   const measureData = dates.reduce((accumulator, date) => {
-    let i = 0;
+    let succesfulMeasures = 0;
     successfulMeasureDate.forEach(dateToCheck => {
       if (moment(date).isSameOrAfter(dateToCheck.success)) {
-        i += 1;
+        succesfulMeasures += 1;
       }
     });
     /**
@@ -190,7 +207,7 @@ const setMeasures = (measures, dates) => {
      * the date exceeds the current date
      */
     accumulator.push({
-      y: moment(date).isSameOrBefore(moment()) ? i : null,
+      y: moment(date).isSameOrBefore(moment()) ? succesfulMeasures : null,
       x: date
     });
 
@@ -206,18 +223,18 @@ const setMeasures = (measures, dates) => {
  * @param {Array} targetData Array of measure target objects (x,y)
  */
 const setGraphData = (measuresData, targetData) => {
-  const pointBackgroundColor = [];
-  const pointBorderColor = [];
+  const pointBackgroundColorArray = [];
+  const pointBorderColorArray = [];
   let radius = 0;
   let hoverRadius = 0;
   const measuresValueArray = measuresData.map(measure => measure.y);
   measuresValueArray.forEach((value, index) => {
     if (value === measuresValueArray[index - 1] && value === measuresValueArray[index + 1]) {
-      pointBackgroundColor.push('transparent');
-      pointBorderColor.push('transparent');
+      pointBackgroundColorArray.push('transparent');
+      pointBorderColorArray.push('transparent');
     } else {
-      pointBackgroundColor.push(primary);
-      pointBorderColor.push(primary);
+      pointBackgroundColorArray.push(primary);
+      pointBorderColorArray.push(primary);
       radius = 3;
       hoverRadius = 6;
     }
@@ -231,8 +248,8 @@ const setGraphData = (measuresData, targetData) => {
         fill: false,
         borderWidth: 3,
         pointBorderWidth: 3,
-        pointBackgroundColor,
-        pointBorderColor,
+        pointBackgroundColor: pointBackgroundColorArray,
+        pointBorderColor: pointBorderColorArray,
         borderColor: primary,
         backgroundColor: 'green',
 
@@ -342,7 +359,7 @@ const setGraphOptions = tickData => {
  */
 export default (measures, measureGoals, interval) => {
   const dates = setDates(interval);
-  const measuresData = setMeasures(measures, dates);
+  const measuresData = setMeasuresGraphPoints(measures, dates);
   const firstDataPoint = measuresData[0];
   const lastDataPoint = measuresData.slice(-1)[0];
   const targetData = setTarget(firstDataPoint, lastDataPoint, measureGoals);
