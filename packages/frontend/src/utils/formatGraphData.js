@@ -62,7 +62,8 @@ const reformatTargetGraphPoints = (
   let y4 = null;
 
   /**
-   * CASE : Target data in graph span and before span
+   * CASE : Target data inside and outside (before) span
+   * --> Add new data point at beginning of graph
    */
   if (data.length > 0 && outOfBoundsLeft.length > 0 && outOfBoundsRight.length === 0) {
     x1 = outOfBoundsLeft.slice(-1)[0]?.x;
@@ -78,7 +79,8 @@ const reformatTargetGraphPoints = (
   }
 
   /**
-   * CASE : Target data in graph span and after span
+   * CASE : Target data inside and outside (after) span
+   * --> Add new data point at the end of the graph
    */
   if (data.length > 0 && outOfBoundsRight.length > 0 && outOfBoundsLeft.length === 0) {
     x1 = data.slice(-1)[0]?.x;
@@ -94,7 +96,8 @@ const reformatTargetGraphPoints = (
   }
 
   /**
-   * CASE : Target data in graph span, before and after span
+   * CASE : Target data inside and outside (before and after) span
+   * --> Add new data point at beginning and end of the graph
    */
   if (data.length > 0 && outOfBoundsLeft.length > 0 && outOfBoundsRight.length > 0) {
     x1 = outOfBoundsLeft.slice(-1)[0]?.x;
@@ -118,7 +121,8 @@ const reformatTargetGraphPoints = (
     return data;
   }
   /**
-   * CASE : Target data in after and before span
+   * CASE : Target data outside of span (after and before)
+   * --> Add new data point at beginning and end of the graph
    */
   if (data.length === 0 && outOfBoundsRight.length > 0 && outOfBoundsLeft.length > 0) {
     x1 = outOfBoundsLeft.slice(-1)[0]?.x;
@@ -127,7 +131,7 @@ const reformatTargetGraphPoints = (
     x3 = lastDataPoint?.x;
     x4 = outOfBoundsRight[0]?.x;
     y4 = outOfBoundsRight[0]?.y;
-    const delta = (y4 - y1) / moment(x4).diff(x1, 'days');
+    const delta = getDelta(x1, x4, y1, y4);
     y2 = y1 + delta * moment(x2).diff(x1, 'days');
     y3 = y4 - delta * moment(x4).diff(x3, 'days');
     data.push({ x: x2, y: y2 });
