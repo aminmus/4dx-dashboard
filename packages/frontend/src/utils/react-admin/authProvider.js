@@ -1,7 +1,13 @@
 /* eslint-disable import/no-cycle */
 import { store } from '../../index';
 import { setLogoutStatus, setLoginStatus } from '../../actions/auth';
+import { disableEdit } from '../../actions/editMode';
 
+/**
+ * Authentication provider
+ * Used by React Admin and custom components for authentication and authorization
+ * @type {Object.<string, function>}
+ */
 export default {
   // called when the user attempts to log in
   login: async ({ username, password }) => {
@@ -14,6 +20,7 @@ export default {
 
     const response = await fetch(request);
     if (response.status < 200 || response.status >= 300) throw new Error(response.statusText);
+
     const { token } = await response.json();
     localStorage.setItem('email', username);
     store.dispatch(setLoginStatus());
@@ -24,24 +31,25 @@ export default {
     localStorage.removeItem('email');
     localStorage.removeItem('token');
     store.dispatch(setLogoutStatus());
+    store.dispatch(disableEdit());
     return Promise.resolve();
   },
-  // called when the API returns an error
+  // called when the API returns an error, will call logout on reject
   checkError: ({ status }) => {
     if (status === 401 || status === 403) {
-      localStorage.removeItem('email');
       return Promise.reject();
     }
     return Promise.resolve();
   },
   // called when the user navigates to a new location, to check for authentication
   checkAuth: () => {
-    if (localStorage.getItem('email')) {
+    if (localStorage.getItem('token')) {
       store.dispatch(setLoginStatus());
       return Promise.resolve();
     }
     store.dispatch(setLogoutStatus());
-    return Promise.reject();
+    store.dispatch(disableEdit());
+    return Promise.reject(new Error('Not signed in'));
   },
   // called when the user navigates to a new location, to check for permissions / roles
   getPermissions: () => Promise.resolve()

@@ -1,5 +1,6 @@
 // EDIT MODE
 export const TOGGLE_EDIT = 'TOGGLE_EDIT';
+export const DISABLE_EDIT = 'DISABLE_EDIT';
 
 // AUTH
 export const LOGIN = 'LOGIN';

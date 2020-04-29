@@ -1,14 +1,15 @@
-/* eslint-disable no-console, import/no-cycle */
+/* eslint-disable import/no-cycle */
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import Header from './components/Header';
-import Home from './layouts/Home';
 import Admin from './layouts/Admin';
 import isAuthenticated from './utils/authentication';
 import { setLogoutStatus, setLoginStatus } from './actions/auth';
+import customRoutes from './customRoutes';
+import { disableEdit } from './actions/editMode';
 
 /**
  * Main App Component
@@ -23,21 +24,15 @@ const App = ({ history, dispatch }) => {
       dispatch(setLoginStatus());
     } else {
       dispatch(setLogoutStatus());
+      dispatch(disableEdit());
     }
   }, []);
 
   return (
-    <Router>
+    <ConnectedRouter history={history}>
       <Header />
-      <Switch>
-        <Route path="/admin">
-          <Admin history={history} />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
-    </Router>
+      <Admin history={history} customRoutes={customRoutes} />
+    </ConnectedRouter>
   );
 };
 
