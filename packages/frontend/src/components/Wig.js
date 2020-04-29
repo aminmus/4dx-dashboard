@@ -26,7 +26,8 @@ const Wig = ({ nps, editMode }) => {
   useEffect(() => {
     const currentInt = parseInt(latestNps?.currentNps, 10);
     const goalInt = parseInt(latestNps?.goalNps, 10);
-    setProgress(currentInt && goalInt ? (currentInt / goalInt) * 100 : 0);
+    const npsProgress = currentInt && goalInt ? (currentInt / goalInt) * 100 : 0;
+    setProgress(npsProgress > 100 ? 100 : npsProgress);
   }, [latestNps]);
 
   const setColorBasedOnProgress = score => {
