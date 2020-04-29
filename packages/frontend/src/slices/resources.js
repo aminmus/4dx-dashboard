@@ -111,9 +111,7 @@ const resourcesSlice = createSlice({
       state.isFetching = false;
     },
     [addResource.fulfilled]: (state, { payload }) => {
-      if (payload.type === 'nps') {
-        state.data.nps.push(payload.data);
-      } else if (payload.type === 'clients') {
+      if (payload.type === 'clients') {
         /**
          * Handling eventual missing measures and client properties on payload
          * that happens from API response on create requests
@@ -121,6 +119,8 @@ const resourcesSlice = createSlice({
         payload.data.measures = payload.data.measures || [];
         payload.data.csats = payload.data.csats || [];
         state.data.clients.push(payload.data);
+      } else {
+        state.data[payload.type].push(payload.data);
       }
       state.isFetching = false;
     },
@@ -134,14 +134,12 @@ const resourcesSlice = createSlice({
     [deleteResource.fulfilled]: (state, { payload }) => {
       if (payload.type === 'clients') {
         const clientIndex = state.data.clients.findIndex(client => client.id === payload.data.id);
-
         state.data.clients.splice(clientIndex, 1);
-        state.isFetching = false;
       } else {
         const typeIndex = state.data[payload.type].findIndex(entry => entry.id === payload.data.id);
         state.data[payload.type].splice(typeIndex, 1);
-        state.isFetching = false;
       }
+      state.isFetching = false;
     },
     [deleteResource.rejected]: (state, { payload }) => {
       state.isFetching = false;

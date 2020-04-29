@@ -6,8 +6,7 @@ import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
 
-const InputMeasuresGoal = props => {
-  const { setIsEditing, measures, date } = props;
+const InputMeasuresGoal = ({ handleSaveMeasureGoal, setIsEditing, measures, date, id }) => {
   const [targetMeasures, setTargetMeasures] = useState(measures);
   const [selectedDate, setSelectedDate] = useState(date);
 
@@ -16,6 +15,19 @@ const InputMeasuresGoal = props => {
     borderRadius: '10px',
     padding: '10px',
     width: '100%'
+  };
+
+  const handleSaveClick = e => {
+    e.preventDefault();
+    // Can be create or update, depending on passed in function
+    handleSaveMeasureGoal({
+      id,
+      type: 'measureGoals',
+      data: {
+        targetDate: selectedDate,
+        measuresAmount: targetMeasures
+      }
+    });
   };
 
   return (
@@ -51,7 +63,7 @@ const InputMeasuresGoal = props => {
       </MuiPickersUtilsProvider>
 
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={() => setIsEditing(false)} />
+        <OptionsButton text="Save" onClick={handleSaveClick} />
         <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>
     </form>
@@ -59,11 +71,14 @@ const InputMeasuresGoal = props => {
 };
 
 InputMeasuresGoal.defaultProps = {
+  id: null,
   measures: 0,
   date: null
 };
 
 InputMeasuresGoal.propTypes = {
+  id: PropTypes.string,
+  handleSaveMeasureGoal: PropTypes.func.isRequired,
   setIsEditing: PropTypes.func.isRequired,
   measures: PropTypes.number,
   date: PropTypes.string
