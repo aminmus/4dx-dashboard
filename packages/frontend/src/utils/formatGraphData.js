@@ -5,6 +5,7 @@ const { primary, success } = COLORS;
 
 /**
  * Return an object with the start and end date based on interval and unit input
+ * @function
  * @param {Number} units The amount of units to add and subtract from the current date
  * @param {String} intervalType The interval of the graph (week or month)
  */
@@ -17,10 +18,11 @@ const getStartEndPoints = (units, intervalType) => {
 
 /**
  * Get the delta between two known points
- * @param {*} x1 Start Date
- * @param {*} x2 End Date
- * @param {*} y1 Start Measure Target
- * @param {*} y2 End Measure Target
+ * @function
+ * @param {String} x1 Start Date
+ * @param {String} x2 End Date
+ * @param {Number} y1 Start Measure Target
+ * @param {Number} y2 End Measure Target
  */
 const getDelta = (x1, x2, y1, y2) => {
   const xDelta = moment(x2).diff(x1, 'days');
@@ -29,20 +31,37 @@ const getDelta = (x1, x2, y1, y2) => {
 };
 
 /**
- * Return a reformatted array of target values that generates new
+ * Return the y value for a known x value
+ * on the line between two points using:
+ * y1 = y2 - delta * (x2-x1);
+ * @function
+ * @param {String} x2 Second known x value (date)
+ * @param {Number} y2 Second known y value (value)
+ * @param {String} x1 First known x value (date)
+ * @param {Number} delta Delta used to calculate new data point
+ */
+const calculateNewY = (x2, y2, x1, delta) => {
+  moment(x2).diff(x1, 'days');
+  const y1 = Math.round(y2 - delta * moment(x2).diff(x1, 'days'));
+  return { x: x1, y: y1 };
+};
+
+/**
+ * Return a reformatted array of target values that contains new
  * data points on the edges of the graph to handle measure goals
  * that fall outside the range of the graph
+ * @function
  * @param {Array} data Measure goals within the graph span
  * @param {Array} outOfBoundsLeft Measure goals existing before first rendered data point
  * @param {Array} outOfBoundsRight Measure goals existing after last rendered data point
  * @param {Object} firstDataPoint The first rendered data point on the graph
- * @param {Object} firstDataPoint.x Target date
- * @param {Object} firstDataPoint.y Target measures amount
+ * @param {String} firstDataPoint.x Target date
+ * @param {Number} firstDataPoint.y Target measures amount
  * @param {Object} lastDataPoint The last rendered data point on the graph
- * @param {Object} lastDataPoint.x Target date
- * @param {Object} lastDataPoint.y Target measures amount
+ * @param {String} lastDataPoint.x Target date
+ * @param {Number} lastDataPoint.y Target measures amount
  */
-const reformatTargetGraphPoints = (
+const generateNewStartAndEndTargetDataPoints = (
   data,
   outOfBoundsLeft,
   outOfBoundsRight,
@@ -50,48 +69,48 @@ const reformatTargetGraphPoints = (
   lastDataPoint
 ) => {
   /**
-   * Coordinate values used to calculate the various target data points
-   */
-  let x1 = null;
-  let y1 = null;
-  let x2 = null;
-  let y2 = null;
-  let x3 = null;
-  let y3 = null;
-  let x4 = null;
-  let y4 = null;
-
-  /**
    * CASE : Target data inside and outside (before) span
    * --> Add new data point at beginning of graph
    */
   if (data.length > 0 && outOfBoundsLeft.length > 0 && outOfBoundsRight.length === 0) {
-    x1 = outOfBoundsLeft.slice(-1)[0]?.x;
-    y1 = outOfBoundsLeft.slice(-1)[0]?.y;
-    x2 = data[0]?.x;
-    y2 = data[0]?.y;
-    const delta = getDelta(x1, x2, y1, y2);
-    const newX1 = firstDataPoint.x;
-    const newXDelta = moment(x2).diff(newX1, 'days');
-    const newY1 = Math.round(y2 - delta * newXDelta);
-    data.unshift({ x: newX1, y: newY1 });
+    /**
+     * Need to get corresponding y values for x2
+     * This represent the start points of the graph
+     */
+    //----------------------
+    const x1 = outOfBoundsLeft.slice(-1)[0]?.x;
+    const y1 = outOfBoundsLeft.slice(-1)[0]?.y;
+    //----------------------
+    const x2 = firstDataPoint.x;
+    //----------------------
+    const x3 = data[0]?.x;
+    const y3 = data[0]?.y;
+    //----------------------
+    const delta = getDelta(x1, x3, y1, y3);
+    const newDataPoint = calculateNewY(x1, y1, x2, delta);
+    data.unshift(newDataPoint);
     return data;
   }
-
   /**
    * CASE : Target data inside and outside (after) span
    * --> Add new data point at the end of the graph
    */
   if (data.length > 0 && outOfBoundsRight.length > 0 && outOfBoundsLeft.length === 0) {
-    x1 = data.slice(-1)[0]?.x;
-    y1 = data.slice(-1)[0]?.y;
-    x2 = outOfBoundsRight[0]?.x;
-    y2 = outOfBoundsRight[0]?.y;
-    const delta = getDelta(x1, x2, y1, y2);
-    const newX2 = lastDataPoint.x;
-    const newXDelta = moment(newX2).diff(x1, 'days');
-    const newY2 = Math.round(y1 + delta * newXDelta);
-    data.push({ x: newX2, y: newY2 });
+    /**
+     * Need to get corresponding y values for x2
+     * This represent the end point of the graph
+     */
+    //----------------------
+    const x1 = data.slice(-1)[0]?.x;
+    const y1 = data.slice(-1)[0]?.y;
+    //----------------------
+    const x2 = lastDataPoint.x;
+    //----------------------
+    const x3 = outOfBoundsRight[0]?.x;
+    const y3 = outOfBoundsRight[0]?.y;
+    const delta = getDelta(x1, x3, y1, y3);
+    const newDataPoint = calculateNewY(x3, y3, x2, delta);
+    data.push(newDataPoint);
     return data;
   }
 
@@ -100,24 +119,33 @@ const reformatTargetGraphPoints = (
    * --> Add new data point at beginning and end of the graph
    */
   if (data.length > 0 && outOfBoundsLeft.length > 0 && outOfBoundsRight.length > 0) {
-    x1 = outOfBoundsLeft.slice(-1)[0]?.x;
-    y1 = outOfBoundsLeft.slice(-1)[0]?.y;
-    x2 = data[0]?.x;
-    y2 = data[0]?.y;
-    const delta12 = getDelta(x1, x2, y1, y2);
-    const newX1 = firstDataPoint.x;
-    const newX12Delta = moment(x2).diff(newX1, 'days');
-    const newY1 = Math.round(y2 - delta12 * newX12Delta);
-    data.unshift({ x: newX1, y: newY1 });
-    x2 = data.slice(-1)[0]?.x;
-    y2 = data.slice(-1)[0]?.y;
-    x3 = outOfBoundsRight[0]?.x;
-    y3 = outOfBoundsRight[0]?.y;
-    const delta23 = getDelta(x2, x3, y2, y3);
-    const newX3 = lastDataPoint.x;
-    const newX23Delta = moment(newX3).diff(x2, 'days');
-    const newY3 = Math.round(y2 + delta23 * newX23Delta);
-    data.push({ x: newX3, y: newY3 });
+    /**
+     * Need to get corresponding y values for x2 and x5
+     * These represent the start and end points of the graph respectively
+     */
+    //----------------------
+    const x1 = outOfBoundsLeft.slice(-1)[0]?.x;
+    const y1 = outOfBoundsLeft.slice(-1)[0]?.y;
+    //----------------------
+    const x2 = firstDataPoint.x;
+    //----------------------
+    const x3 = data[0]?.x;
+    const y3 = data[0]?.y;
+    //----------------------
+    const x4 = data.slice(-1)[0]?.x;
+    const y4 = data.slice(-1)[0]?.y;
+    //----------------------
+    const x5 = lastDataPoint.x;
+    //----------------------
+    const x6 = outOfBoundsRight[0]?.x;
+    const y6 = outOfBoundsRight[0]?.y;
+    //----------------------
+    const delta31 = getDelta(x1, x3, y1, y3);
+    const newStartDataPoint = calculateNewY(x3, y3, x2, delta31);
+    const delta64 = getDelta(x6, x4, y6, y4);
+    const newEndDataPoint = calculateNewY(x6, y6, x5, delta64);
+    data.unshift(newStartDataPoint);
+    data.push(newEndDataPoint);
     return data;
   }
   /**
@@ -125,17 +153,21 @@ const reformatTargetGraphPoints = (
    * --> Add new data point at beginning and end of the graph
    */
   if (data.length === 0 && outOfBoundsRight.length > 0 && outOfBoundsLeft.length > 0) {
-    x1 = outOfBoundsLeft.slice(-1)[0]?.x;
-    y1 = outOfBoundsLeft.slice(-1)[0]?.y;
-    x2 = firstDataPoint?.x;
-    x3 = lastDataPoint?.x;
-    x4 = outOfBoundsRight[0]?.x;
-    y4 = outOfBoundsRight[0]?.y;
-    const delta = getDelta(x1, x4, y1, y4);
-    y2 = y1 + delta * moment(x2).diff(x1, 'days');
-    y3 = y4 - delta * moment(x4).diff(x3, 'days');
-    data.push({ x: x2, y: y2 });
-    data.push({ x: x3, y: y3 });
+    const x1 = outOfBoundsLeft.slice(-1)[0]?.x;
+    const y1 = outOfBoundsLeft.slice(-1)[0]?.y;
+    //----------------------
+    const x2 = firstDataPoint?.x;
+    //----------------------
+    const x3 = lastDataPoint?.x;
+    //----------------------
+    const x4 = outOfBoundsRight[0]?.x;
+    const y4 = outOfBoundsRight[0]?.y;
+    //----------------------
+    const delta41 = getDelta(x1, x4, y1, y4);
+    const newStartDataPoint = calculateNewY(x4, y4, x2, delta41);
+    const newEndDataPoint = calculateNewY(x4, y4, x3, delta41);
+    data.push(newStartDataPoint);
+    data.push(newEndDataPoint);
     return data;
   }
   /**
@@ -146,6 +178,7 @@ const reformatTargetGraphPoints = (
 
 /**
  * Return an array of dates used to define the span of the graph
+ * @function
  * @param {String} interval The interval of the graph (weekly,biweekly or monthly)
  */
 const setDates = interval => {
@@ -191,7 +224,7 @@ const setDates = interval => {
 /**
  * Return an array of measure targets (amount of successful measures expected
  * by a given target date)
- *
+ * @function
  * @param {Object} firstDataPoint First data point
  * @param {String} firstDataPoint.x First data point date
  * @param {number} firstDataPoint.y First data point measures completed
@@ -231,7 +264,7 @@ const setTargetGraphPoints = (firstDataPoint, lastDataPoint, measureGoals) => {
     });
   }
 
-  const reformattedData = reformatTargetGraphPoints(
+  const reformattedData = generateNewStartAndEndTargetDataPoints(
     data,
     outOfBoundsLeft,
     outOfBoundsRight,
@@ -245,6 +278,7 @@ const setTargetGraphPoints = (firstDataPoint, lastDataPoint, measureGoals) => {
 /**
  * Returns an array of measure data points (x, y)
  * where x = date and y = number of measures completed
+ * @function
  * @param {Array} measures Array of measure objects
  * @param {Array} dates Array of dates that constitute the span of the graph
  */
@@ -274,6 +308,7 @@ const setMeasuresGraphPoints = (measures, dates) => {
 
 /**
  * Returns the graph data object
+ * @function
  * @param {Array} measuresData Array of measure objects (x,y)
  * @param {Array} targetData Array of measure target objects (x,y)
  */
@@ -328,6 +363,7 @@ const setGraphData = (measuresData, targetData) => {
 
 /**
  * Returns the tick data formatting object to use in the graph options object
+ * @function
  * @param {String} interval The interval of the graph (weekly,biweekly or monthly)
  */
 const setTickData = interval => {
@@ -368,11 +404,11 @@ const setTickData = interval => {
 };
 
 /**
- * Returns the options object to use in
- * rendering the graph
+ * Returns the options object to use in rendering the graph
+ * @function
  * @param {Object} tickData
- * @param {Object} tickData.unit The time unit for formatting ticks (week, months)
- * @param {Object} tickData.unitStepSize The step size between each tick
+ * @param {String} tickData.unit The time unit for formatting ticks (week, months)
+ * @param {Number} tickData.unitStepSize The step size between each tick
  * @param {Object} tickData.displayFormats Tick data date label format
  */
 
@@ -408,6 +444,7 @@ const setGraphOptions = tickData => {
 
 /**
  * Returns the data and options object for the Measure Over Time graph
+ * @function
  * @param {Array} measures Array of measure objects
  * @param {Array} measureGoals Array of measure objects
  * @param {String} interval The interval of the graph (weekly,biweekly or monthly)
