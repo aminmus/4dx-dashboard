@@ -12,10 +12,6 @@ const Details = ({ clients, editMode, dispatch }) => {
   const [isLoadingNewClient, setIsLoadingNewClient] = useState(false);
 
   const useStyles = makeStyles({
-    loadingCircle: {
-      display: 'block',
-      margin: 'auto'
-    },
     flex: {
       display: 'flex',
       flexDirection: 'column',
