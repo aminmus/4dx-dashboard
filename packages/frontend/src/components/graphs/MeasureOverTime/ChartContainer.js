@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useMediaQuery, Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { makeStyles } from '@material-ui/core/styles';
 import OptionsToggleButton from '../../elements/OptionsToggleButton';
 import IntervalSpanDialog from '../../elements/IntervalSpanDialog';
 import InputMeasuresGoal from '../../elements/editMode/InputMeasuresGoal';
@@ -27,25 +28,27 @@ const ChartContainer = ({
   /**
    * Component Styles
    */
-  const ChartHeaderStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: primary
-  };
+  const useStyles = makeStyles({
+    header: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: primary
+    },
+    mainContainer: {
+      margin: '10px'
+    },
+    optionsContainer: {
+      display: 'flex',
+      margin: '10px',
+      border: `1px solid ${light}`,
+      borderRadius: '10px',
+      justifyContent: 'center',
+      flexDirection: match ? 'row' : 'column'
+    }
+  });
 
-  const ContainerStyle = {
-    margin: '10px'
-  };
-
-  const OptionsContainerStyle = {
-    display: 'flex',
-    margin: '10px',
-    border: `1px solid ${light}`,
-    borderRadius: '10px',
-    justifyContent: 'center',
-    flexDirection: match ? 'row' : 'column'
-  };
+  const classes = useStyles();
 
   /**
    * Get the latest measure goal as a reference for adding a new
@@ -80,8 +83,8 @@ const ChartContainer = ({
   };
 
   return (
-    <div style={ContainerStyle}>
-      <div style={ChartHeaderStyle}>
+    <div className={classes.mainContainer}>
+      <div className={classes.header}>
         <div className="chart-title">{`Measures ${measuresChartInterval}`}</div>
         <OptionsToggleButton onClick={toggleOptions} />
       </div>
@@ -93,7 +96,7 @@ const ChartContainer = ({
       )}
       <div>
         {optionsShow && (
-          <div style={OptionsContainerStyle}>
+          <div className={classes.optionsContainer}>
             <IntervalSpanDialog
               setIntervalSpan={setMeasuresChartInterval}
               intervalSpan={measuresChartInterval}
