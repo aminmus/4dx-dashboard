@@ -1,5 +1,5 @@
 import moment from 'moment';
-import COLORS from '../style/COLORS';
+import COLORS from '../../style/COLORS';
 
 const { primary, success } = COLORS;
 
@@ -77,15 +77,15 @@ const generateNewStartAndEndTargetDataPoints = (
      * Need to get corresponding y values for x2
      * This represent the start points of the graph
      */
-    //----------------------
+
     const x1 = outOfBoundsLeft.slice(-1)[0]?.x;
     const y1 = outOfBoundsLeft.slice(-1)[0]?.y;
-    //----------------------
+
     const x2 = firstDataPoint.x;
-    //----------------------
+
     const x3 = data[0]?.x;
     const y3 = data[0]?.y;
-    //----------------------
+
     const delta = getDelta(x1, x3, y1, y3);
     const newDataPoint = calculateNewY(x1, y1, x2, delta);
     data.unshift(newDataPoint);
@@ -100,12 +100,12 @@ const generateNewStartAndEndTargetDataPoints = (
      * Need to get corresponding y values for x2
      * This represent the end point of the graph
      */
-    //----------------------
+
     const x1 = data.slice(-1)[0]?.x;
     const y1 = data.slice(-1)[0]?.y;
-    //----------------------
+
     const x2 = lastDataPoint.x;
-    //----------------------
+
     const x3 = outOfBoundsRight[0]?.x;
     const y3 = outOfBoundsRight[0]?.y;
     const delta = getDelta(x1, x3, y1, y3);
@@ -123,23 +123,23 @@ const generateNewStartAndEndTargetDataPoints = (
      * Need to get corresponding y values for x2 and x5
      * These represent the start and end points of the graph respectively
      */
-    //----------------------
+
     const x1 = outOfBoundsLeft.slice(-1)[0]?.x;
     const y1 = outOfBoundsLeft.slice(-1)[0]?.y;
-    //----------------------
+
     const x2 = firstDataPoint.x;
-    //----------------------
+
     const x3 = data[0]?.x;
     const y3 = data[0]?.y;
-    //----------------------
+
     const x4 = data.slice(-1)[0]?.x;
     const y4 = data.slice(-1)[0]?.y;
-    //----------------------
+
     const x5 = lastDataPoint.x;
-    //----------------------
+
     const x6 = outOfBoundsRight[0]?.x;
     const y6 = outOfBoundsRight[0]?.y;
-    //----------------------
+
     const delta31 = getDelta(x1, x3, y1, y3);
     const newStartDataPoint = calculateNewY(x3, y3, x2, delta31);
     const delta64 = getDelta(x6, x4, y6, y4);
@@ -155,14 +155,14 @@ const generateNewStartAndEndTargetDataPoints = (
   if (data.length === 0 && outOfBoundsRight.length > 0 && outOfBoundsLeft.length > 0) {
     const x1 = outOfBoundsLeft.slice(-1)[0]?.x;
     const y1 = outOfBoundsLeft.slice(-1)[0]?.y;
-    //----------------------
+
     const x2 = firstDataPoint?.x;
-    //----------------------
+
     const x3 = lastDataPoint?.x;
-    //----------------------
+
     const x4 = outOfBoundsRight[0]?.x;
     const y4 = outOfBoundsRight[0]?.y;
-    //----------------------
+
     const delta41 = getDelta(x1, x4, y1, y4);
     const newStartDataPoint = calculateNewY(x4, y4, x2, delta41);
     const newEndDataPoint = calculateNewY(x4, y4, x3, delta41);

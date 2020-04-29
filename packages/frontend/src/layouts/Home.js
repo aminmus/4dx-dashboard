@@ -14,7 +14,7 @@ import { fetchResources } from '../slices/resources';
 import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
 import reformatNps from '../utils/reformatNps';
-import formatGraphData from '../utils/formatGraphData';
+import formatMeasureOverTimeData from '../utils/charts/formatMeasureOverTimeData';
 import ChartContainer from '../components/graphs/MeasureOverTime/ChartContainer';
 
 const getMeasuresFromClient = clients =>
@@ -57,14 +57,16 @@ const Home = ({
       setLeadStatus(calcLeads(clients));
       setMeasures(measuresFromClients);
       setMeasuresChartData(
-        formatGraphData(measuresFromClients, measureGoals, measuresChartInterval)
+        formatMeasureOverTimeData(measuresFromClients, measureGoals, measuresChartInterval)
       );
     }
   }, [clients]);
 
   useEffect(() => {
     const measuresFromClients = getMeasuresFromClient(clients);
-    setMeasuresChartData(formatGraphData(measuresFromClients, measureGoals, measuresChartInterval));
+    setMeasuresChartData(
+      formatMeasureOverTimeData(measuresFromClients, measureGoals, measuresChartInterval)
+    );
   }, [measuresChartInterval, measureGoals]);
 
   useEffect(() => {
