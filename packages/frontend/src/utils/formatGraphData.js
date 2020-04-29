@@ -107,7 +107,7 @@ const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
    */
   if (data.length > 1) {
     data.sort((a, b) => {
-      return moment(a).diff(b);
+      return moment(a.x).diff(b.x);
     });
   }
 
@@ -295,8 +295,8 @@ const setTickData = intervalSpan => {
       };
     case 'monthly':
       return {
-        unit: 'week',
-        unitStepSize: 4,
+        unit: 'month',
+        unitStepSize: 1,
         displayFormats: {
           week: 'MMM YYYY'
         }
