@@ -36,7 +36,7 @@ const InputMeasuresGoal = ({ handleSaveMeasureGoal, setIsEditing, measures, date
         <TextField
           label="Target Measures"
           style={{ color: '#ffff', marign: '10px' }}
-          placeholder={targetMeasures.toString(10)}
+          value={targetMeasures.toString(10)}
           default={targetMeasures.toString(10)}
           variant="filled"
           margin="normal"

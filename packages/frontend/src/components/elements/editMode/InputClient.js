@@ -24,7 +24,7 @@ const InputClient = ({ id, name, setIsEditing, handleSave }) => {
       <TextField
         label="Client Name"
         style={{ color: '#ffff' }}
-        placeholder={clientName}
+        value={clientName}
         default={clientName}
         fullWidth
         variant="filled"

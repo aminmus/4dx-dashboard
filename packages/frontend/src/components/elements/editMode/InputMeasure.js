@@ -39,7 +39,7 @@ const InputMeasure = ({ setIsEditing, handleSave, clientId, id, success, descrip
         <TextField
           label="Measure description"
           style={{ color: '#ffff', marign: '10px' }}
-          placeholder={measureDescription}
+          value={measureDescription}
           default={measureDescription}
           variant="filled"
           margin="normal"
