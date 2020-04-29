@@ -8,7 +8,6 @@ import Wig from '../components/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/Details';
 import Nps from '../components/Nps';
-import MeasuresOverTime from '../components/graphs/MeasuresOverTime';
 import { toggleEdit } from '../actions/editMode';
 import theme from '../style/muiTheme';
 import { fetchResources } from '../slices/resources';
@@ -16,6 +15,7 @@ import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
 import reformatNps from '../utils/reformatNps';
 import formatGraphData from '../utils/formatGraphData';
+import ChartContainer from '../components/graphs/MeasureOverTime/ChartContainer';
 
 const getMeasuresFromClient = clients =>
   clients.reduce((accumulator, client) => {
@@ -44,6 +44,7 @@ const Home = ({
     graphData: [],
     graphOptions: {}
   });
+  const [measuresChartInterval, setMeasuresChartInterval] = useState('weekly');
 
   useEffect(() => {
     dispatch(fetchResources());
@@ -55,9 +56,16 @@ const Home = ({
       setDefinedStatus(calcDefineClients(clients));
       setLeadStatus(calcLeads(clients));
       setMeasures(measuresFromClients);
-      setMeasuresChartData(formatGraphData(measuresFromClients, measureGoals, 'monthly'));
+      setMeasuresChartData(
+        formatGraphData(measuresFromClients, measureGoals, measuresChartInterval)
+      );
     }
   }, [clients]);
+
+  useEffect(() => {
+    const measuresFromClients = getMeasuresFromClient(clients);
+    setMeasuresChartData(formatGraphData(measuresFromClients, measureGoals, measuresChartInterval));
+  }, [measuresChartInterval, measureGoals]);
 
   useEffect(() => {
     if (nps.length > 0) {
@@ -108,9 +116,11 @@ const Home = ({
                   </div>
                 )}
                 {measures?.length > 0 ? (
-                  <MeasuresOverTime
-                    graphData={measuresChartData.graphData}
-                    graphOptions={measuresChartData.graphOptions}
+                  <ChartContainer
+                    measureGoals={measureGoals}
+                    measuresChartData={measuresChartData}
+                    measuresChartInterval={measuresChartInterval}
+                    setMeasuresChartInterval={setMeasuresChartInterval}
                   />
                 ) : (
                   <div className="my-5 p-4 jumbotron text-light bg-dark">
