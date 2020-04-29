@@ -1,54 +1,31 @@
-/* eslint-disable no-plusplus, consistent-return,  default-case */
 import moment from 'moment';
 import COLORS from '../style/COLORS';
 
 const { primary, success } = COLORS;
 
 /**
- * Return an array of dates consisting of 6 dates
- * The step size between dates depends on the interval input
- * @param {string} interval
+ * Return an array of dates used to define the span of the graph
+ * @param {String} interval The interval of the graph (weekly,biweekly or monthly)
  */
 const setDates = interval => {
-  /**
-   * Generate the first date for the dataset. It will serve as the
-   * midpoint for dataset so that the center of the graph will always
-   * display the current date
-   */
   const dates = [];
   let startDate;
-
   let endDate;
 
   /**
-   * Set the first label value and the interval step size between dates
+   * Set the first and last date based on the interval parameter
    */
   switch (interval) {
     case 'weekly':
-      /**
-       * x number of weeks ahead * number of days per week
-       */
-
       startDate = moment().subtract(4, 'weeks');
-
       endDate = moment().add(4, 'weeks');
-
       break;
     case 'biweekly':
-      /**
-       * x number of weeks ahead * number of days per week
-       */
       startDate = moment().subtract(8, 'weeks');
-
       endDate = moment().add(8, 'weeks');
-
       break;
     case 'monthly':
-      /**
-       * x number of months ahead * number of weeks per month * number of days per week
-       */
       startDate = moment().subtract(4, 'months');
-
       endDate = moment().add(4, 'months');
       break;
     default:
@@ -56,12 +33,9 @@ const setDates = interval => {
   }
 
   const diff = moment(endDate).diff(startDate, 'd');
-  /**
-   * Push the first value dates array
-   */
   dates.push(startDate.format('YYYY-MM-DD'));
 
-  for (let i = 0; i <= diff; i++) {
+  for (let i = 0; i <= diff; i += 1) {
     dates.push(startDate.add(1, 'days').format('YYYY-MM-DD'));
   }
 
@@ -69,14 +43,23 @@ const setDates = interval => {
 };
 
 /**
- * Return an array of measure target (amount of successful measures expected)
+ * Return an array of measure targets (amount of successful measures expected
+ * by a given target date)
  *
- * @param {Object} firstDataPoint - An array of measure objects
- * @param {Object} lastDataPoint - An array of measure objects
- * @param {Array} measureGoals - An array of measure objects
+ * @param {Object} firstDataPoint First data point
+ * @param {String} firstDataPoint.x First data point date
+ * @param {number} firstDataPoint.y First data point measures completed
+ * @param {Object} lastDataPoint Last data point
+ * @param {String} lastDataPoint.x Last data point date
+ * @param {number} lastDataPoint.y Last data point measures completed
+ * @param {Array} measureGoals Array of measure goal objects
  */
 const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
   const data = [];
+  /**
+   * Array for storing measure goals that fall outside of the
+   * graph's range
+   */
   const outOfBoundsLeft = [];
   const outOfBoundsRight = [];
 
@@ -93,15 +76,6 @@ const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
     }
   });
 
-  let x1 = null;
-  let y1 = null;
-  let x2 = null;
-  let y2 = null;
-  let x3 = null;
-  let y3 = null;
-  let x4 = null;
-  let y4 = null;
-
   /**
    * Sort the data in order of ascendings dates
    */
@@ -110,6 +84,18 @@ const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
       return moment(a.x).diff(b.x);
     });
   }
+
+  /**
+   * Coordinate values used to calculate the various target data points
+   */
+  let x1 = null;
+  let y1 = null;
+  let x2 = null;
+  let y2 = null;
+  let x3 = null;
+  let y3 = null;
+  let x4 = null;
+  let y4 = null;
 
   /**
    * Possible cases for available target data points
@@ -187,10 +173,9 @@ const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
 /**
  * Returns an array of measure data points (x, y)
  * where x = date and y = number of measures completed
- * @param {Object} measures
- * @param {Array} dates
+ * @param {Array} measures Array of measure objects
+ * @param {Array} dates Array of dates that constitute the span of the graph
  */
-
 const setMeasures = (measures, dates) => {
   const successfulMeasureDate = measures.filter(measure => measure.success).sort();
   const measureData = dates.reduce((accumulator, date) => {
@@ -217,9 +202,8 @@ const setMeasures = (measures, dates) => {
 
 /**
  * Returns the graph data object
- * @param {Array} measuresData
- * @param {Array} targetData
- 
+ * @param {Array} measuresData Array of measure objects (x,y)
+ * @param {Array} targetData Array of measure target objects (x,y)
  */
 const setGraphData = (measuresData, targetData) => {
   const pointBackgroundColor = [];
@@ -271,12 +255,11 @@ const setGraphData = (measuresData, targetData) => {
 };
 
 /**
- * Returns the tick data formatting object
- * to use in the graph options object
- * @param {String} intervalSpan
+ * Returns the tick data formatting object to use in the graph options object
+ * @param {String} interval The interval of the graph (weekly,biweekly or monthly)
  */
-const setTickData = intervalSpan => {
-  switch (intervalSpan) {
+const setTickData = interval => {
+  switch (interval) {
     case 'weekly':
       return {
         unit: 'week',
@@ -301,8 +284,14 @@ const setTickData = intervalSpan => {
           week: 'MMM YYYY'
         }
       };
-    case 'default':
-      break;
+    default:
+      return {
+        unit: 'week',
+        unitStepSize: 1,
+        displayFormats: {
+          week: 'MMM D'
+        }
+      };
   }
 };
 
@@ -310,7 +299,11 @@ const setTickData = intervalSpan => {
  * Returns the options object to use in
  * rendering the graph
  * @param {Object} tickData
+ * @param {Object} tickData.unit The time unit for formatting ticks (week, months)
+ * @param {Object} tickData.unitStepSize The step size between each tick
+ * @param {Object} tickData.displayFormats Tick data date label format
  */
+
 const setGraphOptions = tickData => {
   return {
     scales: {
@@ -343,9 +336,9 @@ const setGraphOptions = tickData => {
 
 /**
  * Returns the data and options object for the Measure Over Time graph
- * @param {Object} measures
- * @param {Object} measureGoals
- * @param {String} interval
+ * @param {Array} measures Array of measure objects
+ * @param {Array} measureGoals Array of measure objects
+ * @param {String} interval The interval of the graph (weekly,biweekly or monthly)
  */
 export default (measures, measureGoals, interval) => {
   const dates = setDates(interval);
