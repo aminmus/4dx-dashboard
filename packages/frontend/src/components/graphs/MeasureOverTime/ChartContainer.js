@@ -100,7 +100,7 @@ const ChartContainer = ({
             />
           </div>
         )}
-        {isEditing ? (
+        {isEditing && editMode ? (
           <InputMeasuresGoal
             handleSaveMeasureGoal={handleSaveMeasureGoal}
             measures={measuresAmount}
