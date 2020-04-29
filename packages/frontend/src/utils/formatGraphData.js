@@ -16,6 +16,19 @@ const getStartEndPoints = (units, intervalType) => {
 };
 
 /**
+ * Get the delta between two known points
+ * @param {*} x1 Start Date
+ * @param {*} x2 End Date
+ * @param {*} y1 Start Measure Target
+ * @param {*} y2 End Measure Target
+ */
+const getDelta = (x1, x2, y1, y2) => {
+  const xDelta = moment(x2).diff(x1, 'days');
+  const yDelta = y2 - y1;
+  return yDelta / xDelta;
+};
+
+/**
  * Return an array of dates used to define the span of the graph
  * @param {String} interval The interval of the graph (weekly,biweekly or monthly)
  */
@@ -122,9 +135,7 @@ const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
     y1 = outOfBoundsLeft.slice(-1)[0]?.y;
     x2 = data[0]?.x;
     y2 = data[0]?.y;
-    const xDelta = moment(x2).diff(x1, 'days');
-    const yDelta = y2 - y1;
-    const delta = yDelta / xDelta;
+    const delta = getDelta(x1, x2, y1, y2);
     const newX1 = firstDataPoint.x;
     const newXDelta = moment(x2).diff(newX1, 'days');
     const newY1 = Math.round(y2 - delta * newXDelta);
@@ -136,9 +147,7 @@ const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
     y1 = data.slice(-1)[0]?.y;
     x2 = outOfBoundsRight[0]?.x;
     y2 = outOfBoundsRight[0]?.y;
-    const xDelta = moment(x2).diff(x1, 'days');
-    const yDelta = y2 - y1;
-    const delta = yDelta / xDelta;
+    const delta = getDelta(x1, x2, y1, y2);
     const newX2 = lastDataPoint.x;
     const newXDelta = moment(newX2).diff(x1, 'days');
     const newY2 = Math.round(y1 + delta * newXDelta);
@@ -150,9 +159,7 @@ const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
     y1 = outOfBoundsLeft.slice(-1)[0]?.y;
     x2 = data[0]?.x;
     y2 = data[0]?.y;
-    const x12Delta = moment(x2).diff(x1, 'days');
-    const yDelta = y2 - y1;
-    const delta12 = yDelta / x12Delta;
+    const delta12 = getDelta(x1, x2, y1, y2);
     const newX1 = firstDataPoint.x;
     const newX12Delta = moment(x2).diff(newX1, 'days');
     const newY1 = Math.round(y2 - delta12 * newX12Delta);
@@ -161,9 +168,7 @@ const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
     y2 = data.slice(-1)[0]?.y;
     x3 = outOfBoundsRight[0]?.x;
     y3 = outOfBoundsRight[0]?.y;
-    const x23Delta = moment(x3).diff(x2, 'days');
-    const y23Delta = y3 - y2;
-    const delta23 = y23Delta / x23Delta;
+    const delta23 = getDelta(x2, x3, y2, y3);
     const newX3 = lastDataPoint.x;
     const newX23Delta = moment(newX3).diff(x2, 'days');
     const newY3 = Math.round(y2 + delta23 * newX23Delta);
