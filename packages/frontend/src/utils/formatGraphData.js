@@ -29,6 +29,118 @@ const getDelta = (x1, x2, y1, y2) => {
 };
 
 /**
+ * Return a reformatted array of target values that generates new
+ * data points on the edges of the graph to handle measure goals
+ * that fall outside the range of the graph
+ * @param {Array} data Measure goals within the graph span
+ * @param {Array} outOfBoundsLeft Measure goals existing before first rendered data point
+ * @param {Array} outOfBoundsRight Measure goals existing after last rendered data point
+ * @param {Object} firstDataPoint The first rendered data point on the graph
+ * @param {Object} firstDataPoint.x Target date
+ * @param {Object} firstDataPoint.y Target measures amount
+ * @param {Object} lastDataPoint The last rendered data point on the graph
+ * @param {Object} lastDataPoint.x Target date
+ * @param {Object} lastDataPoint.y Target measures amount
+ */
+const reformatTargetGraphPoints = (
+  data,
+  outOfBoundsLeft,
+  outOfBoundsRight,
+  firstDataPoint,
+  lastDataPoint
+) => {
+  /**
+   * Coordinate values used to calculate the various target data points
+   */
+  let x1 = null;
+  let y1 = null;
+  let x2 = null;
+  let y2 = null;
+  let x3 = null;
+  let y3 = null;
+  let x4 = null;
+  let y4 = null;
+
+  /**
+   * CASE : Target data in graph span and before span
+   */
+  if (data.length > 0 && outOfBoundsLeft.length > 0 && outOfBoundsRight.length === 0) {
+    x1 = outOfBoundsLeft.slice(-1)[0]?.x;
+    y1 = outOfBoundsLeft.slice(-1)[0]?.y;
+    x2 = data[0]?.x;
+    y2 = data[0]?.y;
+    const delta = getDelta(x1, x2, y1, y2);
+    const newX1 = firstDataPoint.x;
+    const newXDelta = moment(x2).diff(newX1, 'days');
+    const newY1 = Math.round(y2 - delta * newXDelta);
+    data.unshift({ x: newX1, y: newY1 });
+    return data;
+  }
+
+  /**
+   * CASE : Target data in graph span and after span
+   */
+  if (data.length > 0 && outOfBoundsRight.length > 0 && outOfBoundsLeft.length === 0) {
+    x1 = data.slice(-1)[0]?.x;
+    y1 = data.slice(-1)[0]?.y;
+    x2 = outOfBoundsRight[0]?.x;
+    y2 = outOfBoundsRight[0]?.y;
+    const delta = getDelta(x1, x2, y1, y2);
+    const newX2 = lastDataPoint.x;
+    const newXDelta = moment(newX2).diff(x1, 'days');
+    const newY2 = Math.round(y1 + delta * newXDelta);
+    data.push({ x: newX2, y: newY2 });
+    return data;
+  }
+
+  /**
+   * CASE : Target data in graph span, before and after span
+   */
+  if (data.length > 0 && outOfBoundsLeft.length > 0 && outOfBoundsRight.length > 0) {
+    x1 = outOfBoundsLeft.slice(-1)[0]?.x;
+    y1 = outOfBoundsLeft.slice(-1)[0]?.y;
+    x2 = data[0]?.x;
+    y2 = data[0]?.y;
+    const delta12 = getDelta(x1, x2, y1, y2);
+    const newX1 = firstDataPoint.x;
+    const newX12Delta = moment(x2).diff(newX1, 'days');
+    const newY1 = Math.round(y2 - delta12 * newX12Delta);
+    data.unshift({ x: newX1, y: newY1 });
+    x2 = data.slice(-1)[0]?.x;
+    y2 = data.slice(-1)[0]?.y;
+    x3 = outOfBoundsRight[0]?.x;
+    y3 = outOfBoundsRight[0]?.y;
+    const delta23 = getDelta(x2, x3, y2, y3);
+    const newX3 = lastDataPoint.x;
+    const newX23Delta = moment(newX3).diff(x2, 'days');
+    const newY3 = Math.round(y2 + delta23 * newX23Delta);
+    data.push({ x: newX3, y: newY3 });
+    return data;
+  }
+  /**
+   * CASE : Target data in after and before span
+   */
+  if (data.length === 0 && outOfBoundsRight.length > 0 && outOfBoundsLeft.length > 0) {
+    x1 = outOfBoundsLeft.slice(-1)[0]?.x;
+    y1 = outOfBoundsLeft.slice(-1)[0]?.y;
+    x2 = firstDataPoint?.x;
+    x3 = lastDataPoint?.x;
+    x4 = outOfBoundsRight[0]?.x;
+    y4 = outOfBoundsRight[0]?.y;
+    const delta = (y4 - y1) / moment(x4).diff(x1, 'days');
+    y2 = y1 + delta * moment(x2).diff(x1, 'days');
+    y3 = y4 - delta * moment(x4).diff(x3, 'days');
+    data.push({ x: x2, y: y2 });
+    data.push({ x: x3, y: y3 });
+    return data;
+  }
+  /**
+   * CASE : All target data within span no formatting needed
+   */
+  return data;
+};
+
+/**
  * Return an array of dates used to define the span of the graph
  * @param {String} interval The interval of the graph (weekly,biweekly or monthly)
  */
@@ -84,7 +196,7 @@ const setDates = interval => {
  * @param {number} lastDataPoint.y Last data point measures completed
  * @param {Array} measureGoals Array of measure goal objects
  */
-const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
+const setTargetGraphPoints = (firstDataPoint, lastDataPoint, measureGoals) => {
   const data = [];
   /**
    * Array for storing measure goals that fall outside of the
@@ -115,81 +227,15 @@ const setTarget = (firstDataPoint, lastDataPoint, measureGoals) => {
     });
   }
 
-  /**
-   * Coordinate values used to calculate the various target data points
-   */
-  let x1 = null;
-  let y1 = null;
-  let x2 = null;
-  let y2 = null;
-  let x3 = null;
-  let y3 = null;
-  let x4 = null;
-  let y4 = null;
+  const reformattedData = reformatTargetGraphPoints(
+    data,
+    outOfBoundsLeft,
+    outOfBoundsRight,
+    firstDataPoint,
+    lastDataPoint
+  );
 
-  /**
-   * Possible cases for available target data points
-   */
-  if (data.length > 0 && outOfBoundsLeft.length > 0 && outOfBoundsRight.length === 0) {
-    x1 = outOfBoundsLeft.slice(-1)[0]?.x;
-    y1 = outOfBoundsLeft.slice(-1)[0]?.y;
-    x2 = data[0]?.x;
-    y2 = data[0]?.y;
-    const delta = getDelta(x1, x2, y1, y2);
-    const newX1 = firstDataPoint.x;
-    const newXDelta = moment(x2).diff(newX1, 'days');
-    const newY1 = Math.round(y2 - delta * newXDelta);
-    data.unshift({ x: newX1, y: newY1 });
-    return data;
-  }
-  if (data.length > 0 && outOfBoundsRight.length > 0 && outOfBoundsLeft.length === 0) {
-    x1 = data.slice(-1)[0]?.x;
-    y1 = data.slice(-1)[0]?.y;
-    x2 = outOfBoundsRight[0]?.x;
-    y2 = outOfBoundsRight[0]?.y;
-    const delta = getDelta(x1, x2, y1, y2);
-    const newX2 = lastDataPoint.x;
-    const newXDelta = moment(newX2).diff(x1, 'days');
-    const newY2 = Math.round(y1 + delta * newXDelta);
-    data.push({ x: newX2, y: newY2 });
-    return data;
-  }
-  if (data.length > 0 && outOfBoundsLeft.length > 0 && outOfBoundsRight.length > 0) {
-    x1 = outOfBoundsLeft.slice(-1)[0]?.x;
-    y1 = outOfBoundsLeft.slice(-1)[0]?.y;
-    x2 = data[0]?.x;
-    y2 = data[0]?.y;
-    const delta12 = getDelta(x1, x2, y1, y2);
-    const newX1 = firstDataPoint.x;
-    const newX12Delta = moment(x2).diff(newX1, 'days');
-    const newY1 = Math.round(y2 - delta12 * newX12Delta);
-    data.unshift({ x: newX1, y: newY1 });
-    x2 = data.slice(-1)[0]?.x;
-    y2 = data.slice(-1)[0]?.y;
-    x3 = outOfBoundsRight[0]?.x;
-    y3 = outOfBoundsRight[0]?.y;
-    const delta23 = getDelta(x2, x3, y2, y3);
-    const newX3 = lastDataPoint.x;
-    const newX23Delta = moment(newX3).diff(x2, 'days');
-    const newY3 = Math.round(y2 + delta23 * newX23Delta);
-    data.push({ x: newX3, y: newY3 });
-    return data;
-  }
-  if (data.length === 0 && outOfBoundsRight.length > 0 && outOfBoundsLeft.length > 0) {
-    x1 = outOfBoundsLeft.slice(-1)[0]?.x;
-    y1 = outOfBoundsLeft.slice(-1)[0]?.y;
-    x2 = firstDataPoint?.x;
-    x3 = lastDataPoint?.x;
-    x4 = outOfBoundsRight[0]?.x;
-    y4 = outOfBoundsRight[0]?.y;
-    const delta = (y4 - y1) / moment(x4).diff(x1, 'days');
-    y2 = y1 + delta * moment(x2).diff(x1, 'days');
-    y3 = y4 - delta * moment(x4).diff(x3, 'days');
-    data.push({ x: x2, y: y2 });
-    data.push({ x: x3, y: y3 });
-    return data;
-  }
-  return data;
+  return reformattedData;
 };
 
 /**
@@ -367,7 +413,7 @@ export default (measures, measureGoals, interval) => {
   const measuresData = setMeasuresGraphPoints(measures, dates);
   const firstDataPoint = measuresData[0];
   const lastDataPoint = measuresData.slice(-1)[0];
-  const targetData = setTarget(firstDataPoint, lastDataPoint, measureGoals);
+  const targetData = setTargetGraphPoints(firstDataPoint, lastDataPoint, measureGoals);
   const tickData = setTickData(interval);
   const graphData = setGraphData(measuresData, targetData);
   const graphOptions = setGraphOptions(tickData);
