@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { connect } from 'react-redux';
@@ -12,12 +13,22 @@ const InputMeasure = ({ setIsEditing, handleSave, clientId, id, success, descrip
   const [measureDescription, setMeasureDescription] = useState(description);
   const [selectedDate, setSelectedDate] = useState(success);
 
-  const formStyle = {
-    border: '2px dotted white',
-    borderRadius: '10px',
-    padding: '10px',
-    width: '100%'
-  };
+  /**
+   * Component Styles
+   */
+  const useStyles = makeStyles({
+    form: {
+      border: '2px dotted white',
+      borderRadius: '10px',
+      padding: '10px',
+      width: '100%'
+    },
+    confirmContainer: {
+      display: 'flex'
+    }
+  });
+
+  const classes = useStyles();
 
   const handleSaveClick = e => {
     e.preventDefault();
@@ -34,11 +45,10 @@ const InputMeasure = ({ setIsEditing, handleSave, clientId, id, success, descrip
   };
 
   return (
-    <form style={formStyle}>
+    <form className={classes.form}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <TextField
           label="Measure description"
-          style={{ color: '#ffff', marign: '10px' }}
           value={measureDescription}
           default={measureDescription}
           variant="filled"
@@ -64,7 +74,7 @@ const InputMeasure = ({ setIsEditing, handleSave, clientId, id, success, descrip
         />
       </MuiPickersUtilsProvider>
 
-      <div style={{ display: 'flex' }}>
+      <div className={classes.confirmContainer}>
         <OptionsButton text="Save" onClick={handleSaveClick} />
         <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>

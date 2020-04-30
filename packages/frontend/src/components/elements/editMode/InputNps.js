@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -13,12 +14,22 @@ const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => 
   const [currentNps, setCurrentNps] = useState(current);
   const [goalNps, setGoalNps] = useState(goal);
 
-  const formStyle = {
-    border: '2px dotted white',
-    borderRadius: '10px',
-    padding: '10px',
-    width: '100%'
-  };
+  /**
+   * Component Styles
+   */
+  const useStyles = makeStyles({
+    form: {
+      border: '2px dotted white',
+      borderRadius: '10px',
+      padding: '10px',
+      width: '100%'
+    },
+    confirmContainer: {
+      display: 'flex'
+    }
+  });
+
+  const classes = useStyles();
 
   const handleSaveClick = e => {
     e.preventDefault();
@@ -36,13 +47,12 @@ const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => 
   };
 
   return (
-    <form style={formStyle}>
+    <form className={classes.form}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <TextField
           id="standard-number"
           label="Current"
           type="number"
-          style={{ color: '#ffff' }}
           value={currentNps.toString(10)}
           default={currentNps.toString(10)}
           fullWidth
@@ -57,7 +67,6 @@ const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => 
           id="standard-number"
           label="Goal"
           type="number"
-          style={{ color: '#ffff' }}
           value={goalNps.toString(10)}
           default={goalNps.toString(10)}
           fullWidth
@@ -83,7 +92,7 @@ const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => 
           }}
         />
       </MuiPickersUtilsProvider>
-      <div style={{ display: 'flex' }}>
+      <div className={classes.confirmContainer}>
         <OptionsButton text="Save" onClick={handleSaveClick} />
         <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>
