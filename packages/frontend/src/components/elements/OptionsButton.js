@@ -4,9 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import COLORS from '../../style/COLORS';
 
-const OptionsButton = props => {
+const OptionsButton = ({ text, onClick }) => {
   const { primary, secondary, dark } = COLORS;
-  const { text, onClick } = props;
 
   const OptButton = withStyles({
     label: {
@@ -29,13 +28,9 @@ const OptionsButton = props => {
   );
 };
 
-OptionsButton.defaultProps = {
-  text: ''
-};
-
 OptionsButton.propTypes = {
   onClick: PropTypes.func.isRequired,
-  text: PropTypes.string
+  text: PropTypes.string.isRequired
 };
 
 export default OptionsButton;

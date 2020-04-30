@@ -5,9 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import COLORS from '../../style/COLORS';
 
-const OptionsToggleButton = props => {
+const OptionsToggleButton = ({ onClick }) => {
   const { primary, secondary, light } = COLORS;
-  const { onClick } = props;
 
   const OptToggleButton = withStyles({
     root: {
@@ -34,14 +33,12 @@ const OptionsToggleButton = props => {
 
   return (
     <div>
-      <OptToggleButton onClick={onClick} aria-label="options" style={{ marginLeft: '10px' }}>
+      <OptToggleButton onClick={onClick} aria-label="options">
         <OptionsToggleIcon />
       </OptToggleButton>
     </div>
   );
 };
-
-OptionsToggleButton.defaultProps = {};
 
 OptionsToggleButton.propTypes = {
   onClick: PropTypes.func.isRequired
