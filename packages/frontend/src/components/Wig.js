@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CircularProgress, Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { withStyles } from '@material-ui/core/styles';
+
 import EditButton from './elements/EditButton';
 import InputNps from './elements/editMode/InputNps';
 import AddNps from './elements/editMode/AddNps';
@@ -13,6 +14,37 @@ const Wig = ({ nps, editMode }) => {
   const [progress, setProgress] = useState();
   const [isEditing, setIsEditing] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const setColorBasedOnProgress = score => {
+    if (score > 70) {
+      return '#28a745';
+    }
+    if (score > 50) {
+      return '#ffc107';
+    }
+    return '#dc3545';
+  };
+
+  /**
+   * Component Styles
+   */
+  const useStyles = makeStyles({
+    chartLabelContainer: {
+      position: 'absolute',
+      top: 40,
+      left: 50,
+      right: 50,
+      bottom: 50,
+      padding: '0px'
+    },
+    labelText: {
+      display: 'block',
+      fontSize: '1em'
+    },
+    labelValue: { display: 'block', fontSize: '2em', color: setColorBasedOnProgress(progress) }
+  });
+
+  const classes = useStyles();
+
   useEffect(() => {
     if (nps.length > 0) {
       setLatestNps(
@@ -29,35 +61,6 @@ const Wig = ({ nps, editMode }) => {
     const npsProgress = currentInt && goalInt ? (currentInt / goalInt) * 100 : 0;
     setProgress(npsProgress > 100 ? 100 : npsProgress);
   }, [latestNps]);
-
-  const setColorBasedOnProgress = score => {
-    if (score > 70) {
-      return '#28a745';
-    }
-    if (score > 50) {
-      return '#ffc107';
-    }
-    return '#dc3545';
-  };
-
-  const ChartLabelContainerStyle = {
-    position: 'absolute',
-    top: 40,
-    left: 50,
-    right: 50,
-    bottom: 50,
-    padding: '0px'
-  };
-
-  const LabelText = {
-    display: 'block',
-    fontSize: '1em'
-  };
-  const LabelValue = {
-    display: 'block',
-    fontSize: '2em',
-    color: setColorBasedOnProgress(progress)
-  };
 
   const CircularProgressBar = withStyles({
     root: {
@@ -96,9 +99,9 @@ const Wig = ({ nps, editMode }) => {
               <h3 className="wig__statement">{`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}</h3>
               <div style={{ position: 'relative' }}>
                 <CircularProgressBar size={150} thickness={5} variant="static" value={progress} />
-                <div style={ChartLabelContainerStyle}>
-                  <span style={LabelText}>NPS</span>
-                  <span style={LabelValue}>{latestNps.currentNps}</span>
+                <div className={classes.chartLabelContainer}>
+                  <span className={classes.labelText}>NPS</span>
+                  <span className={classes.labelValue}>{latestNps.currentNps}</span>
                 </div>
               </div>
             </div>
@@ -121,10 +124,6 @@ const Wig = ({ nps, editMode }) => {
   );
 };
 
-Wig.defaultProps = {
-  nps: []
-};
-
 Wig.propTypes = {
   editMode: PropTypes.bool.isRequired,
   nps: PropTypes.arrayOf(
@@ -135,7 +134,7 @@ Wig.propTypes = {
       date: PropTypes.string,
       targetDate: PropTypes.string
     })
-  )
+  ).isRequired
 };
 
 const mapStateToProps = state => ({
