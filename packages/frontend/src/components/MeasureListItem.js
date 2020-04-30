@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ListItem } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import EditButton from './elements/EditButton';
@@ -15,6 +16,15 @@ const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { id, success, description } = measure;
+
+  /**
+   * Component Styles
+   */
+  const useStyles = makeStyles({
+    container: { display: 'flex' }
+  });
+
+  const classes = useStyles();
 
   const handleMeasureUpdate = data => {
     dispatch(updateMeasure(data));
@@ -44,7 +54,7 @@ const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
           />
         </div>
       ) : (
-        <div style={{ display: 'flex' }}>
+        <div className={classes.container}>
           {success ? (
             <CheckCircleIcon className="mr-2 text-success" />
           ) : (
