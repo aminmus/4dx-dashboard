@@ -14,7 +14,7 @@ import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
 import formatMeasureOverTimeData from '../utils/charts/formatMeasureOverTimeData';
 import formatNpsData from '../utils/charts/formatNpsData';
-import ChartContainer from '../components/graphs/MeasureOverTime/ChartContainer';
+import MeasuresOverTimeContainer from '../components/graphs/MeasuresOverTime/MeasuresOverTimeContainer';
 import NpsContainer from '../components/graphs/NPS/NpsContainer';
 
 const getMeasuresFromClient = clients =>
@@ -106,7 +106,7 @@ const Home = ({
                   </div>
                 )}
                 {measures?.length > 0 ? (
-                  <ChartContainer
+                  <MeasuresOverTimeContainer
                     measureGoals={measureGoals}
                     measuresChartData={measuresChartData}
                     measuresChartInterval={measuresChartInterval}

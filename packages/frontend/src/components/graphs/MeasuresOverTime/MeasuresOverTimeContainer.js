@@ -13,7 +13,7 @@ import { addResource } from '../../../slices/resources';
 
 const { primary, light } = COLORS;
 
-const ChartContainer = ({
+const MeasuresOverTimeContainer = ({
   measureGoals,
   measuresChartData: { graphData, graphOptions },
   measuresChartInterval,
@@ -118,7 +118,7 @@ const ChartContainer = ({
   );
 };
 
-ChartContainer.propTypes = {
+MeasuresOverTimeContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
   measuresChartInterval: PropTypes.string.isRequired,
@@ -144,4 +144,4 @@ const mapStateToProps = state => ({
   editMode: state.editMode.editModeEnabled
 });
 
-export default connect(mapStateToProps, null)(ChartContainer);
+export default connect(mapStateToProps, null)(MeasuresOverTimeContainer);
