@@ -1,35 +1,41 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Chart from 'chart.js';
 import PropTypes from 'prop-types';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import RefreshButton from '../../elements/RefreshButton';
+import { useMediaQuery } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import OptionsToggleButton from '../../elements/OptionsToggleButton';
 import OptionsButton from '../../elements/OptionsButton';
 import COLORS from '../../../style/COLORS';
 
-const { primary, light, success, gray } = COLORS;
+const { primary, light, success } = COLORS;
 
 const Nps = props => {
   const match = useMediaQuery('(min-width:600px)');
 
-  const ChartHeaderStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: primary
-  };
+  /**
+   * Component Styles
+   */
+  const useStyles = makeStyles({
+    header: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: primary
+    },
+    mainContainer: {
+      margin: '10px'
+    },
+    optionsContainer: {
+      display: 'flex',
+      margin: '10px',
+      border: `1px solid ${light}`,
+      borderRadius: '10px',
+      justifyContent: 'center',
+      flexDirection: match ? 'row' : 'column'
+    }
+  });
 
-  const ContainerStyle = {
-    margin: '10px'
-  };
-
-  const OptionsContainerStyle = {
-    margin: '10px',
-    border: `1px solid ${light}`,
-    borderRadius: '10px',
-    justifyContent: 'center',
-    flexDirection: match ? 'row' : 'column'
-  };
+  const classes = useStyles();
 
   const { chart } = props;
   const { months, target, values } = chart;
@@ -111,16 +117,7 @@ const Nps = props => {
     setDisplayTarget(!displayTarget);
   };
 
-  const updateChart = e => {
-    e.preventDefault();
-    const newChartInstance = new Chart(chartContainer.current, chartConfig);
-    setChartInstance(newChartInstance);
-  };
-
   useEffect(() => {
-    Chart.defaults.global.defaultFontColor = gray;
-    Chart.defaults.global.defaultFontSize = 14;
-
     let targetArray = [];
     if (target) {
       targetArray = values.map(() => null);
@@ -144,21 +141,22 @@ const Nps = props => {
   }, [chartContainer, months, values, target, displayTarget, npsDatasetData]);
 
   return (
-    <div style={ContainerStyle}>
-      <div style={ChartHeaderStyle}>
+    <div className={classes.mainContainer}>
+      <div className={classes.header}>
         <div className="chart-title">Nps (Monthly)</div>
         <OptionsToggleButton onClick={toggleOptions} />
-        <RefreshButton onClick={updateChart} />
       </div>
-      {optionsShow && (
-        <div style={OptionsContainerStyle}>
-          <OptionsButton
-            text={displayTarget ? 'Hide Target' : 'Show Target'}
-            onClick={optionsToggleTarget}
-          />
-        </div>
-      )}
-      <canvas ref={chartContainer} />
+      <div>
+        {optionsShow && (
+          <div className={classes.optionsContainer}>
+            <OptionsButton
+              text={displayTarget ? 'Hide Target' : 'Show Target'}
+              onClick={optionsToggleTarget}
+            />
+          </div>
+        )}
+        <canvas ref={chartContainer} />
+      </div>
     </div>
   );
 };
