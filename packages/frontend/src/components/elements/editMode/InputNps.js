@@ -43,7 +43,7 @@ const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => 
           label="Current"
           type="number"
           style={{ color: '#ffff' }}
-          placeholder={currentNps.toString(10)}
+          value={currentNps.toString(10)}
           default={currentNps.toString(10)}
           fullWidth
           variant="filled"
@@ -58,7 +58,7 @@ const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => 
           label="Goal"
           type="number"
           style={{ color: '#ffff' }}
-          placeholder={goalNps.toString(10)}
+          value={goalNps.toString(10)}
           default={goalNps.toString(10)}
           fullWidth
           variant="filled"
