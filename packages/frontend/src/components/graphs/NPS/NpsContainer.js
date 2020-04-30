@@ -2,10 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import Chart from 'chart.js';
 import PropTypes from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import RefreshButton from './elements/RefreshButton';
-import OptionsToggleButton from './elements/OptionsToggleButton';
-import OptionsButton from './elements/OptionsButton';
-import COLORS from '../style/COLORS';
+import RefreshButton from '../../elements/RefreshButton';
+import OptionsToggleButton from '../../elements/OptionsToggleButton';
+import OptionsButton from '../../elements/OptionsButton';
+import COLORS from '../../../style/COLORS';
 
 const { primary, light, success, gray } = COLORS;
 

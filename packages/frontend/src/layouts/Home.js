@@ -7,7 +7,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Wig from '../components/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/Details';
-import Nps from '../components/Nps';
 import { toggleEdit } from '../actions/editMode';
 import theme from '../style/muiTheme';
 import { fetchResources } from '../slices/resources';
@@ -16,6 +15,7 @@ import calcLeads from '../utils/calcLeads';
 import reformatNps from '../utils/reformatNps';
 import formatMeasureOverTimeData from '../utils/charts/formatMeasureOverTimeData';
 import ChartContainer from '../components/graphs/MeasureOverTime/ChartContainer';
+import NpsContainer from '../components/graphs/NPS/NpsContainer';
 
 const getMeasuresFromClient = clients =>
   clients.reduce((accumulator, client) => {
@@ -111,8 +111,9 @@ const Home = ({
               <div className="col-sm">
                 <Details />
                 {npsChartData.values.length > 0 ? (
-                  <Nps chart={npsChartData} />
+                  <NpsContainer chart={npsChartData} />
                 ) : (
+                  // <Nps chart={npsChartData} />
                   <div className="my-5 p-4 jumbotron text-light bg-dark">
                     No Measure Data Available For NPS graph
                   </div>
