@@ -131,7 +131,9 @@ const Wig = ({ nps, editMode, dispatch }) => {
             />
           ) : (
             <div>
-              <h3 className="wig__statement">{`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}</h3>
+              {latestNps.goalNps && latestNps.targetDate && (
+                <h3 className="wig__statement">{`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}</h3>
+              )}
               <div style={{ position: 'relative' }}>
                 <>
                   <CircularProgressBar
