@@ -38,8 +38,8 @@ const Wig = ({ nps, editMode, dispatch }) => {
       id,
       type: 'nps',
       data: {
-        currentNps,
-        goalNps,
+        currentNps: parseInt(currentNps, 10),
+        goalNps: parseInt(goalNps, 10),
         date,
         targetDate
       }
@@ -49,13 +49,16 @@ const Wig = ({ nps, editMode, dispatch }) => {
     setIsEditing(false);
   };
 
-  const addNps = (id, input, event) => {
+  const addNps = (id, { currentNps, goalNps, date, targetDate }, event) => {
     event.preventDefault();
     const data = {
       id,
       type: 'nps',
       data: {
-        ...input
+        currentNps: parseInt(currentNps, 10),
+        goalNps: parseInt(goalNps, 10),
+        date,
+        targetDate
       }
     };
     dispatch(addResource(data));
