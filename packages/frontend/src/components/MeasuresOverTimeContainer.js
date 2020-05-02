@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import { useMediaQuery, Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { makeStyles } from '@material-ui/core/styles';
-import OptionsToggleButton from '../../elements/OptionsToggleButton';
-import IntervalSpanDialog from '../../elements/IntervalSpanDialog';
-import InputMeasuresGoal from '../../elements/editMode/InputMeasuresGoal';
-import COLORS from '../../../style/COLORS';
-import { addResource } from '../../../slices/resources';
+import OptionsToggleButton from './elements/OptionsToggleButton';
+import IntervalSpanDialog from './elements/IntervalSpanDialog';
+import InputMeasuresGoal from './elements/editMode/InputMeasuresGoal';
+import COLORS from '../style/COLORS';
+import { addResource } from '../slices/resources';
 
 const { primary, light } = COLORS;
 

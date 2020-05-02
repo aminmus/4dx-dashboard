@@ -14,8 +14,8 @@ import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
 import formatMeasureOverTimeData from '../utils/charts/formatMeasureOverTimeData';
 import formatNpsData from '../utils/charts/formatNpsData';
-import MeasuresOverTimeContainer from '../components/graphs/MeasuresOverTime/MeasuresOverTimeContainer';
-import NpsContainer from '../components/graphs/NPS/NpsContainer';
+import MeasuresOverTimeContainer from '../components/MeasuresOverTimeContainer';
+import NpsContainer from '../components/NpsContainer';
 
 const getMeasuresFromClient = clients =>
   clients.reduce((accumulator, client) => {
