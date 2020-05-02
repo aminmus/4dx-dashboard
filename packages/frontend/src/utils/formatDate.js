@@ -1,8 +1,13 @@
 import moment from 'moment';
 
-// If inputDate is left empty it will return the current date
-// The date must first be converted to undefined since moment can't handle a null paramater for date
-export default function formatDate(inputDate, formatType = 'YYYY-MM-DD') {
-  const date = inputDate === null ? undefined : inputDate;
-  return moment(date).format(formatType);
+/**
+ * Change format of a given date, or get current date if used without arguments
+ *
+ * @export
+ * @param {(string|Object|Number|Date|Array)} [date=undefined] Uses current date if undefined. For a full list of input types see https://momentjs.com/docs/#/parsing/
+ * @param {string} [formatType='YYYY-MM-DD']
+ * @returns {(string|null)} Date formatted according to given formatType, or null if date input is of an invalid date type
+ */
+export default function formatDate(date = undefined, formatType = 'YYYY-MM-DD') {
+  return moment(date).isValid() ? moment(date).format(formatType) : null;
 }

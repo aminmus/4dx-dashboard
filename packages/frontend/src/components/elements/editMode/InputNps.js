@@ -6,10 +6,10 @@ import MomentUtils from '@date-io/moment';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
-import { updateResource } from '../../../slices/resources';
 
-const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => {
-  const [selectedDate, setSelectedDate] = useState(targetDate);
+const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleSubmit }) => {
+  const [selectedDate, setSelectedDate] = useState(formatDate());
+  const [selectedTargetDate, setSelectedTargetDate] = useState(targetDate);
   const [currentNps, setCurrentNps] = useState(current);
   const [goalNps, setGoalNps] = useState(goal);
 
@@ -20,35 +20,27 @@ const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => 
     width: '100%'
   };
 
-  const handleSaveClick = e => {
-    e.preventDefault();
-    const data = {
-      id,
-      type: 'nps',
-      data: {
-        currentNps,
-        goalNps,
-        targetDate: selectedDate
-      }
-    };
-    dispatch(updateResource(data));
-    setIsEditing(false);
+  const formInput = {
+    currentNps,
+    goalNps,
+    date: selectedDate,
+    targetDate: selectedTargetDate
   };
 
   return (
-    <form style={formStyle}>
+    <form style={formStyle} onSubmit={e => handleSubmit(id, formInput, e)}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <TextField
           id="standard-number"
           label="Current"
           type="number"
           style={{ color: '#ffff' }}
-          value={currentNps.toString(10)}
-          default={currentNps.toString(10)}
+          value={currentNps}
+          default={currentNps}
           fullWidth
           variant="filled"
           margin="normal"
-          onChange={input => setCurrentNps(parseInt(input.target.value, 10))}
+          onChange={input => setCurrentNps(input.target.value)}
           InputLabelProps={{
             shrink: true
           }}
@@ -58,17 +50,30 @@ const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => 
           label="Goal"
           type="number"
           style={{ color: '#ffff' }}
-          value={goalNps.toString(10)}
-          default={goalNps.toString(10)}
+          value={goalNps}
+          default={goalNps}
           fullWidth
           variant="filled"
           margin="normal"
-          onChange={input => setGoalNps(parseInt(input.target.value, 10))}
+          onChange={input => setGoalNps(input.target.value)}
           InputLabelProps={{
             shrink: true
           }}
         />
 
+        <KeyboardDatePicker
+          label="Date"
+          format="YYYY-MM-DD"
+          fullWidth
+          margin="normal"
+          id="date-picker-inline"
+          variant="filled"
+          value={selectedDate}
+          onChange={(date, value) => setSelectedDate(formatDate(date, value))}
+          KeyboardButtonProps={{
+            'aria-label': 'change date'
+          }}
+        />
         <KeyboardDatePicker
           label="Target Date"
           format="YYYY-MM-DD"
@@ -76,16 +81,16 @@ const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => 
           margin="normal"
           id="date-picker-inline"
           variant="filled"
-          value={selectedDate}
-          onChange={date => setSelectedDate(formatDate(date))}
+          value={selectedTargetDate}
+          onChange={(date, value) => setSelectedTargetDate(formatDate(date || value))}
           KeyboardButtonProps={{
             'aria-label': 'change date'
           }}
         />
       </MuiPickersUtilsProvider>
       <div style={{ display: 'flex' }}>
-        <OptionsButton text="Save" onClick={handleSaveClick} />
-        <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
+        <OptionsButton type="submit" text="Save" />
+        <OptionsButton type="reset" text="Cancel" onClick={() => setIsAddingOrEditing(false)} />
       </div>
     </form>
   );
@@ -93,8 +98,8 @@ const InputNps = ({ id, current, goal, targetDate, setIsEditing, dispatch }) => 
 
 InputNps.defaultProps = {
   id: null,
-  current: 0,
-  goal: 0,
+  current: '',
+  goal: '',
   targetDate: null
 };
 
@@ -103,8 +108,8 @@ InputNps.propTypes = {
   current: PropTypes.number,
   goal: PropTypes.number,
   targetDate: PropTypes.string,
-  setIsEditing: PropTypes.func.isRequired,
-  dispatch: PropTypes.func.isRequired
+  setIsAddingOrEditing: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired
 };
 
 export default connect(null, null)(InputNps);
