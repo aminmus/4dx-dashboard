@@ -1,27 +1,12 @@
-/* eslint-disable radix */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgressBar from '@material-ui/core/LinearProgress';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-export default function ProgressBar({ clientName, clientMeasures }) {
-  const [progress, setProgress] = useState(0);
-
-  // Set client measures success progress
-  useEffect(() => {
-    const successfulMeasures = clientMeasures.reduce(
-      (successTotal, measure) => (measure.success ? successTotal + 1 : successTotal),
-      0
-    );
-    setProgress(
-      parseInt(successfulMeasures)
-        ? (parseInt(successfulMeasures) / parseInt(clientMeasures.length)) * 100
-        : 0
-    );
-  }, [clientMeasures]);
-
+const ProgressBar = ({ clientName, clientMeasures }) => {
   const matches = useMediaQuery('(min-width:600px)');
+  const [progress, setProgress] = useState(0);
 
   const LinearProgress = withStyles({
     barColorPrimary: {
@@ -37,38 +22,49 @@ export default function ProgressBar({ clientName, clientMeasures }) {
     }
   })(LinearProgressBar);
 
-  const ContainerStyle = {
-    display: 'flex',
-    flexDirection: matches ? 'row' : 'column',
-    justifyContent: 'space-between',
-    padding: '10px'
-  };
+  const useStyles = makeStyles({
+    mainContainer: {
+      display: 'flex',
+      flexDirection: matches ? 'row' : 'column',
+      justifyContent: 'space-between',
+      padding: '10px'
+    },
+    innerContainer: {
+      flex: 2
+    },
+    clientName: {
+      flex: 1,
+      color: progress ? 'white' : 'darkGray'
+    }
+  });
 
-  const InnerContainerStyle = {
-    flex: 2
-  };
+  const classes = useStyles();
 
-  const clientNameStyle = {
-    flex: 1,
-    color: progress ? 'white' : 'darkGray'
-  };
+  useEffect(() => {
+    const successfulMeasures = clientMeasures.reduce(
+      (successTotal, measure) => (measure.success ? successTotal + 1 : successTotal),
+      0
+    );
+    setProgress(
+      parseInt(successfulMeasures, 10)
+        ? (parseInt(successfulMeasures, 10) / parseInt(clientMeasures.length, 10)) * 100
+        : 0
+    );
+  }, [clientMeasures]);
 
   return (
-    <div style={ContainerStyle}>
-      <span style={clientNameStyle}>{clientName}</span>
-      <div style={InnerContainerStyle}>
+    <div className={classes.mainContainer}>
+      <span className={classes.clientName}>{clientName}</span>
+      <div className={classes.innerContainer}>
         <LinearProgress variant="determinate" value={progress} />
       </div>
     </div>
   );
-}
-
-ProgressBar.defaultProps = {
-  clientName: '',
-  clientMeasures: [{ success: null }]
 };
 
 ProgressBar.propTypes = {
-  clientName: PropTypes.string,
-  clientMeasures: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
+  clientName: PropTypes.string.isRequired,
+  clientMeasures: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired
 };
+
+export default ProgressBar;

@@ -1,36 +1,43 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import calcDefineClients from '../utils/calcDefineClients';
 
-export default function Lead(props) {
-  const { clients, leadStatus, definedStatus } = props;
+const Lead = ({ clients, leadStatus, definedStatus }) => {
   const { leads, leadsTotal } = leadStatus;
   const { definedClients, totalClients } = definedStatus;
 
   const defineClients = calcDefineClients(clients);
 
-  const LeadNumberStyle = {
-    fontSize: '60px',
-    fontWeight: 700,
-    letterSpacing: '1px',
-    marginBottom: '40px'
-  };
+  /**
+   * Component Styles
+   */
+  const useStyles = makeStyles({
+    leadNumber: {
+      fontSize: '60px',
+      fontWeight: 700,
+      letterSpacing: '1px',
+      marginBottom: '40px'
+    }
+  });
 
-  const setDefineLeadClassName = () => {
-    if (defineClients < 7) {
+  const classes = useStyles();
+
+  const setDefineLeadClassName = defined => {
+    if (defined < 7) {
       return 'text-danger';
     }
-    if (defineClients >= 8 && defineClients < 9) {
+    if (defined >= 8 && defined < 9) {
       return 'text-warning';
     }
     return 'text-success';
   };
 
-  const setImplementLeadClassName = () => {
-    if (leads < leadsTotal * 0.7) {
+  const setImplementLeadClassName = (leadValue, leadTotalValue) => {
+    if (leadValue < leadTotalValue * 0.7) {
       return 'text-danger';
     }
-    if (leads >= leadsTotal * 0.7 && leads <= leadsTotal * 0.8) {
+    if (leadValue >= leadTotalValue * 0.7 && leadValue <= leadTotalValue * 0.8) {
       return 'text-warning';
     }
     return 'text-success';
@@ -40,8 +47,10 @@ export default function Lead(props) {
     return (
       <div>
         <h3 className="define">Define the Success factors for listed clients</h3>
-        <div style={LeadNumberStyle}>
-          <span className={setDefineLeadClassName()}>{`${definedClients}/${totalClients}`}</span>
+        <div className={classes.leadNumber}>
+          <span className={setDefineLeadClassName(defineClients)}>
+            {`${definedClients}/${totalClients}`}
+          </span>
         </div>
       </div>
     );
@@ -51,8 +60,10 @@ export default function Lead(props) {
     return (
       <div>
         <h3 className="implement">Implement Client Success Program for listed clients</h3>
-        <div style={LeadNumberStyle}>
-          <span className={setImplementLeadClassName()}>{`${leads}/${leadsTotal}`}</span>
+        <div className={classes.leadNumber}>
+          <span className={setImplementLeadClassName(leads, leadsTotal)}>
+            {`${leads}/${leadsTotal}`}
+          </span>
         </div>
       </div>
     );
@@ -65,7 +76,7 @@ export default function Lead(props) {
       {renderImplementSuccess()}
     </div>
   );
-}
+};
 
 Lead.defaultProps = {
   leadStatus: {},
@@ -81,3 +92,5 @@ Lead.propTypes = {
   }),
   clients: PropTypes.arrayOf(PropTypes.object)
 };
+
+export default Lead;

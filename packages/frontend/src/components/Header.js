@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import { Navbar, Nav } from 'react-bootstrap';
 import { push } from 'connected-react-router';
 import { Link } from 'react-router-dom';
@@ -7,6 +8,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import logo from '../logo.png';
 import authProvider from '../utils/react-admin/authProvider';
+import COLORS from '../style/COLORS';
 
 /**
  * Header Component
@@ -16,6 +18,7 @@ import authProvider from '../utils/react-admin/authProvider';
  */
 
 const Header = ({ isLoggedIn, dispatch }) => {
+  const { darkGray, light, gray } = COLORS;
   const { logout } = authProvider;
 
   /**
@@ -34,58 +37,55 @@ const Header = ({ isLoggedIn, dispatch }) => {
   };
 
   /**
-   * Navbar Collapse Style
-   * @type {object}
+   * Component Styles
    */
-  const NavbarCollapseStyle = {
-    justifyContent: 'space-between',
-    width: '100%'
-  };
+  const useStyles = makeStyles({
+    navbarCollapse: {
+      justifyContent: 'space-between',
+      width: '100%',
+      '& .navbar-nav': {
+        padding: '10px'
+      }
+    },
+    header: {
+      backgroundColor: darkGray
+    },
+    logo: {
+      height: '105px'
+    },
+    navlink: {
+      fontSize: '1.2em',
+      color: light,
+      '&:hover': {
+        color: gray,
+        textDecoration: 'none',
+        cursor: 'pointer'
+      }
+    }
+  });
 
-  /**
-   * Header Style
-   * @type {object}
-   */
-  const HeaderStyle = {
-    backgroundColor: '#333333'
-  };
-
-  /**
-   * Logo Style
-   * @type {object}
-   */
-  const LogoStyle = {
-    height: '105px'
-  };
+  const classes = useStyles();
 
   return (
-    <header style={HeaderStyle}>
-      <Navbar className="py-0" expand="lg" variant="dark">
+    <header className={classes.header}>
+      <Navbar expand="lg" variant="dark">
         <Navbar.Brand href="/">
-          <img style={LogoStyle} className="logo navbar-brand" src={logo} alt="" />
+          <img className={classes.logo} src={logo} alt="logo" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse style={NavbarCollapseStyle} id="navbar-nav">
-          <Nav className="navbar-nav-left">
-            <Link className="nav-link text-light" style={{ textDecoration: 'none' }} to="/">
+        <Navbar.Collapse className={classes.navbarCollapse}>
+          <Nav>
+            <Link className={classes.navlink} to="/">
               Home
             </Link>
           </Nav>
-          <Nav className="navbar-nav-right">
+          <Nav>
             {isLoggedIn ? (
-              <Nav.Item
-                className="nav-link btn-logout text-light"
-                style={{ textDecoration: 'none' }}
-                onClick={handleLogoutClick}
-              >
+              <Nav.Item className={classes.navlink} onClick={handleLogoutClick}>
                 Logout
               </Nav.Item>
             ) : (
-              <Nav.Item
-                className="nav-link btn-login text-light"
-                style={{ textDecoration: 'none' }}
-                onClick={handleLoginClick}
-              >
+              <Nav.Item className={classes.navlink} onClick={handleLoginClick}>
                 Sign in
               </Nav.Item>
             )}

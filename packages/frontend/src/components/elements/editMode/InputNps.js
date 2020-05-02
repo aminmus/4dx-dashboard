@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -13,12 +14,22 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
   const [currentNps, setCurrentNps] = useState(current);
   const [goalNps, setGoalNps] = useState(goal);
 
-  const formStyle = {
-    border: '2px dotted white',
-    borderRadius: '10px',
-    padding: '10px',
-    width: '100%'
-  };
+  /**
+   * Component Styles
+   */
+  const useStyles = makeStyles({
+    form: {
+      border: '2px dotted white',
+      borderRadius: '10px',
+      padding: '10px',
+      width: '100%'
+    },
+    confirmContainer: {
+      display: 'flex'
+    }
+  });
+
+  const classes = useStyles();
 
   const formInput = {
     currentNps,
@@ -28,13 +39,12 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
   };
 
   return (
-    <form style={formStyle} onSubmit={e => handleSubmit(id, formInput, e)}>
+    <form className={classes.form} onSubmit={e => handleSubmit(id, formInput, e)}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <TextField
           id="standard-number"
           label="Current"
           type="number"
-          style={{ color: '#ffff' }}
           value={currentNps}
           default={currentNps}
           fullWidth
@@ -49,7 +59,6 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           id="standard-number"
           label="Goal"
           type="number"
-          style={{ color: '#ffff' }}
           value={goalNps}
           default={goalNps}
           fullWidth
@@ -88,7 +97,8 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           }}
         />
       </MuiPickersUtilsProvider>
-      <div style={{ display: 'flex' }}>
+
+      <div className={classes.confirmContainer}>
         <OptionsButton type="submit" text="Save" />
         <OptionsButton type="reset" text="Cancel" onClick={() => setIsAddingOrEditing(false)} />
       </div>

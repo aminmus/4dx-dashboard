@@ -1,5 +1,5 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ProgressBar from './elements/ProgressBar';
@@ -15,6 +15,33 @@ const ClientDetails = ({ client, editMode, dispatch }) => {
   const [hoverState, setHoverState] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  /**
+   * Component Styles
+   */
+  const useStyles = makeStyles({
+    mainContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      cursor: hoverState ? 'pointer' : 'auto',
+      marginBottom: '10px'
+    },
+    progressBarContainer: { flex: 1, justifyContent: 'center' },
+    editBtnContainer: { justifyContent: 'center', padding: '10px' },
+    measureCheckListContainer: {
+      display: 'flex',
+      flexBasis: '100%',
+      justifyContent: 'darkGray',
+      border: '1px solid white',
+      borderRadius: '10px',
+      margin: '0, 10px 0 10px',
+      width: '100%'
+    }
+  });
+
+  const classes = useStyles();
 
   const updateClient = data => {
     dispatch(updateResource(data));
@@ -34,43 +61,15 @@ const ClientDetails = ({ client, editMode, dispatch }) => {
   const handleContainerClick = () =>
     !isEditing ? () => setRenderChecklist(!renderChecklist) : () => true;
 
-  const OuterContainerStyle = {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    cursor: hoverState ? 'pointer' : 'auto',
-    marginBottom: '10px'
-  };
-
-  const ProgressBarContainerStyle = {
-    flex: 1,
-    justifyContent: 'center'
-  };
-
-  const EditButtonContainerStyle = {
-    justifyContent: 'center',
-    padding: '10px'
-  };
-
-  const MeasureCheckListContainerStyle = {
-    display: 'flex',
-    flexBasis: '100%',
-    justifyContent: 'darkGray',
-    border: '1px solid white',
-    borderRadius: '10px',
-    margin: '0, 10px 0 10px',
-    width: '100%'
-  };
-
   return (
-    <div style={OuterContainerStyle}>
+    <div className={classes.mainContainer}>
       <div
+        role="presentation"
         onMouseEnter={handleContainerHover()}
         onMouseLeave={handleContainerHover()}
         onClick={handleContainerClick()}
         onKeyDown={handleContainerClick()}
-        style={ProgressBarContainerStyle}
+        className={classes.progressBarContainer}
       >
         {isEditing ? (
           <InputClient
@@ -81,7 +80,6 @@ const ClientDetails = ({ client, editMode, dispatch }) => {
           />
         ) : (
           <ProgressBar
-            style={{ flex: 1 }}
             key={client.id}
             clientName={client.name}
             clientScore={client.progress}
@@ -90,7 +88,7 @@ const ClientDetails = ({ client, editMode, dispatch }) => {
         )}
       </div>
       {editMode && !isEditing && (
-        <div style={EditButtonContainerStyle}>
+        <div className={classes.editBtnContainer}>
           <div>
             <EditButton onClick={() => setIsEditing(true)} />
             <DeleteButton onClick={() => setIsDeleting(true)} />
@@ -107,16 +105,12 @@ const ClientDetails = ({ client, editMode, dispatch }) => {
         </div>
       )}
       {renderChecklist && !isEditing && (
-        <div style={MeasureCheckListContainerStyle}>
+        <div className={classes.measureCheckListContainer}>
           <MeasureCheckList clientId={client.id} measures={client.measures} />
         </div>
       )}
     </div>
   );
-};
-
-ClientDetails.defaultProps = {
-  client: {}
 };
 
 ClientDetails.propTypes = {
@@ -126,7 +120,7 @@ ClientDetails.propTypes = {
     name: PropTypes.string,
     measures: PropTypes.array,
     progress: PropTypes.string
-  }),
+  }).isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
