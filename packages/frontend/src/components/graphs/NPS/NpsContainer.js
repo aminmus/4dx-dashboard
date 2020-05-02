@@ -8,9 +8,17 @@ import COLORS from '../../../style/COLORS';
 
 const { primary, light } = COLORS;
 
+/**
+ * Contains the NPS graph as well as the options header
+ * @component
+ * @param {Object} props Component props
+ * @param {Object} props.npsChartData Chart Data object used to determine NPS graph
+ * @param {Object} props.npsChartData.graphData Data used to render graph
+ * @param {Object} props.npsChartData.graphOptions Options for rendering graph
+ */
 const NpsContainer = ({ npsChartData: { graphData, graphOptions } }) => {
   const match = useMediaQuery('(min-width:600px)');
-  const [optionsShow, setOptionsShow] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
 
   /**
    * Component Styles
@@ -43,7 +51,7 @@ const NpsContainer = ({ npsChartData: { graphData, graphOptions } }) => {
    */
   const toggleOptions = e => {
     e.preventDefault();
-    setOptionsShow(!optionsShow);
+    setShowOptions(!showOptions);
   };
 
   return (
@@ -54,7 +62,7 @@ const NpsContainer = ({ npsChartData: { graphData, graphOptions } }) => {
       </div>
 
       <div>
-        {optionsShow && (
+        {showOptions && (
           <div className={classes.optionsContainer}>
             <div>No options present</div>
           </div>
