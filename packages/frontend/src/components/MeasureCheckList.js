@@ -1,6 +1,12 @@
 /* eslint-disable no-shadow, no-unused-vars */
-import React, { useState } from 'react';
-import { List, ListItem, Button } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import {
+  List,
+  ListItem,
+  Button,
+  CircularProgress as LoadingIndicator,
+  makeStyles
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -19,11 +25,27 @@ const MeasureList = styled(List)({
 
 const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoadingNewMeasure, setIsLoadingNewMeasure] = useState(false);
+
+  useEffect(() => {
+    setIsLoadingNewMeasure(false);
+  }, [measures]);
 
   const handleSave = data => {
     dispatch(addMeasure(data));
+    setIsLoadingNewMeasure(true);
     setIsEditing(false);
   };
+
+  const useStyles = makeStyles({
+    flex: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    }
+  });
+
+  const classes = useStyles();
 
   return (
     <MeasureList>
@@ -35,10 +57,13 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
           {isEditing && editMode ? (
             <InputMeasure clientId={clientId} handleSave={handleSave} setIsEditing={setIsEditing} />
           ) : (
-            <Button onClick={() => setIsEditing(true)} className="px-0 mx-auto">
-              <AddCircleIcon className="mr-2 text-warning" />
-              Add New Measure
-            </Button>
+            <div className={classes.flex}>
+              {isLoadingNewMeasure && <LoadingIndicator />}
+              <Button onClick={() => setIsEditing(true)} className="px-0 mx-auto">
+                <AddCircleIcon className="mr-2 text-warning" />
+                Add New Measure
+              </Button>
+            </div>
           )}
         </ListItem>
       )}

@@ -6,13 +6,14 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { withStyles } from '@material-ui/core/styles';
 import EditButton from './elements/EditButton';
 import InputNps from './elements/editMode/InputNps';
-import AddNps from './elements/editMode/AddNps';
+import { addResource, updateResource } from '../slices/resources';
 
-const Wig = ({ nps, editMode }) => {
+const Wig = ({ nps, editMode, dispatch }) => {
   const [latestNps, setLatestNps] = useState();
   const [progress, setProgress] = useState();
   const [isEditing, setIsEditing] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const [isLoadingNps, setIsLoadingNps] = useState(false);
   useEffect(() => {
     if (nps.length > 0) {
       setLatestNps(
@@ -21,6 +22,7 @@ const Wig = ({ nps, editMode }) => {
         })
       );
     }
+    setIsLoadingNps(false);
   }, [nps]);
 
   useEffect(() => {
@@ -29,6 +31,40 @@ const Wig = ({ nps, editMode }) => {
     const npsProgress = currentInt && goalInt ? (currentInt / goalInt) * 100 : 0;
     setProgress(npsProgress > 100 ? 100 : npsProgress);
   }, [latestNps]);
+
+  const editNps = (id, { currentNps, goalNps, date, targetDate }, event) => {
+    event.preventDefault();
+    const data = {
+      id,
+      type: 'nps',
+      data: {
+        currentNps: parseInt(currentNps, 10),
+        goalNps: parseInt(goalNps, 10),
+        date,
+        targetDate
+      }
+    };
+    dispatch(updateResource(data));
+    setIsLoadingNps(true);
+    setIsEditing(false);
+  };
+
+  const addNps = (id, { currentNps, goalNps, date, targetDate }, event) => {
+    event.preventDefault();
+    const data = {
+      id,
+      type: 'nps',
+      data: {
+        currentNps: parseInt(currentNps, 10),
+        goalNps: parseInt(goalNps, 10),
+        date,
+        targetDate
+      }
+    };
+    dispatch(addResource(data));
+    setIsLoadingNps(true);
+    setIsAdding(false);
+  };
 
   const setColorBasedOnProgress = score => {
     if (score > 70) {
@@ -59,10 +95,11 @@ const Wig = ({ nps, editMode }) => {
     color: setColorBasedOnProgress(progress)
   };
 
+  // Used for showing NPS progress circle and as loading indicator
   const CircularProgressBar = withStyles({
     root: {
       position: 'relative',
-      color: setColorBasedOnProgress(progress),
+      color: isLoadingNps ? undefined : setColorBasedOnProgress(progress),
       border: '2px solid black',
       borderRadius: '50%',
       borderColor: 'gray',
@@ -89,17 +126,27 @@ const Wig = ({ nps, editMode }) => {
               current={latestNps.currentNps}
               goal={latestNps.goalNps}
               targetDate={latestNps.targetDate}
-              setIsEditing={setIsEditing}
+              setIsAddingOrEditing={setIsEditing}
+              handleSubmit={editNps}
             />
           ) : (
             <div>
-              <h3 className="wig__statement">{`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}</h3>
+              {latestNps.goalNps && latestNps.targetDate && (
+                <h3 className="wig__statement">{`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}</h3>
+              )}
               <div style={{ position: 'relative' }}>
-                <CircularProgressBar size={150} thickness={5} variant="static" value={progress} />
-                <div style={ChartLabelContainerStyle}>
-                  <span style={LabelText}>NPS</span>
-                  <span style={LabelValue}>{latestNps.currentNps}</span>
-                </div>
+                <>
+                  <CircularProgressBar
+                    size={150}
+                    thickness={isLoadingNps ? 1 : 5}
+                    variant={isLoadingNps ? 'indeterminate' : 'static'}
+                    value={progress}
+                  />
+                  <div style={ChartLabelContainerStyle}>
+                    <span style={LabelText}>NPS</span>
+                    <span style={LabelValue}>{latestNps.currentNps}</span>
+                  </div>
+                </>
               </div>
             </div>
           )}
@@ -108,7 +155,7 @@ const Wig = ({ nps, editMode }) => {
       {editMode && (
         <div className="mt-2">
           {isAdding ? (
-            <AddNps setIsEditing={setIsAdding} />
+            <InputNps handleSubmit={addNps} setIsAddingOrEditing={setIsAdding} />
           ) : (
             <Button onClick={() => setIsAdding(true)} className="px-0 mx-auto">
               <AddCircleIcon className="mr-2 text-warning" />
@@ -135,7 +182,8 @@ Wig.propTypes = {
       date: PropTypes.string,
       targetDate: PropTypes.string
     })
-  )
+  ),
+  dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

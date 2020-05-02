@@ -4,9 +4,15 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import COLORS from '../../style/COLORS';
 
+/**
+ * Stylised Button Component
+ *
+ * @component
+ * @param {Object} props
+ */
 const OptionsButton = props => {
   const { primary, secondary, dark } = COLORS;
-  const { text, onClick } = props;
+  const { text, onClick, type } = props;
 
   const OptButton = withStyles({
     label: {
@@ -23,19 +29,22 @@ const OptionsButton = props => {
   })(Button);
 
   return (
-    <OptButton color="default" size="small" variant="contained" onClick={onClick}>
+    <OptButton color="default" size="small" variant="contained" onClick={onClick} type={type}>
       {text}
     </OptButton>
   );
 };
 
 OptionsButton.defaultProps = {
-  text: ''
+  text: '',
+  type: null,
+  onClick: undefined
 };
 
 OptionsButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  text: PropTypes.string
+  onClick: PropTypes.func,
+  text: PropTypes.string,
+  type: PropTypes.string
 };
 
 export default OptionsButton;
