@@ -89,50 +89,47 @@ const Home = ({
   return (
     <ThemeProvider theme={theme}>
       <div className="p-4">
-        {isFetching ? (
-          <CircularProgress />
-        ) : (
-          <div>
-            {isLoggedIn && (
-              <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
-                Toggle Edit Mode
-              </Button>
-            )}
-            <div className="row">
-              <div className="col-sm">
-                <Wig nps={nps} />
-                <Lead
-                  nps={nps}
-                  clients={clients}
-                  definedStatus={definedStatus}
-                  leadStatus={leadStatus}
+        {isFetching && <CircularProgress />}
+        <div>
+          {isLoggedIn && (
+            <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
+              Toggle Edit Mode
+            </Button>
+          )}
+          <div className="row">
+            <div className="col-sm">
+              <Wig nps={nps} />
+              <Lead
+                nps={nps}
+                clients={clients}
+                definedStatus={definedStatus}
+                leadStatus={leadStatus}
+              />
+            </div>
+            <div className="col-sm">
+              <Details />
+              {npsChartData.values.length > 0 ? (
+                <Nps chart={npsChartData} />
+              ) : (
+                <div className="my-5 p-4 jumbotron text-light bg-dark">
+                  No Measure Data Available For NPS graph
+                </div>
+              )}
+              {measures?.length > 0 ? (
+                <ChartContainer
+                  measureGoals={measureGoals}
+                  measuresChartData={measuresChartData}
+                  measuresChartInterval={measuresChartInterval}
+                  setMeasuresChartInterval={setMeasuresChartInterval}
                 />
-              </div>
-              <div className="col-sm">
-                <Details />
-                {npsChartData.values.length > 0 ? (
-                  <Nps chart={npsChartData} />
-                ) : (
-                  <div className="my-5 p-4 jumbotron text-light bg-dark">
-                    No Measure Data Available For NPS graph
-                  </div>
-                )}
-                {measures?.length > 0 ? (
-                  <ChartContainer
-                    measureGoals={measureGoals}
-                    measuresChartData={measuresChartData}
-                    measuresChartInterval={measuresChartInterval}
-                    setMeasuresChartInterval={setMeasuresChartInterval}
-                  />
-                ) : (
-                  <div className="my-5 p-4 jumbotron text-light bg-dark">
-                    No Measure Data Available For Measure Over Time Graph
-                  </div>
-                )}
-              </div>
+              ) : (
+                <div className="my-5 p-4 jumbotron text-light bg-dark">
+                  No Measure Data Available For Measure Over Time Graph
+                </div>
+              )}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </ThemeProvider>
   );
