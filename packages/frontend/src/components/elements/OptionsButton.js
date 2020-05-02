@@ -10,9 +10,8 @@ import COLORS from '../../style/COLORS';
  * @component
  * @param {Object} props
  */
-const OptionsButton = props => {
+const OptionsButton = ({ text, onClick, type }) => {
   const { primary, secondary, dark } = COLORS;
-  const { text, onClick, type } = props;
 
   const OptButton = withStyles({
     label: {

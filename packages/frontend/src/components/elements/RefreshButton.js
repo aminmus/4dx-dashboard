@@ -5,9 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import COLORS from '../../style/COLORS';
 
-const RefreshButton = props => {
+const RefreshButton = ({ onClick }) => {
   const { primary, secondary, light } = COLORS;
-  const { onClick } = props;
 
   const RefreshBtn = withStyles({
     root: {
@@ -33,13 +32,11 @@ const RefreshButton = props => {
   })(RefreshIcon);
 
   return (
-    <RefreshBtn onClick={onClick} aria-label="options" style={{ marginLeft: '10px' }}>
+    <RefreshBtn onClick={onClick} aria-label="options">
       <OptionsToggleIcon />
     </RefreshBtn>
   );
 };
-
-RefreshButton.defaultProps = {};
 
 RefreshButton.propTypes = {
   onClick: PropTypes.func.isRequired

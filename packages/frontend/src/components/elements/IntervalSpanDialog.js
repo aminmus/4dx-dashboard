@@ -1,42 +1,47 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  InputLabel,
+  Input,
+  FormControl,
+  Select
+} from '@material-ui/core';
 import OptionsButton from './OptionsButton';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    width: '100%'
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120
-  }
-}));
-
-export default function IntervalSpanDialog(props) {
-  const { setIntervalSpan, intervalSpan } = props;
-  const classes = useStyles();
+export default function IntervalSpanDialog({ setIntervalSpan, intervalSpan }) {
   const [open, setOpen] = React.useState(false);
 
-  const handleChange = event => {
-    setIntervalSpan(event.target.value);
+  const useStyles = makeStyles(theme => ({
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      width: '100%'
+    },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120
+    }
+  }));
+
+  const classes = useStyles();
+
+  const handleChange = e => {
+    e.preventDefault();
+    setIntervalSpan(e.target.value);
   };
 
-  const handleClickOpen = () => {
+  const handleClickOpen = e => {
+    e.preventDefault();
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = e => {
+    e.preventDefault();
     setOpen(false);
   };
 
@@ -69,8 +74,6 @@ export default function IntervalSpanDialog(props) {
     </div>
   );
 }
-
-IntervalSpanDialog.defaultProps = {};
 
 IntervalSpanDialog.propTypes = {
   setIntervalSpan: PropTypes.func.isRequired,

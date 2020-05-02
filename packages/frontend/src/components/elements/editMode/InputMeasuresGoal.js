@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
@@ -10,12 +11,22 @@ const InputMeasuresGoal = ({ handleSaveMeasureGoal, setIsEditing, measures, date
   const [targetMeasures, setTargetMeasures] = useState(measures);
   const [selectedDate, setSelectedDate] = useState(date);
 
-  const formStyle = {
-    border: '2px dotted white',
-    borderRadius: '10px',
-    padding: '10px',
-    width: '100%'
-  };
+  /**
+   * Component Styles
+   */
+  const useStyles = makeStyles({
+    form: {
+      border: '2px dotted white',
+      borderRadius: '10px',
+      padding: '10px',
+      width: '100%'
+    },
+    confirmContainer: {
+      display: 'flex'
+    }
+  });
+
+  const classes = useStyles();
 
   const handleSaveClick = e => {
     e.preventDefault();
@@ -31,11 +42,10 @@ const InputMeasuresGoal = ({ handleSaveMeasureGoal, setIsEditing, measures, date
   };
 
   return (
-    <form style={formStyle}>
+    <form className={classes.form}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <TextField
           label="Target Measures"
-          style={{ color: '#ffff', marign: '10px' }}
           value={targetMeasures.toString(10)}
           default={targetMeasures.toString(10)}
           variant="filled"
@@ -62,7 +72,7 @@ const InputMeasuresGoal = ({ handleSaveMeasureGoal, setIsEditing, measures, date
         />
       </MuiPickersUtilsProvider>
 
-      <div style={{ display: 'flex' }}>
+      <div className={classes.confirmContainer}>
         <OptionsButton text="Save" onClick={handleSaveClick} />
         <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
       </div>
