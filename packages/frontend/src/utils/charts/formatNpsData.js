@@ -56,7 +56,8 @@ const setNpsAndTargetGraphPoints = nps => {
   const target = [];
   nps.forEach(entry => {
     data.push({ x: entry.date, y: entry.currentNps, createdAt: entry.createdAt });
-    target.push({ x: entry.targetDate, y: entry.goalNps, createdAt: entry.createdAt });
+    if (entry.targetDate && entry.goalNps)
+      target.push({ x: entry.targetDate, y: entry.goalNps, createdAt: entry.createdAt });
   });
 
   const sortedData = sortDataPointArrayByDate(data);
