@@ -8,9 +8,13 @@ import COLORS from '../../style/COLORS';
  * Stylised Button Component
  *
  * @component
- * @param {Object} props
+ * @param {Object} props Component props
+ * @param {Boolean} props.disabled Is button disabled
+ * @param {String} props.text Button text
+ * @param {Function} props.onClick On click event handler
+ * @param {String} props.type Button type
  */
-const OptionsButton = ({ text, onClick, type }) => {
+const OptionsButton = ({ disabled = false, text, onClick, type }) => {
   const { primary, secondary, dark } = COLORS;
 
   const OptButton = withStyles({
@@ -28,19 +32,28 @@ const OptionsButton = ({ text, onClick, type }) => {
   })(Button);
 
   return (
-    <OptButton color="default" size="small" variant="contained" onClick={onClick} type={type}>
+    <OptButton
+      disabled={disabled}
+      color="default"
+      size="small"
+      variant="contained"
+      onClick={onClick}
+      type={type}
+    >
       {text}
     </OptButton>
   );
 };
 
 OptionsButton.defaultProps = {
+  disabled: false,
   text: '',
   type: null,
   onClick: undefined
 };
 
 OptionsButton.propTypes = {
+  disabled: PropTypes.bool,
   onClick: PropTypes.func,
   text: PropTypes.string,
   type: PropTypes.string
