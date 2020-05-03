@@ -7,15 +7,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Wig from '../components/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/Details';
-import Nps from '../components/Nps';
 import { toggleEdit } from '../actions/editMode';
 import theme from '../style/muiTheme';
 import { fetchResources } from '../slices/resources';
 import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
-import reformatNps from '../utils/reformatNps';
 import formatMeasureOverTimeData from '../utils/charts/formatMeasureOverTimeData';
-import ChartContainer from '../components/graphs/MeasureOverTime/ChartContainer';
+import formatNpsData from '../utils/charts/formatNpsData';
+import MeasuresOverTimeContainer from '../components/MeasuresOverTimeContainer';
+import NpsContainer from '../components/NpsContainer';
 
 const getMeasuresFromClient = clients =>
   clients.reduce((accumulator, client) => {
@@ -34,14 +34,13 @@ const Home = ({
   const [definedStatus, setDefinedStatus] = useState({ totalClients: 0, definedClients: 0 });
   const [leadStatus, setLeadStatus] = useState({ leads: 0, leadsTotal: 0 });
   const [npsChartData, setNpsChartData] = useState({
-    months: [],
-    values: [],
-    target: null
+    graphData: {},
+    graphOptions: {}
   });
   const [measures, setMeasures] = useState();
 
   const [measuresChartData, setMeasuresChartData] = useState({
-    graphData: [],
+    graphData: {},
     graphOptions: {}
   });
   const [measuresChartInterval, setMeasuresChartInterval] = useState('weekly');
@@ -71,13 +70,7 @@ const Home = ({
 
   useEffect(() => {
     if (nps.length > 0) {
-      setNpsChartData(reformatNps(nps));
-    }
-  }, [nps]);
-
-  useEffect(() => {
-    if (nps.length > 0) {
-      setNpsChartData(reformatNps(nps));
+      setNpsChartData(formatNpsData(nps));
     }
   }, [nps]);
 
@@ -99,24 +92,19 @@ const Home = ({
           <div className="row">
             <div className="col-sm">
               <Wig nps={nps} />
-              <Lead
-                nps={nps}
-                clients={clients}
-                definedStatus={definedStatus}
-                leadStatus={leadStatus}
-              />
+              <Lead clients={clients} definedStatus={definedStatus} leadStatus={leadStatus} />
             </div>
             <div className="col-sm">
               <Details />
-              {npsChartData.values.length > 0 ? (
-                <Nps chart={npsChartData} />
+              {nps?.length > 0 ? (
+                <NpsContainer npsChartData={npsChartData} />
               ) : (
                 <div className="my-5 p-4 jumbotron text-light bg-dark">
                   No Measure Data Available For NPS graph
                 </div>
               )}
               {measures?.length > 0 ? (
-                <ChartContainer
+                <MeasuresOverTimeContainer
                   measureGoals={measureGoals}
                   measuresChartData={measuresChartData}
                   measuresChartInterval={measuresChartInterval}

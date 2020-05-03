@@ -5,15 +5,28 @@ import PropTypes from 'prop-types';
 import { useMediaQuery, Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { makeStyles } from '@material-ui/core/styles';
-import OptionsToggleButton from '../../elements/OptionsToggleButton';
-import IntervalSpanDialog from '../../elements/IntervalSpanDialog';
-import InputMeasuresGoal from '../../elements/editMode/InputMeasuresGoal';
-import COLORS from '../../../style/COLORS';
-import { addResource } from '../../../slices/resources';
+import OptionsToggleButton from './elements/OptionsToggleButton';
+import IntervalSpanDialog from './elements/IntervalSpanDialog';
+import InputMeasuresGoal from './elements/editMode/InputMeasuresGoal';
+import COLORS from '../style/COLORS';
+import { addResource } from '../slices/resources';
 
 const { primary, light } = COLORS;
 
-const ChartContainer = ({
+/**
+ * Contains the Measure over time graph as well as the options header
+ * @component
+ * @param {Object} props Component props
+ * @param {Object} props.measureGoals Measure goals object
+ * @param {Object} props.measuresChartData Chart Data object used to determine NPS graph
+ * @param {Object} props.measuresChartData.graphData Data used to render graph
+ * @param {Object} props.measuresChartData.graphOptions Options for rendering graph
+ * @param {String} props.measuresChartInterval Measure chart interval (weekly,biweekly or monthly)
+ * @param {Function} props.setMeasuresChartInterval Set state function for measure chart interval
+ * @param {Function} props.dispatch Redux store dispatch
+ * @param {Boolean} props.editMode Determines if edit mode is enabled by user (from redux store)
+ */
+const MeasuresOverTimeContainer = ({
   measureGoals,
   measuresChartData: { graphData, graphOptions },
   measuresChartInterval,
@@ -118,7 +131,7 @@ const ChartContainer = ({
   );
 };
 
-ChartContainer.propTypes = {
+MeasuresOverTimeContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
   measuresChartInterval: PropTypes.string.isRequired,
@@ -144,4 +157,4 @@ const mapStateToProps = state => ({
   editMode: state.editMode.editModeEnabled
 });
 
-export default connect(mapStateToProps, null)(ChartContainer);
+export default connect(mapStateToProps, null)(MeasuresOverTimeContainer);
