@@ -41,12 +41,6 @@ export const validateDate = date => {
       errorMessage: 'Lower date limit 2000-01-01'
     };
   }
-  if (moment(date).isAfter('2030-01-01')) {
-    return {
-      error: true,
-      errorMessage: 'Upper date limit 2030-01-01'
-    };
-  }
   return {
     error: false
   };
