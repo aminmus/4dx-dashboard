@@ -14,7 +14,7 @@ import COLORS from '../../style/COLORS';
  * @param {Function} props.onClick On click event handler
  * @param {String} props.type Button type
  */
-const OptionsButton = ({ disabled = false, text, onClick, type }) => {
+const OptionsButton = ({ disabled, text, onClick, type }) => {
   const { primary, secondary, dark } = COLORS;
 
   const OptButton = withStyles({
