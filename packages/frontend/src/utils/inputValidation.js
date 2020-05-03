@@ -32,7 +32,7 @@ export const validateDate = date => {
   if (date && !moment(date).isValid()) {
     return {
       error: true,
-      errorMessage: "Must be a valid date'"
+      errorMessage: 'Must be a valid date'
     };
   }
   if (moment(date).isBefore('2000-01-01')) {
