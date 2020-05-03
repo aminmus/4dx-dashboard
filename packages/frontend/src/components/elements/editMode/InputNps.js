@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -7,12 +7,31 @@ import MomentUtils from '@date-io/moment';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
+import { validateNps, validateDate } from '../../../utils/inputValidation';
 
+/**
+ * Nps input component
+ *
+ * @component
+ * @param {Object} props Component props
+ * @param {String} props.id Unique identifier for NPS resource (if used for editing)
+ * @param {Number} props.current Current Nps
+ * @param {Number} props.goal Goal Nps
+ * @param {String} props.targetDate Target date for Nps goal
+ * @param {Function} props.setIsAddingOrEditing Set whether or not user is editing a resource
+ * @param {Object} props.handleSubmit Handling of input submission
+ *
+ */
 const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleSubmit }) => {
   const [selectedDate, setSelectedDate] = useState(formatDate());
   const [selectedTargetDate, setSelectedTargetDate] = useState(targetDate);
   const [currentNps, setCurrentNps] = useState(current);
   const [goalNps, setGoalNps] = useState(goal);
+  const [currentNpsErrorHelper, setCurrentNpsErrorHelper] = useState();
+  const [goalNpsErrorHelper, setGoalNpsErrorHelper] = useState();
+  const [dateErrorHelper, setDateErrorHelper] = useState();
+  const [targetDateErrorHelper, setTargetDateErrorHelper] = useState();
+  const [validationError, setValidationError] = useState(false);
 
   /**
    * Component Styles
@@ -37,6 +56,68 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
     date: selectedDate,
     targetDate: selectedTargetDate
   };
+  /**
+   * Input Validation
+   */
+  useEffect(() => {
+    const { error, errorMessage } = validateNps(currentNps);
+    if (error) {
+      setCurrentNpsErrorHelper(errorMessage);
+    } else {
+      setCurrentNpsErrorHelper(null);
+    }
+  }, [currentNps]);
+
+  useEffect(() => {
+    const { error, errorMessage } = validateNps(goalNps);
+    if (error) {
+      setGoalNpsErrorHelper(errorMessage);
+    } else {
+      setGoalNpsErrorHelper(null);
+    }
+  }, [goalNps]);
+
+  useEffect(() => {
+    const { error, errorMessage } = validateDate(selectedDate);
+    if (error) {
+      setDateErrorHelper(errorMessage);
+    } else {
+      setDateErrorHelper(null);
+    }
+  }, [selectedDate]);
+
+  useEffect(() => {
+    const { error, errorMessage } = validateDate(selectedTargetDate);
+    if (error) {
+      setTargetDateErrorHelper(errorMessage);
+    } else {
+      setTargetDateErrorHelper(null);
+    }
+  }, [selectedTargetDate]);
+
+  useEffect(() => {
+    if (!selectedDate || !currentNps) {
+      setValidationError(true);
+    } else if (
+      currentNpsErrorHelper ||
+      goalNpsErrorHelper ||
+      dateErrorHelper ||
+      targetDateErrorHelper
+    ) {
+      setValidationError(true);
+    } else if ((selectedTargetDate && !goalNps) || (!selectedTargetDate && goalNps)) {
+      setValidationError(true);
+    } else {
+      setValidationError(false);
+    }
+  }, [
+    selectedDate,
+    currentNps,
+    currentNpsErrorHelper,
+    goalNpsErrorHelper,
+    goalNps,
+    selectedTargetDate
+  ]);
 
   return (
     <form className={classes.form} onSubmit={e => handleSubmit(id, formInput, e)}>
@@ -54,6 +135,9 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           InputLabelProps={{
             shrink: true
           }}
+          error={!!currentNpsErrorHelper}
+          helperText={currentNpsErrorHelper}
+          required
         />
         <TextField
           id="standard-number"
@@ -65,6 +149,8 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           variant="filled"
           margin="normal"
           onChange={input => setGoalNps(input.target.value)}
+          error={!!goalNpsErrorHelper}
+          helperText={goalNpsErrorHelper}
           InputLabelProps={{
             shrink: true
           }}
@@ -79,9 +165,12 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           variant="filled"
           value={selectedDate}
           onChange={(date, value) => setSelectedDate(formatDate(date, value))}
+          error={!!dateErrorHelper}
+          helperText={dateErrorHelper}
           KeyboardButtonProps={{
             'aria-label': 'change date'
           }}
+          required
         />
         <KeyboardDatePicker
           label="Target Date"
@@ -92,6 +181,8 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           variant="filled"
           value={selectedTargetDate}
           onChange={(date, value) => setSelectedTargetDate(formatDate(date || value))}
+          error={!!targetDateErrorHelper}
+          helperText={targetDateErrorHelper}
           KeyboardButtonProps={{
             'aria-label': 'change date'
           }}
@@ -99,7 +190,7 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
       </MuiPickersUtilsProvider>
 
       <div className={classes.confirmContainer}>
-        <OptionsButton type="submit" text="Save" />
+        <OptionsButton disabled={validationError} type="submit" text="Save" />
         <OptionsButton type="reset" text="Cancel" onClick={() => setIsAddingOrEditing(false)} />
       </div>
     </form>
