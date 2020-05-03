@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -7,64 +7,7 @@ import MomentUtils from '@date-io/moment';
 import { TextField } from '@material-ui/core';
 import OptionsButton from '../OptionsButton';
 import formatDate from '../../../utils/formatDate';
-import { validateNps, validateDate } from '../../../utils/inputValidation';
-import {
-  SET_DATE,
-  SET_TARGET_DATE,
-  SET_TARGET_NPS,
-  SET_NPS,
-  MISSING_FIELDS
-} from '../../../actions/types';
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case SET_DATE: {
-      const { error: dateError, errorMessage: dateErrorMessage } = validateDate(action.payload);
-      return {
-        ...state,
-        selectedDate: action.payload,
-        dateErrorText: dateError ? dateErrorMessage : null,
-        validationError: dateError
-      };
-    }
-    case SET_TARGET_DATE: {
-      const { error: targetDateError, errorMessage: targetDateErrorMessage } = validateDate(
-        action.payload
-      );
-      return {
-        ...state,
-        selectedTargetDate: action.payload,
-        targetDateErrorText: targetDateError ? targetDateErrorMessage : null,
-        validationError: targetDateError
-      };
-    }
-    case SET_TARGET_NPS: {
-      const npsValidation = validateNps(action.payload);
-      return {
-        ...state,
-        goalNps: action.payload,
-        goalNpsErrorText: npsValidation.error ? npsValidation.errorMessage : null,
-        validationError: npsValidation.error
-      };
-    }
-    case SET_NPS: {
-      const targetNpsValidation = validateNps(action.payload);
-      return {
-        ...state,
-        currentNps: action.payload,
-        currentNpsErrorText: targetNpsValidation.error ? targetNpsValidation.errorMessage : null,
-        validationError: targetNpsValidation.error
-      };
-    }
-    case MISSING_FIELDS:
-      return {
-        ...state,
-        validationError: true
-      };
-    default:
-      return state;
-  }
-};
+import { inputNpsValidation } from '../../../utils/inputValidation';
 
 /**
  * Nps input component
@@ -80,32 +23,15 @@ const reducer = (state, action) => {
  *
  */
 const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleSubmit }) => {
-  const initialState = {
-    selectedDate: formatDate(),
-    selectedTargetDate: targetDate,
-    currentNps: current,
-    goalNps: goal,
-    currentNpsErrorText: null,
-    goalNpsErrorText: null,
-    dateErrorText: null,
-    targetDateErrorText: null,
-    validationError: false
-  };
-  const [
-    {
-      selectedDate,
-      selectedTargetDate,
-      currentNps,
-      goalNps,
-      currentNpsErrorText,
-      goalNpsErrorText,
-      dateErrorText,
-      targetDateErrorText,
-      validationError
-    },
-    dispatch
-  ] = useReducer(reducer, initialState);
-
+  const [selectedDate, setSelectedDate] = useState(formatDate());
+  const [selectedTargetDate, setSelectedTargetDate] = useState(targetDate);
+  const [currentNps, setCurrentNps] = useState(current);
+  const [goalNps, setGoalNps] = useState(goal);
+  const [currentNpsErrorText, setCurrentNpsErrorText] = useState();
+  const [goalNpsErrorText, setGoalNpsErrorText] = useState();
+  const [dateErrorText, setDateErrorText] = useState();
+  const [targetDateErrorText, setTargetDateErrorText] = useState();
+  const [validationError, setValidationError] = useState(false);
   /**
    * Component Styles
    */
@@ -130,11 +56,29 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
     targetDate: selectedTargetDate
   };
 
+  /**
+   * Set input validation errors if present
+   */
+  useEffect(() => {
+    const { errors } = inputNpsValidation(currentNps, goalNps, selectedDate, selectedTargetDate);
+    setCurrentNpsErrorText(errors.nps);
+    setGoalNpsErrorText(errors.goalNps);
+    setDateErrorText(errors.date);
+    setTargetDateErrorText(errors.targetDate);
+  }, [currentNps, goalNps, selectedDate, selectedTargetDate]);
+
+  /**
+   * Prevents user input if only one of the goal/target inputs are set
+   */
   useEffect(() => {
     if (!selectedDate || !currentNps) {
-      dispatch({ type: MISSING_FIELDS });
+      setValidationError(true);
+    } else if (currentNpsErrorText || goalNpsErrorText || dateErrorText || targetDateErrorText) {
+      setValidationError(true);
     } else if ((selectedTargetDate && !goalNps) || (!selectedTargetDate && goalNps)) {
-      dispatch({ type: MISSING_FIELDS });
+      setValidationError(true);
+    } else {
+      setValidationError(false);
     }
   }, [
     selectedDate,
@@ -157,8 +101,8 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           fullWidth
           variant="filled"
           margin="normal"
-          onChange={input => dispatch({ type: SET_NPS, payload: input.target.value })}
-          error={!!currentNpsErrorText}
+          onChange={input => setCurrentNps(input.target.value)}
+          error={currentNpsErrorText}
           helperText={currentNpsErrorText}
           InputLabelProps={{
             shrink: true
@@ -174,8 +118,8 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           fullWidth
           variant="filled"
           margin="normal"
-          onChange={input => dispatch({ type: SET_TARGET_NPS, payload: input.target.value })}
-          error={!!goalNpsErrorText}
+          onChange={input => setGoalNps(input.target.value)}
+          error={goalNpsErrorText}
           helperText={goalNpsErrorText}
           InputLabelProps={{
             shrink: true
@@ -191,8 +135,8 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           id="date-picker-inline"
           variant="filled"
           value={selectedDate}
-          onChange={(date, value) => dispatch({ type: SET_DATE, payload: date || value })}
-          error={!!dateErrorText}
+          onChange={(date, value) => setSelectedDate(formatDate(date, value))}
+          error={dateErrorText}
           helperText={dateErrorText}
           KeyboardButtonProps={{
             'aria-label': 'change date'
@@ -207,8 +151,8 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           id="date-picker-inline"
           variant="filled"
           value={selectedTargetDate}
-          onChange={(date, value) => dispatch({ type: SET_TARGET_DATE, payload: date || value })}
-          error={!!targetDateErrorText}
+          onChange={(date, value) => setSelectedTargetDate(formatDate(date || value))}
+          error={targetDateErrorText}
           helperText={targetDateErrorText}
           KeyboardButtonProps={{
             'aria-label': 'change date'

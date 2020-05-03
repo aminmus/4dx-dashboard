@@ -81,3 +81,21 @@ export const validateText = value => {
     error: false
   };
 };
+
+/**
+ * Validation for inputNps component
+ * @param {Number} nps Nps
+ * @param {Number} goalNps Goal Nps
+ * @param {String} date Date of Nps input
+ * @param {String} targetDate Target date for goal nps
+ */
+export const inputNpsValidation = (nps, goalNps, date, targetDate) => {
+  return {
+    errors: {
+      nps: validateNps(nps).error ? validateNps(nps).errorMessage : null,
+      goalNps: validateNps(goalNps).error ? validateNps(goalNps).errorMessage : null,
+      date: validateDate(date).error ? validateDate(date).errorMessage : null,
+      targetDate: validateDate(targetDate).error ? validateDate(targetDate).errorMessage : null
+    }
+  };
+};
