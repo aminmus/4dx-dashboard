@@ -53,7 +53,7 @@ export const validateDate = date => {
  * @param {String} value Name
  */
 export const validateName = value => {
-  if ((value && value.length < 1) || value.length > 50) {
+  if (value?.length === 0 || value?.length > 50) {
     return {
       error: true,
       errorMessage: 'Must be between 1-50 characters in length'
