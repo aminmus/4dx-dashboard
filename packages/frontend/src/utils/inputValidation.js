@@ -135,7 +135,7 @@ export const inputNpsValidation = (nps, goalNps, date, targetDate) => {
 export const inputClientValidation = name => {
   return {
     errors: {
-      clientName: validateName(name).error ? validateName(name).errorMessage : null
+      clientName: validateName(name, true).error ? validateName(name, true).errorMessage : null
     }
   };
 };

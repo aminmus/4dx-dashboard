@@ -71,6 +71,7 @@ const InputClient = ({ id, name, setIsEditing, handleSave }) => {
         InputLabelProps={{
           shrink: true
         }}
+        required
       />
       <div className={classes.confirmContainer}>
         <OptionsButton disabled={validationError} text="Save" onClick={handleSaveClick} />
