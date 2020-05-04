@@ -99,3 +99,15 @@ export const inputNpsValidation = (nps, goalNps, date, targetDate) => {
     }
   };
 };
+
+/**
+ * Validation for inputClient component
+ * @param {String} name Client name
+ */
+export const inputClientValidation = name => {
+  return {
+    errors: {
+      clientName: validateName(name).error ? validateName(name).errorMessage : null
+    }
+  };
+};
