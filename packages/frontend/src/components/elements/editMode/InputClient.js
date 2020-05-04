@@ -15,12 +15,12 @@ import { inputClientValidation } from '../../../utils/inputValidation';
  * @param {String} props.name Client name
  * @param {Function} props.setIsEditing Set whether or not user is editing a resource
  * @param {Object} props.handleSave Handling of input submission
- *
  */
 const InputClient = ({ id, name, setIsEditing, handleSave }) => {
   const [clientName, setClientName] = useState(name);
   const [clientNameErrorText, setClientNameErrorText] = useState();
   const [validationError, setValidationError] = useState(false);
+
   /**
    * Component Styles
    */
@@ -66,7 +66,7 @@ const InputClient = ({ id, name, setIsEditing, handleSave }) => {
         variant="filled"
         margin="normal"
         onChange={input => setClientName(input.target.value)}
-        error={validationError}
+        error={!!clientNameErrorText}
         helperText={clientNameErrorText}
         InputLabelProps={{
           shrink: true

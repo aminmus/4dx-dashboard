@@ -102,7 +102,7 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           variant="filled"
           margin="normal"
           onChange={input => setCurrentNps(input.target.value)}
-          error={currentNpsErrorText}
+          error={!!currentNpsErrorText}
           helperText={currentNpsErrorText}
           InputLabelProps={{
             shrink: true
@@ -119,7 +119,7 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           variant="filled"
           margin="normal"
           onChange={input => setGoalNps(input.target.value)}
-          error={goalNpsErrorText}
+          error={!!goalNpsErrorText}
           helperText={goalNpsErrorText}
           InputLabelProps={{
             shrink: true
@@ -135,7 +135,7 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           variant="filled"
           value={selectedDate}
           onChange={(date, value) => setSelectedDate(formatDate(date, value))}
-          error={dateErrorText}
+          error={!!dateErrorText}
           helperText={dateErrorText}
           KeyboardButtonProps={{
             'aria-label': 'change date'
@@ -151,7 +151,7 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           variant="filled"
           value={selectedTargetDate}
           onChange={(date, value) => setSelectedTargetDate(formatDate(date || value))}
-          error={targetDateErrorText}
+          error={!!targetDateErrorText}
           helperText={targetDateErrorText}
           KeyboardButtonProps={{
             'aria-label': 'change date'
