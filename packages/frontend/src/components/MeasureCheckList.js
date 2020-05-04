@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow, no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import {
   List,
@@ -10,19 +9,23 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { styled } from '@material-ui/core/styles';
 import MeasureListItem from './MeasureListItem';
 import InputMeasure from './elements/editMode/InputMeasure';
 import { addMeasure } from '../slices/resources';
+import COLORS from '../style/COLORS';
 
-const MeasureList = styled(List)({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'strech',
-  flexBasis: '100%',
-  width: '100%'
-});
+const { primary, lightGray } = COLORS;
 
+/**
+ * Mesure Checklist component
+ *
+ * @component
+ * @param {Object} props Component props
+ * @param {Object[]} props.measures Array of measures resource objects
+ * @param {Boolean} props.editMode Is user editing resource
+ * @param {Boolean} props.clientId Id of client
+ * @param {Function} props.dispatch Redux store dispatch
+ */
 const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoadingNewMeasure, setIsLoadingNewMeasure] = useState(false);
@@ -38,36 +41,57 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
   };
 
   const useStyles = makeStyles({
+    listContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'strech',
+      flexBasis: '100%',
+      width: '100%'
+    },
     flex: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center'
+    },
+    addMeasureBtn: {
+      padding: '0',
+      margin: 'auto',
+      opacity: 0.5,
+      '&:hover': {
+        backgroundColor: lightGray,
+        opacity: 1
+      }
+    },
+    addMeasureIcon: {
+      padding: '0',
+      marginRight: '5px',
+      color: primary
     }
   });
 
   const classes = useStyles();
 
   return (
-    <MeasureList>
+    <List className={classes.listContainer}>
       {measures.map(measure => {
         return <MeasureListItem clientId={clientId} measure={measure} key={`${measure.id}`} />;
       })}
       {editMode && (
-        <ListItem className="text-light">
+        <ListItem>
           {isEditing && editMode ? (
             <InputMeasure clientId={clientId} handleSave={handleSave} setIsEditing={setIsEditing} />
           ) : (
             <div className={classes.flex}>
               {isLoadingNewMeasure && <LoadingIndicator />}
-              <Button onClick={() => setIsEditing(true)} className="px-0 mx-auto">
-                <AddCircleIcon className="mr-2 text-warning" />
+              <Button onClick={() => setIsEditing(true)} className={classes.addMeasureBtn}>
+                <AddCircleIcon className={classes.addMeasureIcon} />
                 Add New Measure
               </Button>
             </div>
           )}
         </ListItem>
       )}
-    </MeasureList>
+    </List>
   );
 };
 
