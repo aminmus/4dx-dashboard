@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ThemeProvider } from '@material-ui/core';
+import { Button, ThemeProvider, makeStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -16,13 +16,40 @@ import formatMeasureOverTimeData from '../utils/charts/formatMeasureOverTimeData
 import formatNpsData from '../utils/charts/formatNpsData';
 import MeasuresOverTimeContainer from '../components/MeasuresOverTimeContainer';
 import NpsContainer from '../components/NpsContainer';
+import COLORS from '../style/COLORS';
 
-const getMeasuresFromClient = clients =>
-  clients.reduce((accumulator, client) => {
+const { danger, dangerDark } = COLORS;
+
+/**
+ * Returns an array of measures extracted from the clients resource
+ *
+ * @function
+ * @param {Object[]} clients A list of clients
+ * @param {String} clients[].id Unique identifier for client reasource
+ * @param {Object[]} clients[].measures Array of client measures
+ * @param {Object[]} clients[].csats Array of client satisfaction scores
+ * @param {String} clients[].name Client name
+ * @param {String} clients[].createdAt createdAt timestamp for data resource
+ * @param {String} clients[].updatedAt updatedAt timestamp for data resource
+ */
+const getMeasuresFromClient = clients => {
+  return clients.reduce((accumulator, client) => {
     if (client?.measures) accumulator.push(...client.measures);
     return accumulator;
   }, []);
+};
 
+/**
+ * Home component/layout
+ *
+ * @component
+ * @param {Object} props Component props
+ * @param {Boolean} props.isLoggedIn Is user logged in
+ * @param {Function} props.dispatch Redux store dispatch
+ * @param {Object} props.resources Resource object from API fetch
+ * @param {Object} props.resources.data Data object containing resource data
+ * @param {Boolean} props.resources.isFetching Are resources being fetched from the API
+ */
 const Home = ({
   isLoggedIn,
   dispatch,
@@ -44,6 +71,17 @@ const Home = ({
     graphOptions: {}
   });
   const [measuresChartInterval, setMeasuresChartInterval] = useState('weekly');
+
+  const useStyles = makeStyles({
+    editMode: {
+      backgroundColor: danger,
+      '&:hover': {
+        backgroundColor: dangerDark
+      }
+    }
+  });
+
+  const classes = useStyles();
 
   useEffect(() => {
     dispatch(fetchResources());
@@ -81,11 +119,11 @@ const Home = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="p-4">
+      <div>
         {isFetching && <CircularProgress />}
         <div>
           {isLoggedIn && (
-            <Button color="secondary" onClick={handleEditClick} startIcon={<EditIcon />}>
+            <Button className={classes.editMode} onClick={handleEditClick} startIcon={<EditIcon />}>
               Toggle Edit Mode
             </Button>
           )}
