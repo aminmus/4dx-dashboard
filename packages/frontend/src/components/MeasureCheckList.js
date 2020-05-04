@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow, no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import {
   List,
@@ -17,6 +16,16 @@ import COLORS from '../style/COLORS';
 
 const { primary, lightGray } = COLORS;
 
+/**
+ * Mesure Checklist component
+ *
+ * @component
+ * @param {Object} props Component props
+ * @param {Object[]} props.measures Array of measures resource objects
+ * @param {Boolean} props.editMode Is user editing resource
+ * @param {Boolean} props.clientId Id of client
+ * @param {Function} props.dispatch Redux store dispatch
+ */
 const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoadingNewMeasure, setIsLoadingNewMeasure] = useState(false);
