@@ -5,12 +5,44 @@
 import moment from 'moment';
 
 /**
+ * Validate Target Measures Amount
+ * Cannot be zero
+ * @function
+ * @param {Number} value Nps
+ * @param {Boolean} isRequired Is field required
+ */
+export const validateMeasuresGoal = (value, isRequired = false) => {
+  if (isRequired && !value) {
+    return {
+      error: true,
+      errorMessage: 'Required'
+    };
+  }
+  if (value <= 0) {
+    return {
+      error: true,
+      errorMessage: 'You cannot set a measure goal to be zero'
+    };
+  }
+  return {
+    error: false
+  };
+};
+
+/**
  * Validate NPS input.
  * Must be between -100 and 100
  * @function
  * @param {Number} value Nps
+ * @param {Boolean} isRequired Is field required
  */
-export const validateNps = value => {
+export const validateNps = (value, isRequired = false) => {
+  if (isRequired && !value) {
+    return {
+      error: true,
+      errorMessage: 'Required'
+    };
+  }
   if (value > 100 || value < -100) {
     return {
       error: true,
@@ -27,8 +59,15 @@ export const validateNps = value => {
  * Must be a valid date between 2000-2030
  * @function
  * @param {String} date Date string
+ * @param {Boolean} isRequired Is field required
  */
-export const validateDate = date => {
+export const validateDate = (date, isRequired = false) => {
+  if (isRequired && !date) {
+    return {
+      error: true,
+      errorMessage: 'Required'
+    };
+  }
   if (date && !moment(date).isValid()) {
     return {
       error: true,
@@ -51,9 +90,16 @@ export const validateDate = date => {
  * Must have a character length of 1-50
  * @function
  * @param {String} value Name
+ * @param {Boolean} isRequired Is field required
  */
-export const validateName = value => {
-  if ((value && value.length < 1) || value.length > 50) {
+export const validateName = (value, isRequired = false) => {
+  if (isRequired && !value) {
+    return {
+      error: true,
+      errorMessage: 'Required'
+    };
+  }
+  if (value?.length === 0 || value?.length > 50) {
     return {
       error: true,
       errorMessage: 'Must be between 1-50 characters in length'
@@ -69,8 +115,15 @@ export const validateName = value => {
  * Must have a character length of 1-280
  * @function
  * @param {String} value Text
+ * @param {Boolean} isRequired Is field required
  */
-export const validateText = value => {
+export const validateText = (value, isRequired = false) => {
+  if (isRequired && !value) {
+    return {
+      error: true,
+      errorMessage: 'Required'
+    };
+  }
   if ((value && value.length < 1) || value.length > 280) {
     return {
       error: true,
@@ -92,10 +145,28 @@ export const validateText = value => {
 export const inputNpsValidation = (nps, goalNps, date, targetDate) => {
   return {
     errors: {
-      nps: validateNps(nps).error ? validateNps(nps).errorMessage : null,
+      nps: validateNps(nps, true).error ? validateNps(nps, true).errorMessage : null,
       goalNps: validateNps(goalNps).error ? validateNps(goalNps).errorMessage : null,
-      date: validateDate(date).error ? validateDate(date).errorMessage : null,
+      date: validateDate(date, true).error ? validateDate(date, true).errorMessage : null,
       targetDate: validateDate(targetDate).error ? validateDate(targetDate).errorMessage : null
+    }
+  };
+};
+
+/**
+ * Validation for inputMeasuresGoal component
+ * @param {Number} targetMeasures The expected amount of measures to be fulfilled
+ * @param {String} targetDate The deadline for the measures goal
+ */
+export const inputMeasuresGoalValidation = (targetMeasures, targetDate) => {
+  return {
+    errors: {
+      targetMeasures: validateMeasuresGoal(targetMeasures, true).error
+        ? validateMeasuresGoal(targetMeasures, true).errorMessage
+        : null,
+      targetDate: validateDate(targetDate, true).error
+        ? validateDate(targetDate, true).errorMessage
+        : null
     }
   };
 };
