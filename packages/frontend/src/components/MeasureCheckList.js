@@ -77,7 +77,7 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
         return <MeasureListItem clientId={clientId} measure={measure} key={`${measure.id}`} />;
       })}
       {editMode && (
-        <ListItem className="text-light">
+        <ListItem>
           {isEditing && editMode ? (
             <InputMeasure clientId={clientId} handleSave={handleSave} setIsEditing={setIsEditing} />
           ) : (
