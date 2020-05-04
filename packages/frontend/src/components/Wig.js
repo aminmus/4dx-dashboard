@@ -7,7 +7,19 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditButton from './elements/EditButton';
 import InputNps from './elements/editMode/InputNps';
 import { addResource, updateResource } from '../slices/resources';
+import COLORS from '../style/COLORS';
 
+const { primary, lightGray } = COLORS;
+
+/**
+ * WIG component
+ *
+ * @component
+ * @param {Object} props Component props
+ * @param {Object[]} props.nps Array of Nps resource objects
+ * @param {Boolean} props.editMode Is user editing resource
+ * @param {Function} props.dispatch Redux store dispatch
+ */
 const Wig = ({ nps, editMode, dispatch }) => {
   const [latestNps, setLatestNps] = useState();
   const [progress, setProgress] = useState();
@@ -28,6 +40,9 @@ const Wig = ({ nps, editMode, dispatch }) => {
    * Component Styles
    */
   const useStyles = makeStyles({
+    mainContainer: {
+      paddingTop: '10px'
+    },
     chartLabelContainer: {
       position: 'absolute',
       top: 40,
@@ -43,6 +58,23 @@ const Wig = ({ nps, editMode, dispatch }) => {
     labelValue: { display: 'block', fontSize: '2em', color: setColorBasedOnProgress(progress) },
     circularProgressContainer: {
       position: 'relative'
+    },
+    addNpsContainer: {
+      marginTop: '10px'
+    },
+    addNpsBtn: {
+      padding: '0',
+      margin: 'auto',
+      opacity: 0.5,
+      '&:hover': {
+        backgroundColor: lightGray,
+        opacity: 1
+      }
+    },
+    addNpsIcon: {
+      padding: '0',
+      marginRight: '5px',
+      color: primary
     }
   });
 
@@ -118,7 +150,7 @@ const Wig = ({ nps, editMode, dispatch }) => {
   };
 
   return (
-    <div className="mt-3">
+    <div className={classes.mainContainer}>
       {latestNps && (
         <>
           <h2>
@@ -158,12 +190,12 @@ const Wig = ({ nps, editMode, dispatch }) => {
         </>
       )}
       {editMode && (
-        <div className="mt-2">
+        <div className={classes.addNpsContainer}>
           {isAdding ? (
             <InputNps handleSubmit={addNps} setIsAddingOrEditing={setIsAdding} />
           ) : (
-            <Button onClick={() => setIsAdding(true)} className="px-0 mx-auto">
-              <AddCircleIcon className="mr-2 text-warning" />
+            <Button onClick={() => setIsAdding(true)} className={classes.addNpsBtn}>
+              <AddCircleIcon className={classes.addNpsIcon} />
               Add New NPS Data
             </Button>
           )}
