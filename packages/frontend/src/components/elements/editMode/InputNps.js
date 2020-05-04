@@ -124,7 +124,6 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           InputLabelProps={{
             shrink: true
           }}
-          required
         />
 
         <KeyboardDatePicker
