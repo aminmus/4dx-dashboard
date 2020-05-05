@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { CircularProgress, Button } from '@material-ui/core';
+import { CircularProgress, Button, Typography } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditButton from './elements/EditButton';
 import InputNps from './elements/editMode/InputNps';
 import { addResource, updateResource } from '../slices/resources';
+
 import COLORS from '../style/COLORS';
 
 const { primary, lightGray } = COLORS;
@@ -153,10 +154,10 @@ const Wig = ({ nps, editMode, dispatch }) => {
     <div className={classes.mainContainer}>
       {latestNps && (
         <>
-          <h2>
+          <Typography variant="h2">
             WIG
             {editMode && <EditButton onClick={onClickEdit} />}
-          </h2>
+          </Typography>
           {isEditing && editMode ? (
             <InputNps
               id={latestNps.id}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 import calcDefineClients from '../utils/calcDefineClients';
 
 const Lead = ({ clients, leadStatus, definedStatus }) => {
@@ -71,7 +72,7 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
 
   return (
     <div className="mt-3">
-      <h2>LEAD</h2>
+      <Typography variant="h2">LEAD</Typography>
       {renderDefineSuccess()}
       {renderImplementSuccess()}
     </div>
