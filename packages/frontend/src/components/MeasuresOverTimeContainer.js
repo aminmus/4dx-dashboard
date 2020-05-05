@@ -11,7 +11,7 @@ import InputMeasuresGoal from './elements/editMode/InputMeasuresGoal';
 import COLORS from '../style/COLORS';
 import { addResource } from '../slices/resources';
 
-const { primary, light } = COLORS;
+const { primary, light, lightGray } = COLORS;
 
 /**
  * Contains the Measure over time graph as well as the options header
@@ -58,6 +58,20 @@ const MeasuresOverTimeContainer = ({
       borderRadius: '10px',
       justifyContent: 'center',
       flexDirection: match ? 'row' : 'column'
+    },
+    addMeasuresGoalBtn: {
+      padding: '0',
+      margin: 'auto',
+      opacity: 0.5,
+      '&:hover': {
+        backgroundColor: lightGray,
+        opacity: 1
+      }
+    },
+    addMeasuresGoalIcon: {
+      padding: '0',
+      marginRight: '5px',
+      color: primary
     }
   });
 
@@ -101,9 +115,9 @@ const MeasuresOverTimeContainer = ({
         <div className="chart-title">{`Measures ${measuresChartInterval}`}</div>
         <OptionsToggleButton onClick={toggleOptions} />
       </div>
-      {editMode && (
-        <Button onClick={() => setIsEditing(true)} className="px-0 mx-auto">
-          <AddCircleIcon className="mr-2 text-warning" />
+      {editMode && !isEditing && (
+        <Button onClick={() => setIsEditing(true)} className={classes.addMeasuresGoalBtn}>
+          <AddCircleIcon className={classes.addMeasuresGoalIcon} />
           Add New Measure Goal
         </Button>
       )}

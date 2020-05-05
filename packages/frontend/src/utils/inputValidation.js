@@ -118,12 +118,29 @@ export const validateText = (value, isRequired = false) => {
  * @param {String} targetDate Target date for goal nps
  */
 export const inputNpsValidation = (nps, goalNps, date, targetDate) => {
+  const npsError = validateNps(nps, true);
+  const goalNpsError = validateNps(goalNps);
+  const dateError = validateDate(date, true);
+  const targetDateError = validateDate(targetDate);
   return {
     errors: {
-      nps: validateNps(nps, true).error ? validateNps(nps, true).errorMessage : null,
-      goalNps: validateNps(goalNps).error ? validateNps(goalNps).errorMessage : null,
-      date: validateDate(date, true).error ? validateDate(date, true).errorMessage : null,
-      targetDate: validateDate(targetDate).error ? validateDate(targetDate).errorMessage : null
+      nps: npsError.error ? npsError.errorMessage : null,
+      goalNps: goalNpsError.error ? goalNpsError.errorMessage : null,
+      date: dateError.error ? dateError.errorMessage : null,
+      targetDate: targetDateError.error ? targetDateError.errorMessage : null
+    }
+  };
+};
+
+/**
+ * Validation for inputClient component
+ * @param {String} name Client name
+ */
+export const inputClientValidation = name => {
+  const { error, errorMessage } = validateName(name, true);
+  return {
+    errors: {
+      clientName: error ? errorMessage : null
     }
   };
 };
