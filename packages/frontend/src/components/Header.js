@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Navbar, Nav } from 'react-bootstrap';
+import { makeStyles, AppBar, Toolbar, Button, IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
@@ -18,7 +18,7 @@ import COLORS from '../style/COLORS';
  */
 
 const Header = ({ isLoggedIn, dispatch }) => {
-  const { darkGray, light, gray } = COLORS;
+  const { darkGray } = COLORS;
   const { logout } = authProvider;
 
   /**
@@ -60,48 +60,43 @@ const Header = ({ isLoggedIn, dispatch }) => {
     logo: {
       height: '105px'
     },
-    navlink: {
-      fontSize: '1.2em',
-      color: light,
-      '&:hover': {
-        color: gray,
-        textDecoration: 'none',
-        cursor: 'pointer'
-      }
+    toolbar: {
+      justifyContent: 'space-between'
     }
   });
 
   const classes = useStyles();
 
   return (
-    <header className={classes.header}>
-      <Navbar expand="lg" variant="dark">
+    <AppBar className={classes.header} expand="lg" variant="dark">
+      <Toolbar className={classes.toolbar}>
         {isLoggedIn && (
-          <Navbar.Toggle
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
             onClick={
               isSidebarOpen
                 ? () => dispatch(setSidebarVisibility(false))
                 : () => dispatch(setSidebarVisibility(true))
             }
-            aria-controls="basic-navbar-nav"
-          />
+          >
+            <MenuIcon />
+          </IconButton>
         )}
-        <Navbar.Brand href="/">
-          <img className={classes.logo} src={logo} alt="logo" />
-        </Navbar.Brand>
-        <Nav>
-          {isLoggedIn ? (
-            <Nav.Item className={classes.navlink} onClick={handleLogoutClick}>
-              Logout
-            </Nav.Item>
-          ) : (
-            <Nav.Item className={classes.navlink} onClick={handleLoginClick}>
-              Sign in
-            </Nav.Item>
-          )}
-        </Nav>
-      </Navbar>
-    </header>
+        <img className={classes.logo} src={logo} alt="logo" />
+        {isLoggedIn ? (
+          <Button color="inherit" onClick={handleLogoutClick}>
+            Logout
+          </Button>
+        ) : (
+          <Button color="inherit" onClick={handleLoginClick}>
+            Login
+          </Button>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 
