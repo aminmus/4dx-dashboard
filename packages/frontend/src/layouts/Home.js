@@ -78,6 +78,10 @@ const Home = ({
       '&:hover': {
         backgroundColor: dangerDark
       }
+    },
+    toggleEditContainer: {
+      textAlign: 'center',
+      marginBottom: '10px'
     }
   });
 
@@ -121,7 +125,7 @@ const Home = ({
     <ThemeProvider theme={theme}>
       <div>
         {isFetching && <CircularProgress />}
-        <div>
+        <div className={classes.toggleEditContainer}>
           {isLoggedIn && (
             <Button className={classes.editMode} onClick={handleEditClick} startIcon={<EditIcon />}>
               Toggle Edit Mode

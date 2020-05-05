@@ -34,8 +34,7 @@ const ClientDetails = ({ client, editMode, dispatch }) => {
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'space-between',
-      cursor: hoverState ? 'pointer' : 'auto',
-      marginBottom: '10px'
+      cursor: hoverState ? 'pointer' : 'auto'
     },
     progressBarContainer: { flex: 1, justifyContent: 'center' },
     editBtnContainer: { justifyContent: 'center', padding: '10px' },

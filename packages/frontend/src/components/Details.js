@@ -21,6 +21,9 @@ const Details = ({ clients, editMode, dispatch }) => {
   const [isLoadingNewClient, setIsLoadingNewClient] = useState(false);
 
   const useStyles = makeStyles({
+    mainContainer: {
+      padding: '10px'
+    },
     flex: {
       display: 'flex',
       flexDirection: 'column',
@@ -41,7 +44,7 @@ const Details = ({ clients, editMode, dispatch }) => {
   };
 
   return (
-    <div>
+    <div className={classes.mainContainer}>
       {clients.map(client => (
         <ClientDetails key={client.id} client={client} />
       ))}

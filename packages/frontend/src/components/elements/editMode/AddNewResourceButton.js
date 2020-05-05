@@ -18,7 +18,7 @@ const AddNewResourceButton = ({ buttonText, setIsEditing }) => {
   const useStyles = makeStyles({
     button: {
       padding: '0',
-      margin: 'auto',
+      margin: '10px 0',
       opacity: 0.5,
       '&:hover': {
         backgroundColor: lightGray,

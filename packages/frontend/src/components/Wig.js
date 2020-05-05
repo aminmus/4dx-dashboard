@@ -42,7 +42,7 @@ const Wig = ({ nps, editMode, dispatch }) => {
    */
   const useStyles = makeStyles({
     mainContainer: {
-      paddingTop: '10px'
+      padding: '10px'
     },
     chartLabelContainer: {
       position: 'absolute',
@@ -57,10 +57,14 @@ const Wig = ({ nps, editMode, dispatch }) => {
     },
     labelValue: { display: 'block', color: setColorBasedOnProgress(progress) },
     circularProgressContainer: {
+      textAlign: 'center',
       position: 'relative'
     },
     addNpsContainer: {
-      marginTop: '10px'
+      textAlign: 'center'
+    },
+    statementContainer: {
+      margin: '10px'
     }
   });
 
@@ -139,10 +143,12 @@ const Wig = ({ nps, editMode, dispatch }) => {
     <div className={classes.mainContainer}>
       {latestNps && (
         <>
-          <Typography variant="h3">
-            WIG
-            {editMode && <EditButton onClick={onClickEdit} />}
-          </Typography>
+          <div>
+            <Typography variant="h3">
+              WIG
+              {editMode && <EditButton onClick={onClickEdit} />}
+            </Typography>
+          </div>
           {isEditing && editMode ? (
             <InputNps
               id={latestNps.id}
@@ -153,31 +159,31 @@ const Wig = ({ nps, editMode, dispatch }) => {
               handleSubmit={editNps}
             />
           ) : (
-            <div>
-              {latestNps.goalNps && latestNps.targetDate && (
-                <Typography variant="h5" className="wig__statement">
-                  {`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}
-                </Typography>
-              )}
-              <div className={classes.circularProgressContainer}>
-                <>
-                  <CircularProgressBar
-                    size={150}
-                    thickness={isLoadingNps ? 1 : 5}
-                    variant={isLoadingNps ? 'indeterminate' : 'static'}
-                    value={progress}
-                  />
-                  <div className={classes.chartLabelContainer}>
-                    <Typography variant="h5" className={classes.labelText}>
-                      NPS
-                    </Typography>
-                    <Typography variant="h4" className={classes.labelValue}>
-                      {latestNps.currentNps}
-                    </Typography>
-                  </div>
-                </>
+            <>
+              <div className={classes.statementContainer}>
+                {latestNps.goalNps && latestNps.targetDate && (
+                  <Typography variant="h5" className="wig__statement">
+                    {`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}
+                  </Typography>
+                )}
               </div>
-            </div>
+              <div className={classes.circularProgressContainer}>
+                <CircularProgressBar
+                  size={150}
+                  thickness={isLoadingNps ? 1 : 5}
+                  variant={isLoadingNps ? 'indeterminate' : 'static'}
+                  value={progress}
+                />
+                <div className={classes.chartLabelContainer}>
+                  <Typography variant="h5" className={classes.labelText}>
+                    NPS
+                  </Typography>
+                  <Typography variant="h4" className={classes.labelValue}>
+                    {latestNps.currentNps}
+                  </Typography>
+                </div>
+              </div>
+            </>
           )}
         </>
       )}

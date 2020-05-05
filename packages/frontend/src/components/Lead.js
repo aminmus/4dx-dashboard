@@ -34,6 +34,9 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
     definedHigh: {
       color: success,
       fontWeight: 'bolder'
+    },
+    innerContainer: {
+      padding: '10px'
     }
   });
 
@@ -61,7 +64,7 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
 
   const renderDefineSuccess = () => {
     return (
-      <div>
+      <div className={classes.innerContainer}>
         <Typography variant="h5" className="define">
           Define the Success factors for listed clients
         </Typography>
@@ -76,7 +79,7 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
 
   const renderImplementSuccess = () => {
     return (
-      <div>
+      <div className={classes.innerContainer}>
         <Typography variant="h5" className="implement">
           Implement Client Success Program for listed clients
         </Typography>
