@@ -2,19 +2,15 @@ import React, { useState, useEffect } from 'react';
 import {
   List,
   ListItem,
-  Button,
   CircularProgress as LoadingIndicator,
   makeStyles
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import MeasureListItem from './MeasureListItem';
 import InputMeasure from './elements/editMode/InputMeasure';
 import { addMeasure } from '../slices/resources';
-import COLORS from '../style/COLORS';
-
-const { primary, lightGray } = COLORS;
+import AddNewResourceButton from './elements/editMode/AddNewResourceButton';
 
 /**
  * Mesure Checklist component
@@ -52,20 +48,6 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center'
-    },
-    addMeasureBtn: {
-      padding: '0',
-      margin: 'auto',
-      opacity: 0.5,
-      '&:hover': {
-        backgroundColor: lightGray,
-        opacity: 1
-      }
-    },
-    addMeasureIcon: {
-      padding: '0',
-      marginRight: '5px',
-      color: primary
     }
   });
 
@@ -83,10 +65,7 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
           ) : (
             <div className={classes.flex}>
               {isLoadingNewMeasure && <LoadingIndicator />}
-              <Button onClick={() => setIsEditing(true)} className={classes.addMeasureBtn}>
-                <AddCircleIcon className={classes.addMeasureIcon} />
-                Add New Measure
-              </Button>
+              <AddNewResourceButton buttonText="Add New Measure" setIsEditing={setIsEditing} />
             </div>
           )}
         </ListItem>
