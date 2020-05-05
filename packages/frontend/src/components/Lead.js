@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import calcDefineClients from '../utils/calcDefineClients';
+import COLORS from '../style/COLORS';
+
+const { danger, warning, success } = COLORS;
 
 const Lead = ({ clients, leadStatus, definedStatus }) => {
   const { leads, leadsTotal } = leadStatus;
@@ -14,8 +17,23 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
    * Component Styles
    */
   const useStyles = makeStyles({
+    mainContainer: {
+      margin: '20px'
+    },
     leadNumberContainer: {
       marginBottom: '10px'
+    },
+    definedLow: {
+      color: danger,
+      fontWeight: 'bolder'
+    },
+    definedMid: {
+      color: warning,
+      fontWeight: 'bolder'
+    },
+    definedHigh: {
+      color: success,
+      fontWeight: 'bolder'
     }
   });
 
@@ -23,22 +41,22 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
 
   const setDefineLeadClassName = defined => {
     if (defined < 7) {
-      return 'text-danger';
+      return classes.definedLow;
     }
     if (defined >= 8 && defined < 9) {
-      return 'text-warning';
+      return classes.definedMid;
     }
-    return 'text-success';
+    return classes.definedHigh;
   };
 
   const setImplementLeadClassName = (leadValue, leadTotalValue) => {
     if (leadValue < leadTotalValue * 0.7) {
-      return 'text-danger';
+      return classes.definedLow;
     }
     if (leadValue >= leadTotalValue * 0.7 && leadValue <= leadTotalValue * 0.8) {
-      return 'text-warning';
+      return classes.definedMid;
     }
-    return 'text-success';
+    return classes.definedHigh;
   };
 
   const renderDefineSuccess = () => {
@@ -72,7 +90,7 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
   };
 
   return (
-    <div>
+    <div className={classes.mainContainer}>
       <Typography variant="h3">LEAD</Typography>
       {renderDefineSuccess()}
       {renderImplementSuccess()}
