@@ -99,7 +99,7 @@ export const validateText = (value, isRequired = false) => {
       errorMessage: 'Required'
     };
   }
-  if ((value && value.length < 1) || value.length > 280) {
+  if (value?.length < 1 || value?.length > 150) {
     return {
       error: true,
       errorMessage: 'Must be between 1-280 characters in length'
@@ -141,6 +141,22 @@ export const inputClientValidation = name => {
   return {
     errors: {
       clientName: error ? errorMessage : null
+    }
+  };
+};
+
+/**
+ * Validation for inputMeasure component
+ * @param {String} date Date of Measure completion
+ * @param {String} description Measure description
+ */
+export const inputMeasureValidation = (date, description) => {
+  const successError = validateDate(date);
+  const descriptionError = validateText(description, true);
+  return {
+    errors: {
+      success: successError.error ? successError.errorMessage : null,
+      description: descriptionError.error ? descriptionError.errorMessage : null
     }
   };
 };
