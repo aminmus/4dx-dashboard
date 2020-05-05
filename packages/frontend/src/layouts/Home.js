@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ThemeProvider, makeStyles } from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -8,7 +8,6 @@ import Wig from '../components/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/Details';
 import { toggleEdit } from '../actions/editMode';
-import theme from '../style/muiTheme';
 import { fetchResources } from '../slices/resources';
 import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
@@ -118,46 +117,44 @@ const Home = ({
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <div>
+      {isFetching && <CircularProgress />}
       <div>
-        {isFetching && <CircularProgress />}
-        <div>
-          {isLoggedIn && (
-            <Button className={classes.editMode} onClick={handleEditClick} startIcon={<EditIcon />}>
-              Toggle Edit Mode
-            </Button>
-          )}
-          <div className="row">
-            <div className="col-sm">
-              <Wig nps={nps} />
-              <Lead clients={clients} definedStatus={definedStatus} leadStatus={leadStatus} />
-            </div>
-            <div className="col-sm">
-              <Details />
-              {nps?.length > 0 ? (
-                <NpsContainer npsChartData={npsChartData} />
-              ) : (
-                <div className="my-5 p-4 jumbotron text-light bg-dark">
-                  No Measure Data Available For NPS graph
-                </div>
-              )}
-              {measures?.length > 0 ? (
-                <MeasuresOverTimeContainer
-                  measureGoals={measureGoals}
-                  measuresChartData={measuresChartData}
-                  measuresChartInterval={measuresChartInterval}
-                  setMeasuresChartInterval={setMeasuresChartInterval}
-                />
-              ) : (
-                <div className="my-5 p-4 jumbotron text-light bg-dark">
-                  No Measure Data Available For Measure Over Time Graph
-                </div>
-              )}
-            </div>
+        {isLoggedIn && (
+          <Button className={classes.editMode} onClick={handleEditClick} startIcon={<EditIcon />}>
+            Toggle Edit Mode
+          </Button>
+        )}
+        <div className="row">
+          <div className="col-sm">
+            <Wig nps={nps} />
+            <Lead clients={clients} definedStatus={definedStatus} leadStatus={leadStatus} />
+          </div>
+          <div className="col-sm">
+            <Details />
+            {nps?.length > 0 ? (
+              <NpsContainer npsChartData={npsChartData} />
+            ) : (
+              <div className="my-5 p-4 jumbotron text-light bg-dark">
+                No Measure Data Available For NPS graph
+              </div>
+            )}
+            {measures?.length > 0 ? (
+              <MeasuresOverTimeContainer
+                measureGoals={measureGoals}
+                measuresChartData={measuresChartData}
+                measuresChartInterval={measuresChartInterval}
+                setMeasuresChartInterval={setMeasuresChartInterval}
+              />
+            ) : (
+              <div className="my-5 p-4 jumbotron text-light bg-dark">
+                No Measure Data Available For Measure Over Time Graph
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </ThemeProvider>
+    </div>
   );
 };
 

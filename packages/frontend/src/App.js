@@ -4,12 +4,14 @@ import { ConnectedRouter } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import { ThemeProvider } from '@material-ui/core';
 import Header from './components/Header';
 import Admin from './layouts/Admin';
 import isAuthenticated from './utils/authentication';
 import { setLogoutStatus, setLoginStatus } from './actions/auth';
 import customRoutes from './customRoutes';
 import { disableEdit } from './actions/editMode';
+import theme from './style/muiTheme';
 
 /**
  * Main App Component
@@ -30,8 +32,10 @@ const App = ({ history, dispatch }) => {
 
   return (
     <ConnectedRouter history={history}>
-      <Header />
-      <Admin history={history} customRoutes={customRoutes} />
+      <ThemeProvider theme={theme}>
+        <Header />
+        <Admin history={history} customRoutes={customRoutes} />
+      </ThemeProvider>
     </ConnectedRouter>
   );
 };
