@@ -53,10 +53,9 @@ const Wig = ({ nps, editMode, dispatch }) => {
       padding: '0px'
     },
     labelText: {
-      display: 'block',
-      fontSize: '1em'
+      display: 'block'
     },
-    labelValue: { display: 'block', fontSize: '2em', color: setColorBasedOnProgress(progress) },
+    labelValue: { display: 'block', color: setColorBasedOnProgress(progress) },
     circularProgressContainer: {
       position: 'relative'
     },
@@ -154,7 +153,7 @@ const Wig = ({ nps, editMode, dispatch }) => {
     <div className={classes.mainContainer}>
       {latestNps && (
         <>
-          <Typography variant="h2">
+          <Typography variant="h3">
             WIG
             {editMode && <EditButton onClick={onClickEdit} />}
           </Typography>
@@ -170,7 +169,9 @@ const Wig = ({ nps, editMode, dispatch }) => {
           ) : (
             <div>
               {latestNps.goalNps && latestNps.targetDate && (
-                <h3 className="wig__statement">{`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}</h3>
+                <Typography variant="h5" className="wig__statement">
+                  {`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}
+                </Typography>
               )}
               <div className={classes.circularProgressContainer}>
                 <>
@@ -181,8 +182,12 @@ const Wig = ({ nps, editMode, dispatch }) => {
                     value={progress}
                   />
                   <div className={classes.chartLabelContainer}>
-                    <span className={classes.labelText}>NPS</span>
-                    <span className={classes.labelValue}>{latestNps.currentNps}</span>
+                    <Typography variant="h5" className={classes.labelText}>
+                      NPS
+                    </Typography>
+                    <Typography variant="h4" className={classes.labelValue}>
+                      {latestNps.currentNps}
+                    </Typography>
                   </div>
                 </>
               </div>
