@@ -14,11 +14,8 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
    * Component Styles
    */
   const useStyles = makeStyles({
-    leadNumber: {
-      fontSize: '60px',
-      fontWeight: 700,
-      letterSpacing: '1px',
-      marginBottom: '40px'
+    leadNumberContainer: {
+      marginBottom: '10px'
     }
   });
 
@@ -47,11 +44,13 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
   const renderDefineSuccess = () => {
     return (
       <div>
-        <h3 className="define">Define the Success factors for listed clients</h3>
-        <div className={classes.leadNumber}>
-          <span className={setDefineLeadClassName(defineClients)}>
+        <Typography variant="h5" className="define">
+          Define the Success factors for listed clients
+        </Typography>
+        <div className={classes.leadNumberContainer}>
+          <Typography variant="h3" className={setDefineLeadClassName(defineClients)}>
             {`${definedClients}/${totalClients}`}
-          </span>
+          </Typography>
         </div>
       </div>
     );
@@ -60,19 +59,21 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
   const renderImplementSuccess = () => {
     return (
       <div>
-        <h3 className="implement">Implement Client Success Program for listed clients</h3>
-        <div className={classes.leadNumber}>
-          <span className={setImplementLeadClassName(leads, leadsTotal)}>
+        <Typography variant="h5" className="implement">
+          Implement Client Success Program for listed clients
+        </Typography>
+        <div className={classes.leadNumberContainer}>
+          <Typography variant="h3" className={setImplementLeadClassName(leads, leadsTotal)}>
             {`${leads}/${leadsTotal}`}
-          </span>
+          </Typography>
         </div>
       </div>
     );
   };
 
   return (
-    <div className="mt-3">
-      <Typography variant="h2">LEAD</Typography>
+    <div>
+      <Typography variant="h3">LEAD</Typography>
       {renderDefineSuccess()}
       {renderImplementSuccess()}
     </div>
