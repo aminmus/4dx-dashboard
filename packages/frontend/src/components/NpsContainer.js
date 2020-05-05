@@ -1,7 +1,7 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import COLORS from '../style/COLORS';
 
@@ -29,7 +29,7 @@ const NpsContainer = ({ npsChartData: { graphData, graphOptions } }) => {
       color: primary
     },
     mainContainer: {
-      margin: '10px'
+      padding: '10px'
     },
     optionsContainer: {
       display: 'flex',
@@ -46,7 +46,7 @@ const NpsContainer = ({ npsChartData: { graphData, graphOptions } }) => {
   return (
     <div className={classes.mainContainer}>
       <div className={classes.header}>
-        <div className="chart-title">Nps (Monthly)</div>
+        <Typography variant="h5">Nps (Monthly)</Typography>
       </div>
       <div>
         <Line data={graphData} options={graphOptions} />

@@ -11,7 +11,6 @@ const OptionsToggleButton = ({ onClick }) => {
   const OptToggleButton = withStyles({
     root: {
       color: primary,
-      margin: '10px',
       '&:hover': {
         backgroundColor: secondary,
         boxShadow: 'none'
