@@ -9,6 +9,7 @@ import { setSidebarVisibility } from 'react-admin';
 import logo from '../logo.png';
 import authProvider from '../utils/react-admin/authProvider';
 import COLORS from '../style/COLORS';
+import HideOnScroll from './HideOnScroll';
 
 /**
  * Header Component
@@ -16,7 +17,6 @@ import COLORS from '../style/COLORS';
  * @prop {boolean} isLoggedIn - Check if user is logged in
  * @prop {function} dispatch - Redux Dispatch
  */
-
 const Header = ({ isLoggedIn, dispatch }) => {
   const { darkGray } = COLORS;
   const { logout } = authProvider;
@@ -68,35 +68,37 @@ const Header = ({ isLoggedIn, dispatch }) => {
   const classes = useStyles();
 
   return (
-    <AppBar className={classes.header} expand="lg" variant="dark">
-      <Toolbar className={classes.toolbar}>
-        {isLoggedIn && (
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-            onClick={
-              isSidebarOpen
-                ? () => dispatch(setSidebarVisibility(false))
-                : () => dispatch(setSidebarVisibility(true))
-            }
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
-        <img className={classes.logo} src={logo} alt="logo" />
-        {isLoggedIn ? (
-          <Button color="inherit" onClick={handleLogoutClick}>
-            Logout
-          </Button>
-        ) : (
-          <Button color="inherit" onClick={handleLoginClick}>
-            Login
-          </Button>
-        )}
-      </Toolbar>
-    </AppBar>
+    <HideOnScroll>
+      <AppBar className={classes.header} expand="lg">
+        <Toolbar className={classes.toolbar}>
+          {isLoggedIn && (
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+              onClick={
+                isSidebarOpen
+                  ? () => dispatch(setSidebarVisibility(false))
+                  : () => dispatch(setSidebarVisibility(true))
+              }
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          <img className={classes.logo} src={logo} alt="logo" />
+          {isLoggedIn ? (
+            <Button color="inherit" onClick={handleLogoutClick}>
+              Logout
+            </Button>
+          ) : (
+            <Button color="inherit" onClick={handleLoginClick}>
+              Login
+            </Button>
+          )}
+        </Toolbar>
+      </AppBar>
+    </HideOnScroll>
   );
 };
 

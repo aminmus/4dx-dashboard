@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Menu, Notification, Sidebar, setSidebarVisibility } from 'react-admin';
 
-const CustomLayout = ({ children, isLoggedIn }) => {
+const CustomLayout = ({ children, isLoggedIn, dispatch }) => {
   const useStyles = makeStyles(theme => ({
     root: {
       display: 'flex',
@@ -33,7 +33,6 @@ const CustomLayout = ({ children, isLoggedIn }) => {
     }
   }));
   const classes = useStyles();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(setSidebarVisibility(false));
@@ -62,7 +61,8 @@ CustomLayout.defaultProps = {
 
 CustomLayout.propTypes = {
   children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = ({ auth }) => ({
