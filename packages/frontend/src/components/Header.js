@@ -6,6 +6,7 @@ import { push } from 'connected-react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Typography } from '@material-ui/core';
 import logo from '../logo.png';
 import authProvider from '../utils/react-admin/authProvider';
 import COLORS from '../style/COLORS';
@@ -41,7 +42,7 @@ const Header = ({ isLoggedIn, dispatch }) => {
    */
   const useStyles = makeStyles({
     navbarCollapse: {
-      justifyContent: 'space-between',
+      justifyContent: 'flex-end',
       width: '100%',
       '& .navbar-nav': {
         padding: '10px'
@@ -69,27 +70,22 @@ const Header = ({ isLoggedIn, dispatch }) => {
   return (
     <header className={classes.header}>
       <Navbar expand="lg" variant="dark">
-        <Navbar.Brand href="/">
-          <img className={classes.logo} src={logo} alt="logo" />
+        <Navbar.Brand>
+          <Link className={classes.navlink} to="/">
+            <img className={classes.logo} src={logo} alt="logo" />
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className={classes.navbarCollapse}>
-          <Nav>
-            <Link className={classes.navlink} to="/">
-              Home
-            </Link>
-          </Nav>
-          <Nav>
-            {isLoggedIn ? (
-              <Nav.Item className={classes.navlink} onClick={handleLogoutClick}>
-                Logout
-              </Nav.Item>
-            ) : (
-              <Nav.Item className={classes.navlink} onClick={handleLoginClick}>
-                Sign in
-              </Nav.Item>
-            )}
-          </Nav>
+          {isLoggedIn ? (
+            <Nav.Item className={classes.navlink} onClick={handleLogoutClick}>
+              <Typography variant="h5">Logout</Typography>
+            </Nav.Item>
+          ) : (
+            <Nav.Item className={classes.navlink} onClick={handleLoginClick}>
+              <Typography variant="h5">Sign in</Typography>
+            </Nav.Item>
+          )}
         </Navbar.Collapse>
       </Navbar>
     </header>
