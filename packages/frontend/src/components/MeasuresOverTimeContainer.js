@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AddNewResourceButton from './elements/editMode/AddNewResourceButton';
 import OptionsToggleButton from './elements/OptionsToggleButton';
@@ -49,7 +49,7 @@ const MeasuresOverTimeContainer = ({
       color: primary
     },
     mainContainer: {
-      margin: '10px'
+      padding: '10px'
     },
     optionsContainer: {
       display: 'flex',
@@ -58,6 +58,9 @@ const MeasuresOverTimeContainer = ({
       borderRadius: '10px',
       justifyContent: 'center',
       flexDirection: match ? 'row' : 'column'
+    },
+    addMeasureGoalContainer: {
+      textAlign: 'center'
     }
   });
 
@@ -98,11 +101,13 @@ const MeasuresOverTimeContainer = ({
   return (
     <div className={classes.mainContainer}>
       <div className={classes.header}>
-        <div className="chart-title">{`Measures ${measuresChartInterval}`}</div>
+        <Typography variant="h5">{`Measures (${measuresChartInterval})`}</Typography>
         <OptionsToggleButton onClick={toggleOptions} />
       </div>
       {editMode && !isEditing && (
-        <AddNewResourceButton buttonText="Add New Measure Goal" setIsEditing={setIsEditing} />
+        <div className={classes.addMeasureGoalContainer}>
+          <AddNewResourceButton buttonText="Add New Measure Goal" setIsEditing={setIsEditing} />
+        </div>
       )}
       <div>
         {optionsShow && (

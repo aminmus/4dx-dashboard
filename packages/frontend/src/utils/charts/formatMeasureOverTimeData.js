@@ -414,16 +414,17 @@ const setTickData = interval => {
 
 const setGraphOptions = tickData => {
   return {
+    responsive: true,
     scales: {
       yAxes: [
         {
           scaleLabel: {
-            display: true,
+            display: false,
             labelString: 'Measures',
             fontColor: primary
           },
           ticks: {
-            stepSize: 1,
+            stepSize: 5,
             beginAtZero: true
           }
         }
