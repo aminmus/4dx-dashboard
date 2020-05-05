@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { CircularProgress, Button, Typography } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { CircularProgress, Typography } from '@material-ui/core';
 import EditButton from './elements/EditButton';
 import InputNps from './elements/editMode/InputNps';
 import { addResource, updateResource } from '../slices/resources';
+import AddNewResourceButton from './elements/editMode/AddNewResourceButton';
 
 import COLORS from '../style/COLORS';
 
-const { primary, lightGray } = COLORS;
+const { success, warning, danger } = COLORS;
 
 /**
  * WIG component
@@ -29,12 +29,12 @@ const Wig = ({ nps, editMode, dispatch }) => {
 
   const setColorBasedOnProgress = score => {
     if (score > 70) {
-      return '#28a745';
+      return success;
     }
     if (score > 50) {
-      return '#ffc107';
+      return warning;
     }
-    return '#dc3545';
+    return danger;
   };
 
   /**
@@ -61,20 +61,6 @@ const Wig = ({ nps, editMode, dispatch }) => {
     },
     addNpsContainer: {
       marginTop: '10px'
-    },
-    addNpsBtn: {
-      padding: '0',
-      margin: 'auto',
-      opacity: 0.5,
-      '&:hover': {
-        backgroundColor: lightGray,
-        opacity: 1
-      }
-    },
-    addNpsIcon: {
-      padding: '0',
-      marginRight: '5px',
-      color: primary
     }
   });
 
@@ -200,10 +186,7 @@ const Wig = ({ nps, editMode, dispatch }) => {
           {isAdding ? (
             <InputNps handleSubmit={addNps} setIsAddingOrEditing={setIsAdding} />
           ) : (
-            <Button onClick={() => setIsAdding(true)} className={classes.addNpsBtn}>
-              <AddCircleIcon className={classes.addNpsIcon} />
-              Add New NPS Data
-            </Button>
+            <AddNewResourceButton buttonText="Add New NPS Data" setIsEditing={setIsEditing} />
           )}
         </div>
       )}
