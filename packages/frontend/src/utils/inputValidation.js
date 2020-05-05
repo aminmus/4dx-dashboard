@@ -151,12 +151,12 @@ export const inputClientValidation = name => {
  * @param {String} description Measure description
  */
 export const inputMeasureValidation = (date, description) => {
+  const successError = validateDate(date);
+  const descriptionError = validateText(description, true);
   return {
     errors: {
-      success: validateDate(date).error ? validateDate(date).errorMessage : null,
-      description: validateText(description, true).error
-        ? validateText(description, true).errorMessage
-        : null
+      success: successError.error ? successError.errorMessage : null,
+      description: descriptionError.error ? descriptionError.errorMessage : null
     }
   };
 };
