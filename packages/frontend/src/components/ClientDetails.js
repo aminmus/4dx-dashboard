@@ -10,6 +10,15 @@ import DeleteButton from './elements/DeleteButton';
 import DeleteDialog from './elements/editMode/DeleteDialog';
 import { updateResource, deleteResource } from '../slices/resources';
 
+/**
+ * Client Details component
+ *
+ * @component
+ * @param {Object} props Component props
+ * @param {Object} props.client Client resource object
+ * @param {Boolean} props.editMode Is user editing resource
+ * @param {Function} props.dispatch Redux store dispatch
+ */
 const ClientDetails = ({ client, editMode, dispatch }) => {
   const [renderChecklist, setRenderChecklist] = useState(false);
   const [hoverState, setHoverState] = useState(false);
