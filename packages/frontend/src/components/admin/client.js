@@ -19,7 +19,7 @@ import {
   DateField
 } from 'react-admin';
 
-import Button from '@material-ui/core/Button';
+import { Button, Typography } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
@@ -98,7 +98,9 @@ const EditClientScore = ({ record, clientId }) => {
       }}
     >
       <EditIcon />
-      <span className="px-1">EDIT</span>
+      <Typography variant="body1" className="px-1">
+        EDIT
+      </Typography>
     </Button>
   );
 };
@@ -118,7 +120,9 @@ const EditClientMeasure = ({ record, clientId }) => {
       }}
     >
       <EditIcon />
-      <span className="px-1">EDIT</span>
+      <Typography variant="body1" className="px-1">
+        EDIT
+      </Typography>
     </Button>
   );
 };
