@@ -5,6 +5,31 @@
 import moment from 'moment';
 
 /**
+ * Validate Target Measures Amount
+ * Cannot be zero
+ * @function
+ * @param {Number} value Nps
+ * @param {Boolean} isRequired Is field required
+ */
+export const validateMeasuresGoal = (value, isRequired = false) => {
+  if (isRequired && !value) {
+    return {
+      error: true,
+      errorMessage: 'Required'
+    };
+  }
+  if (value <= 0) {
+    return {
+      error: true,
+      errorMessage: 'You cannot set a measure goal to be zero'
+    };
+  }
+  return {
+    error: false
+  };
+};
+
+/**
  * Validate NPS input.
  * Must be between -100 and 100
  * @function
@@ -157,6 +182,22 @@ export const inputMeasureValidation = (date, description) => {
     errors: {
       success: successError.error ? successError.errorMessage : null,
       description: descriptionError.error ? descriptionError.errorMessage : null
+    }
+  };
+};
+
+/**
+ * Validation for inputMeasuresGoal component
+ * @param {Number} targetMeasures The expected amount of measures to be fulfilled
+ * @param {String} targetDate The deadline for the measures goal
+ */
+export const inputMeasuresGoalValidation = (targetMeasures, targetDate) => {
+  const targetMeasuresError = validateMeasuresGoal(targetMeasures, true);
+  const targetDateError = validateDate(targetDate, true);
+  return {
+    errors: {
+      targetMeasures: targetMeasuresError.error ? targetMeasuresError.errorMessage : null,
+      targetDate: targetDateError.error ? targetDateError.errorMessage : null
     }
   };
 };
