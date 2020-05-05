@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useMediaQuery, Button } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { useMediaQuery } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import AddNewResourceButton from './elements/editMode/AddNewResourceButton';
 import OptionsToggleButton from './elements/OptionsToggleButton';
 import IntervalSpanDialog from './elements/IntervalSpanDialog';
 import InputMeasuresGoal from './elements/editMode/InputMeasuresGoal';
 import COLORS from '../style/COLORS';
 import { addResource } from '../slices/resources';
 
-const { primary, light, lightGray } = COLORS;
+const { primary, light } = COLORS;
 
 /**
  * Contains the Measure over time graph as well as the options header
@@ -58,20 +58,6 @@ const MeasuresOverTimeContainer = ({
       borderRadius: '10px',
       justifyContent: 'center',
       flexDirection: match ? 'row' : 'column'
-    },
-    addMeasuresGoalBtn: {
-      padding: '0',
-      margin: 'auto',
-      opacity: 0.5,
-      '&:hover': {
-        backgroundColor: lightGray,
-        opacity: 1
-      }
-    },
-    addMeasuresGoalIcon: {
-      padding: '0',
-      marginRight: '5px',
-      color: primary
     }
   });
 
@@ -116,10 +102,7 @@ const MeasuresOverTimeContainer = ({
         <OptionsToggleButton onClick={toggleOptions} />
       </div>
       {editMode && !isEditing && (
-        <Button onClick={() => setIsEditing(true)} className={classes.addMeasuresGoalBtn}>
-          <AddCircleIcon className={classes.addMeasuresGoalIcon} />
-          Add New Measure Goal
-        </Button>
+        <AddNewResourceButton buttonText="Add New Measure Goal" setIsEditing={setIsEditing} />
       )}
       <div>
         {optionsShow && (
