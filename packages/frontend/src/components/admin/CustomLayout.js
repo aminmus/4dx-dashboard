@@ -1,17 +1,8 @@
-// /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import { useSelector, useDispatch } from 'react-redux';
 import { useDispatch, connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  // AppBar,
-  Menu,
-  Notification,
-  Sidebar,
-  setSidebarVisibility
-  // ComponentPropType
-} from 'react-admin';
+import { Menu, Notification, Sidebar, setSidebarVisibility } from 'react-admin';
 
 const CustomLayout = ({ children, isLoggedIn }) => {
   const useStyles = makeStyles(theme => ({
@@ -43,7 +34,6 @@ const CustomLayout = ({ children, isLoggedIn }) => {
   }));
   const classes = useStyles();
   const dispatch = useDispatch();
-  // const open = useSelector(state => state.admin.ui.sidebarOpen);
 
   useEffect(() => {
     dispatch(setSidebarVisibility(false));
@@ -52,7 +42,6 @@ const CustomLayout = ({ children, isLoggedIn }) => {
   return (
     <div className={classes.root}>
       <div className={classes.appFrame}>
-        {/* <AppBar title={title} open={open} logout={logout} /> */}
         <main className={classes.contentWithSidebar}>
           {isLoggedIn && (
             <Sidebar>
