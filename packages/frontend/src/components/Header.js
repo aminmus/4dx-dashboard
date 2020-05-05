@@ -48,6 +48,10 @@ const Header = ({ isLoggedIn, dispatch }) => {
       }
     },
     header: {
+      top: 0,
+      position: 'sticky',
+      // Slightly lower than sidebar zIndex
+      zIndex: 1000,
       backgroundColor: darkGray
     },
     logo: {
