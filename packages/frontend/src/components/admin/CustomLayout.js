@@ -2,18 +2,18 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 // import { useSelector, useDispatch } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   // AppBar,
   Menu,
   Notification,
   Sidebar,
-  setSidebarVisibility,
-  ComponentPropType
+  setSidebarVisibility
+  // ComponentPropType
 } from 'react-admin';
 
-const CustomLayout = ({ children, dashboard, logout }) => {
+const CustomLayout = ({ children, isLoggedIn }) => {
   const useStyles = makeStyles(theme => ({
     root: {
       display: 'flex',
@@ -46,7 +46,7 @@ const CustomLayout = ({ children, dashboard, logout }) => {
   // const open = useSelector(state => state.admin.ui.sidebarOpen);
 
   useEffect(() => {
-    dispatch(setSidebarVisibility(true));
+    dispatch(setSidebarVisibility(false));
   }, [setSidebarVisibility]);
 
   return (
@@ -54,9 +54,11 @@ const CustomLayout = ({ children, dashboard, logout }) => {
       <div className={classes.appFrame}>
         {/* <AppBar title={title} open={open} logout={logout} /> */}
         <main className={classes.contentWithSidebar}>
-          <Sidebar>
-            <Menu logout={logout} hasDashboard={!!dashboard} />
-          </Sidebar>
+          {isLoggedIn && (
+            <Sidebar>
+              <Menu hasDashboard={false} />
+            </Sidebar>
+          )}
           <div className={classes.content}>{children}</div>
         </main>
         <Notification />
@@ -66,15 +68,16 @@ const CustomLayout = ({ children, dashboard, logout }) => {
 };
 
 CustomLayout.defaultProps = {
-  children: null,
-  dashboard: null,
-  logout: null
+  children: null
 };
 
 CustomLayout.propTypes = {
   children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-  dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  logout: ComponentPropType
+  isLoggedIn: PropTypes.bool.isRequired
 };
 
-export default CustomLayout;
+const mapStateToProps = ({ auth }) => ({
+  isLoggedIn: auth?.isLoggedIn
+});
+
+export default connect(mapStateToProps, null)(CustomLayout);
