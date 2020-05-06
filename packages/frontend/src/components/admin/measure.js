@@ -10,11 +10,11 @@ export const MeasureEdit = props => {
   return (
     <Edit title="Edit Client Measure" {...props}>
       <SimpleForm redirect={`/clients/${client_id}/show/measures`}>
-        <TextInput disabled source="id" />
+        <TextInput disabled source="id" label="Measure ID" />
         <TextInput source="description" validate={validateDescription} />
         <DateInput
           source="success"
-          label="Success Date"
+          label="Success date"
           validate={validateDate}
           className="mx-auto"
         />
@@ -34,7 +34,7 @@ export const MeasureCreate = props => {
         <TextInput source="description" validate={validateDescription} />
         <DateInput
           source="success"
-          label="Success Date"
+          label="Success date"
           validate={validateDate}
           className="mx-auto"
         />
