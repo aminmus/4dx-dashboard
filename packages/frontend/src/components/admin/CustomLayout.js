@@ -4,6 +4,13 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Menu, Notification, Sidebar, setSidebarVisibility } from 'react-admin';
 
+/**
+ * Custom Layout component to pass into React Admin
+ * @param {object} props
+ * @param {(Function|Node)} props.children
+ * @param {Boolean} props.isLoggedIn
+ * @param {Function} props.dispatch
+ */
 const CustomLayout = ({ children, isLoggedIn, dispatch }) => {
   const useStyles = makeStyles(theme => ({
     root: {

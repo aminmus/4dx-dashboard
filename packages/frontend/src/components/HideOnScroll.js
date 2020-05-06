@@ -7,7 +7,7 @@ import { Slide, useScrollTrigger } from '@material-ui/core';
  *
  * Will hide its children components on scroll
  * @component
- * @prop {boolean} children - child components
+ * @prop {(Function|Node)} children - child components
  */
 function HideOnScroll({ children }) {
   const trigger = useScrollTrigger();
@@ -20,7 +20,7 @@ function HideOnScroll({ children }) {
 }
 
 HideOnScroll.propTypes = {
-  children: PropTypes.element.isRequired
+  children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]).isRequired
 };
 
 export default HideOnScroll;
