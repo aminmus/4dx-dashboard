@@ -1,7 +1,6 @@
 import React from 'react';
 import { Admin as ReactAdmin, Resource } from 'react-admin';
 import PropTypes from 'prop-types';
-import { createMuiTheme } from '@material-ui/core/styles';
 
 import { ClientList, ClientEdit, ClientShow, ClientCreate } from '../components/admin/client';
 // eslint-disable-next-line import/no-cycle
@@ -20,14 +19,9 @@ import {
 import CustomLayout from '../components/admin/CustomLayout';
 // eslint-disable-next-line import/no-cycle
 import Login from './Login';
+import theme from '../style/muiTheme';
 
 export default function Admin({ history, customRoutes }) {
-  const theme = createMuiTheme({
-    palette: {
-      type: 'dark'
-    }
-  });
-
   return (
     <ReactAdmin
       history={history}

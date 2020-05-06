@@ -1,14 +1,15 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Navbar, Nav } from 'react-bootstrap';
+import { makeStyles, AppBar, Toolbar, Button, IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 import { push } from 'connected-react-router';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
+import { setSidebarVisibility } from 'react-admin';
 import logo from '../logo.png';
 import authProvider from '../utils/react-admin/authProvider';
 import COLORS from '../style/COLORS';
+import HideOnScroll from './HideOnScroll';
 
 /**
  * Header Component
@@ -16,9 +17,8 @@ import COLORS from '../style/COLORS';
  * @prop {boolean} isLoggedIn - Check if user is logged in
  * @prop {function} dispatch - Redux Dispatch
  */
-
 const Header = ({ isLoggedIn, dispatch }) => {
-  const { darkGray, light, gray } = COLORS;
+  const { darkGray } = COLORS;
   const { logout } = authProvider;
 
   /**
@@ -36,6 +36,8 @@ const Header = ({ isLoggedIn, dispatch }) => {
     dispatch(push('/login'));
   };
 
+  const isSidebarOpen = useSelector(state => state.admin.ui.sidebarOpen);
+
   /**
    * Component Styles
    */
@@ -48,51 +50,55 @@ const Header = ({ isLoggedIn, dispatch }) => {
       }
     },
     header: {
-      backgroundColor: darkGray
+      top: 0,
+      position: 'sticky',
+      // Slightly lower than sidebar zIndex
+      zIndex: 1000,
+      backgroundColor: darkGray,
+      padding: '0 1vw'
     },
     logo: {
       height: '105px'
     },
-    navlink: {
-      fontSize: '1.2em',
-      color: light,
-      '&:hover': {
-        color: gray,
-        textDecoration: 'none',
-        cursor: 'pointer'
-      }
+    toolbar: {
+      justifyContent: 'space-between'
     }
   });
 
   const classes = useStyles();
 
   return (
-    <header className={classes.header}>
-      <Navbar expand="lg" variant="dark">
-        <Navbar.Brand href="/">
+    <HideOnScroll>
+      <AppBar className={classes.header} expand="lg">
+        <Toolbar className={classes.toolbar}>
+          {isLoggedIn && (
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+              onClick={
+                isSidebarOpen
+                  ? () => dispatch(setSidebarVisibility(false))
+                  : () => dispatch(setSidebarVisibility(true))
+              }
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
           <img className={classes.logo} src={logo} alt="logo" />
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse className={classes.navbarCollapse}>
-          <Nav>
-            <Link className={classes.navlink} to="/">
-              Home
-            </Link>
-          </Nav>
-          <Nav>
-            {isLoggedIn ? (
-              <Nav.Item className={classes.navlink} onClick={handleLogoutClick}>
-                Logout
-              </Nav.Item>
-            ) : (
-              <Nav.Item className={classes.navlink} onClick={handleLoginClick}>
-                Sign in
-              </Nav.Item>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-    </header>
+          {isLoggedIn ? (
+            <Button color="inherit" onClick={handleLogoutClick}>
+              Logout
+            </Button>
+          ) : (
+            <Button color="inherit" onClick={handleLoginClick}>
+              Login
+            </Button>
+          )}
+        </Toolbar>
+      </AppBar>
+    </HideOnScroll>
   );
 };
 
