@@ -18,7 +18,7 @@ import { validateGoalDate, validateRequired } from '../../utils/react-admin/admi
 export const MeasureGoalList = props => (
   <List {...props} bulkActionButtons={false}>
     <Datagrid rowClick="edit" isRowSelectable={() => false}>
-      <NumberField source="measures-amount" label="Measures goal amount" />
+      <NumberField source="measures-amount" label="Measures (target amount)" />
       <DateField source="target-date" label="Target date" />
       <EditButton />
       <DeleteButton undoable={false} />
@@ -31,7 +31,7 @@ export const MeasureGoalEdit = props => (
     <SimpleForm redirect="list">
       <NumberInput
         source="measures-amount"
-        label="Measures goal amount"
+        label="Measures (target amount)"
         validate={validateRequired}
       />
       <DateInput source="target-date" label="Target date" validate={validateGoalDate} />
@@ -44,7 +44,7 @@ export const MeasureGoalCreate = props => (
     <SimpleForm redirect="list">
       <NumberInput
         source="measures-amount"
-        label="Measures goal amount"
+        label="Measures (target amount)"
         validate={validateRequired}
       />
       <DateInput source="target-date" label="Target date" validate={validateGoalDate} />
