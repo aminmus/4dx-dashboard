@@ -1,13 +1,84 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
-import { Layout } from 'react-admin';
-import CustomAppBar from './CustomAppBar';
-import Sidebar from './Sidebar';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
+import { Menu, Notification, Sidebar, setSidebarVisibility } from 'react-admin';
+import COLORS from '../../style/COLORS';
+
+const { darkGray } = COLORS;
 
 /**
  * Custom Layout component to pass into React Admin
  * @param {object} props
+ * @param {(Function|Node)} props.children
+ * @param {Boolean} props.isLoggedIn
+ * @param {Function} props.dispatch
  */
-const CustomLayout = props => <Layout {...props} appBar={CustomAppBar} sidebar={Sidebar} />;
+const CustomLayout = ({ children, isLoggedIn, dispatch }) => {
+  const useStyles = makeStyles(theme => ({
+    root: {
+      display: 'flex',
+      flexDirection: 'column',
+      zIndex: 1,
+      minHeight: '100vh',
+      backgroundColor: theme.palette.background.default,
+      position: 'relative'
+    },
+    appFrame: {
+      display: 'flex',
+      flexDirection: 'column',
+      overflowX: 'auto'
+    },
+    contentWithSidebar: {
+      display: 'flex',
+      flexGrow: 1
+    },
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      flexGrow: 2,
+      padding: theme.spacing(3),
+      paddingLeft: 5
+    },
+    sidebar: {
+      backgroundColor: darkGray
+    }
+  }));
+  const classes = useStyles();
 
-export default CustomLayout;
+  useEffect(() => {
+    dispatch(setSidebarVisibility(false));
+  }, [setSidebarVisibility]);
+
+  return (
+    <div className={classes.root}>
+      <div className={classes.appFrame}>
+        <main className={classes.contentWithSidebar}>
+          {isLoggedIn && (
+            <Sidebar className={classes.sidebar}>
+              <Menu hasDashboard={false} />
+            </Sidebar>
+          )}
+          <div className={classes.content}>{children}</div>
+        </main>
+        <Notification />
+      </div>
+    </div>
+  );
+};
+
+CustomLayout.defaultProps = {
+  children: null
+};
+
+CustomLayout.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+  isLoggedIn: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
+const mapStateToProps = ({ auth }) => ({
+  isLoggedIn: auth?.isLoggedIn
+});
+
+export default connect(mapStateToProps, null)(CustomLayout);

@@ -3,10 +3,9 @@
 import React, { useRef, useEffect } from 'react';
 import { Notification, LoginForm, useCheckAuth } from 'react-admin';
 import { useHistory } from 'react-router-dom';
-import { ThemeProvider, Card, Avatar, makeStyles } from '@material-ui/core';
+import { Card, Avatar, makeStyles } from '@material-ui/core';
 import classnames from 'classnames';
 import LockIcon from '@material-ui/icons/Lock';
-import muiTheme from '../style/muiTheme';
 
 /**
  * Custom Login Page Component
@@ -93,20 +92,18 @@ const Login = props => {
   });
 
   return (
-    <ThemeProvider theme={muiTheme}>
-      <div className={classnames(classes.main, className)} {...rest} ref={containerRef}>
-        <Card className={classes.card}>
-          <div className={classes.avatar}>
-            <Avatar className={classes.icon}>
-              <LockIcon />
-            </Avatar>
-          </div>
-          <LoginForm redirectTo="/" />
-        </Card>
+    <div className={classnames(classes.main, className)} {...rest} ref={containerRef}>
+      <Card className={classes.card}>
+        <div className={classes.avatar}>
+          <Avatar className={classes.icon}>
+            <LockIcon />
+          </Avatar>
+        </div>
+        <LoginForm redirectTo="/" />
+      </Card>
 
-        <Notification />
-      </div>
-    </ThemeProvider>
+      <Notification />
+    </div>
   );
 };
 

@@ -1,15 +1,17 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Navbar, Nav } from 'react-bootstrap';
+import { makeStyles, AppBar, Toolbar, IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HttpsIcon from '@material-ui/icons/Https';
 import { push } from 'connected-react-router';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Typography } from '@material-ui/core';
+import { connect, useSelector } from 'react-redux';
+import { setSidebarVisibility } from 'react-admin';
 import logo from '../logo.png';
 import authProvider from '../utils/react-admin/authProvider';
 import COLORS from '../style/COLORS';
+import HideOnScroll from './HideOnScroll';
 
 /**
  * Header Component
@@ -17,9 +19,8 @@ import COLORS from '../style/COLORS';
  * @prop {boolean} isLoggedIn - Check if user is logged in
  * @prop {function} dispatch - Redux Dispatch
  */
-
 const Header = ({ isLoggedIn, dispatch }) => {
-  const { darkGray, light, gray } = COLORS;
+  const { darkGray } = COLORS;
   const { logout } = authProvider;
 
   /**
@@ -37,6 +38,13 @@ const Header = ({ isLoggedIn, dispatch }) => {
     dispatch(push('/login'));
   };
 
+  const handleLogoClick = e => {
+    e.preventDefault();
+    dispatch(push('/'));
+  };
+
+  const isSidebarOpen = useSelector(state => state.admin.ui.sidebarOpen);
+
   /**
    * Component Styles
    */
@@ -49,46 +57,68 @@ const Header = ({ isLoggedIn, dispatch }) => {
       }
     },
     header: {
-      backgroundColor: darkGray
+      top: 0,
+      position: 'sticky',
+      // Slightly lower than sidebar zIndex
+      zIndex: 1000,
+      backgroundColor: darkGray,
+      padding: '0 1vw'
     },
-    logo: {
-      height: '105px'
-    },
-    navlink: {
-      fontSize: '1.2em',
-      color: light,
+    logoContainer: {
       '&:hover': {
-        color: gray,
-        textDecoration: 'none',
         cursor: 'pointer'
+      },
+      '& img': {
+        height: '105px'
       }
+    },
+    toolbar: {
+      justifyContent: 'space-between'
     }
   });
 
   const classes = useStyles();
 
   return (
-    <header className={classes.header}>
-      <Navbar expand="lg" variant="dark">
-        <Navbar.Brand>
-          <Link className={classes.navlink} to="/">
-            <img className={classes.logo} src={logo} alt="logo" />
-          </Link>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse className={classes.navbarCollapse}>
-          {isLoggedIn ? (
-            <Nav.Item className={classes.navlink} onClick={handleLogoutClick}>
-              <Typography variant="h5">Logout</Typography>
-            </Nav.Item>
-          ) : (
-            <Nav.Item className={classes.navlink} onClick={handleLoginClick}>
-              <Typography variant="h5">Sign in</Typography>
-            </Nav.Item>
+    <HideOnScroll>
+      <AppBar className={classes.header} expand="lg">
+        <Toolbar className={classes.toolbar}>
+          {isLoggedIn && (
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              aria-label="menu"
+              onClick={
+                isSidebarOpen
+                  ? () => dispatch(setSidebarVisibility(false))
+                  : () => dispatch(setSidebarVisibility(true))
+              }
+            >
+              <MenuIcon />
+            </IconButton>
           )}
-        </Navbar.Collapse>
-      </Navbar>
-    </header>
+          <div
+            className={classes.logoContainer}
+            tabIndex="0"
+            onClick={handleLogoClick}
+            onKeyPress={handleLogoClick}
+            role="link"
+            alt="home"
+          >
+            <img className={classes.logo} src={logo} alt="logo" />
+          </div>
+          {isLoggedIn ? (
+            <IconButton edge="start" aria-label="login" onClick={handleLogoutClick}>
+              <ExitToAppIcon />
+            </IconButton>
+          ) : (
+            <IconButton edge="start" aria-label="logout" onClick={handleLoginClick}>
+              <HttpsIcon />
+            </IconButton>
+          )}
+        </Toolbar>
+      </AppBar>
+    </HideOnScroll>
   );
 };
 
