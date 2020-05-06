@@ -10,9 +10,9 @@ export const CsatEdit = props => {
   return (
     <Edit title="Edit Client Satisfaction score" {...props}>
       <SimpleForm redirect={`/clients/${client_id}/show/csat`}>
-        <TextInput disabled source="id" />
-        <DateInput source="date" validate={validateDateRequired} />
+        <TextInput disabled source="id" label="CSAT ID" />
         <NumberInput source="score" validate={validateScore} />
+        <DateInput source="date" validate={validateDateRequired} />
       </SimpleForm>
     </Edit>
   );
@@ -26,9 +26,9 @@ export const CsatCreate = props => {
         defaultValue={{ ClientId: client_id }}
         redirect={`/clients/${client_id}/show/csat`}
       >
-        <NumberInput source="ClientId" disabled />
-        <DateInput source="date" validate={validateDateRequired} />
+        <NumberInput source="ClientId" label="Client ID" disabled />
         <NumberInput source="score" validate={validateScore} />
+        <DateInput source="date" validate={validateDateRequired} />
       </SimpleForm>
     </Create>
   );
