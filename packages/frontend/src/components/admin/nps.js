@@ -18,10 +18,10 @@ import { validateNps, validateDateRequired } from '../../utils/react-admin/admin
 export const NpsList = props => (
   <List {...props} bulkActionButtons={false}>
     <Datagrid rowClick="edit" isRowSelectable={() => false}>
-      <NumberField source="current-nps" />
-      <NumberField source="goal-nps" />
+      <NumberField source="current-nps" label="NPS" />
       <DateField source="date" />
-      <DateField source="target-date" />
+      <NumberField source="goal-nps" label="Target NPS" />
+      <DateField source="target-date" label="Target date" />
       <EditButton />
       <DeleteButton undoable={false} />
     </Datagrid>
@@ -31,10 +31,10 @@ export const NpsList = props => (
 export const NpsEdit = props => (
   <Edit title="Edit client entry" {...props}>
     <SimpleForm redirect="list">
-      <NumberInput source="current-nps" validate={validateNps} />
-      <NumberInput source="goal-nps" validate={validateNps} />
+      <NumberInput source="current-nps" label="NPS score" validate={validateNps} />
       <DateInput source="date" validate={validateDateRequired} />
-      <DateInput source="target-date" validate={validateDateRequired} />
+      <NumberInput source="goal-nps" label="Target NPS" validate={validateNps} />
+      <DateInput source="target-date" label="Target date" validate={validateDateRequired} />
     </SimpleForm>
   </Edit>
 );
@@ -42,10 +42,10 @@ export const NpsEdit = props => (
 export const NpsCreate = props => (
   <Create title="Create client entry" {...props}>
     <SimpleForm redirect="list">
-      <NumberInput source="current-nps" validate={validateNps} />
-      <NumberInput source="goal-nps" validate={validateNps} />
+      <NumberInput source="current-nps" label="NPS score" validate={validateNps} />
       <DateInput source="date" validate={validateDateRequired} />
-      <DateInput source="target-date" validate={validateDateRequired} />
+      <NumberInput source="goal-nps" label="Target NPS" validate={validateNps} />
+      <DateInput source="target-date" label="Target date" validate={validateDateRequired} />
     </SimpleForm>
   </Create>
 );
