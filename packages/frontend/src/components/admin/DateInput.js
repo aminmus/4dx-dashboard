@@ -12,7 +12,8 @@ import {
 import MomentUtils from '@date-io/moment';
 
 /**
- * Wrapper component for react admin to wrap Material UI Pickers, so they work with react-admin specifics. Inspired by: https://github.com/vascofg/react-admin-date-inputs
+ * Wrapper component for react admin to wrap Material UI Pickers, so they work with react-admin specifics.
+ * Inspired by: https://github.com/vascofg/react-admin-date-inputs
  *
  * @component
  * @param {Object} props
