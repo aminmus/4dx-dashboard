@@ -15,9 +15,9 @@ const ProgressBar = ({ clientName, clientMeasures }) => {
     },
     root: {
       flexBasis: '60%',
-      height: '10px',
-      margin: '10px',
-      borderRadius: '10px',
+      height: '0.5em',
+      margin: '1em',
+      borderRadius: '0.5em',
       fill: 'red',
       background: 'black'
     }
@@ -28,7 +28,7 @@ const ProgressBar = ({ clientName, clientMeasures }) => {
       display: 'flex',
       flexDirection: matches ? 'row' : 'column',
       justifyContent: 'space-between',
-      padding: '10px'
+      padding: '0.2em'
     },
     innerContainer: {
       flex: 2

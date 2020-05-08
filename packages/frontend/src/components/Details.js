@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { CircularProgress as LoadingIndicator, makeStyles } from '@material-ui/core';
+import { CircularProgress as LoadingIndicator, makeStyles, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import ClientDetails from './ClientDetails';
 import InputClient from './elements/editMode/InputClient';
@@ -22,7 +22,8 @@ const Details = ({ clients, editMode, dispatch }) => {
 
   const useStyles = makeStyles({
     mainContainer: {
-      padding: '10px'
+      padding: '0.2em',
+      margin: '2em 0em'
     },
     flex: {
       display: 'flex',
@@ -45,6 +46,9 @@ const Details = ({ clients, editMode, dispatch }) => {
 
   return (
     <div className={classes.mainContainer}>
+      <div>
+        <Typography variant="h3">CLIENTS</Typography>
+      </div>
       {clients.map(client => (
         <ClientDetails key={client.id} client={client} />
       ))}

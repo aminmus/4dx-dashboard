@@ -16,21 +16,21 @@ const theme = createMuiTheme({
     h1: {
       textAlign: 'center',
       color: light,
-      marginBottom: '10px'
+      marginBottom: '0.2em'
     },
     h2: {
       textAlign: 'center',
       color: light,
-      marginBottom: '10px'
+      marginBottom: '0.2em'
     },
     h3: {
       textAlign: 'center',
       color: gray,
-      marginBottom: '10px'
+      marginBottom: '0.2em'
     },
     h4: {
       textAlign: 'center',
-      color: light
+      color: gray
     },
     h5: {
       textAlign: 'center',

@@ -22,7 +22,7 @@ const DeleteDialog = ({ type, content, isDeleting, setIsDeleting, handleDelete }
     },
     root: {
       backgroundColor: COLORS.danger,
-      margin: '10px',
+      margin: '0.2em',
       '&:hover': {
         backgroundColor: COLORS.dangerDark,
         boxShadow: 'none'
@@ -33,8 +33,8 @@ const DeleteDialog = ({ type, content, isDeleting, setIsDeleting, handleDelete }
   const useStyles = makeStyles({
     form: {
       border: '2px dotted white',
-      borderRadius: '10px',
-      padding: '10px',
+      borderRadius: '0.2em',
+      padding: '0.2em',
       width: '100%'
     },
     confirmContainer: {

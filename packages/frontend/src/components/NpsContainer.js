@@ -1,11 +1,13 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
-import { useMediaQuery, Typography } from '@material-ui/core';
+import { useMediaQuery, Typography, IconButton } from '@material-ui/core';
+import SkipNextIcon from '@material-ui/icons/SkipNext';
+import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import { makeStyles } from '@material-ui/core/styles';
 import COLORS from '../style/COLORS';
 
-const { primary, light } = COLORS;
+const { primary, light, gray } = COLORS;
 
 /**
  * Contains the NPS graph as well as the options header
@@ -14,8 +16,9 @@ const { primary, light } = COLORS;
  * @param {Object} props.npsChartData Chart Data object used to determine NPS graph
  * @param {Object} props.npsChartData.graphData Data used to render graph
  * @param {Object} props.npsChartData.graphOptions Options for rendering graph
+ * @param {Object} props.handleSwitchGraphClick Handle event for switching graph
  */
-const NpsContainer = ({ npsChartData: { graphData, graphOptions } }) => {
+const NpsContainer = ({ npsChartData: { graphData, graphOptions }, handleSwitchGraphClick }) => {
   const match = useMediaQuery('(min-width:600px)');
 
   /**
@@ -24,18 +27,21 @@ const NpsContainer = ({ npsChartData: { graphData, graphOptions } }) => {
   const useStyles = makeStyles({
     header: {
       display: 'flex',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
       alignItems: 'center',
-      color: primary
+      color: primary,
+      border: `1px solid ${gray}`,
+      borderRadius: '0.1em'
     },
     mainContainer: {
-      padding: '10px'
+      minWidth: 0,
+      margin: '2em 0em'
     },
     optionsContainer: {
       display: 'flex',
-      margin: '10px',
+      padding: '0.2em',
       border: `1px solid ${light}`,
-      borderRadius: '10px',
+      borderRadius: '0.2em',
       justifyContent: 'center',
       flexDirection: match ? 'row' : 'column'
     }
@@ -46,11 +52,15 @@ const NpsContainer = ({ npsChartData: { graphData, graphOptions } }) => {
   return (
     <div className={classes.mainContainer}>
       <div className={classes.header}>
-        <Typography variant="h5">Nps (Monthly)</Typography>
+        <IconButton onClick={handleSwitchGraphClick}>
+          <SkipPreviousIcon />
+        </IconButton>
+        <Typography variant="h4">Nps (Monthly)</Typography>
+        <IconButton onClick={handleSwitchGraphClick}>
+          <SkipNextIcon />
+        </IconButton>
       </div>
-      <div>
-        <Line data={graphData} options={graphOptions} />
-      </div>
+      <Line data={graphData} options={graphOptions} />
     </div>
   );
 };
@@ -61,7 +71,8 @@ NpsContainer.propTypes = {
       graphData: PropTypes.arrayOf(PropTypes.any),
       graphOptions: PropTypes.objectOf(PropTypes.any)
     })
-  ).isRequired
+  ).isRequired,
+  handleSwitchGraphClick: PropTypes.func.isRequired
 };
 
 export default NpsContainer;

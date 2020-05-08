@@ -36,8 +36,8 @@ const InputMeasure = ({ setIsEditing, handleSave, clientId, id, success, descrip
   const useStyles = makeStyles({
     form: {
       border: '2px dotted white',
-      borderRadius: '10px',
-      padding: '10px',
+      borderRadius: '0.2em',
+      padding: '0.2em',
       width: '100%'
     },
     confirmContainer: {

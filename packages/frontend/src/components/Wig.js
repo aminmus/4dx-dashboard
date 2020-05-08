@@ -42,7 +42,8 @@ const Wig = ({ nps, editMode, dispatch }) => {
    */
   const useStyles = makeStyles({
     mainContainer: {
-      padding: '10px'
+      padding: '0.2em',
+      margin: '2em 0em'
     },
     chartLabelContainer: {
       position: 'absolute',
@@ -50,7 +51,7 @@ const Wig = ({ nps, editMode, dispatch }) => {
       left: 50,
       right: 50,
       bottom: 50,
-      padding: '0px'
+      padding: '0'
     },
     labelText: {
       display: 'block'
@@ -64,7 +65,7 @@ const Wig = ({ nps, editMode, dispatch }) => {
       textAlign: 'center'
     },
     statementContainer: {
-      margin: '10px'
+      margin: '0.2em'
     }
   });
 
@@ -130,7 +131,7 @@ const Wig = ({ nps, editMode, dispatch }) => {
       border: '2px solid black',
       borderRadius: '50%',
       borderColor: 'gray',
-      padding: '5px'
+      padding: '0.1em'
     }
   })(CircularProgress);
 

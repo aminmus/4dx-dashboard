@@ -53,7 +53,7 @@ const Header = ({ isLoggedIn, dispatch }) => {
       justifyContent: 'flex-end',
       width: '100%',
       '& .navbar-nav': {
-        padding: '10px'
+        padding: '0.2em'
       }
     },
     header: {

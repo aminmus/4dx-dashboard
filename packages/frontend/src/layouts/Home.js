@@ -70,8 +70,14 @@ const Home = ({
     graphOptions: {}
   });
   const [measuresChartInterval, setMeasuresChartInterval] = useState('weekly');
+  const [graphType, setGraphType] = useState('nps');
 
   const useStyles = makeStyles({
+    mainContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      minWidth: 0
+    },
     editMode: {
       backgroundColor: danger,
       '&:hover': {
@@ -80,7 +86,7 @@ const Home = ({
     },
     toggleEditContainer: {
       textAlign: 'center',
-      marginBottom: '10px'
+      marginBottom: '0.2em'
     }
   });
 
@@ -120,8 +126,17 @@ const Home = ({
     dispatch(toggleEdit());
   };
 
+  const handleSwitchGraphClick = e => {
+    e.preventDefault();
+    if (graphType === 'nps') {
+      setGraphType('measures');
+    } else {
+      setGraphType('nps');
+    }
+  };
+
   return (
-    <div>
+    <div className={classes.mainContainer}>
       {isFetching && <CircularProgress />}
       <div>
         {isLoggedIn && (
@@ -132,30 +147,41 @@ const Home = ({
           </div>
         )}
         <div className="row">
-          <div className="col-sm">
+          <div className="col-md">
             <Wig nps={nps} />
             <Lead clients={clients} definedStatus={definedStatus} leadStatus={leadStatus} />
           </div>
-          <div className="col-sm">
+          <div className="col-md" style={{ minWidth: 0 }}>
             <Details />
-            {nps?.length > 0 ? (
-              <NpsContainer npsChartData={npsChartData} />
+            {graphType === 'nps' ? (
+              <>
+                {nps?.length > 0 ? (
+                  <NpsContainer
+                    handleSwitchGraphClick={handleSwitchGraphClick}
+                    npsChartData={npsChartData}
+                  />
+                ) : (
+                  <div className="my-5 p-4 jumbotron text-light bg-dark">
+                    Not Enough Data Available For NPS graph
+                  </div>
+                )}
+              </>
             ) : (
-              <div className="my-5 p-4 jumbotron text-light bg-dark">
-                No Measure Data Available For NPS graph
-              </div>
-            )}
-            {measures?.length > 0 ? (
-              <MeasuresOverTimeContainer
-                measureGoals={measureGoals}
-                measuresChartData={measuresChartData}
-                measuresChartInterval={measuresChartInterval}
-                setMeasuresChartInterval={setMeasuresChartInterval}
-              />
-            ) : (
-              <div className="my-5 p-4 jumbotron text-light bg-dark">
-                No Measure Data Available For Measure Over Time Graph
-              </div>
+              <>
+                {measures?.length > 0 ? (
+                  <MeasuresOverTimeContainer
+                    handleSwitchGraphClick={handleSwitchGraphClick}
+                    measureGoals={measureGoals}
+                    measuresChartData={measuresChartData}
+                    measuresChartInterval={measuresChartInterval}
+                    setMeasuresChartInterval={setMeasuresChartInterval}
+                  />
+                ) : (
+                  <div className="my-5 p-4 jumbotron text-light bg-dark">
+                    Not Enough Data Available For Measure Over Time Graph
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

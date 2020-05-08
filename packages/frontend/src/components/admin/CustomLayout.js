@@ -17,8 +17,6 @@ const { darkGray } = COLORS;
 const CustomLayout = ({ children, isLoggedIn, dispatch }) => {
   const useStyles = makeStyles(theme => ({
     root: {
-      display: 'flex',
-      flexDirection: 'column',
       zIndex: 1,
       minHeight: '100vh',
       backgroundColor: theme.palette.background.default,
@@ -27,7 +25,8 @@ const CustomLayout = ({ children, isLoggedIn, dispatch }) => {
     appFrame: {
       display: 'flex',
       flexDirection: 'column',
-      overflowX: 'auto'
+      overflowX: 'auto',
+      minWidth: 0
     },
     contentWithSidebar: {
       display: 'flex',
@@ -37,8 +36,8 @@ const CustomLayout = ({ children, isLoggedIn, dispatch }) => {
       display: 'flex',
       flexDirection: 'column',
       flexGrow: 2,
-      padding: theme.spacing(3),
-      paddingLeft: 5
+      minWidth: 0,
+      padding: theme.spacing(3)
     },
     sidebar: {
       backgroundColor: darkGray

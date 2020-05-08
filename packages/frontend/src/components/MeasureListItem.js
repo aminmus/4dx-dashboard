@@ -35,11 +35,11 @@ const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
     container: { display: 'flex' },
     successIcon: {
       color: COLORS.success,
-      marginRight: '10px'
+      marginRight: '0.2em'
     },
     cancelIcon: {
       color: COLORS.danger,
-      marginRight: '10px'
+      marginRight: '0.2em'
     }
   });
 

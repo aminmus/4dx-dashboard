@@ -11,7 +11,7 @@ const RefreshButton = ({ onClick }) => {
   const RefreshBtn = withStyles({
     root: {
       color: primary,
-      margin: '10px',
+      margin: '0.2em',
       '&:hover': {
         backgroundColor: secondary,
         boxShadow: 'none'

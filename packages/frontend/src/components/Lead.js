@@ -18,10 +18,11 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
    */
   const useStyles = makeStyles({
     mainContainer: {
-      margin: '20px'
+      padding: '0.2em',
+      margin: '2em 0em'
     },
     leadNumberContainer: {
-      marginBottom: '10px'
+      marginBottom: '0.2em'
     },
     definedLow: {
       color: danger,
@@ -36,7 +37,7 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
       fontWeight: 'bolder'
     },
     innerContainer: {
-      padding: '10px'
+      padding: '0.2em'
     }
   });
 
