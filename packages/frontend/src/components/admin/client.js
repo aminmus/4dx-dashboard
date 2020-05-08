@@ -15,8 +15,7 @@ import {
   TabbedShowLayout,
   Tab,
   ReferenceManyField,
-  NumberField,
-  DateField
+  NumberField
 } from 'react-admin';
 
 import Button from '@material-ui/core/Button';
@@ -25,6 +24,7 @@ import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
 
 import { Link } from 'react-router-dom';
+import DateField from './DateField';
 import { validateName } from '../../utils/react-admin/adminValidation';
 
 export const ClientList = props => (

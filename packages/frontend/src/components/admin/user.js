@@ -1,5 +1,6 @@
 import React from 'react';
-import { List, Datagrid, TextField, DateField, DeleteButton } from 'react-admin';
+import { List, Datagrid, TextField, DeleteButton } from 'react-admin';
+import DateField from './DateField';
 
 const UserList = props => (
   // Disabling bulk actions as jsonapi data provider does not work with delete_many request of react-admin
