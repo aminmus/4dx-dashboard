@@ -31,11 +31,12 @@ const NpsContainer = ({ npsChartData: { graphData, graphOptions }, handleSwitchG
       alignItems: 'center',
       color: primary,
       border: `1px solid ${gray}`,
-      borderRadius: '0.1em'
+      borderRadius: '0.3em',
+      marginBottom: '1em'
     },
     mainContainer: {
       minWidth: 0,
-      margin: '2em 0em'
+      margin: '1em 0em'
     },
     optionsContainer: {
       display: 'flex',

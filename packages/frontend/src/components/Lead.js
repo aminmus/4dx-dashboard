@@ -19,7 +19,7 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
   const useStyles = makeStyles({
     mainContainer: {
       padding: '0.2em',
-      margin: '2em 0em'
+      margin: '1em 0em'
     },
     leadNumberContainer: {
       marginBottom: '0.2em'

@@ -37,7 +37,7 @@ const CustomLayout = ({ children, isLoggedIn, dispatch }) => {
       flexDirection: 'column',
       flexGrow: 2,
       minWidth: 0,
-      padding: theme.spacing(3)
+      padding: theme.spacing(2)
     },
     sidebar: {
       backgroundColor: darkGray

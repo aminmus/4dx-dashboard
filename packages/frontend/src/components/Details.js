@@ -23,7 +23,7 @@ const Details = ({ clients, editMode, dispatch }) => {
   const useStyles = makeStyles({
     mainContainer: {
       padding: '0.2em',
-      margin: '2em 0em'
+      margin: '1em 0em'
     },
     flex: {
       display: 'flex',
