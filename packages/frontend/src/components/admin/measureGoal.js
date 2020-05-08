@@ -10,9 +10,9 @@ import {
   DeleteButton,
   NumberField,
   DateField,
-  NumberInput,
-  DateInput
+  NumberInput
 } from 'react-admin';
+import { DateInput } from './DateInput';
 import { validateGoalDate, validateRequired } from '../../utils/react-admin/adminValidation';
 
 export const MeasureGoalList = props => (

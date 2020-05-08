@@ -10,10 +10,10 @@ import {
   DeleteButton,
   NumberField,
   DateField,
-  NumberInput,
-  DateInput
+  NumberInput
 } from 'react-admin';
 import { validateNps, validateDateRequired } from '../../utils/react-admin/adminValidation';
+import { DateInput } from './DateInput';
 
 export const NpsList = props => (
   <List {...props} bulkActionButtons={false}>
