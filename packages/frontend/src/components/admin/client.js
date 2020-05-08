@@ -41,7 +41,6 @@ export const ClientList = props => (
 export const ClientEdit = props => (
   <Edit title="Edit client entry" {...props}>
     <SimpleForm redirect="show">
-      <TextInput disabled source="id" />
       <TextInput source="name" validate={validateName} />
     </SimpleForm>
   </Edit>

@@ -6,11 +6,11 @@ const UserList = props => (
   // eslint-disable-next-line react/jsx-props-no-spreading
   <List {...props} bulkActionButtons={false}>
     <Datagrid isRowSelectable={() => false}>
-      <DeleteButton undoable={false} />
       <TextField source="id" />
       <TextField source="email" />
-      <DateField source="createdAt" />
-      <DateField source="updatedAt" />
+      <DateField source="created-at" label="Created at" />
+      <DateField source="updated-at" label="Updated at" />
+      <DeleteButton undoable={false} />
     </Datagrid>
   </List>
 );
