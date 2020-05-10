@@ -15,7 +15,7 @@ const { primary, light } = COLORS;
  * @param {Object} props.npsChartData.graphData Data used to render graph
  * @param {Object} props.npsChartData.graphOptions Options for rendering graph
  */
-const NpsContainer = ({ npsChartData: { graphData, graphOptions } }) => {
+const NpsGraphContainer = ({ npsChartData: { graphData, graphOptions } }) => {
   const match = useMediaQuery('(min-width:600px)');
 
   /**
@@ -55,7 +55,7 @@ const NpsContainer = ({ npsChartData: { graphData, graphOptions } }) => {
   );
 };
 
-NpsContainer.propTypes = {
+NpsGraphContainer.propTypes = {
   npsChartData: PropTypes.objectOf(
     PropTypes.shape({
       graphData: PropTypes.arrayOf(PropTypes.any),
@@ -64,4 +64,4 @@ NpsContainer.propTypes = {
   ).isRequired
 };
 
-export default NpsContainer;
+export default NpsGraphContainer;
