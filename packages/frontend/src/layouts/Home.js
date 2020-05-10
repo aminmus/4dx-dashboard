@@ -4,7 +4,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Wig from '../components/Wig';
+import Wig from '../components/nps/Wig';
 import Lead from '../components/Lead';
 import Details from '../components/clients/Details';
 import { toggleEdit } from '../actions/editMode';
@@ -14,7 +14,7 @@ import calcLeads from '../utils/calcLeads';
 import formatMeasureOverTimeData from '../utils/charts/formatMeasureOverTimeData';
 import formatNpsData from '../utils/charts/formatNpsData';
 import MeasuresOverTimeContainer from '../components/MeasuresOverTimeContainer';
-import NpsContainer from '../components/NpsContainer';
+import NpsContainer from '../components/nps/NpsContainer';
 import COLORS from '../style/COLORS';
 
 const { danger, dangerDark } = COLORS;
