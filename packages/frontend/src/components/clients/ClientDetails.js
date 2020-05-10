@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ProgressBar from './elements/ProgressBar';
-import MeasureCheckList from './MeasureCheckList';
-import EditButton from './elements/EditButton';
-import InputClient from './elements/editMode/InputClient';
-import DeleteButton from './elements/DeleteButton';
-import DeleteDialog from './elements/editMode/DeleteDialog';
-import { updateResource, deleteResource } from '../slices/resources';
+import ProgressBar from '../elements/ProgressBar';
+import MeasureCheckList from '../MeasureCheckList';
+import EditButton from '../elements/EditButton';
+import InputClient from './InputClient';
+import DeleteButton from '../elements/DeleteButton';
+import DeleteDialog from '../elements/editMode/DeleteDialog';
+import { updateResource, deleteResource } from '../../slices/resources';
 
 /**
  * Client Details component
