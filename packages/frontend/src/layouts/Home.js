@@ -13,8 +13,8 @@ import calcDefineClients from '../utils/calcDefineClients';
 import calcLeads from '../utils/calcLeads';
 import formatMeasureOverTimeData from '../utils/charts/formatMeasureOverTimeData';
 import formatNpsData from '../utils/charts/formatNpsData';
-import MeasuresOverTimeContainer from '../components/MeasuresOverTimeContainer';
-import NpsContainer from '../components/nps/NpsContainer';
+import MeasuresGraphContainer from '../components/measures/MeasuresGraphContainer';
+import NpsGraphContainer from '../components/nps/NpsGraphContainer';
 import COLORS from '../style/COLORS';
 
 const { danger, dangerDark } = COLORS;
@@ -133,14 +133,14 @@ const Home = ({
           <div className="col-sm">
             <Details />
             {nps?.length > 0 ? (
-              <NpsContainer npsChartData={npsChartData} />
+              <NpsGraphContainer npsChartData={npsChartData} />
             ) : (
               <div className="my-5 p-4 jumbotron text-light bg-dark">
                 No Measure Data Available For NPS graph
               </div>
             )}
             {measures?.length > 0 ? (
-              <MeasuresOverTimeContainer
+              <MeasuresGraphContainer
                 measureGoals={measureGoals}
                 measuresChartData={measuresChartData}
                 measuresChartInterval={measuresChartInterval}

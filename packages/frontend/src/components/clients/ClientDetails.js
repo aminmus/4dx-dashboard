@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ProgressBar from '../elements/ProgressBar';
-import MeasureCheckList from '../MeasureCheckList';
+import MeasureCheckList from '../measures/MeasureCheckList';
 import EditButton from '../elements/EditButton';
 import InputClient from './InputClient';
 import DeleteButton from '../elements/DeleteButton';
