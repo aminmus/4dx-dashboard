@@ -7,7 +7,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { makeStyles } from '@material-ui/core/styles';
 import OptionsToggleButton from '../elements/OptionsToggleButton';
 import IntervalSpanDialog from '../elements/IntervalSpanDialog';
-import InputMeasuresGoal from '../elements/editMode/InputMeasuresGoal';
+import InputMeasuresGoal from '../elements/InputMeasuresGoal';
 import COLORS from '../../style/COLORS';
 import { addResource } from '../../slices/resources';
 

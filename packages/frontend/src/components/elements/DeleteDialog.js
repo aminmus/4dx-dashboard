@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import COLORS from '../../../style/COLORS';
+import COLORS from '../../style/COLORS';
 
 const DeleteDialog = ({ type, content, isDeleting, setIsDeleting, handleDelete }) => {
   /**

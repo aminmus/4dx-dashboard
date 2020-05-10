@@ -7,7 +7,7 @@ import MeasureCheckList from '../measures/MeasureCheckList';
 import EditButton from '../elements/EditButton';
 import InputClient from './InputClient';
 import DeleteButton from '../elements/DeleteButton';
-import DeleteDialog from '../elements/editMode/DeleteDialog';
+import DeleteDialog from '../elements/DeleteDialog';
 import { updateResource, deleteResource } from '../../slices/resources';
 
 /**
