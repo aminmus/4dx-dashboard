@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import { store } from '../../index';
-import { setLogoutStatus, setLoginStatus } from '../../actions/auth';
+import { setLogoutStatus, setLoginStatus } from '../../slices/auth';
 import { disableEdit } from '../../slices/editMode';
 
 /**
