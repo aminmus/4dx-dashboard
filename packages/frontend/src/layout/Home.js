@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Wig from '../components/nps/Wig';
-import Lead from '../components/Lead';
+import Lead from '../components/clients/Lead';
 import Details from '../components/clients/Details';
 import { toggleEdit } from '../actions/editMode';
 import { fetchResources } from '../slices/resources';
