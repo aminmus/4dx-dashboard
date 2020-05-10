@@ -10,7 +10,7 @@ import Admin from './layouts/Admin';
 import isAuthenticated from './utils/authentication';
 import { setLogoutStatus, setLoginStatus } from './actions/auth';
 import customRoutes from './customRoutes';
-import { disableEdit } from './actions/editMode';
+import { disableEdit } from './slices/editMode';
 import theme from './style/muiTheme';
 
 /**
