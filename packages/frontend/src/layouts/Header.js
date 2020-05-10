@@ -9,7 +9,7 @@ import { setSidebarVisibility } from 'react-admin';
 import logo from '../logo.png';
 import authProvider from '../utils/react-admin/authProvider';
 import COLORS from '../style/COLORS';
-import HideOnScroll from './HideOnScroll';
+import HideOnScroll from '../components/HideOnScroll';
 
 /**
  * Header Component

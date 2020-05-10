@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { ThemeProvider } from '@material-ui/core';
-import Header from './components/Header';
+import Header from './layouts/Header';
 import Admin from './layouts/Admin';
 import isAuthenticated from './utils/authentication';
 import { setLogoutStatus, setLoginStatus } from './actions/auth';
