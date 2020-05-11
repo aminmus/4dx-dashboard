@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { connect } from 'react-redux';
@@ -106,7 +107,14 @@ const MeasuresGraphContainer = ({
    * an addResource action
    * @param {Object} data - Input Data for Added Measure
    */
-  const handleSaveMeasureGoal = data => {
+  const addNewMeasureGoal = ({ targetDate, measuresAmount }) => {
+    const data = {
+      type: 'measureGoals',
+      data: {
+        targetDate,
+        measuresAmount
+      }
+    };
     dispatch(addResource(data));
     setIsEditing(false);
   };
@@ -141,7 +149,7 @@ const MeasuresGraphContainer = ({
         )}
         {isEditing && editMode ? (
           <InputMeasuresGoal
-            handleSaveMeasureGoal={handleSaveMeasureGoal}
+            handleSubmit={addNewMeasureGoal}
             measures={measuresAmount}
             date={targetDate}
             setIsEditing={setIsEditing}
