@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Button, CircularProgress as LoadingIndicator, makeStyles } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { CircularProgress as LoadingIndicator, makeStyles, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import ClientDetails from './ClientDetails';
 import InputClient from './InputClient';
 import { addResource } from '../../slices/resources';
-import COLORS from '../../style/COLORS';
-
-const { primary, lightGray } = COLORS;
+import AddNewResourceButton from '../elements/editMode/AddNewResourceButton';
 
 /**
  * Details component for client
@@ -24,24 +21,14 @@ const Details = ({ clients, editMode, dispatch }) => {
   const [isLoadingNewClient, setIsLoadingNewClient] = useState(false);
 
   const useStyles = makeStyles({
+    mainContainer: {
+      padding: '0.2em',
+      margin: '1em 0em'
+    },
     flex: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center'
-    },
-    addClientBtn: {
-      padding: '0',
-      margin: 'auto',
-      opacity: 0.5,
-      '&:hover': {
-        backgroundColor: lightGray,
-        opacity: 1
-      }
-    },
-    addClientIcon: {
-      padding: '0',
-      marginRight: '5px',
-      color: primary
     }
   });
 
@@ -58,7 +45,10 @@ const Details = ({ clients, editMode, dispatch }) => {
   };
 
   return (
-    <div>
+    <div className={classes.mainContainer}>
+      <div>
+        <Typography variant="h3">CLIENTS</Typography>
+      </div>
       {clients.map(client => (
         <ClientDetails key={client.id} client={client} />
       ))}
@@ -69,10 +59,7 @@ const Details = ({ clients, editMode, dispatch }) => {
           ) : (
             <div className={classes.flex}>
               {isLoadingNewClient && <LoadingIndicator />}
-              <Button onClick={() => setIsEditing(true)} className={classes.addClientBtn}>
-                <AddCircleIcon className={classes.addClientIcon} />
-                Add New Client
-              </Button>
+              <AddNewResourceButton buttonText="Add New Client" setIsEditing={setIsEditing} />
             </div>
           )}
         </div>

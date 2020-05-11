@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { CircularProgress, Button } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { CircularProgress, Typography } from '@material-ui/core';
 import EditButton from '../elements/EditButton';
 import InputNps from './InputNps';
 import { addResource, updateResource } from '../../slices/resources';
 import COLORS from '../../style/COLORS';
+import AddNewResourceButton from '../elements/editMode/AddNewResourceButton';
 
-const { primary, lightGray } = COLORS;
+const { success, warning, danger } = COLORS;
 
 /**
  * WIG component
@@ -28,12 +28,12 @@ const Wig = ({ nps, editMode, dispatch }) => {
 
   const setColorBasedOnProgress = score => {
     if (score > 70) {
-      return '#28a745';
+      return success;
     }
     if (score > 50) {
-      return '#ffc107';
+      return warning;
     }
-    return '#dc3545';
+    return danger;
   };
 
   /**
@@ -41,7 +41,8 @@ const Wig = ({ nps, editMode, dispatch }) => {
    */
   const useStyles = makeStyles({
     mainContainer: {
-      paddingTop: '10px'
+      padding: '0.2em',
+      margin: '1em 0em'
     },
     chartLabelContainer: {
       position: 'absolute',
@@ -49,32 +50,21 @@ const Wig = ({ nps, editMode, dispatch }) => {
       left: 50,
       right: 50,
       bottom: 50,
-      padding: '0px'
+      padding: '0'
     },
     labelText: {
-      display: 'block',
-      fontSize: '1em'
+      display: 'block'
     },
-    labelValue: { display: 'block', fontSize: '2em', color: setColorBasedOnProgress(progress) },
+    labelValue: { display: 'block', color: setColorBasedOnProgress(progress) },
     circularProgressContainer: {
+      textAlign: 'center',
       position: 'relative'
     },
     addNpsContainer: {
-      marginTop: '10px'
+      textAlign: 'center'
     },
-    addNpsBtn: {
-      padding: '0',
-      margin: 'auto',
-      opacity: 0.5,
-      '&:hover': {
-        backgroundColor: lightGray,
-        opacity: 1
-      }
-    },
-    addNpsIcon: {
-      padding: '0',
-      marginRight: '5px',
-      color: primary
+    statementContainer: {
+      margin: '0.2em'
     }
   });
 
@@ -140,7 +130,7 @@ const Wig = ({ nps, editMode, dispatch }) => {
       border: '2px solid black',
       borderRadius: '50%',
       borderColor: 'gray',
-      padding: '5px'
+      padding: '0.1em'
     }
   })(CircularProgress);
 
@@ -153,10 +143,12 @@ const Wig = ({ nps, editMode, dispatch }) => {
     <div className={classes.mainContainer}>
       {latestNps && (
         <>
-          <h2>
-            WIG
-            {editMode && <EditButton onClick={onClickEdit} />}
-          </h2>
+          <div>
+            <Typography variant="h3">
+              WIG
+              {editMode && <EditButton onClick={onClickEdit} />}
+            </Typography>
+          </div>
           {isEditing && editMode ? (
             <InputNps
               id={latestNps.id}
@@ -167,25 +159,31 @@ const Wig = ({ nps, editMode, dispatch }) => {
               handleSubmit={editNps}
             />
           ) : (
-            <div>
-              {latestNps.goalNps && latestNps.targetDate && (
-                <h3 className="wig__statement">{`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}</h3>
-              )}
-              <div className={classes.circularProgressContainer}>
-                <>
-                  <CircularProgressBar
-                    size={150}
-                    thickness={isLoadingNps ? 1 : 5}
-                    variant={isLoadingNps ? 'indeterminate' : 'static'}
-                    value={progress}
-                  />
-                  <div className={classes.chartLabelContainer}>
-                    <span className={classes.labelText}>NPS</span>
-                    <span className={classes.labelValue}>{latestNps.currentNps}</span>
-                  </div>
-                </>
+            <>
+              <div className={classes.statementContainer}>
+                {latestNps.goalNps && latestNps.targetDate && (
+                  <Typography variant="h5" className="wig__statement">
+                    {`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}
+                  </Typography>
+                )}
               </div>
-            </div>
+              <div className={classes.circularProgressContainer}>
+                <CircularProgressBar
+                  size={150}
+                  thickness={isLoadingNps ? 1 : 5}
+                  variant={isLoadingNps ? 'indeterminate' : 'static'}
+                  value={progress}
+                />
+                <div className={classes.chartLabelContainer}>
+                  <Typography variant="h5" className={classes.labelText}>
+                    NPS
+                  </Typography>
+                  <Typography variant="h4" className={classes.labelValue}>
+                    {latestNps.currentNps}
+                  </Typography>
+                </div>
+              </div>
+            </>
           )}
         </>
       )}
@@ -194,10 +192,7 @@ const Wig = ({ nps, editMode, dispatch }) => {
           {isAdding ? (
             <InputNps handleSubmit={addNps} setIsAddingOrEditing={setIsAdding} />
           ) : (
-            <Button onClick={() => setIsAdding(true)} className={classes.addNpsBtn}>
-              <AddCircleIcon className={classes.addNpsIcon} />
-              Add New NPS Data
-            </Button>
+            <AddNewResourceButton buttonText="Add New NPS Data" setIsEditing={setIsEditing} />
           )}
         </div>
       )}

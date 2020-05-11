@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ListItem } from '@material-ui/core';
+import { ListItem, Typography } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,7 +10,18 @@ import DeleteButton from '../elements/DeleteButton';
 import InputMeasure from '../elements/InputMeasure';
 import DeleteDialog from '../elements/DeleteDialog';
 import { updateMeasure, deleteMeasure } from '../../slices/resources';
+import COLORS from '../../style/COLORS';
 
+/**
+ * Measure List Item component
+ *
+ * @component
+ * @param {Object} props Component props
+ * @param {Object} props.measure Measure resource object
+ * @param {Object} props.clientId Client resource id
+ * @param {Boolean} props.editMode Is user editing resource
+ * @param {Function} props.dispatch Redux store dispatch
+ */
 const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -21,7 +32,15 @@ const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
    * Component Styles
    */
   const useStyles = makeStyles({
-    container: { display: 'flex' }
+    container: { display: 'flex' },
+    successIcon: {
+      color: COLORS.success,
+      marginRight: '0.2em'
+    },
+    cancelIcon: {
+      color: COLORS.danger,
+      marginRight: '0.2em'
+    }
   });
 
   const classes = useStyles();
@@ -41,7 +60,7 @@ const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
   };
 
   return (
-    <ListItem className="text-light">
+    <ListItem>
       {isEditing && editMode ? (
         <div>
           <InputMeasure
@@ -56,11 +75,11 @@ const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
       ) : (
         <div className={classes.container}>
           {success ? (
-            <CheckCircleIcon className="mr-2 text-success" />
+            <CheckCircleIcon className={classes.successIcon} />
           ) : (
-            <CancelIcon className="mr-2 text-danger" />
+            <CancelIcon className={classes.cancelIcon} />
           )}
-          {description}
+          <Typography variant="body1">{description}</Typography>
           {editMode && (
             <div>
               <EditButton onClick={() => setIsEditing(true)} />

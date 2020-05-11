@@ -34,18 +34,17 @@ const ClientDetails = ({ client, editMode, dispatch }) => {
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'space-between',
-      cursor: hoverState ? 'pointer' : 'auto',
-      marginBottom: '10px'
+      cursor: hoverState ? 'pointer' : 'auto'
     },
     progressBarContainer: { flex: 1, justifyContent: 'center' },
-    editBtnContainer: { justifyContent: 'center', padding: '10px' },
+    editBtnContainer: { justifyContent: 'center', padding: '0.2em' },
     measureCheckListContainer: {
       display: 'flex',
       flexBasis: '100%',
       justifyContent: 'darkGray',
       border: '1px solid white',
-      borderRadius: '10px',
-      margin: '0, 10px 0 10px',
+      borderRadius: '0.2em',
+      margin: '0, 0.2em 0 0.2em',
       width: '100%'
     }
   });

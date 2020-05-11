@@ -1,15 +1,21 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { makeStyles, AppBar, Toolbar, Button, IconButton } from '@material-ui/core';
+import { makeStyles, AppBar, Toolbar, Button, IconButton, Popover } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HttpsIcon from '@material-ui/icons/Https';
 import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { setSidebarVisibility } from 'react-admin';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import logo from '../../logo.png';
 import authProvider from '../../utils/react-admin/authProvider';
 import COLORS from '../../style/COLORS';
 import HideOnScroll from '../elements/HideOnScroll';
+
+const { darkGray } = COLORS;
 
 /**
  * Header Component
@@ -18,8 +24,20 @@ import HideOnScroll from '../elements/HideOnScroll';
  * @prop {function} dispatch - Redux Dispatch
  */
 const Header = ({ isLoggedIn, dispatch }) => {
-  const { darkGray } = COLORS;
   const { logout } = authProvider;
+  const matches = useMediaQuery('(min-width:600px)');
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const open = Boolean(anchorEl);
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const id = open ? 'simple-popover' : undefined;
 
   /**
    * Logs out user and pushes them to the frontpage
@@ -36,6 +54,11 @@ const Header = ({ isLoggedIn, dispatch }) => {
     dispatch(push('/login'));
   };
 
+  const handleLogoClick = e => {
+    e.preventDefault();
+    dispatch(push('/'));
+  };
+
   const isSidebarOpen = useSelector(state => state.admin.ui.sidebarOpen);
 
   /**
@@ -43,10 +66,10 @@ const Header = ({ isLoggedIn, dispatch }) => {
    */
   const useStyles = makeStyles({
     navbarCollapse: {
-      justifyContent: 'space-between',
+      justifyContent: 'flex-end',
       width: '100%',
       '& .navbar-nav': {
-        padding: '10px'
+        padding: '0.2em'
       }
     },
     header: {
@@ -57,11 +80,21 @@ const Header = ({ isLoggedIn, dispatch }) => {
       backgroundColor: darkGray,
       padding: '0 1vw'
     },
-    logo: {
-      height: '105px'
+    logoContainer: {
+      '&:hover': {
+        cursor: 'pointer'
+      },
+      '& img': {
+        height: matches ? '105px' : '60px'
+      }
     },
     toolbar: {
       justifyContent: 'space-between'
+    },
+    poplistContainer: {
+      alignSelf: 'center',
+      margin: '0 0.3em',
+      padding: '0 0.3em'
     }
   });
 
@@ -75,7 +108,6 @@ const Header = ({ isLoggedIn, dispatch }) => {
             <IconButton
               edge="start"
               className={classes.menuButton}
-              color="inherit"
               aria-label="menu"
               onClick={
                 isSidebarOpen
@@ -86,16 +118,58 @@ const Header = ({ isLoggedIn, dispatch }) => {
               <MenuIcon />
             </IconButton>
           )}
-          <img className={classes.logo} src={logo} alt="logo" />
-          {isLoggedIn ? (
-            <Button color="inherit" onClick={handleLogoutClick}>
-              Logout
-            </Button>
-          ) : (
-            <Button color="inherit" onClick={handleLoginClick}>
-              Login
-            </Button>
-          )}
+          <div
+            className={classes.logoContainer}
+            tabIndex="0"
+            onClick={handleLogoClick}
+            onKeyPress={handleLogoClick}
+            role="link"
+            alt="home"
+          >
+            <img className={classes.logo} src={logo} alt="logo" />
+          </div>
+          <div>
+            <IconButton
+              aria-describedby={id}
+              variant="contained"
+              color="primary"
+              onClick={handleClick}
+            >
+              <AccountCircleIcon />
+            </IconButton>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center'
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center'
+              }}
+            >
+              {isLoggedIn ? (
+                <>
+                  <Button edge="start" aria-label="login" onClick={handleLogoutClick}>
+                    <div className={classes.poplistContainer}>Logout</div>
+                    <ExitToAppIcon />
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button edge="start" aria-label="logout" onClick={handleLoginClick}>
+                    <div className={classes.poplistContainer}>
+                      <span>Login</span>
+                    </div>
+                    <HttpsIcon />
+                  </Button>
+                </>
+              )}
+            </Popover>
+          </div>
         </Toolbar>
       </AppBar>
     </HideOnScroll>

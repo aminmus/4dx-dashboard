@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgressBar from '@material-ui/core/LinearProgress';
+import Typography from '@material-ui/core/Typography';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -14,9 +15,9 @@ const ProgressBar = ({ clientName, clientMeasures }) => {
     },
     root: {
       flexBasis: '60%',
-      height: '10px',
-      margin: '10px',
-      borderRadius: '10px',
+      height: '0.5em',
+      margin: '1em',
+      borderRadius: '0.5em',
       fill: 'red',
       background: 'black'
     }
@@ -27,7 +28,7 @@ const ProgressBar = ({ clientName, clientMeasures }) => {
       display: 'flex',
       flexDirection: matches ? 'row' : 'column',
       justifyContent: 'space-between',
-      padding: '10px'
+      padding: '0.2em'
     },
     innerContainer: {
       flex: 2
@@ -54,7 +55,9 @@ const ProgressBar = ({ clientName, clientMeasures }) => {
 
   return (
     <div className={classes.mainContainer}>
-      <span className={classes.clientName}>{clientName}</span>
+      <Typography variant="h6" className={classes.clientName}>
+        {clientName}
+      </Typography>
       <div className={classes.innerContainer}>
         <LinearProgress variant="determinate" value={progress} />
       </div>

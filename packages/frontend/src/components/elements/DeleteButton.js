@@ -17,8 +17,8 @@ const { danger } = COLORS;
 const DeleteButton = ({ onClick }) => {
   const useStyles = makeStyles({
     iconBtn: {
-      marginLeft: '10px',
-      padding: '5px',
+      marginLeft: '0.2em',
+      padding: '0.1em',
       opacity: 0.5,
       '&:hover': {
         opacity: 1,

@@ -1,7 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 import calcDefineClients from '../../utils/calcDefineClients';
+import COLORS from '../../style/COLORS';
+
+const { danger, warning, success } = COLORS;
 
 const Lead = ({ clients, leadStatus, definedStatus }) => {
   const { leads, leadsTotal } = leadStatus;
@@ -13,11 +17,27 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
    * Component Styles
    */
   const useStyles = makeStyles({
-    leadNumber: {
-      fontSize: '60px',
-      fontWeight: 700,
-      letterSpacing: '1px',
-      marginBottom: '40px'
+    mainContainer: {
+      padding: '0.2em',
+      margin: '1em 0em'
+    },
+    leadNumberContainer: {
+      marginBottom: '0.2em'
+    },
+    definedLow: {
+      color: danger,
+      fontWeight: 'bolder'
+    },
+    definedMid: {
+      color: warning,
+      fontWeight: 'bolder'
+    },
+    definedHigh: {
+      color: success,
+      fontWeight: 'bolder'
+    },
+    innerContainer: {
+      padding: '0.2em'
     }
   });
 
@@ -25,32 +45,34 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
 
   const setDefineLeadClassName = defined => {
     if (defined < 7) {
-      return 'text-danger';
+      return classes.definedLow;
     }
     if (defined >= 8 && defined < 9) {
-      return 'text-warning';
+      return classes.definedMid;
     }
-    return 'text-success';
+    return classes.definedHigh;
   };
 
   const setImplementLeadClassName = (leadValue, leadTotalValue) => {
     if (leadValue < leadTotalValue * 0.7) {
-      return 'text-danger';
+      return classes.definedLow;
     }
     if (leadValue >= leadTotalValue * 0.7 && leadValue <= leadTotalValue * 0.8) {
-      return 'text-warning';
+      return classes.definedMid;
     }
-    return 'text-success';
+    return classes.definedHigh;
   };
 
   const renderDefineSuccess = () => {
     return (
-      <div>
-        <h3 className="define">Define the Success factors for listed clients</h3>
-        <div className={classes.leadNumber}>
-          <span className={setDefineLeadClassName(defineClients)}>
+      <div className={classes.innerContainer}>
+        <Typography variant="h5" className="define">
+          Define the Success factors for listed clients
+        </Typography>
+        <div className={classes.leadNumberContainer}>
+          <Typography variant="h3" className={setDefineLeadClassName(defineClients)}>
             {`${definedClients}/${totalClients}`}
-          </span>
+          </Typography>
         </div>
       </div>
     );
@@ -58,20 +80,22 @@ const Lead = ({ clients, leadStatus, definedStatus }) => {
 
   const renderImplementSuccess = () => {
     return (
-      <div>
-        <h3 className="implement">Implement Client Success Program for listed clients</h3>
-        <div className={classes.leadNumber}>
-          <span className={setImplementLeadClassName(leads, leadsTotal)}>
+      <div className={classes.innerContainer}>
+        <Typography variant="h5" className="implement">
+          Implement Client Success Program for listed clients
+        </Typography>
+        <div className={classes.leadNumberContainer}>
+          <Typography variant="h3" className={setImplementLeadClassName(leads, leadsTotal)}>
             {`${leads}/${leadsTotal}`}
-          </span>
+          </Typography>
         </div>
       </div>
     );
   };
 
   return (
-    <div className="mt-3">
-      <h2>LEAD</h2>
+    <div className={classes.mainContainer}>
+      <Typography variant="h3">LEAD</Typography>
       {renderDefineSuccess()}
       {renderImplementSuccess()}
     </div>

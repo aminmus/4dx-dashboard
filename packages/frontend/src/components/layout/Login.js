@@ -21,7 +21,7 @@ const Login = props => {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        height: '1px',
+        height: '0.1em',
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundRepeat: 'no-repeat',
@@ -34,7 +34,7 @@ const Login = props => {
         marginTop: '6em'
       },
       avatar: {
-        margin: '1em',
+        margin: '0.2em',
         display: 'flex',
         justifyContent: 'center'
       },

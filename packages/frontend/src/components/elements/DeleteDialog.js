@@ -1,11 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Dialog from '@material-ui/core/Dialog';
+import {
+  Typography,
+  Button,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Dialog
+} from '@material-ui/core';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import COLORS from '../../style/COLORS';
 
@@ -19,7 +22,7 @@ const DeleteDialog = ({ type, content, isDeleting, setIsDeleting, handleDelete }
     },
     root: {
       backgroundColor: COLORS.danger,
-      margin: '10px',
+      margin: '0.2em',
       '&:hover': {
         backgroundColor: COLORS.dangerDark,
         boxShadow: 'none'
@@ -30,8 +33,8 @@ const DeleteDialog = ({ type, content, isDeleting, setIsDeleting, handleDelete }
   const useStyles = makeStyles({
     form: {
       border: '2px dotted white',
-      borderRadius: '10px',
-      padding: '10px',
+      borderRadius: '0.2em',
+      padding: '0.2em',
       width: '100%'
     },
     confirmContainer: {
@@ -59,8 +62,10 @@ const DeleteDialog = ({ type, content, isDeleting, setIsDeleting, handleDelete }
     >
       <DialogTitle id="confirmation-delete-title">{`Delete ${type}`}</DialogTitle>
       <DialogContent dividers>
-        <p>Are you sure you want to delete?</p>
-        <p className={classes.itemName}>{content}</p>
+        <Typography variant="body1">Are you sure you want to delete?</Typography>
+        <Typography variant="body1" className={classes.itemName}>
+          {content}
+        </Typography>
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={() => setIsDeleting(false)} color="primary">

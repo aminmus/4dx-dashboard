@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useMediaQuery, Button } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { useMediaQuery, Typography, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import SkipNextIcon from '@material-ui/icons/SkipNext';
+import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import OptionsToggleButton from '../elements/OptionsToggleButton';
 import IntervalSpanDialog from '../elements/IntervalSpanDialog';
 import InputMeasuresGoal from '../elements/InputMeasuresGoal';
-import COLORS from '../../style/COLORS';
 import { addResource } from '../../slices/resources';
+import COLORS from '../../style/COLORS';
+import AddNewResourceButton from '../elements/editMode/AddNewResourceButton';
 
-const { primary, light, lightGray } = COLORS;
+const { primary, light, gray } = COLORS;
 
 /**
  * Contains the Measure over time graph as well as the options header
@@ -25,6 +27,7 @@ const { primary, light, lightGray } = COLORS;
  * @param {Function} props.setMeasuresChartInterval Set state function for measure chart interval
  * @param {Function} props.dispatch Redux store dispatch
  * @param {Boolean} props.editMode Determines if edit mode is enabled by user (from redux store)
+ * @param {Object} props.handleSwitchGraphClick Handle event for switching graph
  */
 const MeasuresGraphContainer = ({
   measureGoals,
@@ -32,7 +35,8 @@ const MeasuresGraphContainer = ({
   measuresChartInterval,
   setMeasuresChartInterval,
   dispatch,
-  editMode
+  editMode,
+  handleSwitchGraphClick
 }) => {
   const match = useMediaQuery('(min-width:600px)');
   const [isEditing, setIsEditing] = useState(false);
@@ -44,34 +48,32 @@ const MeasuresGraphContainer = ({
   const useStyles = makeStyles({
     header: {
       display: 'flex',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
       alignItems: 'center',
-      color: primary
+      color: primary,
+      border: `1px solid ${gray}`,
+      borderRadius: '0.3em',
+      marginBottom: '1em'
     },
     mainContainer: {
-      margin: '10px'
+      minWidth: 0,
+      margin: '1em 0em'
     },
     optionsContainer: {
       display: 'flex',
-      margin: '10px',
+      padding: '0.2em',
       border: `1px solid ${light}`,
-      borderRadius: '10px',
+      borderRadius: '0.2em',
       justifyContent: 'center',
       flexDirection: match ? 'row' : 'column'
     },
-    addMeasuresGoalBtn: {
-      padding: '0',
-      margin: 'auto',
-      opacity: 0.5,
-      '&:hover': {
-        backgroundColor: lightGray,
-        opacity: 1
-      }
+    addMeasureGoalContainer: {
+      textAlign: 'center'
     },
-    addMeasuresGoalIcon: {
-      padding: '0',
-      marginRight: '5px',
-      color: primary
+    headerTitleContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     }
   });
 
@@ -112,14 +114,21 @@ const MeasuresGraphContainer = ({
   return (
     <div className={classes.mainContainer}>
       <div className={classes.header}>
-        <div className="chart-title">{`Measures ${measuresChartInterval}`}</div>
-        <OptionsToggleButton onClick={toggleOptions} />
+        <IconButton onClick={handleSwitchGraphClick}>
+          <SkipPreviousIcon />
+        </IconButton>
+        <div className={classes.headerTitleContainer}>
+          <Typography variant="h4">{`Measures (${measuresChartInterval})`}</Typography>
+          <OptionsToggleButton onClick={toggleOptions} />
+        </div>
+        <IconButton onClick={handleSwitchGraphClick}>
+          <SkipNextIcon />
+        </IconButton>
       </div>
       {editMode && !isEditing && (
-        <Button onClick={() => setIsEditing(true)} className={classes.addMeasuresGoalBtn}>
-          <AddCircleIcon className={classes.addMeasuresGoalIcon} />
-          Add New Measure Goal
-        </Button>
+        <div className={classes.addMeasureGoalContainer}>
+          <AddNewResourceButton buttonText="Add New Measure Goal" setIsEditing={setIsEditing} />
+        </div>
       )}
       <div>
         {optionsShow && (
@@ -164,7 +173,8 @@ MeasuresGraphContainer.propTypes = {
       targetDate: PropTypes.string.isRequired,
       updatedAt: PropTypes.string.isRequired
     })
-  ).isRequired
+  ).isRequired,
+  handleSwitchGraphClick: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

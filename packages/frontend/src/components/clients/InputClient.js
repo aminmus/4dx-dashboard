@@ -27,8 +27,8 @@ const InputClient = ({ id, name, setIsEditing, handleSave }) => {
   const useStyles = makeStyles({
     form: {
       border: '2px dotted white',
-      borderRadius: '10px',
-      padding: '5px'
+      borderRadius: '0.2em',
+      padding: '0.1em'
     },
     confirmContainer: {
       display: 'flex'

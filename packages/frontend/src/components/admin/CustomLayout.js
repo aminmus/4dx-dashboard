@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Menu, Notification, Sidebar, setSidebarVisibility } from 'react-admin';
+import COLORS from '../../style/COLORS';
+
+const { darkGray } = COLORS;
 
 /**
  * Custom Layout component to pass into React Admin
@@ -14,8 +17,6 @@ import { Menu, Notification, Sidebar, setSidebarVisibility } from 'react-admin';
 const CustomLayout = ({ children, isLoggedIn, dispatch }) => {
   const useStyles = makeStyles(theme => ({
     root: {
-      display: 'flex',
-      flexDirection: 'column',
       zIndex: 1,
       minHeight: '100vh',
       backgroundColor: theme.palette.background.default,
@@ -24,7 +25,8 @@ const CustomLayout = ({ children, isLoggedIn, dispatch }) => {
     appFrame: {
       display: 'flex',
       flexDirection: 'column',
-      overflowX: 'auto'
+      overflowX: 'auto',
+      minWidth: 0
     },
     contentWithSidebar: {
       display: 'flex',
@@ -34,9 +36,11 @@ const CustomLayout = ({ children, isLoggedIn, dispatch }) => {
       display: 'flex',
       flexDirection: 'column',
       flexGrow: 2,
-      padding: theme.spacing(3),
-      marginTop: '4em',
-      paddingLeft: 5
+      minWidth: 0,
+      padding: theme.spacing(2)
+    },
+    sidebar: {
+      backgroundColor: darkGray
     }
   }));
   const classes = useStyles();
@@ -50,7 +54,7 @@ const CustomLayout = ({ children, isLoggedIn, dispatch }) => {
       <div className={classes.appFrame}>
         <main className={classes.contentWithSidebar}>
           {isLoggedIn && (
-            <Sidebar>
+            <Sidebar className={classes.sidebar}>
               <Menu hasDashboard={false} />
             </Sidebar>
           )}

@@ -23,7 +23,7 @@ const OptionsButton = ({ disabled, text, onClick, type }) => {
     },
     root: {
       backgroundColor: primary,
-      margin: '10px',
+      margin: '0.2em',
       '&:hover': {
         backgroundColor: secondary,
         boxShadow: 'none'

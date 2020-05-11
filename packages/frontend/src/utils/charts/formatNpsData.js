@@ -126,12 +126,12 @@ const setNpsGraphOptions = () => {
       yAxes: [
         {
           scaleLabel: {
-            display: true,
+            display: false,
             labelString: 'NPS',
             fontColor: primary
           },
           ticks: {
-            stepSize: 1,
+            stepSize: 10,
             beginAtZero: true
           }
         }
