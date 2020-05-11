@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import { TextField } from '@material-ui/core';
-import OptionsButton from '../OptionsButton';
-import formatDate from '../../../utils/formatDate';
-import { inputNpsValidation } from '../../../utils/inputValidation';
+import OptionsButton from '../elements/OptionsButton';
+import formatDate from '../../utils/formatDate';
+import { inputNpsValidation } from '../../utils/inputValidation';
 
 /**
  * Nps input component

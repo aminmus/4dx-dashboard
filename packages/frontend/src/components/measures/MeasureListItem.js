@@ -5,11 +5,11 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import EditButton from './elements/EditButton';
-import DeleteButton from './elements/DeleteButton';
-import InputMeasure from './elements/editMode/InputMeasure';
-import DeleteDialog from './elements/editMode/DeleteDialog';
-import { updateMeasure, deleteMeasure } from '../slices/resources';
+import EditButton from '../elements/EditButton';
+import DeleteButton from '../elements/DeleteButton';
+import InputMeasure from '../elements/InputMeasure';
+import DeleteDialog from '../elements/DeleteDialog';
+import { updateMeasure, deleteMeasure } from '../../slices/resources';
 
 const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);

@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import { useMediaQuery, Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { makeStyles } from '@material-ui/core/styles';
-import OptionsToggleButton from './elements/OptionsToggleButton';
-import IntervalSpanDialog from './elements/IntervalSpanDialog';
-import InputMeasuresGoal from './elements/editMode/InputMeasuresGoal';
-import COLORS from '../style/COLORS';
-import { addResource } from '../slices/resources';
+import OptionsToggleButton from '../elements/OptionsToggleButton';
+import IntervalSpanDialog from '../elements/IntervalSpanDialog';
+import InputMeasuresGoal from '../elements/InputMeasuresGoal';
+import COLORS from '../../style/COLORS';
+import { addResource } from '../../slices/resources';
 
 const { primary, light, lightGray } = COLORS;
 
@@ -26,7 +26,7 @@ const { primary, light, lightGray } = COLORS;
  * @param {Function} props.dispatch Redux store dispatch
  * @param {Boolean} props.editMode Determines if edit mode is enabled by user (from redux store)
  */
-const MeasuresOverTimeContainer = ({
+const MeasuresGraphContainer = ({
   measureGoals,
   measuresChartData: { graphData, graphOptions },
   measuresChartInterval,
@@ -145,7 +145,7 @@ const MeasuresOverTimeContainer = ({
   );
 };
 
-MeasuresOverTimeContainer.propTypes = {
+MeasuresGraphContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
   measuresChartInterval: PropTypes.string.isRequired,
@@ -171,4 +171,4 @@ const mapStateToProps = state => ({
   editMode: state.editMode.editModeEnabled
 });
 
-export default connect(mapStateToProps, null)(MeasuresOverTimeContainer);
+export default connect(mapStateToProps, null)(MeasuresGraphContainer);

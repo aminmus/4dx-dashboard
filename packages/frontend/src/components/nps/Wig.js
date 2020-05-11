@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CircularProgress, Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import EditButton from './elements/EditButton';
-import InputNps from './elements/editMode/InputNps';
-import { addResource, updateResource } from '../slices/resources';
-import COLORS from '../style/COLORS';
+import EditButton from '../elements/EditButton';
+import InputNps from './InputNps';
+import { addResource, updateResource } from '../../slices/resources';
+import COLORS from '../../style/COLORS';
 
 const { primary, lightGray } = COLORS;
 
