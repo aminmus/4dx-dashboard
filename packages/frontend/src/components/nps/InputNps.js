@@ -18,10 +18,10 @@ import CardContainer from '../elements/CardContainer';
  * @param {Number} props.goal Goal Nps
  * @param {String} props.targetDate Target date for Nps goal
  * @param {Function} props.setIsAddingOrEditing Set whether or not user is editing a resource
- * @param {Object} props.handleSubmit Handling of form submission
+ * @param {Object} props.handleResource Handling of form data from form
  *
  */
-const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleSubmit }) => {
+const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleResource }) => {
   const [selectedDate, setSelectedDate] = useState(formatDate());
   const [selectedTargetDate, setSelectedTargetDate] = useState(targetDate);
   const [currentNps, setCurrentNps] = useState(current);
@@ -31,14 +31,6 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
   const [dateErrorText, setDateErrorText] = useState();
   const [targetDateErrorText, setTargetDateErrorText] = useState();
   const [validationError, setValidationError] = useState(false);
-
-  const formData = {
-    id,
-    currentNps,
-    goalNps,
-    date: selectedDate,
-    targetDate: selectedTargetDate
-  };
 
   /**
    * Set input validation errors if present
@@ -72,6 +64,29 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
     goalNps,
     selectedTargetDate
   ]);
+
+  const formData = {
+    id,
+    currentNps,
+    goalNps,
+    date: selectedDate,
+    targetDate: selectedTargetDate
+  };
+
+  // eslint-disable-next-line no-shadow
+  const handleSubmit = ({ id, currentNps, goalNps, date, targetDate }) => {
+    const data = {
+      id,
+      type: 'nps',
+      data: {
+        currentNps: parseInt(currentNps, 10),
+        goalNps: parseInt(goalNps, 10),
+        date,
+        targetDate
+      }
+    };
+    handleResource(data);
+  };
 
   return (
     <CardContainer
@@ -164,7 +179,7 @@ InputNps.propTypes = {
   goal: PropTypes.number,
   targetDate: PropTypes.string,
   setIsAddingOrEditing: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired
+  handleResource: PropTypes.func.isRequired
 };
 
 export default connect(null, null)(InputNps);

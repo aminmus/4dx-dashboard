@@ -38,13 +38,7 @@ const Details = ({ clients, editMode, dispatch }) => {
     setIsLoadingNewClient(false);
   }, [clients]);
 
-  const addNewClient = ({ name }) => {
-    const data = {
-      type: 'clients',
-      data: {
-        name
-      }
-    };
+  const addNewClient = data => {
     dispatch(addResource(data));
     setIsLoadingNewClient(true);
     setIsEditing(false);
@@ -61,7 +55,7 @@ const Details = ({ clients, editMode, dispatch }) => {
       {editMode && (
         <div>
           {isEditing && editMode ? (
-            <InputClient handleSubmit={addNewClient} setIsEditing={setIsEditing} />
+            <InputClient handleResource={addNewClient} setIsEditing={setIsEditing} />
           ) : (
             <div className={classes.flex}>
               {isLoadingNewClient && <LoadingIndicator />}

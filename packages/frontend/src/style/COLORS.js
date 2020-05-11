@@ -2,7 +2,7 @@ const COLORS = {
   primary: 'rgba(250, 191, 44, 1)',
   secondary: 'rgba(200, 140, 10, 1)',
   light: 'rgba(255, 255, 255, 1)',
-  dark: 'rgba(0, 0, 0 , 1)',
+  dark: 'rgba(33, 33, 33, 1)',
   success: 'rgb(144, 238, 144)',
   danger: 'rgba(217, 83, 79, 1)',
   warning: 'rgb(255,193,7,1)',

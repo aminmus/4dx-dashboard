@@ -13,9 +13,9 @@ import CardContainer from '../elements/CardContainer';
  * @param {String} props.id Unique identifier for Client resource (if used for editing)
  * @param {String} props.name Client name
  * @param {Function} props.setIsEditing Set whether or not user is editing a resource
- * @param {Object} props.handleSubmit Handling of input submission
+ * @param {Object} props.handleResource Handling of form data from form
  */
-const InputClient = ({ id, name, setIsEditing, handleSubmit }) => {
+const InputClient = ({ id, name, setIsEditing, handleResource }) => {
   const [clientName, setClientName] = useState(name);
   const [clientNameErrorText, setClientNameErrorText] = useState();
   const [validationError, setValidationError] = useState(false);
@@ -36,6 +36,18 @@ const InputClient = ({ id, name, setIsEditing, handleSubmit }) => {
   const formData = {
     id,
     name: clientName
+  };
+
+  // eslint-disable-next-line no-shadow
+  const handleSubmit = ({ id, name }) => {
+    const data = {
+      id,
+      type: 'clients',
+      data: {
+        name
+      }
+    };
+    handleResource(data);
   };
 
   return (
@@ -73,7 +85,7 @@ InputClient.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   setIsEditing: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired
+  handleResource: PropTypes.func.isRequired
 };
 
 export default connect(null, null)(InputClient);

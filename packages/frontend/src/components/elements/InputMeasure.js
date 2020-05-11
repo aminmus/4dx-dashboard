@@ -18,9 +18,9 @@ import CardContainer from './CardContainer';
  * @param {String} props.success Date of measure completion
  * @param {String} props.description Measure description
  * @param {Function} props.setIsEditing Set whether or not user is editing a resource
- * @param {Object} props.handleSubmit Handling of form submission
+ * @param {Object} props.handleResource Handling of form data from form
  */
-const InputMeasure = ({ setIsEditing, handleSubmit, clientId, id, success, description }) => {
+const InputMeasure = ({ setIsEditing, handleResource, clientId, id, success, description }) => {
   const [measureDescription, setMeasureDescription] = useState(description);
   const [selectedDate, setSelectedDate] = useState(success);
 
@@ -51,6 +51,20 @@ const InputMeasure = ({ setIsEditing, handleSubmit, clientId, id, success, descr
     clientId,
     description: measureDescription,
     success: selectedDate
+  };
+
+  // eslint-disable-next-line no-shadow
+  const handleSubmit = ({ id, clientId, description, success }) => {
+    const data = {
+      id,
+      type: 'measures',
+      data: {
+        description,
+        success,
+        clientId
+      }
+    };
+    handleResource(data);
   };
 
   return (
@@ -109,7 +123,7 @@ InputMeasure.propTypes = {
   description: PropTypes.string,
   success: PropTypes.string,
   setIsEditing: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired
+  handleResource: PropTypes.func.isRequired
 };
 
 export default connect(null, null)(InputMeasure);

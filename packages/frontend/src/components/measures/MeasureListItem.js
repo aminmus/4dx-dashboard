@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import React, { useState } from 'react';
 import { ListItem, Typography } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -46,16 +45,7 @@ const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
 
   const classes = useStyles();
 
-  const editMeasure = ({ description, success, clientId, id }) => {
-    const data = {
-      id,
-      type: 'measures',
-      data: {
-        description,
-        success,
-        clientId
-      }
-    };
+  const editMeasure = data => {
     dispatch(updateMeasure(data));
     setIsEditing(false);
   };
@@ -78,7 +68,7 @@ const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
             clientId={clientId}
             success={measure.success}
             description={measure.description}
-            handleSubmit={editMeasure}
+            handleResource={editMeasure}
             setIsEditing={setIsEditing}
           />
         </div>

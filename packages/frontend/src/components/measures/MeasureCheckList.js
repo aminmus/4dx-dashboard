@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react';
 import {
   List,
@@ -31,15 +30,7 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
     setIsLoadingNewMeasure(false);
   }, [measures]);
 
-  const addNewMeasure = ({ description, success, clientId }) => {
-    const data = {
-      type: 'measures',
-      data: {
-        description,
-        success,
-        clientId
-      }
-    };
+  const addNewMeasure = data => {
     dispatch(addMeasure(data));
     setIsLoadingNewMeasure(true);
     setIsEditing(false);
@@ -72,7 +63,7 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
           {isEditing && editMode ? (
             <InputMeasure
               clientId={clientId}
-              handleSubmit={addNewMeasure}
+              handleResource={addNewMeasure}
               setIsEditing={setIsEditing}
             />
           ) : (

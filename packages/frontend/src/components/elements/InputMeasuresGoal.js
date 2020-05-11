@@ -15,10 +15,10 @@ import CardContainer from './CardContainer';
  * @param {String} props.id Unique identifier for Measures Goal resource (if used for editing)
  * @param {Number} props.measures Current Nps
  * @param {String} props.date Goal Nps
- * @param {Object} props.handleSubmit Handling of form submission
+ * @param {Object} props.handleResource Handling of form data from form
  * @param {Boolean} props.setIsEditing Set whether or not user is editing a resource
  */
-const InputMeasuresGoal = ({ handleSubmit, setIsEditing, measures, date, id }) => {
+const InputMeasuresGoal = ({ handleResource, setIsEditing, measures, date, id }) => {
   const [targetMeasures, setTargetMeasures] = useState(measures);
   const [selectedDate, setSelectedDate] = useState(date);
 
@@ -48,6 +48,17 @@ const InputMeasuresGoal = ({ handleSubmit, setIsEditing, measures, date, id }) =
     id,
     targetDate: selectedDate,
     measuresAmount: targetMeasures
+  };
+
+  const handleSubmit = ({ targetDate, measuresAmount }) => {
+    const data = {
+      type: 'measureGoals',
+      data: {
+        targetDate,
+        measuresAmount
+      }
+    };
+    handleResource(data);
   };
 
   return (
@@ -103,7 +114,7 @@ InputMeasuresGoal.defaultProps = {
 
 InputMeasuresGoal.propTypes = {
   id: PropTypes.string,
-  handleSubmit: PropTypes.func.isRequired,
+  handleResource: PropTypes.func.isRequired,
   setIsEditing: PropTypes.func.isRequired,
   measures: PropTypes.number,
   date: PropTypes.string
