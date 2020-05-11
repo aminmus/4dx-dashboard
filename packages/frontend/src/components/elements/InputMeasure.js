@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { connect } from 'react-redux';
 import MomentUtils from '@date-io/moment';
 import { TextField } from '@material-ui/core';
 import { inputMeasureValidation } from '../../utils/inputValidation';
-import OptionsButton from './OptionsButton';
 import formatDate from '../../utils/formatDate';
+import CardContainer from './CardContainer';
 
 /**
  * Measure input component
@@ -19,9 +18,9 @@ import formatDate from '../../utils/formatDate';
  * @param {String} props.success Date of measure completion
  * @param {String} props.description Measure description
  * @param {Function} props.setIsEditing Set whether or not user is editing a resource
- * @param {Object} props.handleSave Handling of input submission
+ * @param {Object} props.handleSubmit Handling of form submission
  */
-const InputMeasure = ({ setIsEditing, handleSave, clientId, id, success, description }) => {
+const InputMeasure = ({ setIsEditing, handleSubmit, clientId, id, success, description }) => {
   const [measureDescription, setMeasureDescription] = useState(description);
   const [selectedDate, setSelectedDate] = useState(success);
 
@@ -29,37 +28,6 @@ const InputMeasure = ({ setIsEditing, handleSave, clientId, id, success, descrip
   const [descriptionErrorText, setDescriptionErrorText] = useState();
 
   const [validationError, setValidationError] = useState(false);
-
-  /**
-   * Component Styles
-   */
-  const useStyles = makeStyles({
-    form: {
-      border: '2px dotted white',
-      borderRadius: '0.2em',
-      padding: '0.2em',
-      width: '100%'
-    },
-    confirmContainer: {
-      display: 'flex'
-    }
-  });
-
-  const classes = useStyles();
-
-  const handleSaveClick = e => {
-    e.preventDefault();
-    // Can be create or update, depending on passed in function
-    handleSave({
-      id,
-      type: 'measures',
-      data: {
-        description: measureDescription,
-        success: selectedDate,
-        clientId
-      }
-    });
-  };
 
   /**
    * Set input validation errors if present
@@ -78,8 +46,20 @@ const InputMeasure = ({ setIsEditing, handleSave, clientId, id, success, descrip
     }
   }, [successErrorText, descriptionErrorText]);
 
+  const formData = {
+    id,
+    clientId,
+    description: measureDescription,
+    success: selectedDate
+  };
+
   return (
-    <form className={classes.form}>
+    <CardContainer
+      formData={formData}
+      handleSubmit={handleSubmit}
+      setIsEditing={setIsEditing}
+      validationError={validationError}
+    >
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <TextField
           label="Measure description"
@@ -112,12 +92,7 @@ const InputMeasure = ({ setIsEditing, handleSave, clientId, id, success, descrip
           }}
         />
       </MuiPickersUtilsProvider>
-
-      <div className={classes.confirmContainer}>
-        <OptionsButton disabled={validationError} text="Save" onClick={handleSaveClick} />
-        <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
-      </div>
-    </form>
+    </CardContainer>
   );
 };
 
@@ -134,7 +109,7 @@ InputMeasure.propTypes = {
   description: PropTypes.string,
   success: PropTypes.string,
   setIsEditing: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired
 };
 
 export default connect(null, null)(InputMeasure);
