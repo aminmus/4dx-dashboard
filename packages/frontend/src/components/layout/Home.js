@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Wig from '../nps/Wig';
 import Lead from '../clients/Lead';
 import Details from '../clients/Details';
-import { toggleEdit } from '../../actions/editMode';
+import { toggleEdit } from '../../slices/editMode';
 import { fetchResources } from '../../slices/resources';
 import calcDefineClients from '../../utils/calcDefineClients';
 import calcLeads from '../../utils/calcLeads';

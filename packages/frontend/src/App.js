@@ -8,9 +8,9 @@ import { ThemeProvider } from '@material-ui/core';
 import Header from './components/layout/Header';
 import Admin from './components/layout/Admin';
 import isAuthenticated from './utils/authentication';
-import { setLogoutStatus, setLoginStatus } from './actions/auth';
+import { setLogoutStatus, setLoginStatus } from './slices/auth';
 import customRoutes from './customRoutes';
-import { disableEdit } from './actions/editMode';
+import { disableEdit } from './slices/editMode';
 import theme from './style/muiTheme';
 
 /**
