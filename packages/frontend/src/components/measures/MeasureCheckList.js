@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react';
 import {
   List,
@@ -30,7 +31,15 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
     setIsLoadingNewMeasure(false);
   }, [measures]);
 
-  const handleSave = data => {
+  const addNewMeasure = ({ description, success, clientId }) => {
+    const data = {
+      type: 'measures',
+      data: {
+        description,
+        success,
+        clientId
+      }
+    };
     dispatch(addMeasure(data));
     setIsLoadingNewMeasure(true);
     setIsEditing(false);
@@ -61,7 +70,11 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
       {editMode && (
         <ListItem>
           {isEditing && editMode ? (
-            <InputMeasure clientId={clientId} handleSave={handleSave} setIsEditing={setIsEditing} />
+            <InputMeasure
+              clientId={clientId}
+              handleSubmit={addNewMeasure}
+              setIsEditing={setIsEditing}
+            />
           ) : (
             <div className={classes.flex}>
               {isLoadingNewMeasure && <LoadingIndicator />}
