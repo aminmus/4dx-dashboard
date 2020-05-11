@@ -89,8 +89,7 @@ const Wig = ({ nps, editMode, dispatch }) => {
     setProgress(npsProgress > 100 ? 100 : npsProgress);
   }, [latestNps]);
 
-  const editNps = (id, { currentNps, goalNps, date, targetDate }, event) => {
-    event.preventDefault();
+  const editNps = ({ id, currentNps, goalNps, date, targetDate }) => {
     const data = {
       id,
       type: 'nps',
@@ -106,10 +105,8 @@ const Wig = ({ nps, editMode, dispatch }) => {
     setIsEditing(false);
   };
 
-  const addNps = (id, { currentNps, goalNps, date, targetDate }, event) => {
-    event.preventDefault();
+  const addNps = ({ currentNps, goalNps, date, targetDate }) => {
     const data = {
-      id,
       type: 'nps',
       data: {
         currentNps: parseInt(currentNps, 10),
@@ -192,7 +189,7 @@ const Wig = ({ nps, editMode, dispatch }) => {
           {isAdding ? (
             <InputNps handleSubmit={addNps} setIsAddingOrEditing={setIsAdding} />
           ) : (
-            <AddNewResourceButton buttonText="Add New NPS Data" setIsEditing={setIsEditing} />
+            <AddNewResourceButton buttonText="Add New NPS Data" setIsEditing={setIsAdding} />
           )}
         </div>
       )}
