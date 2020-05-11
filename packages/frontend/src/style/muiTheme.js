@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
 import COLORS from './COLORS';
