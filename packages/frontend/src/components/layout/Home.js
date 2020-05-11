@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, makeStyles } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Wig from '../nps/Wig';
 import Lead from '../clients/Lead';
 import Details from '../clients/Details';
-import { toggleEdit } from '../../slices/editMode';
 import { fetchResources } from '../../slices/resources';
 import calcDefineClients from '../../utils/calcDefineClients';
 import calcLeads from '../../utils/calcLeads';
@@ -50,7 +48,6 @@ const getMeasuresFromClient = clients => {
  * @param {Boolean} props.resources.isFetching Are resources being fetched from the API
  */
 const Home = ({
-  isLoggedIn,
   dispatch,
   resources: {
     data: { clients, nps, measureGoals },
@@ -121,11 +118,6 @@ const Home = ({
     }
   }, [nps]);
 
-  const handleEditClick = e => {
-    e.preventDefault();
-    dispatch(toggleEdit());
-  };
-
   const handleSwitchGraphClick = e => {
     e.preventDefault();
     if (graphType === 'nps') {
@@ -138,52 +130,43 @@ const Home = ({
   return (
     <div className={classes.mainContainer}>
       {isFetching && <CircularProgress />}
-      <div>
-        {isLoggedIn && (
-          <div className={classes.toggleEditContainer}>
-            <Button className={classes.editMode} onClick={handleEditClick} startIcon={<EditIcon />}>
-              Toggle Edit Mode
-            </Button>
-          </div>
-        )}
-        <div className="row">
-          <div className="col-md">
-            <Wig nps={nps} />
-            <Lead clients={clients} definedStatus={definedStatus} leadStatus={leadStatus} />
-          </div>
-          <div className="col-md" style={{ minWidth: 0 }}>
-            <Details />
-            {graphType === 'nps' ? (
-              <>
-                {nps?.length > 0 ? (
-                  <NpsGraphContainer
-                    handleSwitchGraphClick={handleSwitchGraphClick}
-                    npsChartData={npsChartData}
-                  />
-                ) : (
-                  <div className="my-5 p-4 jumbotron text-light bg-dark">
-                    Not Enough Data Available For NPS graph
-                  </div>
-                )}
-              </>
-            ) : (
-              <>
-                {measures?.length > 0 ? (
-                  <MeasuresGraphContainer
-                    handleSwitchGraphClick={handleSwitchGraphClick}
-                    measureGoals={measureGoals}
-                    measuresChartData={measuresChartData}
-                    measuresChartInterval={measuresChartInterval}
-                    setMeasuresChartInterval={setMeasuresChartInterval}
-                  />
-                ) : (
-                  <div className="my-5 p-4 jumbotron text-light bg-dark">
-                    Not Enough Data Available For Measure Over Time Graph
-                  </div>
-                )}
-              </>
-            )}
-          </div>
+      <div className="row">
+        <div className="col-md">
+          <Wig nps={nps} />
+          <Lead clients={clients} definedStatus={definedStatus} leadStatus={leadStatus} />
+        </div>
+        <div className="col-md" style={{ minWidth: 0 }}>
+          <Details />
+          {graphType === 'nps' ? (
+            <>
+              {nps?.length > 0 ? (
+                <NpsGraphContainer
+                  handleSwitchGraphClick={handleSwitchGraphClick}
+                  npsChartData={npsChartData}
+                />
+              ) : (
+                <div className="my-5 p-4 jumbotron text-light bg-dark">
+                  Not Enough Data Available For NPS graph
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {measures?.length > 0 ? (
+                <MeasuresGraphContainer
+                  handleSwitchGraphClick={handleSwitchGraphClick}
+                  measureGoals={measureGoals}
+                  measuresChartData={measuresChartData}
+                  measuresChartInterval={measuresChartInterval}
+                  setMeasuresChartInterval={setMeasuresChartInterval}
+                />
+              ) : (
+                <div className="my-5 p-4 jumbotron text-light bg-dark">
+                  Not Enough Data Available For Measure Over Time Graph
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -191,7 +174,6 @@ const Home = ({
 };
 
 Home.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
   resources: PropTypes.shape({
     data: PropTypes.shape({
@@ -203,8 +185,7 @@ Home.propTypes = {
   }).isRequired
 };
 
-const mapStateToProps = ({ auth, resources }) => ({
-  isLoggedIn: auth?.isLoggedIn,
+const mapStateToProps = ({ resources }) => ({
   resources
 });
 
