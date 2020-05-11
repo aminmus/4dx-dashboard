@@ -1,9 +1,10 @@
 /* eslint-disable camelcase, react/destructuring-assignment, react/jsx-props-no-spreading, react/prop-types */
 
 import React from 'react';
-import { Edit, Create, SimpleForm, DateInput, NumberInput } from 'react-admin';
+import { Edit, Create, SimpleForm, NumberInput } from 'react-admin';
 import { parse } from 'query-string';
 import { validateScore, validateDateRequired } from '../../utils/react-admin/adminValidation';
+import { DateInput } from './DateInput';
 
 export const CsatEdit = props => {
   const { client_id } = parse(props.location.search);
