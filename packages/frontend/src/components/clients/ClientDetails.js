@@ -51,7 +51,14 @@ const ClientDetails = ({ client, editMode, dispatch }) => {
 
   const classes = useStyles();
 
-  const updateClient = data => {
+  const editClient = ({ id, name }) => {
+    const data = {
+      id,
+      type: 'clients',
+      data: {
+        name
+      }
+    };
     dispatch(updateResource(data));
     setIsEditing(false);
   };
@@ -84,7 +91,7 @@ const ClientDetails = ({ client, editMode, dispatch }) => {
             id={client.id}
             setIsEditing={setIsEditing}
             name={client.name}
-            handleSave={updateClient}
+            handleSubmit={editClient}
           />
         ) : (
           <ProgressBar
