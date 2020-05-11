@@ -6,10 +6,10 @@ import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { setSidebarVisibility } from 'react-admin';
-import logo from '../logo.png';
-import authProvider from '../utils/react-admin/authProvider';
-import COLORS from '../style/COLORS';
-import HideOnScroll from './HideOnScroll';
+import logo from '../../logo.png';
+import authProvider from '../../utils/react-admin/authProvider';
+import COLORS from '../../style/COLORS';
+import HideOnScroll from '../elements/HideOnScroll';
 
 /**
  * Header Component

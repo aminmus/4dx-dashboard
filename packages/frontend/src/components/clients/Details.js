@@ -4,9 +4,9 @@ import { Button, CircularProgress as LoadingIndicator, makeStyles } from '@mater
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import PropTypes from 'prop-types';
 import ClientDetails from './ClientDetails';
-import InputClient from './elements/editMode/InputClient';
-import { addResource } from '../slices/resources';
-import COLORS from '../style/COLORS';
+import InputClient from './InputClient';
+import { addResource } from '../../slices/resources';
+import COLORS from '../../style/COLORS';
 
 const { primary, lightGray } = COLORS;
 
