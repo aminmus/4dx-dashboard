@@ -4,18 +4,18 @@ import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Wig from '../components/Wig';
-import Lead from '../components/Lead';
-import Details from '../components/Details';
-import { toggleEdit } from '../actions/editMode';
-import { fetchResources } from '../slices/resources';
-import calcDefineClients from '../utils/calcDefineClients';
-import calcLeads from '../utils/calcLeads';
-import formatMeasureOverTimeData from '../utils/charts/formatMeasureOverTimeData';
-import formatNpsData from '../utils/charts/formatNpsData';
-import MeasuresOverTimeContainer from '../components/MeasuresOverTimeContainer';
-import NpsContainer from '../components/NpsContainer';
-import COLORS from '../style/COLORS';
+import Wig from '../nps/Wig';
+import Lead from '../clients/Lead';
+import Details from '../clients/Details';
+import { toggleEdit } from '../../slices/editMode';
+import { fetchResources } from '../../slices/resources';
+import calcDefineClients from '../../utils/calcDefineClients';
+import calcLeads from '../../utils/calcLeads';
+import formatMeasureOverTimeData from '../../utils/charts/formatMeasureOverTimeData';
+import formatNpsData from '../../utils/charts/formatNpsData';
+import MeasuresGraphContainer from '../measures/MeasuresGraphContainer';
+import NpsGraphContainer from '../nps/NpsGraphContainer';
+import COLORS from '../../style/COLORS';
 
 const { danger, dangerDark } = COLORS;
 
@@ -156,7 +156,7 @@ const Home = ({
             {graphType === 'nps' ? (
               <>
                 {nps?.length > 0 ? (
-                  <NpsContainer
+                  <NpsGraphContainer
                     handleSwitchGraphClick={handleSwitchGraphClick}
                     npsChartData={npsChartData}
                   />
@@ -169,7 +169,7 @@ const Home = ({
             ) : (
               <>
                 {measures?.length > 0 ? (
-                  <MeasuresOverTimeContainer
+                  <MeasuresGraphContainer
                     handleSwitchGraphClick={handleSwitchGraphClick}
                     measureGoals={measureGoals}
                     measuresChartData={measuresChartData}

@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
-import OptionsButton from '../OptionsButton';
-import { inputClientValidation } from '../../../utils/inputValidation';
+import OptionsButton from '../elements/OptionsButton';
+import { inputClientValidation } from '../../utils/inputValidation';
 
 /**
  * Client input component

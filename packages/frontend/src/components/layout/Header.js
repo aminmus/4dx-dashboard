@@ -10,10 +10,10 @@ import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { setSidebarVisibility } from 'react-admin';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import logo from '../logo.png';
-import authProvider from '../utils/react-admin/authProvider';
-import COLORS from '../style/COLORS';
-import HideOnScroll from './HideOnScroll';
+import logo from '../../logo.png';
+import authProvider from '../../utils/react-admin/authProvider';
+import COLORS from '../../style/COLORS';
+import HideOnScroll from '../elements/HideOnScroll';
 
 const { darkGray } = COLORS;
 

@@ -8,9 +8,9 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MeasureListItem from './MeasureListItem';
-import InputMeasure from './elements/editMode/InputMeasure';
-import { addMeasure } from '../slices/resources';
-import AddNewResourceButton from './elements/editMode/AddNewResourceButton';
+import InputMeasure from '../elements/InputMeasure';
+import { addMeasure } from '../../slices/resources';
+import AddNewResourceButton from '../elements/editMode/AddNewResourceButton';
 
 /**
  * Mesure Checklist component

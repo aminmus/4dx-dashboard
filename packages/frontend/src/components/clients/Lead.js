@@ -2,8 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import calcDefineClients from '../utils/calcDefineClients';
-import COLORS from '../style/COLORS';
+import calcDefineClients from '../../utils/calcDefineClients';
+import COLORS from '../../style/COLORS';
 
 const { danger, warning, success } = COLORS;
 

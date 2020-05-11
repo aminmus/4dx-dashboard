@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import { TextField } from '@material-ui/core';
-import OptionsButton from '../OptionsButton';
-import formatDate from '../../../utils/formatDate';
-import { inputMeasuresGoalValidation } from '../../../utils/inputValidation';
+import OptionsButton from './OptionsButton';
+import formatDate from '../../utils/formatDate';
+import { inputMeasuresGoalValidation } from '../../utils/inputValidation';
 
 /**
  * Measures Goal input component

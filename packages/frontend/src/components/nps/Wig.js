@@ -3,12 +3,11 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CircularProgress, Typography } from '@material-ui/core';
-import EditButton from './elements/EditButton';
-import InputNps from './elements/editMode/InputNps';
-import { addResource, updateResource } from '../slices/resources';
-import AddNewResourceButton from './elements/editMode/AddNewResourceButton';
-
-import COLORS from '../style/COLORS';
+import EditButton from '../elements/EditButton';
+import InputNps from './InputNps';
+import { addResource, updateResource } from '../../slices/resources';
+import COLORS from '../../style/COLORS';
+import AddNewResourceButton from '../elements/editMode/AddNewResourceButton';
 
 const { success, warning, danger } = COLORS;
 

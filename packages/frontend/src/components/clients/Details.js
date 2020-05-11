@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { CircularProgress as LoadingIndicator, makeStyles, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import ClientDetails from './ClientDetails';
-import InputClient from './elements/editMode/InputClient';
-import { addResource } from '../slices/resources';
-import AddNewResourceButton from './elements/editMode/AddNewResourceButton';
+import InputClient from './InputClient';
+import { addResource } from '../../slices/resources';
+import AddNewResourceButton from '../elements/editMode/AddNewResourceButton';
 
 /**
  * Details component for client

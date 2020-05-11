@@ -5,7 +5,7 @@ import { useMediaQuery, Typography, IconButton } from '@material-ui/core';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import { makeStyles } from '@material-ui/core/styles';
-import COLORS from '../style/COLORS';
+import COLORS from '../../style/COLORS';
 
 const { primary, light, gray } = COLORS;
 
@@ -18,7 +18,10 @@ const { primary, light, gray } = COLORS;
  * @param {Object} props.npsChartData.graphOptions Options for rendering graph
  * @param {Object} props.handleSwitchGraphClick Handle event for switching graph
  */
-const NpsContainer = ({ npsChartData: { graphData, graphOptions }, handleSwitchGraphClick }) => {
+const NpsGraphContainer = ({
+  npsChartData: { graphData, graphOptions },
+  handleSwitchGraphClick
+}) => {
   const match = useMediaQuery('(min-width:600px)');
 
   /**
@@ -66,7 +69,7 @@ const NpsContainer = ({ npsChartData: { graphData, graphOptions }, handleSwitchG
   );
 };
 
-NpsContainer.propTypes = {
+NpsGraphContainer.propTypes = {
   npsChartData: PropTypes.objectOf(
     PropTypes.shape({
       graphData: PropTypes.arrayOf(PropTypes.any),
@@ -76,4 +79,4 @@ NpsContainer.propTypes = {
   handleSwitchGraphClick: PropTypes.func.isRequired
 };
 
-export default NpsContainer;
+export default NpsGraphContainer;

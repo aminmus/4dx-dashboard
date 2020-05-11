@@ -6,12 +6,12 @@ import { useMediaQuery, Typography, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import AddNewResourceButton from './elements/editMode/AddNewResourceButton';
-import OptionsToggleButton from './elements/OptionsToggleButton';
-import IntervalSpanDialog from './elements/IntervalSpanDialog';
-import InputMeasuresGoal from './elements/editMode/InputMeasuresGoal';
-import COLORS from '../style/COLORS';
-import { addResource } from '../slices/resources';
+import OptionsToggleButton from '../elements/OptionsToggleButton';
+import IntervalSpanDialog from '../elements/IntervalSpanDialog';
+import InputMeasuresGoal from '../elements/InputMeasuresGoal';
+import { addResource } from '../../slices/resources';
+import COLORS from '../../style/COLORS';
+import AddNewResourceButton from '../elements/editMode/AddNewResourceButton';
 
 const { primary, light, gray } = COLORS;
 
@@ -29,7 +29,7 @@ const { primary, light, gray } = COLORS;
  * @param {Boolean} props.editMode Determines if edit mode is enabled by user (from redux store)
  * @param {Object} props.handleSwitchGraphClick Handle event for switching graph
  */
-const MeasuresOverTimeContainer = ({
+const MeasuresGraphContainer = ({
   measureGoals,
   measuresChartData: { graphData, graphOptions },
   measuresChartInterval,
@@ -154,7 +154,7 @@ const MeasuresOverTimeContainer = ({
   );
 };
 
-MeasuresOverTimeContainer.propTypes = {
+MeasuresGraphContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
   measuresChartInterval: PropTypes.string.isRequired,
@@ -181,4 +181,4 @@ const mapStateToProps = state => ({
   editMode: state.editMode.editModeEnabled
 });
 
-export default connect(mapStateToProps, null)(MeasuresOverTimeContainer);
+export default connect(mapStateToProps, null)(MeasuresGraphContainer);
