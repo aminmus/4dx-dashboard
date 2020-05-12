@@ -43,7 +43,7 @@ export const ClientList = withStyles(headerStyles)(({ classes, ...props }) => (
   <List classes={classes} {...props} bulkActionButtons={false}>
     <Datagrid
       classes={classes}
-      style={{ justifyContent: 'cetner', textAlign: 'center' }}
+      style={{ justifyContent: 'center', textAlign: 'center' }}
       rowClick="show"
       isRowSelectable={() => false}
     >
