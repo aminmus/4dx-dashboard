@@ -12,7 +12,8 @@ import {
   NumberInput
 } from 'react-admin';
 import { validateNps, validateDateRequired } from '../../utils/react-admin/adminValidation';
-import { DateInput } from './DateInput';
+import DateInput from './DateInput';
+
 import DateField from './DateField';
 
 export const NpsList = props => (

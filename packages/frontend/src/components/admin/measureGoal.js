@@ -11,7 +11,8 @@ import {
   NumberField,
   NumberInput
 } from 'react-admin';
-import { DateInput } from './DateInput';
+import DateInput from './DateInput';
+
 import DateField from './DateField';
 import { validateGoalDate, validateRequired } from '../../utils/react-admin/adminValidation';
 
