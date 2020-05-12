@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import { TextField } from '@material-ui/core';
-import OptionsButton from '../elements/OptionsButton';
-import formatDate from '../../utils/formatDate';
 import { inputNpsValidation } from '../../utils/inputValidation';
+import formatDate from '../../utils/formatDate';
+import CardContainer from '../elements/CardContainer';
 
 /**
  * Nps input component
@@ -19,10 +18,10 @@ import { inputNpsValidation } from '../../utils/inputValidation';
  * @param {Number} props.goal Goal Nps
  * @param {String} props.targetDate Target date for Nps goal
  * @param {Function} props.setIsAddingOrEditing Set whether or not user is editing a resource
- * @param {Object} props.handleSubmit Handling of input submission
+ * @param {Object} props.handleResource Handling of form data from form
  *
  */
-const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleSubmit }) => {
+const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleResource }) => {
   const [selectedDate, setSelectedDate] = useState(formatDate());
   const [selectedTargetDate, setSelectedTargetDate] = useState(targetDate);
   const [currentNps, setCurrentNps] = useState(current);
@@ -32,29 +31,6 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
   const [dateErrorText, setDateErrorText] = useState();
   const [targetDateErrorText, setTargetDateErrorText] = useState();
   const [validationError, setValidationError] = useState(false);
-  /**
-   * Component Styles
-   */
-  const useStyles = makeStyles({
-    form: {
-      border: '2px dotted white',
-      borderRadius: '0.2em',
-      padding: '0.2em',
-      width: '100%'
-    },
-    confirmContainer: {
-      display: 'flex'
-    }
-  });
-
-  const classes = useStyles();
-
-  const formInput = {
-    currentNps,
-    goalNps,
-    date: selectedDate,
-    targetDate: selectedTargetDate
-  };
 
   /**
    * Set input validation errors if present
@@ -89,8 +65,36 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
     selectedTargetDate
   ]);
 
+  const formData = {
+    id,
+    currentNps,
+    goalNps,
+    date: selectedDate,
+    targetDate: selectedTargetDate
+  };
+
+  // eslint-disable-next-line no-shadow
+  const handleSubmit = ({ id, currentNps, goalNps, date, targetDate }) => {
+    const data = {
+      id,
+      type: 'nps',
+      data: {
+        currentNps: parseInt(currentNps, 10),
+        goalNps: parseInt(goalNps, 10),
+        date,
+        targetDate
+      }
+    };
+    handleResource(data);
+  };
+
   return (
-    <form className={classes.form} onSubmit={e => handleSubmit(id, formInput, e)}>
+    <CardContainer
+      formData={formData}
+      handleSubmit={handleSubmit}
+      setIsEditing={setIsAddingOrEditing}
+      validationError={validationError}
+    >
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <TextField
           id="standard-number"
@@ -158,12 +162,7 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleS
           }}
         />
       </MuiPickersUtilsProvider>
-
-      <div className={classes.confirmContainer}>
-        <OptionsButton disabled={validationError} type="submit" text="Save" />
-        <OptionsButton type="reset" text="Cancel" onClick={() => setIsAddingOrEditing(false)} />
-      </div>
-    </form>
+    </CardContainer>
   );
 };
 
@@ -180,7 +179,7 @@ InputNps.propTypes = {
   goal: PropTypes.number,
   targetDate: PropTypes.string,
   setIsAddingOrEditing: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired
+  handleResource: PropTypes.func.isRequired
 };
 
 export default connect(null, null)(InputNps);
