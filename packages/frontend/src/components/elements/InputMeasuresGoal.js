@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import { TextField } from '@material-ui/core';
-import OptionsButton from './OptionsButton';
 import formatDate from '../../utils/formatDate';
 import { inputMeasuresGoalValidation } from '../../utils/inputValidation';
+import CardContainer from './CardContainer';
 
 /**
  * Measures Goal input component
@@ -16,10 +15,10 @@ import { inputMeasuresGoalValidation } from '../../utils/inputValidation';
  * @param {String} props.id Unique identifier for Measures Goal resource (if used for editing)
  * @param {Number} props.measures Current Nps
  * @param {String} props.date Goal Nps
- * @param {Function} props.handleSaveMeasureGoal Set whether or not user is editing a resource
+ * @param {Object} props.handleResource Handling of form data from form
  * @param {Boolean} props.setIsEditing Set whether or not user is editing a resource
  */
-const InputMeasuresGoal = ({ handleSaveMeasureGoal, setIsEditing, measures, date, id }) => {
+const InputMeasuresGoal = ({ handleResource, setIsEditing, measures, date, id }) => {
   const [targetMeasures, setTargetMeasures] = useState(measures);
   const [selectedDate, setSelectedDate] = useState(date);
 
@@ -27,36 +26,6 @@ const InputMeasuresGoal = ({ handleSaveMeasureGoal, setIsEditing, measures, date
   const [targetDateErrorText, setTargetDateErrorText] = useState();
 
   const [validationError, setValidationError] = useState(false);
-
-  /**
-   * Component Styles
-   */
-  const useStyles = makeStyles({
-    form: {
-      border: '2px dotted white',
-      borderRadius: '0.2em',
-      padding: '0.2em',
-      width: '100%'
-    },
-    confirmContainer: {
-      display: 'flex'
-    }
-  });
-
-  const classes = useStyles();
-
-  const handleSaveClick = e => {
-    e.preventDefault();
-    // Can be create or update, depending on passed in function
-    handleSaveMeasureGoal({
-      id,
-      type: 'measureGoals',
-      data: {
-        targetDate: selectedDate,
-        measuresAmount: targetMeasures
-      }
-    });
-  };
 
   useEffect(() => {
     const { errors } = inputMeasuresGoalValidation(targetMeasures, selectedDate);
@@ -75,8 +44,30 @@ const InputMeasuresGoal = ({ handleSaveMeasureGoal, setIsEditing, measures, date
     }
   }, [targetDateErrorText, targetMeasuresErrorText]);
 
+  const formData = {
+    id,
+    targetDate: selectedDate,
+    measuresAmount: targetMeasures
+  };
+
+  const handleSubmit = ({ targetDate, measuresAmount }) => {
+    const data = {
+      type: 'measureGoals',
+      data: {
+        targetDate,
+        measuresAmount
+      }
+    };
+    handleResource(data);
+  };
+
   return (
-    <form className={classes.form}>
+    <CardContainer
+      formData={formData}
+      handleSubmit={handleSubmit}
+      setIsEditing={setIsEditing}
+      validationError={validationError}
+    >
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <TextField
           label="Target Measures"
@@ -111,12 +102,7 @@ const InputMeasuresGoal = ({ handleSaveMeasureGoal, setIsEditing, measures, date
           required
         />
       </MuiPickersUtilsProvider>
-
-      <div className={classes.confirmContainer}>
-        <OptionsButton disabled={validationError} text="Save" onClick={handleSaveClick} />
-        <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
-      </div>
-    </form>
+    </CardContainer>
   );
 };
 
@@ -128,7 +114,7 @@ InputMeasuresGoal.defaultProps = {
 
 InputMeasuresGoal.propTypes = {
   id: PropTypes.string,
-  handleSaveMeasureGoal: PropTypes.func.isRequired,
+  handleResource: PropTypes.func.isRequired,
   setIsEditing: PropTypes.func.isRequired,
   measures: PropTypes.number,
   date: PropTypes.string

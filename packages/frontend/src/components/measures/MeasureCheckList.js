@@ -30,7 +30,7 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
     setIsLoadingNewMeasure(false);
   }, [measures]);
 
-  const handleSave = data => {
+  const addNewMeasure = data => {
     dispatch(addMeasure(data));
     setIsLoadingNewMeasure(true);
     setIsEditing(false);
@@ -61,7 +61,11 @@ const MeasureCheckList = ({ measures, editMode, clientId, dispatch }) => {
       {editMode && (
         <ListItem>
           {isEditing && editMode ? (
-            <InputMeasure clientId={clientId} handleSave={handleSave} setIsEditing={setIsEditing} />
+            <InputMeasure
+              clientId={clientId}
+              handleResource={addNewMeasure}
+              setIsEditing={setIsEditing}
+            />
           ) : (
             <div className={classes.flex}>
               {isLoadingNewMeasure && <LoadingIndicator />}

@@ -106,7 +106,7 @@ const MeasuresGraphContainer = ({
    * an addResource action
    * @param {Object} data - Input Data for Added Measure
    */
-  const handleSaveMeasureGoal = data => {
+  const addNewMeasureGoal = data => {
     dispatch(addResource(data));
     setIsEditing(false);
   };
@@ -141,7 +141,7 @@ const MeasuresGraphContainer = ({
         )}
         {isEditing && editMode ? (
           <InputMeasuresGoal
-            handleSaveMeasureGoal={handleSaveMeasureGoal}
+            handleResource={addNewMeasureGoal}
             measures={measuresAmount}
             date={targetDate}
             setIsEditing={setIsEditing}

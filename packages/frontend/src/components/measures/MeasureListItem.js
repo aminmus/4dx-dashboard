@@ -45,7 +45,7 @@ const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
 
   const classes = useStyles();
 
-  const handleMeasureUpdate = data => {
+  const editMeasure = data => {
     dispatch(updateMeasure(data));
     setIsEditing(false);
   };
@@ -68,7 +68,7 @@ const MeasureListItem = ({ measure, clientId, editMode, dispatch }) => {
             clientId={clientId}
             success={measure.success}
             description={measure.description}
-            handleSave={handleMeasureUpdate}
+            handleResource={editMeasure}
             setIsEditing={setIsEditing}
           />
         </div>

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
-import OptionsButton from '../elements/OptionsButton';
 import { inputClientValidation } from '../../utils/inputValidation';
+import CardContainer from '../elements/CardContainer';
 
 /**
  * Client input component
@@ -14,28 +13,12 @@ import { inputClientValidation } from '../../utils/inputValidation';
  * @param {String} props.id Unique identifier for Client resource (if used for editing)
  * @param {String} props.name Client name
  * @param {Function} props.setIsEditing Set whether or not user is editing a resource
- * @param {Object} props.handleSave Handling of input submission
+ * @param {Object} props.handleResource Handling of form data from form
  */
-const InputClient = ({ id, name, setIsEditing, handleSave }) => {
+const InputClient = ({ id, name, setIsEditing, handleResource }) => {
   const [clientName, setClientName] = useState(name);
   const [clientNameErrorText, setClientNameErrorText] = useState();
   const [validationError, setValidationError] = useState(false);
-
-  /**
-   * Component Styles
-   */
-  const useStyles = makeStyles({
-    form: {
-      border: '2px dotted white',
-      borderRadius: '0.2em',
-      padding: '0.1em'
-    },
-    confirmContainer: {
-      display: 'flex'
-    }
-  });
-
-  const classes = useStyles();
 
   useEffect(() => {
     const { errors } = inputClientValidation(clientName);
@@ -50,14 +33,30 @@ const InputClient = ({ id, name, setIsEditing, handleSave }) => {
     }
   }, [clientNameErrorText]);
 
-  const handleSaveClick = e => {
-    e.preventDefault();
-    // Can be create or update, depending on passed in function
-    handleSave({ id, type: 'clients', data: { name: clientName } });
+  const formData = {
+    id,
+    name: clientName
+  };
+
+  // eslint-disable-next-line no-shadow
+  const handleSubmit = ({ id, name }) => {
+    const data = {
+      id,
+      type: 'clients',
+      data: {
+        name
+      }
+    };
+    handleResource(data);
   };
 
   return (
-    <form className={classes.form}>
+    <CardContainer
+      formData={formData}
+      handleSubmit={handleSubmit}
+      setIsEditing={setIsEditing}
+      validationError={validationError}
+    >
       <TextField
         label="Client Name"
         value={clientName || ''}
@@ -73,11 +72,7 @@ const InputClient = ({ id, name, setIsEditing, handleSave }) => {
         }}
         required
       />
-      <div className={classes.confirmContainer}>
-        <OptionsButton disabled={validationError} text="Save" onClick={handleSaveClick} />
-        <OptionsButton text="Cancel" onClick={() => setIsEditing(false)} />
-      </div>
-    </form>
+    </CardContainer>
   );
 };
 
@@ -90,7 +85,7 @@ InputClient.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   setIsEditing: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired
+  handleResource: PropTypes.func.isRequired
 };
 
 export default connect(null, null)(InputClient);

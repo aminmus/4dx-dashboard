@@ -55,7 +55,7 @@ const Details = ({ clients, editMode, dispatch }) => {
       {editMode && (
         <div>
           {isEditing && editMode ? (
-            <InputClient handleSave={addNewClient} setIsEditing={setIsEditing} />
+            <InputClient handleResource={addNewClient} setIsEditing={setIsEditing} />
           ) : (
             <div className={classes.flex}>
               {isLoadingNewClient && <LoadingIndicator />}
