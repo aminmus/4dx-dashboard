@@ -128,11 +128,8 @@ const Wig = ({ nps, editMode, dispatch }) => {
   };
 
   const textDescription = ({ currentNps, goalNps, targetDate }) => {
-    if (currentNps < goalNps && targetDate) {
+    if ((currentNps < goalNps || currentNps > goalNps) && targetDate) {
       return `From ${currentNps} NPS to ${goalNps} by ${targetDate}`;
-    }
-    if (currentNps > goalNps && targetDate) {
-      return `Current NPS of ${currentNps} exceeds target of ${goalNps}`;
     }
     if (currentNps && !targetDate) {
       return `Current NPS ${currentNps} with no target set`;
