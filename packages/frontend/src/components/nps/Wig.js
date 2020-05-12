@@ -69,6 +69,7 @@ const Wig = ({ nps, editMode, dispatch }) => {
   });
 
   const classes = useStyles();
+
   const [isLoadingNps, setIsLoadingNps] = useState(false);
 
   useEffect(() => {
@@ -83,10 +84,19 @@ const Wig = ({ nps, editMode, dispatch }) => {
   }, [nps]);
 
   useEffect(() => {
-    const currentInt = parseInt(latestNps?.currentNps, 10);
-    const goalInt = parseInt(latestNps?.goalNps, 10);
-    const npsProgress = currentInt && goalInt ? (currentInt / goalInt) * 100 : 0;
-    setProgress(npsProgress > 100 ? 100 : npsProgress);
+    /** Since these values are not being reused in any other way than to
+     * calculate the progress a value of 100 is added to account for possible
+     * negative values (negative max is -100)
+     */
+    const currentInt = parseInt(latestNps?.currentNps, 10) + 100;
+    const goalInt = parseInt(latestNps?.goalNps, 10) + 100;
+    let npsProgress = 0;
+    if (currentInt > goalInt || !goalInt) {
+      npsProgress = 100;
+    } else {
+      npsProgress = currentInt && goalInt ? (currentInt / goalInt) * 100 : 0;
+    }
+    setProgress(npsProgress);
   }, [latestNps]);
 
   const editNps = data => {
@@ -117,6 +127,16 @@ const Wig = ({ nps, editMode, dispatch }) => {
     setIsEditing(true);
   };
 
+  const textDescription = ({ currentNps, goalNps, targetDate }) => {
+    if ((currentNps < goalNps || currentNps > goalNps) && targetDate) {
+      return `From ${currentNps} NPS to ${goalNps} by ${targetDate}`;
+    }
+    if (currentNps && !targetDate) {
+      return `Current NPS ${currentNps} with no target set`;
+    }
+    return 'NA';
+  };
+
   return (
     <div className={classes.mainContainer}>
       {latestNps && (
@@ -139,11 +159,9 @@ const Wig = ({ nps, editMode, dispatch }) => {
           ) : (
             <>
               <div className={classes.statementContainer}>
-                {latestNps.goalNps && latestNps.targetDate && (
-                  <Typography variant="h5" className="wig__statement">
-                    {`From ${latestNps.currentNps} NPS to ${latestNps.goalNps} by ${latestNps.targetDate}`}
-                  </Typography>
-                )}
+                <Typography variant="h5" className="wig__statement">
+                  {textDescription(latestNps)}
+                </Typography>
               </div>
               <div className={classes.circularProgressContainer}>
                 <CircularProgressBar
