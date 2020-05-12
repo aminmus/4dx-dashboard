@@ -1,9 +1,8 @@
 /** Nps routes
  * @module Router/nps
- * @requires express
- * @requires ../controllers/nps
- * @requires ../middleware/authentication
- * @requires ../middleware/permissions
+ * @requires Controllers_nps
+ * @requires Middleware_authentication
+ * @requires Middleware_permissions
  */
 
 const router = require('express').Router();
@@ -51,9 +50,9 @@ router.put('/:npsId', checkAuth, canEdit, updateById);
  *
  * @name PostNps
  * @route {POST} /api/nps
- * @authentication This route requires JWT Authentication.
  * @bodyparam {Object} data Sequelized Nps Data containing
  *  type and attribute properties for resource
+ * @authentication This route requires JWT Authentication.
  */
 router.post('/', checkAuth, canEdit, createOne);
 

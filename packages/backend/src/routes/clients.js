@@ -1,9 +1,8 @@
 /** Client routes
  * @module Router/clients
- * @requires express
- * @requires ../controllers/client
- * @requires ../middleware/authentication
- * @requires ../middleware/permissions
+ * @requires Controllers_client
+ * @requires Middleware_authentication
+ * @requires Middleware_permissions
  */
 
 const router = require('express').Router();
@@ -51,9 +50,9 @@ router.put('/:clientId', checkAuth, canEdit, updateById);
  *
  * @name PostClient
  * @route {POST} /api/clients
- * @authentication This route requires JWT Authentication.
  * @bodyparam {Object} data Sequelized Client Data containing
  *  type and attribute properties for resource
+ * @authentication This route requires JWT Authentication.
  */
 router.post('/', checkAuth, canEdit, createOne);
 
