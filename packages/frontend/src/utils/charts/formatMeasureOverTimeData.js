@@ -7,7 +7,7 @@ const { primary, success } = COLORS;
  * Return an object with the start and end date based on interval and unit input
  * @function
  * @param {Number} units The amount of units to add and subtract from the current date
- * @param {String} intervalType The interval of the graph (week or month)
+ * @param {string} intervalType The interval of the graph (week or month)
  */
 const getStartEndPoints = (units, intervalType) => {
   return {
@@ -19,8 +19,8 @@ const getStartEndPoints = (units, intervalType) => {
 /**
  * Get the delta between two known points
  * @function
- * @param {String} x1 Start Date
- * @param {String} x2 End Date
+ * @param {string} x1 Start Date
+ * @param {string} x2 End Date
  * @param {Number} y1 Start Measure Target
  * @param {Number} y2 End Measure Target
  */
@@ -35,9 +35,9 @@ const getDelta = (x1, x2, y1, y2) => {
  * on the line between two points using:
  * y1 = y2 - delta * (x2-x1);
  * @function
- * @param {String} x2 Second known x value (date)
+ * @param {string} x2 Second known x value (date)
  * @param {Number} y2 Second known y value (value)
- * @param {String} x1 First known x value (date)
+ * @param {string} x1 First known x value (date)
  * @param {Number} delta Delta used to calculate new data point
  */
 const calculateNewY = (x2, y2, x1, delta) => {
@@ -55,10 +55,10 @@ const calculateNewY = (x2, y2, x1, delta) => {
  * @param {Array} outOfBoundsLeft Measure goals existing before first rendered data point
  * @param {Array} outOfBoundsRight Measure goals existing after last rendered data point
  * @param {Object} firstDataPoint The first rendered data point on the graph
- * @param {String} firstDataPoint.x Target date
+ * @param {string} firstDataPoint.x Target date
  * @param {Number} firstDataPoint.y Target measures amount
  * @param {Object} lastDataPoint The last rendered data point on the graph
- * @param {String} lastDataPoint.x Target date
+ * @param {string} lastDataPoint.x Target date
  * @param {Number} lastDataPoint.y Target measures amount
  */
 const generateNewStartAndEndTargetDataPoints = (
@@ -179,7 +179,7 @@ const generateNewStartAndEndTargetDataPoints = (
 /**
  * Return an array of dates used to define the span of the graph
  * @function
- * @param {String} interval The interval of the graph (weekly,biweekly or monthly)
+ * @param {string} interval The interval of the graph (weekly,biweekly or monthly)
  */
 const setDates = interval => {
   const dates = [];
@@ -226,10 +226,10 @@ const setDates = interval => {
  * by a given target date)
  * @function
  * @param {Object} firstDataPoint First data point
- * @param {String} firstDataPoint.x First data point date
+ * @param {string} firstDataPoint.x First data point date
  * @param {number} firstDataPoint.y First data point measures completed
  * @param {Object} lastDataPoint Last data point
- * @param {String} lastDataPoint.x Last data point date
+ * @param {string} lastDataPoint.x Last data point date
  * @param {number} lastDataPoint.y Last data point measures completed
  * @param {Array} measureGoals Array of measure goal objects
  */
@@ -364,7 +364,7 @@ const setGraphData = (measuresData, targetData) => {
 /**
  * Returns the tick data formatting object to use in the graph options object
  * @function
- * @param {String} interval The interval of the graph (weekly,biweekly or monthly)
+ * @param {string} interval The interval of the graph (weekly,biweekly or monthly)
  */
 const setTickData = interval => {
   switch (interval) {
@@ -407,7 +407,7 @@ const setTickData = interval => {
  * Returns the options object to use in rendering the graph
  * @function
  * @param {Object} tickData
- * @param {String} tickData.unit The time unit for formatting ticks (week, months)
+ * @param {string} tickData.unit The time unit for formatting ticks (week, months)
  * @param {Number} tickData.unitStepSize The step size between each tick
  * @param {Object} tickData.displayFormats Tick data date label format
  */
@@ -448,7 +448,7 @@ const setGraphOptions = tickData => {
  * @function
  * @param {Array} measures Array of measure objects
  * @param {Array} measureGoals Array of measure objects
- * @param {String} interval The interval of the graph (weekly,biweekly or monthly)
+ * @param {string} interval The interval of the graph (weekly,biweekly or monthly)
  */
 export default (measures, measureGoals, interval) => {
   const dates = setDates(interval);

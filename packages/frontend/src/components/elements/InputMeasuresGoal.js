@@ -12,9 +12,9 @@ import CardContainer from './CardContainer';
  *
  * @component
  * @param {Object} props Component props
- * @param {String} props.id Unique identifier for Measures Goal resource (if used for editing)
+ * @param {string} props.id Unique identifier for Measures Goal resource (if used for editing)
  * @param {Number} props.measures Current Nps
- * @param {String} props.date Goal Nps
+ * @param {string} props.date Goal Nps
  * @param {Object} props.handleResource Handling of form data from form
  * @param {Boolean} props.setIsEditing Set whether or not user is editing a resource
  */

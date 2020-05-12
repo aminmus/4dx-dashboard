@@ -11,7 +11,7 @@ const { primary, lightGray } = COLORS;
  *  Button for adding new resouce
  *
  * @param {Object} props Component props
- * @param {String} props.buttonText Button text
+ * @param {string} props.buttonText Button text
  * @param {Boolean} props.setIsEditing Is user editing resource
  */
 const AddNewResourceButton = ({ buttonText, setIsEditing }) => {

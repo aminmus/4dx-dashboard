@@ -9,7 +9,7 @@ import { Deserializer, Serializer } from 'jsonapi-serializer';
  * Serializes data into JSONAPI.org specification format using a specific serializer
  * for the given entity type
  * @function
- * @param {String} type entity type
+ * @param {string} type entity type
  * @param {Object} data data to serialize
  */
 export const serializePerType = (type, data) => {

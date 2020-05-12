@@ -7,9 +7,9 @@ const { primary, success, dangerDarker } = COLORS;
  * Return an array of datapoints that has been sorted by ascending date
  * @function
  * @param {Object[]} array A list of datapoints
- * @param {String} array[].x Date
+ * @param {string} array[].x Date
  * @param {Number} array[].y Value
- * @param {String} array[].createdAt createdAt timestamp for data resource
+ * @param {string} array[].createdAt createdAt timestamp for data resource
  */
 const sortDataPointArrayByDate = array => {
   return array.length > 1 ? array.sort((a, b) => moment(a.x).diff(b.x)) : array;
@@ -21,9 +21,9 @@ const sortDataPointArrayByDate = array => {
  * the latest createdAt date
  * @function
  * @param {Object[]} array A list of datapoints
- * @param {String} array[].x Date
+ * @param {string} array[].x Date
  * @param {Number} array[].y Value
- * @param {String} array[].createdAt createdAt timestamp for data resource
+ * @param {string} array[].createdAt createdAt timestamp for data resource
  */
 const filterDataPointArrayDuplicateMonths = array => {
   return array.reduce((accumulator, dataPoint) => {
@@ -43,13 +43,13 @@ const filterDataPointArrayDuplicateMonths = array => {
  * This data has been sorted and formatted to remove duplicate month entries
  * (only using the latest created entry for that month)
  * @param {Object[]} nps
- * @param {String} nps[].id Unique resoruce identifier
- * @param {String} nps[].date Date when NPS was set
- * @param {String} nps[].targetDate Target date
+ * @param {string} nps[].id Unique resoruce identifier
+ * @param {string} nps[].date Date when NPS was set
+ * @param {string} nps[].targetDate Target date
  * @param {Number} nps[].currentNps Current NPS
  * @param {Number} nps[].goalNps Target NPS
- * @param {String} nps[].createdAt Timestamp for creation of data resource
- * @param {String} nps[].updatedAt Timestamp for last editing of data resource
+ * @param {string} nps[].createdAt Timestamp for creation of data resource
+ * @param {string} nps[].updatedAt Timestamp for last editing of data resource
  */
 const setNpsAndTargetGraphPoints = nps => {
   const data = [];
@@ -80,11 +80,11 @@ const setNpsAndTargetGraphPoints = nps => {
  * Returns the graph data object
  * @function
  * @param {Object[]} npsData
- * @param {String} npsData[].x Date when NPS was set
- * @param {String} npsData[].y Current NPS
+ * @param {string} npsData[].x Date when NPS was set
+ * @param {string} npsData[].y Current NPS
  * @param {Object[]} targetData
- * @param {String} targetData[].x Target date
- * @param {String} targetData[].y Target NPS
+ * @param {string} targetData[].x Target date
+ * @param {string} targetData[].y Target NPS
  */
 const setNpsGraphData = (npsData, targetData = []) => {
   return {
@@ -165,13 +165,13 @@ const setNpsGraphOptions = () => {
  * Returns the data and options object for the Measure Over Time graph
  * @function
  * @param {Object[]} nps
- * @param {String} nps[].id Unique resoruce identifier
- * @param {String} nps[].date Date when NPS was set
- * @param {String} nps[].targetDate Target date
+ * @param {string} nps[].id Unique resoruce identifier
+ * @param {string} nps[].date Date when NPS was set
+ * @param {string} nps[].targetDate Target date
  * @param {Number} nps[].currentNps Current NPS
  * @param {Number} nps[].goalNps Target NPS
- * @param {String} nps[].createdAt Timestamp for creation of data resource
- * @param {String} nps[].updatedAt Timestamp for last editing of data resource
+ * @param {string} nps[].createdAt Timestamp for creation of data resource
+ * @param {string} nps[].updatedAt Timestamp for last editing of data resource
  */
 export default nps => {
   const { npsData, targetData } = setNpsAndTargetGraphPoints(nps);
