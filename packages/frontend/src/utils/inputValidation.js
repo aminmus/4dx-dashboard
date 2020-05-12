@@ -137,6 +137,7 @@ export const validateText = (value, isRequired = false) => {
 
 /**
  * Validation for inputNps component
+ * @function
  * @param {Number} nps Nps
  * @param {Number} goalNps Goal Nps
  * @param {String} date Date of Nps input
@@ -159,6 +160,7 @@ export const inputNpsValidation = (nps, goalNps, date, targetDate) => {
 
 /**
  * Validation for inputClient component
+ * @function
  * @param {String} name Client name
  */
 export const inputClientValidation = name => {
@@ -172,6 +174,7 @@ export const inputClientValidation = name => {
 
 /**
  * Validation for inputMeasure component
+ * @function
  * @param {String} date Date of Measure completion
  * @param {String} description Measure description
  */
@@ -188,6 +191,7 @@ export const inputMeasureValidation = (date, description) => {
 
 /**
  * Validation for inputMeasuresGoal component
+ * @function
  * @param {Number} targetMeasures The expected amount of measures to be fulfilled
  * @param {String} targetDate The deadline for the measures goal
  */
