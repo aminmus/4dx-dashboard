@@ -1,4 +1,18 @@
-// Helper for making requests to the backend
+/**
+ * @module
+ */
+
+//
+
+/**
+ * Helper function for making requests to the backend
+ * @async
+ * @function
+ * @param {string} urlPath
+ * @param {string} [httpMethod='GET']
+ * @param {Object} [body=undefined] request body
+ * @returns {Promise<Object>} Response
+ */
 export const backendFetch = async (urlPath, httpMethod = 'GET', body = undefined) => {
   const url = `${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_SERVER_PORT}/api/${urlPath}`;
   const token = localStorage.getItem('token');
@@ -20,14 +34,23 @@ export const backendFetch = async (urlPath, httpMethod = 'GET', body = undefined
   }
 };
 
-/* 
-Add a response type key to each returned client array entry
-to make it easier to target the data
-*/
+/**
+ * Add a response type key to each returned array entry
+ * to make it easier to target the data
+ * @function
+ * @param {Object} data
+ * @param {string} url
+ * @return {Object}
+ */
 const labelResultsWithKey = (data, url) => ({ [url]: data });
 
-// Get all resources
-export default async () => {
+/**
+ * Request all resources from the backend
+ * @async
+ * @function
+ * @return {Object} Object containing the retrieved resources
+ */
+const getAllResources = async () => {
   const responseArr = await Promise.all(
     ['nps', 'clients', 'measures', 'measureGoals'].map(async url => {
       const response = await backendFetch(url);
@@ -38,3 +61,5 @@ export default async () => {
   // Reshape into object with shape of: {nps: {...}, clients: {...} etc}
   return responseArr.reduce((accumulator, current) => ({ ...accumulator, ...current }), {});
 };
+
+export default getAllResources;

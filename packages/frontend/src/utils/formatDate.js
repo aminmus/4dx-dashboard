@@ -5,7 +5,6 @@ import moment from 'moment';
 
 /**
  * Change format of a given date, or get current date if used without arguments
- *
  * @function
  * @param {(string|Object|Number|Date|Array)} [date=undefined] Uses current date if undefined. For a full list of input types see https://momentjs.com/docs/#/parsing/
  * @param {string} [formatType='YYYY-MM-DD']

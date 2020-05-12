@@ -1,4 +1,14 @@
-export default clients => {
+/**
+ * @module
+ */
+
+/**
+ * Calculate lead measures
+ * @function
+ * @param {Array} clients
+ * @returns {Object} Lead measures data
+ */
+const calcLeads = clients => {
   // Collect measures over all clients and collect these
   const measuresArray = clients.map(client => client.measures);
 
@@ -16,3 +26,5 @@ export default clients => {
     leadsTotal: flatMeasuresArray.length
   };
 };
+
+export default calcLeads;

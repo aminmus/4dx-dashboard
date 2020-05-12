@@ -1,13 +1,18 @@
 import moment from 'moment';
 import COLORS from '../../style/COLORS';
 
+/**
+ * @module
+ */
+
 const { primary, success } = COLORS;
 
 /**
- * Return an object with the start and end date based on interval and unit input
+ * Create an object with the start and end date based on interval and unit input
  * @function
  * @param {Number} units The amount of units to add and subtract from the current date
  * @param {string} intervalType The interval of the graph (week or month)
+ * @returns {Object} Object with the start and end date based on interval and unit input
  */
 const getStartEndPoints = (units, intervalType) => {
   return {
@@ -23,6 +28,7 @@ const getStartEndPoints = (units, intervalType) => {
  * @param {string} x2 End Date
  * @param {Number} y1 Start Measure Target
  * @param {Number} y2 End Measure Target
+ * @returns {number} The delta between the two points
  */
 const getDelta = (x1, x2, y1, y2) => {
   const xDelta = moment(x2).diff(x1, 'days');
@@ -39,6 +45,7 @@ const getDelta = (x1, x2, y1, y2) => {
  * @param {Number} y2 Second known y value (value)
  * @param {string} x1 First known x value (date)
  * @param {Number} delta Delta used to calculate new data point
+ * @returns {Object} Object containing the x and y values
  */
 const calculateNewY = (x2, y2, x1, delta) => {
   moment(x2).diff(x1, 'days');
@@ -47,7 +54,7 @@ const calculateNewY = (x2, y2, x1, delta) => {
 };
 
 /**
- * Return a reformatted array of target values that contains new
+ * Create a reformatted array of target values that contains new
  * data points on the edges of the graph to handle measure goals
  * that fall outside the range of the graph
  * @function
@@ -60,6 +67,7 @@ const calculateNewY = (x2, y2, x1, delta) => {
  * @param {Object} lastDataPoint The last rendered data point on the graph
  * @param {string} lastDataPoint.x Target date
  * @param {Number} lastDataPoint.y Target measures amount
+ * @returns {Array} Reformatted array of target values
  */
 const generateNewStartAndEndTargetDataPoints = (
   data,
@@ -177,9 +185,10 @@ const generateNewStartAndEndTargetDataPoints = (
 };
 
 /**
- * Return an array of dates used to define the span of the graph
+ * Create an array of dates used to define the span of the graph
  * @function
  * @param {string} interval The interval of the graph (weekly,biweekly or monthly)
+ * @returns {Array} Array of dates
  */
 const setDates = interval => {
   const dates = [];
@@ -222,7 +231,7 @@ const setDates = interval => {
 };
 
 /**
- * Return an array of measure targets (amount of successful measures expected
+ * Create an array of measure targets (amount of successful measures expected
  * by a given target date)
  * @function
  * @param {Object} firstDataPoint First data point
@@ -232,6 +241,7 @@ const setDates = interval => {
  * @param {string} lastDataPoint.x Last data point date
  * @param {number} lastDataPoint.y Last data point measures completed
  * @param {Array} measureGoals Array of measure goal objects
+ * @returns {Array} Array of measure targets
  */
 const setTargetGraphPoints = (firstDataPoint, lastDataPoint, measureGoals) => {
   const data = [];
@@ -276,11 +286,12 @@ const setTargetGraphPoints = (firstDataPoint, lastDataPoint, measureGoals) => {
 };
 
 /**
- * Returns an array of measure data points (x, y)
+ * Create an array of measure data points (x, y)
  * where x = date and y = number of measures completed
  * @function
  * @param {Array} measures Array of measure objects
  * @param {Array} dates Array of dates that constitute the span of the graph
+ * @returns {Array} Array of measure data points
  */
 const setMeasuresGraphPoints = (measures, dates) => {
   const successfulMeasureDate = measures.filter(measure => measure.success).sort();
@@ -307,10 +318,11 @@ const setMeasuresGraphPoints = (measures, dates) => {
 };
 
 /**
- * Returns the graph data object
+ * Create a graph data object
  * @function
  * @param {Array} measuresData Array of measure objects (x,y)
  * @param {Array} targetData Array of measure target objects (x,y)
+ * @returns {Object} Graph data
  */
 const setGraphData = (measuresData, targetData) => {
   const pointBackgroundColorArray = [];
@@ -362,9 +374,9 @@ const setGraphData = (measuresData, targetData) => {
 };
 
 /**
- * Returns the tick data formatting object to use in the graph options object
  * @function
  * @param {string} interval The interval of the graph (weekly,biweekly or monthly)
+ * @returns {Object} Tick data formatting options to use in the graph options object
  */
 const setTickData = interval => {
   switch (interval) {
@@ -404,12 +416,13 @@ const setTickData = interval => {
 };
 
 /**
- * Returns the options object to use in rendering the graph
+ * Create the options object to use in rendering the graph
  * @function
  * @param {Object} tickData
  * @param {string} tickData.unit The time unit for formatting ticks (week, months)
  * @param {Number} tickData.unitStepSize The step size between each tick
  * @param {Object} tickData.displayFormats Tick data date label format
+ * @returns {Object} Graph options object
  */
 
 const setGraphOptions = tickData => {
@@ -444,13 +457,14 @@ const setGraphOptions = tickData => {
 };
 
 /**
- * Returns the data and options object for the Measure Over Time graph
+ * Create the data and options object for the Measure Over Time graph
  * @function
  * @param {Array} measures Array of measure objects
  * @param {Array} measureGoals Array of measure objects
  * @param {string} interval The interval of the graph (weekly,biweekly or monthly)
+ * @returns {Object} Contains graph data and options
  */
-export default (measures, measureGoals, interval) => {
+const graphDataAndOptions = (measures, measureGoals, interval) => {
   const dates = setDates(interval);
   const measuresData = setMeasuresGraphPoints(measures, dates);
   const firstDataPoint = measuresData[0];
@@ -464,3 +478,5 @@ export default (measures, measureGoals, interval) => {
     graphOptions
   };
 };
+
+export default graphDataAndOptions;

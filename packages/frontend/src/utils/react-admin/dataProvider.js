@@ -1,5 +1,10 @@
 import jsonapiClient from 'ra-jsonapi-client';
 
+/**
+ * Data provider for react-admin, handles calls to the backend API
+ * @module
+ */
+
 const settings = {
   updateMethod: 'PUT',
   headers: {
