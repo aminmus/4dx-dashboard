@@ -11,20 +11,39 @@ import {
   NumberField,
   NumberInput
 } from 'react-admin';
+import { withStyles } from '@material-ui/core/styles';
 import { DateInput } from './DateInput';
 import DateField from './DateField';
 import { validateGoalDate, validateRequired } from '../../utils/react-admin/adminValidation';
+import COLORS from '../../style/COLORS';
 
-export const MeasureGoalList = props => (
-  <List {...props} bulkActionButtons={false}>
-    <Datagrid rowClick="edit" isRowSelectable={() => false}>
+const { dark } = COLORS;
+
+const listStyles = {
+  root: {
+    backgroundColor: dark,
+    justifyContent: 'center',
+    borderRadius: '0.2em',
+    textAlign: 'center'
+  },
+  head: {
+    textAlign: 'center'
+  },
+  body: {
+    textAlign: 'center'
+  }
+};
+
+export const MeasureGoalList = withStyles(listStyles)(({ classes, ...props }) => (
+  <List classes={classes} {...props} bulkActionButtons={false}>
+    <Datagrid classes={classes} rowClick="edit" isRowSelectable={() => false}>
       <NumberField source="measures-amount" label="Measures (target amount)" />
       <DateField source="target-date" label="Target date" />
       <EditButton />
       <DeleteButton undoable={false} />
     </Datagrid>
   </List>
-);
+));
 
 export const MeasureGoalEdit = props => (
   <Edit title="Edit client entry" {...props}>

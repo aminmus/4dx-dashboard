@@ -11,13 +11,26 @@ import {
   NumberField,
   NumberInput
 } from 'react-admin';
+import { withStyles } from '@material-ui/core/styles';
 import { validateNps, validateDateRequired } from '../../utils/react-admin/adminValidation';
 import { DateInput } from './DateInput';
 import DateField from './DateField';
+import COLORS from '../../style/COLORS';
 
-export const NpsList = props => (
-  <List {...props} bulkActionButtons={false}>
-    <Datagrid rowClick="edit" isRowSelectable={() => false}>
+const { dark } = COLORS;
+
+const listStyles = {
+  root: {
+    backgroundColor: dark,
+    justifyContent: 'center',
+    borderRadius: '0.2em',
+    textAlign: 'center'
+  }
+};
+
+export const NpsList = withStyles(listStyles)(({ classes, ...props }) => (
+  <List classes={classes} {...props} bulkActionButtons={false}>
+    <Datagrid classes={classes} rowClick="edit" isRowSelectable={() => false}>
       <NumberField source="current-nps" label="NPS" />
       <DateField source="date" />
       <NumberField source="goal-nps" label="Target NPS" />
@@ -26,7 +39,7 @@ export const NpsList = props => (
       <DeleteButton undoable={false} />
     </Datagrid>
   </List>
-);
+));
 
 export const NpsEdit = props => (
   <Edit title="Edit client entry" {...props}>
