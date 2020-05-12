@@ -1,32 +1,18 @@
 /**
  * Controller for Nps Satisfaction Score Routes
  * @module Controllers_nps
- * @requires jsonapi-serializer
- * @requires ../models/nps
+ * @requires Model_nps
  */
 
 const {
-  /**
-     * Serialize JSON Data
-     * @const
-     */
   Serializer: JSONAPISerializer,
-  /**
-     * Deserialize JSON Data
-     * @const
-     */
   Deserializer: JSONAPIDeserializer,
 } = require('jsonapi-serializer');
 
-/**
- * Nps model
- * @const
- */
 const { Nps } = require('../models');
 
 /**
- * Serialize Nps according to specified format
- * @const
+ * For Serializing according to specified format
  */
 const NpsSerializer = new JSONAPISerializer('Nps', {
   attributes: [
@@ -40,8 +26,7 @@ const NpsSerializer = new JSONAPISerializer('Nps', {
 });
 
 /**
- * Deserialize Nps with camelCase formatting
- * @const
+ * For deserializing with camelCase formatting
  */
 const NpsDeserializer = new JSONAPIDeserializer({
   keyForAttribute: 'camelCase',
@@ -52,7 +37,7 @@ const NpsDeserializer = new JSONAPIDeserializer({
  * @function
  * @memberof module:Controllers_nps
  * @param {Object} _req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const getAll = async (_req, res, next) => {
@@ -75,7 +60,7 @@ const getAll = async (_req, res, next) => {
  * @function
  * @memberof module:Controllers_nps
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const getById = async (req, res, next) => {
@@ -101,7 +86,7 @@ const getById = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_nps
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const updateById = async (req, res, next) => {
@@ -129,7 +114,7 @@ const updateById = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_nps
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const createOne = async (req, res, next) => {
@@ -163,7 +148,7 @@ const createOne = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_nps
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const deleteById = async (req, res, next) => {

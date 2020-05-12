@@ -1,40 +1,28 @@
 /**
  * Controller for User Routes
  * @module Controllers_user
- * @requires jsonapi-serializer
- * @requires ../models/user
+ * @requires Model_database
  */
 
 const {
-  /**
-     * Serialize JSON Data
-     * @const
-     */
+
   Serializer: JSONAPISerializer,
-  /**
-     * Deserialize JSON Data
-     * @const
-     */
+
   Deserializer: JSONAPIDeserializer,
 } = require('jsonapi-serializer');
 
-/**
- * User model
- * @const
- */
+
 const { User } = require('../models');
 
 /**
- * Serialize User according to specified format
- * @const
+ * For serializing according to specified format
  */
 const UserSerializer = new JSONAPISerializer('Users', {
   attributes: ['email', 'createdAt', 'updatedAt'],
 });
 
 /**
- * Deserialize User with camelCase formatting
- * @const
+ * For deserializing with camelCase formatting
  */
 const UserDeserializer = new JSONAPIDeserializer('users', {
   keyForAttribute: 'camelCase',
@@ -45,7 +33,7 @@ const UserDeserializer = new JSONAPIDeserializer('users', {
  * @function
  * @memberof module:Controllers_user
  * @param {Object} _req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const getAll = async (_req, res, next) => {
@@ -68,7 +56,7 @@ const getAll = async (_req, res, next) => {
  * @function
  * @memberof module:Controllers_user
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const getById = async (req, res, next) => {
@@ -94,7 +82,7 @@ const getById = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_user
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const updateById = async (req, res, next) => {
@@ -121,7 +109,7 @@ const updateById = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_user
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const createOne = async (req, res, next) => {
@@ -154,7 +142,7 @@ const createOne = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_user
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const deleteById = async (req, res, next) => {
