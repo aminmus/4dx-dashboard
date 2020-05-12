@@ -1,6 +1,5 @@
 /* eslint-disable import/no-dynamic-require, no-tabs */
 /**
- * Return database connection object
  * @module Model_database
  */
 
@@ -47,4 +46,7 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+/**
+ * Return Database connection object
+*/
 module.exports = db;
