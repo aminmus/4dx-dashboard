@@ -3,8 +3,6 @@
 /**
  * User Model
  * @module Model_user
- * @requires sequelize
- * @requires bcryptjs
  */
 
 const Sequelize = require('sequelize');
@@ -50,9 +48,9 @@ module.exports = (sequelize, DataTypes) => {
     { sequelize },
   );
 
-  User.associate = function (_models) {
-    // associations can be defined here
-  };
+  // User.associate = function (_models) {
+  //   // associations can be defined here
+  // };
 
   User.beforeCreate(hashPassword);
   User.beforeUpdate(hashPassword);
