@@ -22,6 +22,7 @@ const { dark } = COLORS;
 const listStyles = {
   root: {
     backgroundColor: dark,
+    border: '1px solid black',
     justifyContent: 'center',
     borderRadius: '0.2em',
     textAlign: 'center'

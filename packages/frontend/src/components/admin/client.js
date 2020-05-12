@@ -33,6 +33,7 @@ const { dark } = COLORS;
 const headerStyles = {
   root: {
     backgroundColor: dark,
+    border: '1px solid black',
     justifyContent: 'center',
     borderRadius: '0.2em'
   }
