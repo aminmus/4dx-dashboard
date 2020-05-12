@@ -1,7 +1,7 @@
 import moment from 'moment';
 import COLORS from '../../style/COLORS';
 
-const { primary, success, danger } = COLORS;
+const { primary, success, dangerDarker } = COLORS;
 
 /**
  * Return an array of datapoints that has been sorted by ascending date
@@ -126,7 +126,7 @@ const setNpsGraphOptions = () => {
       yAxes: [
         {
           gridLines: {
-            zeroLineColor: danger
+            zeroLineColor: dangerDarker
           },
 
           scaleLabel: {
