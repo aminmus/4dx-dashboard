@@ -7,6 +7,7 @@ const COLORS = {
   danger: 'rgba(217, 83, 79, 1)',
   warning: 'rgb(255,193,7,1)',
   dangerDark: 'rgba(195, 74, 71, 1)',
+  dangerDarker: 'rgb(130, 40, 40, 1)',
   gray: 'rgba(124, 124, 124, 1)',
   darkGray: 'rgba(51, 51, 51, 1)',
   lightGray: 'rgba(48, 48, 48, 1)'

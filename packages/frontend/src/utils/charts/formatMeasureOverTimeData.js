@@ -342,7 +342,7 @@ const setGraphData = (measuresData, targetData) => {
         pointBorderColor: pointBorderColorArray,
         borderColor: primary,
         backgroundColor: 'green',
-
+        lineTension: 0,
         radius,
         hoverRadius
       },
@@ -424,7 +424,7 @@ const setGraphOptions = tickData => {
             fontColor: primary
           },
           ticks: {
-            stepSize: 5,
+            stepSize: 1,
             beginAtZero: true
           }
         }
