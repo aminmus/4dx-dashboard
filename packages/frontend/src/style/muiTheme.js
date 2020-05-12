@@ -5,8 +5,15 @@ import COLORS from './COLORS';
 const { primary, secondary, light, gray } = COLORS;
 
 const theme = createMuiTheme({
-  /** Overrides handles certain tables cells being right-aligned while others not */
+  /** Overrides to handle React Admin styles */
   overrides: {
+    MuiButton: {
+      label: {
+        '&:hover': {
+          color: 'white'
+        }
+      }
+    },
     MuiCardContent: {
       root: {
         justifyContent: 'center',
