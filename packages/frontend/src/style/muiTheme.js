@@ -5,7 +5,31 @@ import COLORS from './COLORS';
 const { primary, secondary, light, gray } = COLORS;
 
 const theme = createMuiTheme({
-  textAlign: 'center',
+  /** Overrides handles certain tables cells being right-aligned while others not */
+  overrides: {
+    MuiCardContent: {
+      root: {
+        justifyContent: 'center',
+        textAlign: 'center'
+      }
+    },
+    MuiTableCell: {
+      alignRight: {
+        textAlign: 'center'
+      },
+      head: {
+        textAlign: 'center',
+        backgroundColor: light,
+        fontWeight: 'bolder'
+      },
+      body: {
+        textAlign: 'center'
+      },
+      root: {
+        textAlign: 'center'
+      }
+    }
+  },
   palette: {
     type: 'dark',
     primary: { main: primary },
