@@ -1,3 +1,5 @@
+// Initial redux store state
+
 const auth = {
   isLoggedIn: false,
   isAdmin: false

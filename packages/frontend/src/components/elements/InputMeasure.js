@@ -13,10 +13,10 @@ import CardContainer from './CardContainer';
  *
  * @component
  * @param {Object} props Component props
- * @param {String} props.id Unique identifier for NPS resource (if used for editing)
- * @param {String} props.clientId Unique identifier for NPS resource (if used for editing)
- * @param {String} props.success Date of measure completion
- * @param {String} props.description Measure description
+ * @param {string} props.id Unique identifier for NPS resource (if used for editing)
+ * @param {string} props.clientId Unique identifier for NPS resource (if used for editing)
+ * @param {string} props.success Date of measure completion
+ * @param {string} props.description Measure description
  * @param {Function} props.setIsEditing Set whether or not user is editing a resource
  * @param {Object} props.handleResource Handling of form data from form
  */

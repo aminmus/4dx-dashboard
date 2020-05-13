@@ -58,7 +58,7 @@ export const validateNps = (value, isRequired = false) => {
  * Validate Date input.
  * Must be a valid date between 2000-2030
  * @function
- * @param {String} date Date string
+ * @param {string} date Date string
  * @param {Boolean} isRequired Is field required
  */
 export const validateDate = (date, isRequired = false) => {
@@ -89,7 +89,7 @@ export const validateDate = (date, isRequired = false) => {
  * Validate short text input like client names.
  * Must have a character length of 1-50
  * @function
- * @param {String} value Name
+ * @param {string} value Name
  * @param {Boolean} isRequired Is field required
  */
 export const validateName = (value, isRequired = false) => {
@@ -114,7 +114,7 @@ export const validateName = (value, isRequired = false) => {
  * Validate longer text input like measure descriptions.
  * Must have a character length of 1-280
  * @function
- * @param {String} value Text
+ * @param {string} value Text
  * @param {Boolean} isRequired Is field required
  */
 export const validateText = (value, isRequired = false) => {
@@ -137,10 +137,11 @@ export const validateText = (value, isRequired = false) => {
 
 /**
  * Validation for inputNps component
+ * @function
  * @param {Number} nps Nps
  * @param {Number} goalNps Goal Nps
- * @param {String} date Date of Nps input
- * @param {String} targetDate Target date for goal nps
+ * @param {string} date Date of Nps input
+ * @param {string} targetDate Target date for goal nps
  */
 export const inputNpsValidation = (nps, goalNps, date, targetDate) => {
   const npsError = validateNps(nps, true);
@@ -159,7 +160,8 @@ export const inputNpsValidation = (nps, goalNps, date, targetDate) => {
 
 /**
  * Validation for inputClient component
- * @param {String} name Client name
+ * @function
+ * @param {string} name Client name
  */
 export const inputClientValidation = name => {
   const { error, errorMessage } = validateName(name, true);
@@ -172,8 +174,9 @@ export const inputClientValidation = name => {
 
 /**
  * Validation for inputMeasure component
- * @param {String} date Date of Measure completion
- * @param {String} description Measure description
+ * @function
+ * @param {string} date Date of Measure completion
+ * @param {string} description Measure description
  */
 export const inputMeasureValidation = (date, description) => {
   const successError = validateDate(date);
@@ -188,8 +191,9 @@ export const inputMeasureValidation = (date, description) => {
 
 /**
  * Validation for inputMeasuresGoal component
+ * @function
  * @param {Number} targetMeasures The expected amount of measures to be fulfilled
- * @param {String} targetDate The deadline for the measures goal
+ * @param {string} targetDate The deadline for the measures goal
  */
 export const inputMeasuresGoalValidation = (targetMeasures, targetDate) => {
   const targetMeasuresError = validateMeasuresGoal(targetMeasures, true);

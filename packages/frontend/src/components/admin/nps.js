@@ -13,7 +13,8 @@ import {
 } from 'react-admin';
 import { withStyles } from '@material-ui/core/styles';
 import { validateNps, validateDateRequired } from '../../utils/react-admin/adminValidation';
-import { DateInput } from './DateInput';
+import DateInput from './DateInput';
+
 import DateField from './DateField';
 import COLORS from '../../style/COLORS';
 
