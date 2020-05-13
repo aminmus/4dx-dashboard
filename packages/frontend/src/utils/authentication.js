@@ -1,3 +1,14 @@
-export default function isAuthenticated() {
-  return Boolean(localStorage.getItem('email'));
-}
+/**
+ * @module
+ */
+
+/**
+ * Check if user is authenticated
+ * @function
+ * @returns {boolean}
+ */
+const isAuthenticated = () => {
+  return Boolean(localStorage.getItem('token'));
+};
+
+export default isAuthenticated;

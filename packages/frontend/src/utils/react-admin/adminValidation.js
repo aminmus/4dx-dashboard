@@ -1,6 +1,11 @@
 import { required, minLength, maxLength, number, minValue, maxValue } from 'react-admin';
 import moment from 'moment';
 
+/**
+ * Contains validation functions for input fields in react-admin
+ * @module
+ */
+
 const isWeekAfterCurrentDate = value => {
   if (!moment(value).isValid()) {
     return 'Must be a valid date';

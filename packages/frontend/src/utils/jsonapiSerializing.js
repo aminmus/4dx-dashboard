@@ -1,6 +1,17 @@
 import { Deserializer, Serializer } from 'jsonapi-serializer';
 
-// Serializes data using a specific serializer according to give type
+/**
+ *  Provides tools to serialize and deserialize requests and responses to and from a JSONAPI.org specification format
+ * @module
+ * */
+
+/**
+ * Serializes data into JSONAPI.org specification format using a specific serializer
+ * for the given entity type
+ * @function
+ * @param {string} type entity type
+ * @param {Object} data data to serialize
+ */
 export const serializePerType = (type, data) => {
   let serializer;
 
@@ -58,6 +69,11 @@ const deserializer = new Deserializer({
   keyForAttribute: 'camelCase'
 });
 
+/**
+ * Deserializes JSONAPI.org formatted data
+ * @function
+ * @param {Object} data data to serialize
+ */
 export const deserialize = data => {
   return deserializer.deserialize(data);
 };

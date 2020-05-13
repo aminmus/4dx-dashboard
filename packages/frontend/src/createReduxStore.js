@@ -9,7 +9,15 @@ import editModeReducer from './slices/editMode';
 import authReducer from './slices/auth';
 import preloadedState from './initialState';
 
-export default ({ authProvider, dataProvider, history }) => {
+/** @module */
+
+/**
+ * Create and return Redux Store
+ * @function
+ * @param {Object} paramObject { authProvider, dataProvider, history }
+ * @returns Redux Store
+ */
+const createReduxStore = ({ authProvider, dataProvider, history }) => {
   const rootReducer = combineReducers({
     admin: adminReducer,
     router: connectRouter(history),
@@ -34,3 +42,5 @@ export default ({ authProvider, dataProvider, history }) => {
 
   return store;
 };
+
+export default createReduxStore;

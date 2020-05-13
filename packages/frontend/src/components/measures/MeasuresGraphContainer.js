@@ -23,7 +23,7 @@ const { primary, light, gray } = COLORS;
  * @param {Object} props.measuresChartData Chart Data object used to determine NPS graph
  * @param {Object} props.measuresChartData.graphData Data used to render graph
  * @param {Object} props.measuresChartData.graphOptions Options for rendering graph
- * @param {String} props.measuresChartInterval Measure chart interval (weekly,biweekly or monthly)
+ * @param {string} props.measuresChartInterval Measure chart interval (weekly,biweekly or monthly)
  * @param {Function} props.setMeasuresChartInterval Set state function for measure chart interval
  * @param {Function} props.dispatch Redux store dispatch
  * @param {Boolean} props.editMode Determines if edit mode is enabled by user (from redux store)

@@ -13,10 +13,10 @@ import CardContainer from '../elements/CardContainer';
  *
  * @component
  * @param {Object} props Component props
- * @param {String} props.id Unique identifier for NPS resource (if used for editing)
+ * @param {string} props.id Unique identifier for NPS resource (if used for editing)
  * @param {Number} props.current Current Nps
  * @param {Number} props.goal Goal Nps
- * @param {String} props.targetDate Target date for Nps goal
+ * @param {string} props.targetDate Target date for Nps goal
  * @param {Function} props.setIsAddingOrEditing Set whether or not user is editing a resource
  * @param {Object} props.handleResource Handling of form data from form
  *

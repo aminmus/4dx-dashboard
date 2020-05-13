@@ -22,12 +22,12 @@ const { danger, dangerDark } = COLORS;
  *
  * @function
  * @param {Object[]} clients A list of clients
- * @param {String} clients[].id Unique identifier for client reasource
+ * @param {string} clients[].id Unique identifier for client reasource
  * @param {Object[]} clients[].measures Array of client measures
  * @param {Object[]} clients[].csats Array of client satisfaction scores
- * @param {String} clients[].name Client name
- * @param {String} clients[].createdAt createdAt timestamp for data resource
- * @param {String} clients[].updatedAt updatedAt timestamp for data resource
+ * @param {string} clients[].name Client name
+ * @param {string} clients[].createdAt createdAt timestamp for data resource
+ * @param {string} clients[].updatedAt updatedAt timestamp for data resource
  */
 const getMeasuresFromClient = clients => {
   return clients.reduce((accumulator, client) => {

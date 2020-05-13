@@ -7,6 +7,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import HomeIcon from '@material-ui/icons/Home';
 
 /**
  * Custom Menu component for SideBar
@@ -28,6 +29,13 @@ const CustomMenu = ({ handleEditClick, handleLogoutClick, editMode }) => {
 
   return (
     <div className={classes.containerHeight}>
+      <MenuItemLink
+        to="/"
+        key="home"
+        primaryText="Home"
+        leftIcon={<HomeIcon />}
+        sidebarIsOpen={open}
+      />
       <MenuItemLink
         to="/clients"
         key="clients"
