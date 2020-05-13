@@ -49,9 +49,11 @@ const Details = ({ clients, editMode, dispatch }) => {
       <div>
         <Typography variant="h3">CLIENTS</Typography>
       </div>
-      {clients.map(client => (
-        <ClientDetails key={client.id} client={client} />
-      ))}
+      {clients.length > 0 ? (
+        clients.map(client => <ClientDetails key={client.id} client={client} />)
+      ) : (
+        <Typography variant="h5">No Clients Available</Typography>
+      )}
       {editMode && (
         <div>
           {isEditing && editMode ? (

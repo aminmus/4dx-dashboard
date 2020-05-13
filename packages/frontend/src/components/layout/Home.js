@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { CircularProgress, Card, CardActions, CardContent, Typography } from '@material-ui/core';
+import OptionsButton from '../elements/OptionsButton';
 import Wig from '../nps/Wig';
 import Lead from '../clients/Lead';
 import Details from '../clients/Details';
@@ -84,6 +85,9 @@ const Home = ({
     toggleEditContainer: {
       textAlign: 'center',
       marginBottom: '0.2em'
+    },
+    cardActions: {
+      justifyContent: 'center'
     }
   });
 
@@ -145,9 +149,14 @@ const Home = ({
                   npsChartData={npsChartData}
                 />
               ) : (
-                <div className="my-5 p-4 jumbotron text-light bg-dark">
-                  Not Enough Data Available For NPS graph
-                </div>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h5">Not Enough Data Available For NPS graph</Typography>
+                  </CardContent>
+                  <CardActions className={classes.cardActions}>
+                    <OptionsButton text="Switch Graph" onClick={handleSwitchGraphClick} />
+                  </CardActions>
+                </Card>
               )}
             </>
           ) : (
@@ -161,9 +170,16 @@ const Home = ({
                   setMeasuresChartInterval={setMeasuresChartInterval}
                 />
               ) : (
-                <div className="my-5 p-4 jumbotron text-light bg-dark">
-                  Not Enough Data Available For Measure Over Time Graph
-                </div>
+                <Card alignItems="center">
+                  <CardContent>
+                    <Typography variant="h5">
+                      Not Enough Data Available For Measures graph
+                    </Typography>
+                  </CardContent>
+                  <CardActions className={classes.cardActions}>
+                    <OptionsButton text="Switch Graph" onClick={handleSwitchGraphClick} />
+                  </CardActions>
+                </Card>
               )}
             </>
           )}

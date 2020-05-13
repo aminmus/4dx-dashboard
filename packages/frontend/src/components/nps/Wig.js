@@ -139,50 +139,49 @@ const Wig = ({ nps, editMode, dispatch }) => {
 
   return (
     <div className={classes.mainContainer}>
-      {latestNps && (
-        <>
-          <div>
-            <Typography variant="h3">
-              WIG
-              {editMode && <EditButton onClick={onClickEdit} />}
-            </Typography>
-          </div>
-          {isEditing && editMode ? (
-            <InputNps
-              id={latestNps.id}
-              current={latestNps.currentNps}
-              goal={latestNps.goalNps}
-              targetDate={latestNps.targetDate}
-              setIsAddingOrEditing={setIsEditing}
-              handleResource={editNps}
-            />
-          ) : (
-            <>
-              <div className={classes.statementContainer}>
-                <Typography variant="h5" className="wig__statement">
-                  {textDescription(latestNps)}
+      <>
+        <div>
+          <Typography variant="h3">
+            WIG
+            {editMode && <EditButton onClick={onClickEdit} />}
+          </Typography>
+        </div>
+        {latestNps && isEditing && editMode ? (
+          <InputNps
+            id={latestNps.id}
+            current={latestNps.currentNps}
+            goal={latestNps.goalNps}
+            targetDate={latestNps.targetDate}
+            setIsAddingOrEditing={setIsEditing}
+            handleResource={editNps}
+          />
+        ) : (
+          <>
+            <div className={classes.statementContainer}>
+              <Typography variant="h5" className="wig__statement">
+                {latestNps ? textDescription(latestNps) : 'No NPS Data available'}
+              </Typography>
+            </div>
+            <div className={classes.circularProgressContainer}>
+              <CircularProgressBar
+                size={150}
+                thickness={isLoadingNps ? 1 : 5}
+                variant={isLoadingNps ? 'indeterminate' : 'static'}
+                value={latestNps ? progress : 0}
+              />
+              <div className={classes.chartLabelContainer}>
+                <Typography variant="h5" className={classes.labelText}>
+                  NPS
+                </Typography>
+                <Typography variant="h4" className={classes.labelValue}>
+                  {latestNps ? latestNps.currentNps : 'N/A'}
                 </Typography>
               </div>
-              <div className={classes.circularProgressContainer}>
-                <CircularProgressBar
-                  size={150}
-                  thickness={isLoadingNps ? 1 : 5}
-                  variant={isLoadingNps ? 'indeterminate' : 'static'}
-                  value={progress}
-                />
-                <div className={classes.chartLabelContainer}>
-                  <Typography variant="h5" className={classes.labelText}>
-                    NPS
-                  </Typography>
-                  <Typography variant="h4" className={classes.labelValue}>
-                    {latestNps.currentNps}
-                  </Typography>
-                </div>
-              </div>
-            </>
-          )}
-        </>
-      )}
+            </div>
+          </>
+        )}
+      </>
+
       {editMode && (
         <div className={classes.addNpsContainer}>
           {isAdding ? (
