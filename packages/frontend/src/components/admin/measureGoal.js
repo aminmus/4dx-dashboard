@@ -12,7 +12,7 @@ import {
   NumberInput
 } from 'react-admin';
 import { withStyles } from '@material-ui/core/styles';
-import { DateInput } from './DateInput';
+import DateInput from './DateInput';
 import DateField from './DateField';
 import { validateGoalDate, validateRequired } from '../../utils/react-admin/adminValidation';
 import COLORS from '../../style/COLORS';

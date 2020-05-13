@@ -1,32 +1,18 @@
 /**
  * Controller for Client Satisfaction Score Routes
  * @module Controllers_csat
- * @requires jsonapi-serializer
- * @requires ../models/csat
+ * @requires Model_csat
  */
 
 const {
-  /**
-     * Serialize JSON Data
-     * @const
-     */
   Serializer: JSONAPISerializer,
-  /**
-     * Deserialize JSON Data
-     * @const
-     */
   Deserializer: JSONAPIDeserializer,
 } = require('jsonapi-serializer');
 
-/**
- * Csat model
- * @const
- */
 const { Csat } = require('../models');
 
 /**
- * Serialize Csat according to specified format
- * @const
+ * For Serializing according to specified format
  */
 const CsatSerializer = new JSONAPISerializer('Csats', {
   attributes: ['score', 'date', 'Client'],
@@ -37,8 +23,7 @@ const CsatSerializer = new JSONAPISerializer('Csats', {
 });
 
 /**
- * Deserialize Csat with camelCase formatting
- * @const
+ * For deserializing with camelCase formatting
  */
 const CsatDeserializer = new JSONAPIDeserializer({
   keyForAttribute: 'camelCase',
@@ -49,7 +34,7 @@ const CsatDeserializer = new JSONAPIDeserializer({
  * @function
  * @memberof module:Controllers_csat
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const getAll = async (req, res, next) => {
@@ -76,7 +61,7 @@ const getAll = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_csat
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const getById = async (req, res, next) => {
@@ -104,7 +89,7 @@ const getById = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_csat
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const updateById = async (req, res, next) => {
@@ -133,7 +118,7 @@ const updateById = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_csat
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const createOne = async (req, res, next) => {
@@ -163,7 +148,7 @@ const createOne = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_csat
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const deleteById = async (req, res, next) => {

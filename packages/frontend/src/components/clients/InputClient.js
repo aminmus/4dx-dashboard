@@ -10,8 +10,8 @@ import CardContainer from '../elements/CardContainer';
  *
  * @component
  * @param {Object} props Component props
- * @param {String} props.id Unique identifier for Client resource (if used for editing)
- * @param {String} props.name Client name
+ * @param {string} props.id Unique identifier for Client resource (if used for editing)
+ * @param {string} props.name Client name
  * @param {Function} props.setIsEditing Set whether or not user is editing a resource
  * @param {Object} props.handleResource Handling of form data from form
  */

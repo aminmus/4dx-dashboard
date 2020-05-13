@@ -1,7 +1,7 @@
 /**
  * Permissions middlware
  * @module Middleware_permissions
- * @requires ../utils/roles
+ * @requires Utils/roles
  */
 
 /**
@@ -15,8 +15,8 @@ const ROLES = require('../utils/roles');
  * @function
  * @memberof module:Middleware_permissions
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
- * @param {Function} next - Express middleware.
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next middleware
  */
 const canEdit = async (req, res, next) => {
   const { role } = await req.user;

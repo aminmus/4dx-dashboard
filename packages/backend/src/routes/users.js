@@ -1,9 +1,7 @@
 /** User routes
  * @module Router/users
- * @requires express
- * @requires ../controllers/user
- * @requires ../middleware/authentication
- * @requires ../middleware/permissions
+ * @requires Controllers_user
+ * @requires Middleware_authentication
  */
 
 const router = require('express').Router();
@@ -54,9 +52,9 @@ router.put('/:userId', updateById);
  *
  * @name PostUser
  * @route {POST} /api/users
- * @authentication This route requires JWT Authentication.
  * @bodyparam {Object} data Sequelized User Data containing
  *  type and attribute properties for resource
+ * @authentication This route requires JWT Authentication.
  */
 router.post('/', createOne);
 

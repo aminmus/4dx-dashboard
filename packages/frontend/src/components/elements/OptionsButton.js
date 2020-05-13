@@ -10,9 +10,9 @@ import COLORS from '../../style/COLORS';
  * @component
  * @param {Object} props Component props
  * @param {Boolean} props.disabled Is button disabled
- * @param {String} props.text Button text
+ * @param {string} props.text Button text
  * @param {Function} props.onClick On click event handler
- * @param {String} props.type Button type
+ * @param {string} props.type Button type
  */
 const OptionsButton = ({ disabled, text, onClick, type }) => {
   const { primary, secondary, dark } = COLORS;

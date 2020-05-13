@@ -1,39 +1,13 @@
 /**
  * Authentication middlware
  * @module Middleware_authentication
- * @requires passport
- * @requires passport-local
- * @requires passport-jwt
- * @requires ../models/user
+ * @requires Model_user
  */
 
-/**
- * passport module
- * @type {Object}
- */
 const passport = require('passport');
-
-/**
- * @name passport-local
- * @typedef {module}
- * @property {Object} Strategy JWT strategy
- * @property {Object} Strategy.LocalStrategy Local JWT strategy
- */
 const { Strategy: LocalStrategy } = require('passport-local');
-
-/**
- * @name passport-jwt
- * @typedef {module} passportJwt
- * @property {Object} Strategy JWT strategy
- * @property {Object} Strategy.JwtStrategy JWT strategy
- * @property {Object} Strategy.ExtractJwt Extract JWT token from headers
- */
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
 
-/**
- * User Model
- * @const
- */
 const { User } = require('../models');
 
 passport.use(
