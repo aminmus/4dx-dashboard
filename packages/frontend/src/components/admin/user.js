@@ -1,12 +1,26 @@
 import React from 'react';
 import { List, Datagrid, TextField, DeleteButton } from 'react-admin';
+import { withStyles } from '@material-ui/core/styles';
 import DateField from './DateField';
 
-const UserList = props => (
-  // Disabling bulk actions as jsonapi data provider does not work with delete_many request of react-admin
+import COLORS from '../../style/COLORS';
+
+const { dark } = COLORS;
+
+const listStyles = {
+  root: {
+    backgroundColor: dark,
+    border: '1px solid black',
+    justifyContent: 'center',
+    borderRadius: '0.2em',
+    textAlign: 'center'
+  }
+};
+
+const UserList = withStyles(listStyles)(({ classes, ...props }) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
-  <List {...props} bulkActionButtons={false}>
-    <Datagrid isRowSelectable={() => false}>
+  <List classes={classes} {...props} bulkActionButtons={false}>
+    <Datagrid classes={classes} isRowSelectable={() => false}>
       <TextField source="id" />
       <TextField source="email" />
       <DateField source="created-at" label="Created at" />
@@ -14,6 +28,6 @@ const UserList = props => (
       <DeleteButton undoable={false} />
     </Datagrid>
   </List>
-);
+));
 
 export default UserList;
