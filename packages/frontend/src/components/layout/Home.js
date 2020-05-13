@@ -6,7 +6,7 @@ import { CircularProgress, Card, CardActions, CardContent, Typography } from '@m
 import OptionsButton from '../elements/OptionsButton';
 import Wig from '../nps/Wig';
 import Lead from '../clients/Lead';
-import Details from '../clients/Details';
+import Details from '../clients/ClientList';
 import { fetchResources } from '../../slices/resources';
 import calcDefineClients from '../../utils/calcDefineClients';
 import calcLeads from '../../utils/calcLeads';
