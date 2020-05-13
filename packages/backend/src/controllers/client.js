@@ -1,34 +1,18 @@
 /**
  * Controller for Client Routes
  * @module Controllers_client
- * @requires jsonapi-serializer
- * @requires ../models/client
-
+ * @requires Model_client
  */
 
-/* eslint-disable no-console, consistent-return */
 const {
-  /**
-     * Serialize JSON Data
-     * @const
-     */
   Serializer: JSONAPISerializer,
-  /**
-     * Deserialize JSON Data
-     * @const
-     */
   Deserializer: JSONAPIDeserializer,
 } = require('jsonapi-serializer');
 
-/**
- * Client model
- * @const
- */
 const { Client } = require('../models');
 
 /**
- * Serialize Clients according to specified format
- * @const
+ * For Serializing according to specified format
  */
 const ClientSerializer = new JSONAPISerializer('Clients', {
   attributes: ['name', 'createdAt', 'updatedAt', 'Csats', 'Measures'],
@@ -43,8 +27,7 @@ const ClientSerializer = new JSONAPISerializer('Clients', {
 });
 
 /**
- * Deserialize Clients with camelCase formatting
- * @const
+ * For deserializing with camelCase formatting
  */
 const ClientDeserializer = new JSONAPIDeserializer({
   keyForAttribute: 'camelCase',
@@ -55,7 +38,7 @@ const ClientDeserializer = new JSONAPIDeserializer({
  * @function
  * @memberof module:Controllers_client
  * @param {Object} _req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const getAll = async (_req, res, next) => {
@@ -71,7 +54,7 @@ const getAll = async (_req, res, next) => {
     return res.status(200).json(ClientSerializer.serialize(clients));
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    next(err);
+    return next(err);
   }
 };
 
@@ -80,7 +63,7 @@ const getAll = async (_req, res, next) => {
  * @function
  * @memberof module:Controllers_client
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const getById = async (req, res, next) => {
@@ -108,7 +91,7 @@ const getById = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_client
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const updateById = async (req, res, next) => {
@@ -137,7 +120,7 @@ const updateById = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_client
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const createOne = async (req, res, next) => {
@@ -171,7 +154,7 @@ const createOne = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_client
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const deleteById = async (req, res, next) => {

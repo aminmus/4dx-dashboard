@@ -5,6 +5,7 @@
 /**
  * User roles
  * @type {Object}
+ * @property {string} admin - Admin role
  */
 const ROLES = {
   admin: 'admin',

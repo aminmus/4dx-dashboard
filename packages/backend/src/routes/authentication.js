@@ -1,7 +1,6 @@
 /** Authentication routes
  * @module Router/authentication
- * @requires express
- * @requires ../controllers/authentication
+ * @requires Controllers_authentication
  */
 
 const router = require('express').Router();

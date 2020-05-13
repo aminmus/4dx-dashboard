@@ -1,7 +1,6 @@
-/** Will try to establish database connection with a total of 5 retries in 5 second intervals
- * and console log a message that connection is established upon succes or an error upon fail
+/**
  * @module Utils/tryDbConnection
- * @requires ../models/index
+ * @requires Model_database
  */
 
 /**
@@ -11,6 +10,11 @@
  */
 const db = require('../models/index');
 
+/**
+ * Will try to establish database connection with a total of 5 retries in 5 second intervals
+ * and console log a message that connection is established upon succes or an error upon fail
+ * @function
+ */
 const tryDbConnection = async () => {
   let retries = 5;
   while (retries) {

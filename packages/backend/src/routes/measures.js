@@ -1,9 +1,8 @@
 /** Measures routes
  * @module Router/measures
- * @requires express
- * @requires ../controllers/measures
- * @requires ../middleware/authentication
- * @requires ../middleware/permissions
+ * @requires Controllers_measure
+ * @requires Middleware_authentication
+ * @requires Middleware_permissions
  */
 
 const router = require('express').Router();
@@ -51,9 +50,9 @@ router.put('/:measureId', checkAuth, canEdit, updateById);
  *
  * @name PostMeasure
  * @route {POST} /api/measure
- * @authentication This route requires JWT Authentication.
  * @bodyparam {Object} data Sequelized Measure Data containing
  *  type and attribute properties for resource
+ * @authentication This route requires JWT Authentication.
  */
 router.post('/', checkAuth, canEdit, createOne);
 

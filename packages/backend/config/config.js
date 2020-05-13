@@ -1,7 +1,6 @@
 /**
  * Config file for database
  * @module Config_database
- * @requires dotenv
  */
 
 require('dotenv').config();

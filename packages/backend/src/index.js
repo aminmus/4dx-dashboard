@@ -1,63 +1,25 @@
 /** Mounting of Express server
  * @module Server
- * @requires express
- * @requires cors
- * @requires passport
- * @requires jsonapi-serializer
- * @requires dotenv
- * @requires ./utils/tryDbConnection
- * @requires ./routes/index
- * @requires ./models/index
+ * @requires Config_database
+ * @requires Utils/tryDbConnection
+ * @requires Router
+ * @requires Model_database
  */
 
-/**
- * express module
- * @const
- */
 const express = require('express');
-
-/**
- * cors module
- * @const
- */
 const cors = require('cors');
-
-/**
- * passport module
- * @const
- */
 const passport = require('passport');
-
-/**
- * JSONAPI Error serializer module
- * @const
- */
 const JSONAPIError = require('jsonapi-serializer').Error;
 
 require('dotenv').config();
 
-/**
- * tryDbConnection Util
- * @const
- */
 const tryDbConnection = require('./utils/tryDbConnection');
-
-/**
- * routes
- * @const
- */
 const routes = require('./routes');
-
-/**
- * database connection object
- * @const
- */
 const db = require('./models');
 
 /**
  * Start Server
  * @function
- * @memberof module:Server
  */
 const startServer = async () => {
   await tryDbConnection();

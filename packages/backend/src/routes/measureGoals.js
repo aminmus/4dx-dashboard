@@ -1,9 +1,8 @@
 /** Measure Goals routes
- * @module Router/measureGoals
- * @requires express
- * @requires ../controllers/measureGoals
- * @requires ../middleware/authentication
- * @requires ../middleware/permissions
+ * @module Router/measure_goals
+ * @requires Controllers_measure_goals
+ * @requires Middleware_authentication
+ * @requires Middleware_permissions
  */
 
 const router = require('express').Router();
@@ -51,9 +50,9 @@ router.put('/:measureGoalId', checkAuth, canEdit, updateById);
  *
  * @name PostMeasureGoal
  * @route {POST} /api/measureGoals
- * @authentication This route requires JWT Authentication.
  * @bodyparam {Object} data Sequelized Measure Goal Data containing
  *  type and attribute properties for resource
+ * @authentication This route requires JWT Authentication.
  */
 router.post('/', checkAuth, canEdit, createOne);
 

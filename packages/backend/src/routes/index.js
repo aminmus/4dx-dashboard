@@ -1,18 +1,17 @@
 /** Express Router providing routes
  * @module Router
- * @requires express
- * @requires ./measures
- * @requires ./measureGoals
- * @requires ./clients
- * @requires ./users
- * @requires ./csat
- * @requires ./authentication
- * @requires ./nps
+ * @requires Router/measures
+ * @requires Router/measure_goals
+ * @requires Router/clients
+ * @requires Router/users
+ * @requires Router/csat
+ * @requires Router/authentication
+ * @requires Router/nps
  */
 
 /**
  * Express router to mount user related functions on.
- * @type {object}
+ * @type {Object}
  * @const
  */
 const router = require('express').Router();

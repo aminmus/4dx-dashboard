@@ -1,9 +1,8 @@
 /** Client Satisfaction Score routes
  * @module Router/csat
- * @requires express
- * @requires ../controllers/csat
- * @requires ../middleware/authentication
- * @requires ../middleware/permissions
+ * @requires Controllers_csat
+ * @requires Middleware_authentication
+ * @requires Middleware_permissions
  */
 
 const router = require('express').Router();
@@ -51,9 +50,9 @@ router.put('/:csatId', checkAuth, canEdit, updateById);
  *
  * @name PostCsat
  * @route {POST} /api/csat
- * @authentication This route requires JWT Authentication.
  * @bodyparam {Object} data Sequelized Csat Data containing
  *  type and attribute properties for resource
+ * @authentication This route requires JWT Authentication.
  */
 router.post('/', checkAuth, canEdit, createOne);
 

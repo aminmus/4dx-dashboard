@@ -1,40 +1,25 @@
 /**
  * Controller for Measure Goals Routes
  * @module Controllers_measure_goals
- * @requires jsonapi-serializer
- * @requires ../models/measureGoal
+ * @requires Model_measure_goal
  */
 
 const {
-  /**
-     * Serialize JSON Data
-     * @const
-     */
   Serializer: JSONAPISerializer,
-  /**
-     * Deserialize JSON Data
-     * @const
-     */
   Deserializer: JSONAPIDeserializer,
 } = require('jsonapi-serializer');
 
-/**
- * Measure Goal model
- * @const
- */
 const { MeasureGoal } = require('../models');
 
 /**
- * Serialize Measure Goals according to specified format
- * @const
+ * For Serializing according to specified format
  */
 const MeasureGoalSerializer = new JSONAPISerializer('MeasureGoal', {
   attributes: ['measuresAmount', 'targetDate', 'createdAt', 'updatedAt'],
 });
 
 /**
- * Deserialize Measure Goals with camelCase formatting
- * @const
+ * For deserializing with camelCase formatting
  */
 const MeasureGoalDeserializer = new JSONAPIDeserializer({
   keyForAttribute: 'camelCase',
@@ -45,7 +30,7 @@ const MeasureGoalDeserializer = new JSONAPIDeserializer({
  * @function
  * @memberof module:Controllers_measure_goals
  * @param {Object} _req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const getAll = async (_req, res, next) => {
@@ -70,7 +55,7 @@ const getAll = async (_req, res, next) => {
  * @function
  * @memberof module:Controllers_measure_goals
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const getById = async (req, res, next) => {
@@ -101,7 +86,7 @@ const getById = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_measure_goals
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const updateById = async (req, res, next) => {
@@ -136,7 +121,7 @@ const updateById = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_measure_goals
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const createOne = async (req, res, next) => {
@@ -168,7 +153,7 @@ const createOne = async (req, res, next) => {
  * @function
  * @memberof module:Controllers_measure_goals
  * @param {Object} req Request Object
- * @param {Object} res - Express Request Object
+ * @param {Object} res - Response Object
  * @param {Function} next - Express middleware.
  */
 const deleteById = async (req, res, next) => {

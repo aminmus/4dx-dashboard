@@ -1,11 +1,6 @@
 /* eslint-disable import/no-dynamic-require, no-tabs */
-
 /**
- * Return database connection object
  * @module Model_database
- * @requires fs
- * @requires path
- * @requires sequelize
  */
 
 const fs = require('fs');
@@ -15,6 +10,8 @@ const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(`${__dirname}/../../config/config.js`)[env];
+
+// Database connection object
 const db = {};
 
 let sequelize;
@@ -32,8 +29,8 @@ if (config.use_env_variable) {
 fs.readdirSync(__dirname)
   .filter(
     (file) => file.indexOf('.') !== 0
-            && file !== basename
-            && file.slice(-3) === '.js',
+      && file !== basename
+      && file.slice(-3) === '.js',
   )
   .forEach((file) => {
     const model = sequelize.import(path.join(__dirname, file));
@@ -49,4 +46,7 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+/**
+ * Return Database connection object
+*/
 module.exports = db;
