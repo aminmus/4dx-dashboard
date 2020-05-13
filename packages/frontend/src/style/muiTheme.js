@@ -5,7 +5,43 @@ import COLORS from './COLORS';
 const { primary, secondary, light, gray } = COLORS;
 
 const theme = createMuiTheme({
-  textAlign: 'center',
+  /** Overrides to handle React Admin styles */
+  overrides: {
+    MuiButton: {
+      label: {
+        '&:hover': {
+          color: 'white'
+        }
+      }
+    },
+    MuiCard: {
+      root: {
+        border: '1px solid black'
+      }
+    },
+    MuiCardContent: {
+      root: {
+        justifyContent: 'center',
+        textAlign: 'center'
+      }
+    },
+    MuiTableCell: {
+      alignRight: {
+        textAlign: 'center'
+      },
+      head: {
+        textAlign: 'center',
+        backgroundColor: light,
+        fontWeight: 'bolder'
+      },
+      body: {
+        textAlign: 'center'
+      },
+      root: {
+        textAlign: 'center'
+      }
+    }
+  },
   palette: {
     type: 'dark',
     primary: { main: primary },

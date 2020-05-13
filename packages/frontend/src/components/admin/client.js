@@ -15,28 +15,45 @@ import {
   TabbedShowLayout,
   Tab,
   ReferenceManyField,
-  NumberField
+  NumberField,
+  SimpleShowLayout
 } from 'react-admin';
-
 import { Button, Typography } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
-
 import { Link } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
 import DateField from './DateField';
 import { validateName } from '../../utils/react-admin/adminValidation';
+import COLORS from '../../style/COLORS';
 
-export const ClientList = props => (
-  <List {...props} bulkActionButtons={false}>
-    <Datagrid rowClick="show" isRowSelectable={() => false}>
+const { dark } = COLORS;
+
+const headerStyles = {
+  root: {
+    backgroundColor: dark,
+    border: '1px solid black',
+    justifyContent: 'center',
+    borderRadius: '0.2em'
+  }
+};
+
+export const ClientList = withStyles(headerStyles)(({ classes, ...props }) => (
+  <List classes={classes} {...props} bulkActionButtons={false}>
+    <Datagrid
+      classes={classes}
+      style={{ justifyContent: 'center', textAlign: 'center' }}
+      rowClick="show"
+      isRowSelectable={() => false}
+    >
       <TextField source="name" />
       <EditButton />
       <DeleteButton undoable={false} />
       <ShowButton />
     </Datagrid>
   </List>
-);
+));
 
 export const ClientEdit = props => (
   <Edit title="Edit client entry" {...props}>
@@ -57,7 +74,7 @@ export const ClientCreate = props => (
 const AddNewClientScore = ({ record }) => (
   <Button
     component={Link}
-    color="secondary"
+    color="primary"
     variant="contained"
     to={{
       pathname: '/csat/create',
@@ -71,7 +88,7 @@ const AddNewClientScore = ({ record }) => (
 const AddNewClientMeasure = ({ record }) => (
   <Button
     component={Link}
-    color="secondary"
+    color="primary"
     variant="contained"
     to={{
       pathname: '/measures/create',
@@ -133,44 +150,49 @@ const CustomBooleanField = ({ record }) => {
   return <FalseIcon />;
 };
 
-export const ClientShow = props => {
+export const ClientShow = withStyles(headerStyles)(({ classes, ...props }) => {
   const editCsatClick = (id, _basePath, _record) => {
     return `/csat/${id}?client_id=${props.id}`;
   };
-
   const editMeasuresClick = (id, _basePath, _record) => {
     return `/measures/${id}?client_id=${props.id}`;
   };
 
   return (
-    <Show {...props}>
-      <TabbedShowLayout>
+    <Show classes={classes} {...props}>
+      <TabbedShowLayout classes={classes}>
         <Tab label="summary">
-          <TextField source="name" />
+          <SimpleShowLayout>
+            <TextField label="Client Name" source="name" />
+          </SimpleShowLayout>
         </Tab>
         <Tab label="Client Satisfaction" path="csat">
-          <AddNewClientScore />
-          <ReferenceManyField reference="csat" target="clientId" addLabel={false}>
-            <Datagrid rowClick={editCsatClick}>
-              <NumberField label="Score" source="score" />
-              <DateField label="Date of Score" source="date" />
-              <EditClientScore {...props} clientId={props.id} />
-              <DeleteButton redirect={`/clients/${props.id}/show/csat`} />
-            </Datagrid>
-          </ReferenceManyField>
+          <SimpleShowLayout>
+            <AddNewClientScore />
+            <ReferenceManyField reference="csat" target="clientId" addLabel={false}>
+              <Datagrid rowClick={editCsatClick}>
+                <NumberField label="Score" source="score" />
+                <DateField label="Date of Score" source="date" />
+                <EditClientScore {...props} clientId={props.id} />
+                <DeleteButton redirect={`/clients/${props.id}/show/csat`} />
+              </Datagrid>
+            </ReferenceManyField>
+          </SimpleShowLayout>
         </Tab>
         <Tab label="Measures" path="measures">
-          <AddNewClientMeasure />
-          <ReferenceManyField reference="measures" target="clientId" addLabel={false}>
-            <Datagrid rowClick={editMeasuresClick}>
-              <TextField source="description" />
-              <CustomBooleanField label="Success" {...props} />
-              <EditClientMeasure {...props} clientId={props.id} />
-              <DeleteButton redirect={`/clients/${props.id}/show/measures`} />
-            </Datagrid>
-          </ReferenceManyField>
+          <SimpleShowLayout>
+            <AddNewClientMeasure />
+            <ReferenceManyField reference="measures" target="clientId" addLabel={false}>
+              <Datagrid rowClick={editMeasuresClick}>
+                <TextField source="description" />
+                <CustomBooleanField label="Success" {...props} />
+                <EditClientMeasure {...props} clientId={props.id} />
+                <DeleteButton redirect={`/clients/${props.id}/show/measures`} />
+              </Datagrid>
+            </ReferenceManyField>
+          </SimpleShowLayout>
         </Tab>
       </TabbedShowLayout>
     </Show>
   );
-};
+});
