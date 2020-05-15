@@ -27,3 +27,9 @@ docker exec 4dx_web_1 npx sequelize-cli db:seed:undo:all
 `
 
 Your docker container name might be something else than `4dx_web_1`. You can check your container names by running `docker-compose ps`.
+
+Sample admin credentials are
+
+* email: admin@example.com
+
+* password: admin
