@@ -16,9 +16,10 @@ import {
   Tab,
   ReferenceManyField,
   NumberField,
-  SimpleShowLayout
+  SimpleShowLayout,
+  SimpleList
 } from 'react-admin';
-import { Button, Typography } from '@material-ui/core';
+import { Button, Typography, useMediaQuery } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
@@ -39,21 +40,32 @@ const headerStyles = {
   }
 };
 
-export const ClientList = withStyles(headerStyles)(({ classes, ...props }) => (
-  <List classes={classes} {...props} bulkActionButtons={false}>
-    <Datagrid
-      classes={classes}
-      style={{ justifyContent: 'center', textAlign: 'center' }}
-      rowClick="show"
-      isRowSelectable={() => false}
-    >
-      <TextField source="name" />
-      <EditButton />
-      <DeleteButton undoable={false} />
-      <ShowButton />
-    </Datagrid>
-  </List>
-));
+export const ClientList = props => {
+  // Using MUI theme breakpoints here did not work as planned, so setting explicitly instead
+  const isSmall = useMediaQuery('(max-width:600px)');
+
+  return (
+    <>
+      <Typography variant="h2">Clients</Typography>
+      <List title="WEWEWAE" {...props} bulkActionButtons={false}>
+        {isSmall ? (
+          <SimpleList primaryText={record => record.name} linkType="show" />
+        ) : (
+          <Datagrid
+            style={{ justifyContent: 'center', textAlign: 'center' }}
+            rowClick="show"
+            isRowSelectable={() => false}
+          >
+            <TextField source="name" />
+            <EditButton />
+            <DeleteButton undoable={false} />
+            <ShowButton />
+          </Datagrid>
+        )}
+      </List>
+    </>
+  );
+};
 
 export const ClientEdit = props => (
   <Edit title="Edit client entry" {...props}>
