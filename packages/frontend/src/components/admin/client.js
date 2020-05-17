@@ -12,6 +12,7 @@ import {
   DeleteButton,
   Show,
   ShowButton,
+  TabbedShowLayoutTabs,
   TabbedShowLayout,
   Tab,
   ReferenceManyField,
@@ -170,9 +171,20 @@ export const ClientShow = withStyles(headerStyles)(({ classes, ...props }) => {
     return `/measures/${id}?client_id=${props.id}`;
   };
 
+  const isSmall = useMediaQuery('(max-width:600px)');
+
   return (
     <Show classes={classes} {...props}>
-      <TabbedShowLayout classes={classes}>
+      <TabbedShowLayout
+        tabs={
+          // eslint-disable-next-line react/jsx-wrap-multilines
+          <TabbedShowLayoutTabs
+            variant={isSmall ? 'fullWidth' : 'standard'}
+            centered={isSmall ? undefined : true}
+            {...props}
+          />
+        }
+      >
         <Tab label="summary">
           <SimpleShowLayout>
             <TextField label="Client Name" source="name" />
@@ -195,12 +207,19 @@ export const ClientShow = withStyles(headerStyles)(({ classes, ...props }) => {
           <SimpleShowLayout>
             <AddNewClientMeasure />
             <ReferenceManyField reference="measures" target="clientId" addLabel={false}>
-              <Datagrid rowClick={editMeasuresClick}>
-                <TextField source="description" />
-                <CustomBooleanField label="Success" {...props} />
-                <EditClientMeasure {...props} clientId={props.id} />
-                <DeleteButton redirect={`/clients/${props.id}/show/measures`} />
-              </Datagrid>
+              {isSmall ? (
+                <SimpleList
+                  primaryText={record => `${record.description}`}
+                  tertiaryText={record => <CustomBooleanField label="Success" record={record} />}
+                />
+              ) : (
+                <Datagrid rowClick={editMeasuresClick}>
+                  <TextField source="description" />
+                  <CustomBooleanField label="Success" {...props} />
+                  <EditClientMeasure {...props} clientId={props.id} />
+                  <DeleteButton redirect={`/clients/${props.id}/show/measures`} />
+                </Datagrid>
+              )}
             </ReferenceManyField>
           </SimpleShowLayout>
         </Tab>
