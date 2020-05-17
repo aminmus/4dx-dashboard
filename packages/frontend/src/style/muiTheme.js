@@ -14,11 +14,6 @@ const theme = createMuiTheme({
         }
       }
     },
-    MuiCard: {
-      root: {
-        border: '1px solid black'
-      }
-    },
     MuiCardContent: {
       root: {
         justifyContent: 'center',
