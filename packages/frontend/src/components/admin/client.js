@@ -47,7 +47,7 @@ export const ClientList = props => {
   return (
     <>
       <Typography variant="h2">Clients</Typography>
-      <List title="WEWEWAE" {...props} bulkActionButtons={false}>
+      <List {...props} bulkActionButtons={false}>
         {isSmall ? (
           <SimpleList primaryText={record => record.name} linkType="show" />
         ) : (
