@@ -12,7 +12,7 @@ import {
   NumberInput,
   SimpleList
 } from 'react-admin';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { validateNps, validateDateRequired } from '../../utils/react-admin/adminValidation';
 import DateInput from './DateInput';
@@ -36,24 +36,29 @@ export const NpsList = props => {
   const classes = useStyles();
   const isSmall = useMediaQuery('(max-width:600px)');
   return (
-    <List classes={classes} {...props} bulkActionButtons={false}>
-      {isSmall ? (
-        <SimpleList
-          primaryText={record => `${record['current-nps']} NPS`}
-          secondaryText={record => `Target: ${record['goal-nps']} NPS by ${record['target-date']}`}
-          tertiaryText={record => record.date}
-        />
-      ) : (
-        <Datagrid rowClick="edit" isRowSelectable={() => false}>
-          <NumberField source="current-nps" label="NPS" />
-          <DateField source="date" />
-          <NumberField source="goal-nps" label="Target NPS" />
-          <DateField source="target-date" label="Target date" />
-          <EditButton />
-          <DeleteButton undoable={false} />
-        </Datagrid>
-      )}
-    </List>
+    <>
+      <Typography variant="h2">NPS</Typography>
+      <List classes={classes} {...props} bulkActionButtons={false}>
+        {isSmall ? (
+          <SimpleList
+            primaryText={record => `${record['current-nps']} NPS`}
+            secondaryText={record =>
+              // eslint-disable-next-line prettier/prettier
+              `Target: ${record['goal-nps']} NPS by ${record['target-date']}`}
+            tertiaryText={record => record.date}
+          />
+        ) : (
+          <Datagrid rowClick="edit" isRowSelectable={() => false}>
+            <NumberField source="current-nps" label="NPS" />
+            <DateField source="date" />
+            <NumberField source="goal-nps" label="Target NPS" />
+            <DateField source="target-date" label="Target date" />
+            <EditButton />
+            <DeleteButton undoable={false} />
+          </Datagrid>
+        )}
+      </List>
+    </>
   );
 };
 

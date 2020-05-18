@@ -1,6 +1,7 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { List, SimpleList, Datagrid, TextField, DeleteButton } from 'react-admin';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DateField from './DateField';
 import formatDate from '../../utils/formatDate';
@@ -22,25 +23,27 @@ const UserList = props => {
   const classes = useStyles();
   const isSmall = useMediaQuery('(max-width:600px)');
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <List classes={classes} {...props} bulkActionButtons={false}>
-      {isSmall ? (
-        <SimpleList
-          primaryText={record => record.email}
-          secondaryText={record => `Last updated: ${formatDate(record['updated-at'])}`}
-          tertiaryText={record => `Created: ${formatDate(record['created-at'])}`}
-          linkType="show"
-        />
-      ) : (
-        <Datagrid isRowSelectable={() => false}>
-          <TextField source="id" />
-          <TextField source="email" />
-          <DateField source="created-at" label="Created at" />
-          <DateField source="updated-at" label="Updated at" />
-          <DeleteButton undoable={false} />
-        </Datagrid>
-      )}
-    </List>
+    <>
+      <Typography variant="h2">Users</Typography>
+      <List classes={classes} {...props} bulkActionButtons={false}>
+        {isSmall ? (
+          <SimpleList
+            primaryText={record => record.email}
+            secondaryText={record => `Last updated: ${formatDate(record['updated-at'])}`}
+            tertiaryText={record => `Created: ${formatDate(record['created-at'])}`}
+            linkType="show"
+          />
+        ) : (
+          <Datagrid isRowSelectable={() => false}>
+            <TextField source="id" />
+            <TextField source="email" />
+            <DateField source="created-at" label="Created at" />
+            <DateField source="updated-at" label="Updated at" />
+            <DeleteButton undoable={false} />
+          </Datagrid>
+        )}
+      </List>
+    </>
   );
 };
 

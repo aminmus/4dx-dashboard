@@ -13,7 +13,7 @@ import {
   NumberInput
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery, Typography } from '@material-ui/core';
 import DateInput from './DateInput';
 import DateField from './DateField';
 import { validateGoalDate, validateRequired } from '../../utils/react-admin/adminValidation';
@@ -36,22 +36,25 @@ export const MeasureGoalList = props => {
   const classes = useStyles();
   const isSmall = useMediaQuery('(max-width:600px)');
   return (
-    <List classes={classes} {...props} bulkActionButtons={false}>
-      {isSmall ? (
-        <SimpleList
-          primaryText={record => `Target: ${record['measures-amount']} Measures`}
-          secondaryText={record => `To reach by: ${record['target-date']}`}
-          tertiaryText={record => `Created: ${formatDate(record['created-at'])}`}
-        />
-      ) : (
-        <Datagrid rowClick="edit" isRowSelectable={() => false}>
-          <NumberField source="measures-amount" label="Measures (target amount)" />
-          <DateField source="target-date" label="Target date" />
-          <EditButton />
-          <DeleteButton undoable={false} />
-        </Datagrid>
-      )}
-    </List>
+    <>
+      <Typography variant="h2">Measure Goals</Typography>
+      <List classes={classes} {...props} bulkActionButtons={false}>
+        {isSmall ? (
+          <SimpleList
+            primaryText={record => `Target: ${record['measures-amount']} Measures`}
+            secondaryText={record => `To reach by: ${record['target-date']}`}
+            tertiaryText={record => `Created: ${formatDate(record['created-at'])}`}
+          />
+        ) : (
+          <Datagrid rowClick="edit" isRowSelectable={() => false}>
+            <NumberField source="measures-amount" label="Measures (target amount)" />
+            <DateField source="target-date" label="Target date" />
+            <EditButton />
+            <DeleteButton undoable={false} />
+          </Datagrid>
+        )}
+      </List>
+    </>
   );
 };
 
