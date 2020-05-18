@@ -165,6 +165,7 @@ const CustomBooleanField = ({ record }) => {
 };
 
 export const ClientShow = props => {
+  const classes = useStyles();
   const editCsatClick = (id, _basePath, _record) => {
     return `/csat/${id}?client_id=${props.id}`;
   };
@@ -175,7 +176,7 @@ export const ClientShow = props => {
   const isSmall = useMediaQuery('(max-width:600px)');
 
   return (
-    <Show {...props}>
+    <Show classes={classes} {...props}>
       <TabbedShowLayout
         tabs={
           // eslint-disable-next-line react/jsx-wrap-multilines
