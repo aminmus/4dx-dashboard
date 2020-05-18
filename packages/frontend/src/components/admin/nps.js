@@ -43,7 +43,6 @@ export const NpsList = props => {
           <SimpleList
             primaryText={record => `${record['current-nps']} NPS`}
             secondaryText={record =>
-              // eslint-disable-next-line prettier/prettier
               `Target: ${record['goal-nps']} NPS by ${record['target-date']}`}
             tertiaryText={record => record.date}
           />
