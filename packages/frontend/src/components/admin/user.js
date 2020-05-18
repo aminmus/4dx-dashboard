@@ -1,15 +1,14 @@
 import React from 'react';
 import { List, SimpleList, Datagrid, TextField, DeleteButton } from 'react-admin';
 import { useMediaQuery } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import DateField from './DateField';
 import formatDate from '../../utils/formatDate';
-
 import COLORS from '../../style/COLORS';
 
 const { dark } = COLORS;
 
-const listStyles = {
+const useStyles = makeStyles({
   root: {
     backgroundColor: dark,
     border: '1px solid black',
@@ -17,9 +16,10 @@ const listStyles = {
     borderRadius: '0.2em',
     textAlign: 'center'
   }
-};
+});
 
-const UserList = withStyles(listStyles)(({ classes, ...props }) => {
+const UserList = props => {
+  const classes = useStyles();
   const isSmall = useMediaQuery('(max-width:600px)');
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
@@ -32,7 +32,7 @@ const UserList = withStyles(listStyles)(({ classes, ...props }) => {
           linkType="show"
         />
       ) : (
-        <Datagrid classes={classes} isRowSelectable={() => false}>
+        <Datagrid isRowSelectable={() => false}>
           <TextField source="id" />
           <TextField source="email" />
           <DateField source="created-at" label="Created at" />
@@ -42,6 +42,6 @@ const UserList = withStyles(listStyles)(({ classes, ...props }) => {
       )}
     </List>
   );
-});
+};
 
 export default UserList;

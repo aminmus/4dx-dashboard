@@ -13,7 +13,7 @@ import {
   SimpleList
 } from 'react-admin';
 import { useMediaQuery } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { validateNps, validateDateRequired } from '../../utils/react-admin/adminValidation';
 import DateInput from './DateInput';
 
@@ -22,7 +22,7 @@ import COLORS from '../../style/COLORS';
 
 const { dark } = COLORS;
 
-const listStyles = {
+const useStyles = makeStyles({
   root: {
     backgroundColor: dark,
     border: '1px solid black',
@@ -30,9 +30,10 @@ const listStyles = {
     borderRadius: '0.2em',
     textAlign: 'center'
   }
-};
+});
 
-export const NpsList = withStyles(listStyles)(({ classes, ...props }) => {
+export const NpsList = props => {
+  const classes = useStyles();
   const isSmall = useMediaQuery('(max-width:600px)');
   return (
     <List classes={classes} {...props} bulkActionButtons={false}>
@@ -43,7 +44,7 @@ export const NpsList = withStyles(listStyles)(({ classes, ...props }) => {
           tertiaryText={record => record.date}
         />
       ) : (
-        <Datagrid classes={classes} rowClick="edit" isRowSelectable={() => false}>
+        <Datagrid rowClick="edit" isRowSelectable={() => false}>
           <NumberField source="current-nps" label="NPS" />
           <DateField source="date" />
           <NumberField source="goal-nps" label="Target NPS" />
@@ -54,7 +55,7 @@ export const NpsList = withStyles(listStyles)(({ classes, ...props }) => {
       )}
     </List>
   );
-});
+};
 
 export const NpsEdit = props => (
   <Edit title="Edit client entry" {...props}>

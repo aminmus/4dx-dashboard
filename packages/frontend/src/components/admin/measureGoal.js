@@ -12,7 +12,7 @@ import {
   NumberField,
   NumberInput
 } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import DateInput from './DateInput';
 import DateField from './DateField';
@@ -22,23 +22,18 @@ import formatDate from '../../utils/formatDate';
 
 const { dark } = COLORS;
 
-const listStyles = {
+const useStyles = makeStyles({
   root: {
     backgroundColor: dark,
     border: '1px solid black',
     justifyContent: 'center',
     borderRadius: '0.2em',
     textAlign: 'center'
-  },
-  head: {
-    textAlign: 'center'
-  },
-  body: {
-    textAlign: 'center'
   }
-};
+});
 
-export const MeasureGoalList = withStyles(listStyles)(({ classes, ...props }) => {
+export const MeasureGoalList = props => {
+  const classes = useStyles();
   const isSmall = useMediaQuery('(max-width:600px)');
   return (
     <List classes={classes} {...props} bulkActionButtons={false}>
@@ -49,7 +44,7 @@ export const MeasureGoalList = withStyles(listStyles)(({ classes, ...props }) =>
           tertiaryText={record => `Created: ${formatDate(record['created-at'])}`}
         />
       ) : (
-        <Datagrid classes={classes} rowClick="edit" isRowSelectable={() => false}>
+        <Datagrid rowClick="edit" isRowSelectable={() => false}>
           <NumberField source="measures-amount" label="Measures (target amount)" />
           <DateField source="target-date" label="Target date" />
           <EditButton />
@@ -58,7 +53,7 @@ export const MeasureGoalList = withStyles(listStyles)(({ classes, ...props }) =>
       )}
     </List>
   );
-});
+};
 
 export const MeasureGoalEdit = props => (
   <Edit title="Edit client entry" {...props}>
