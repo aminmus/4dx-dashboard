@@ -25,30 +25,31 @@ import EditIcon from '@material-ui/icons/Edit';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
 import { Link } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import DateField from './DateField';
 import { validateName } from '../../utils/react-admin/adminValidation';
 import COLORS from '../../style/COLORS';
 
 const { dark } = COLORS;
 
-const headerStyles = {
+const useStyles = makeStyles({
   root: {
     backgroundColor: dark,
     border: '1px solid black',
     justifyContent: 'center',
     borderRadius: '0.2em'
   }
-};
+});
 
 export const ClientList = props => {
+  const classes = useStyles();
   // Using MUI theme breakpoints here did not work as planned, so setting explicitly instead
   const isSmall = useMediaQuery('(max-width:600px)');
 
   return (
     <>
       <Typography variant="h2">Clients</Typography>
-      <List {...props} bulkActionButtons={false}>
+      <List classes={classes} {...props} bulkActionButtons={false}>
         {isSmall ? (
           <SimpleList primaryText={record => record.name} linkType="show" />
         ) : (
@@ -163,7 +164,7 @@ const CustomBooleanField = ({ record }) => {
   return <FalseIcon />;
 };
 
-export const ClientShow = withStyles(headerStyles)(({ classes, ...props }) => {
+export const ClientShow = props => {
   const editCsatClick = (id, _basePath, _record) => {
     return `/csat/${id}?client_id=${props.id}`;
   };
@@ -174,7 +175,7 @@ export const ClientShow = withStyles(headerStyles)(({ classes, ...props }) => {
   const isSmall = useMediaQuery('(max-width:600px)');
 
   return (
-    <Show classes={classes} {...props}>
+    <Show {...props}>
       <TabbedShowLayout
         tabs={
           // eslint-disable-next-line react/jsx-wrap-multilines
@@ -226,4 +227,4 @@ export const ClientShow = withStyles(headerStyles)(({ classes, ...props }) => {
       </TabbedShowLayout>
     </Show>
   );
-});
+};
