@@ -128,13 +128,14 @@ const Wig = ({ nps, editMode, dispatch }) => {
   };
 
   const textDescription = ({ currentNps, goalNps, targetDate }) => {
-    if ((currentNps < goalNps || currentNps > goalNps) && targetDate) {
+    // Explicitly checking for null and undefined because currentNps might be the int 0
+    if ((currentNps !== null || undefined) && goalNps && targetDate) {
       return `From ${currentNps} NPS to ${goalNps} by ${targetDate}`;
     }
-    if (currentNps && !targetDate) {
+    if ((currentNps !== null || undefined) && !targetDate) {
       return `Current NPS ${currentNps} with no target set`;
     }
-    return 'NA';
+    return null;
   };
 
   return (
