@@ -35,6 +35,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         unique: true,
         required: true,
+        validate: {
+          isEmail: true,
+        },
       },
       password: {
         type: DataTypes.STRING,
@@ -43,6 +46,9 @@ module.exports = (sequelize, DataTypes) => {
       role: {
         type: DataTypes.STRING,
         required: true,
+        validate: {
+          isIn: [['admin', 'guest']],
+        },
       },
     },
     { sequelize },
