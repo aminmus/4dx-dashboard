@@ -12,6 +12,7 @@ const passport = require('passport');
 const JSONAPIError = require('jsonapi-serializer').Error;
 
 require('dotenv').config();
+const { User } = require('./models');
 
 const tryDbConnection = require('./utils/tryDbConnection');
 const routes = require('./routes');
@@ -25,10 +26,37 @@ const startServer = async () => {
   await tryDbConnection();
   try {
     console.log('Trying to sync models to database...');
+    console.log(process.env.ADMIN_MAIL);
+    console.log(process.env.ADMIN_PWD);
     await db.sequelize.sync();
     console.log('Database sync completed');
   } catch (error) {
     console.error('Unable to sync database:', error);
+  }
+
+  const {
+    INITIAL_USER_MAIL,
+    INITIAL_USER_PWD,
+    INITIAL_USER_ROLE,
+  } = process.env;
+
+  /**
+     * Adding initial demo user if not found
+     */
+  try {
+    const email = INITIAL_USER_MAIL;
+    const password = INITIAL_USER_PWD;
+    const role = INITIAL_USER_ROLE;
+    const [user, isCreated] = await User.findOrCreate({
+      where: { email },
+      defaults: { email, password, role },
+    });
+
+    if (!isCreated && user) {
+      console.log('User already exists');
+    }
+  } catch (err) {
+    console.log(`ERROR CREATING INITAL USER: ${err}`);
   }
 
   const app = express();
