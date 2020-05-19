@@ -12,48 +12,62 @@ import {
   DeleteButton,
   Show,
   ShowButton,
+  TabbedShowLayoutTabs,
   TabbedShowLayout,
   Tab,
   ReferenceManyField,
   NumberField,
-  SimpleShowLayout
+  SimpleShowLayout,
+  SimpleList
 } from 'react-admin';
-import { Button, Typography } from '@material-ui/core';
+import { Button, Typography, useMediaQuery } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
 import { Link } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import DateField from './DateField';
 import { validateName } from '../../utils/react-admin/adminValidation';
 import COLORS from '../../style/COLORS';
 
 const { dark } = COLORS;
 
-const headerStyles = {
+const useStyles = makeStyles({
   root: {
     backgroundColor: dark,
     border: '1px solid black',
     justifyContent: 'center',
     borderRadius: '0.2em'
   }
-};
+});
 
-export const ClientList = withStyles(headerStyles)(({ classes, ...props }) => (
-  <List classes={classes} {...props} bulkActionButtons={false}>
-    <Datagrid
-      classes={classes}
-      style={{ justifyContent: 'center', textAlign: 'center' }}
-      rowClick="show"
-      isRowSelectable={() => false}
-    >
-      <TextField source="name" />
-      <EditButton />
-      <DeleteButton undoable={false} />
-      <ShowButton />
-    </Datagrid>
-  </List>
-));
+export const ClientList = props => {
+  const classes = useStyles();
+  // Using MUI theme breakpoints here did not work as planned, so setting explicitly instead
+  const isSmall = useMediaQuery('(max-width:600px)');
+
+  return (
+    <>
+      <Typography variant="h2">Clients</Typography>
+      <List classes={classes} {...props} bulkActionButtons={false}>
+        {isSmall ? (
+          <SimpleList primaryText={record => record.name} linkType="show" />
+        ) : (
+          <Datagrid
+            style={{ justifyContent: 'center', textAlign: 'center' }}
+            rowClick="show"
+            isRowSelectable={() => false}
+          >
+            <TextField source="name" />
+            <EditButton />
+            <DeleteButton undoable={false} />
+            <ShowButton />
+          </Datagrid>
+        )}
+      </List>
+    </>
+  );
+};
 
 export const ClientEdit = props => (
   <Edit title="Edit client entry" {...props}>
@@ -150,7 +164,8 @@ const CustomBooleanField = ({ record }) => {
   return <FalseIcon />;
 };
 
-export const ClientShow = withStyles(headerStyles)(({ classes, ...props }) => {
+export const ClientShow = props => {
+  const classes = useStyles();
   const editCsatClick = (id, _basePath, _record) => {
     return `/csat/${id}?client_id=${props.id}`;
   };
@@ -158,9 +173,20 @@ export const ClientShow = withStyles(headerStyles)(({ classes, ...props }) => {
     return `/measures/${id}?client_id=${props.id}`;
   };
 
+  const isSmall = useMediaQuery('(max-width:600px)');
+
   return (
     <Show classes={classes} {...props}>
-      <TabbedShowLayout classes={classes}>
+      <TabbedShowLayout
+        tabs={
+          // eslint-disable-next-line react/jsx-wrap-multilines
+          <TabbedShowLayoutTabs
+            variant={isSmall ? 'fullWidth' : 'standard'}
+            centered={isSmall ? undefined : true}
+            {...props}
+          />
+        }
+      >
         <Tab label="summary">
           <SimpleShowLayout>
             <TextField label="Client Name" source="name" />
@@ -183,16 +209,23 @@ export const ClientShow = withStyles(headerStyles)(({ classes, ...props }) => {
           <SimpleShowLayout>
             <AddNewClientMeasure />
             <ReferenceManyField reference="measures" target="clientId" addLabel={false}>
-              <Datagrid rowClick={editMeasuresClick}>
-                <TextField source="description" />
-                <CustomBooleanField label="Success" {...props} />
-                <EditClientMeasure {...props} clientId={props.id} />
-                <DeleteButton redirect={`/clients/${props.id}/show/measures`} />
-              </Datagrid>
+              {isSmall ? (
+                <SimpleList
+                  primaryText={record => `${record.description}`}
+                  tertiaryText={record => <CustomBooleanField label="Success" record={record} />}
+                />
+              ) : (
+                <Datagrid rowClick={editMeasuresClick}>
+                  <TextField source="description" />
+                  <CustomBooleanField label="Success" {...props} />
+                  <EditClientMeasure {...props} clientId={props.id} />
+                  <DeleteButton redirect={`/clients/${props.id}/show/measures`} />
+                </Datagrid>
+              )}
             </ReferenceManyField>
           </SimpleShowLayout>
         </Tab>
       </TabbedShowLayout>
     </Show>
   );
-});
+};

@@ -9,9 +9,11 @@ import {
   EditButton,
   DeleteButton,
   NumberField,
-  NumberInput
+  NumberInput,
+  SimpleList
 } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import { useMediaQuery, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { validateNps, validateDateRequired } from '../../utils/react-admin/adminValidation';
 import DateInput from './DateInput';
 
@@ -20,7 +22,7 @@ import COLORS from '../../style/COLORS';
 
 const { dark } = COLORS;
 
-const listStyles = {
+const useStyles = makeStyles({
   root: {
     backgroundColor: dark,
     border: '1px solid black',
@@ -28,25 +30,41 @@ const listStyles = {
     borderRadius: '0.2em',
     textAlign: 'center'
   }
-};
+});
 
-export const NpsList = withStyles(listStyles)(({ classes, ...props }) => (
-  <List classes={classes} {...props} bulkActionButtons={false}>
-    <Datagrid classes={classes} rowClick="edit" isRowSelectable={() => false}>
-      <NumberField source="current-nps" label="NPS" />
-      <DateField source="date" />
-      <NumberField source="goal-nps" label="Target NPS" />
-      <DateField source="target-date" label="Target date" />
-      <EditButton />
-      <DeleteButton undoable={false} />
-    </Datagrid>
-  </List>
-));
+export const NpsList = props => {
+  const classes = useStyles();
+  const isSmall = useMediaQuery('(max-width:600px)');
+  return (
+    <>
+      <Typography variant="h2">NPS</Typography>
+      <List classes={classes} {...props} bulkActionButtons={false}>
+        {isSmall ? (
+          <SimpleList
+            primaryText={record => `${record['current-nps']} NPS`}
+            secondaryText={record =>
+              `Target: ${record['goal-nps']} NPS by ${record['target-date']}`}
+            tertiaryText={record => record.date}
+          />
+        ) : (
+          <Datagrid rowClick="edit" isRowSelectable={() => false}>
+            <NumberField source="current-nps" label="NPS" />
+            <DateField source="date" />
+            <NumberField source="goal-nps" label="Target NPS" />
+            <DateField source="target-date" label="Target date" />
+            <EditButton />
+            <DeleteButton undoable={false} />
+          </Datagrid>
+        )}
+      </List>
+    </>
+  );
+};
 
 export const NpsEdit = props => (
   <Edit title="Edit client entry" {...props}>
     <SimpleForm redirect="list">
-      <NumberInput source="current-nps" label="NPS score" validate={validateNps} />
+      <NumberInput source="current-nps" label="NPS" validate={validateNps} />
       <DateInput source="date" validate={validateDateRequired} />
       <NumberInput source="goal-nps" label="Target NPS" validate={validateNps} />
       <DateInput source="target-date" label="Target date" validate={validateDateRequired} />
@@ -57,7 +75,7 @@ export const NpsEdit = props => (
 export const NpsCreate = props => (
   <Create title="Create client entry" {...props}>
     <SimpleForm redirect="list">
-      <NumberInput source="current-nps" label="NPS score" validate={validateNps} />
+      <NumberInput source="current-nps" label="NPS" validate={validateNps} />
       <DateInput source="date" validate={validateDateRequired} />
       <NumberInput source="goal-nps" label="Target NPS" validate={validateNps} />
       <DateInput source="target-date" label="Target date" validate={validateDateRequired} />
