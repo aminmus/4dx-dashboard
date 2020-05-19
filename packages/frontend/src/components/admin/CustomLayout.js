@@ -25,7 +25,6 @@ const CustomLayout = ({ children, isLoggedIn, dispatch, editMode }) => {
     root: {
       zIndex: 1,
       minHeight: '100vh',
-      backgroundColor: theme.palette.background.default,
       position: 'relative'
     },
     appFrame: {

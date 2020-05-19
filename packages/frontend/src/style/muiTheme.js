@@ -2,7 +2,7 @@ import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
 import COLORS from './COLORS';
 
-const { primary, secondary, light, gray } = COLORS;
+const { primary, secondary, light, gray, lightGray } = COLORS;
 
 const theme = createMuiTheme({
   /** Overrides to handle React Admin styles */
@@ -40,7 +40,10 @@ const theme = createMuiTheme({
   palette: {
     type: 'dark',
     primary: { main: primary },
-    secondary: { main: secondary }
+    secondary: { main: secondary },
+    background: {
+      default: lightGray
+    }
   },
   typography: {
     h1: {

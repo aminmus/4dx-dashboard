@@ -4,7 +4,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import Header from './components/layout/Header';
 import Admin from './components/layout/Admin';
 import isAuthenticated from './utils/authentication';
@@ -33,6 +33,7 @@ const App = ({ history, dispatch }) => {
   return (
     <ConnectedRouter history={history}>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Header />
         <Admin history={history} customRoutes={customRoutes} />
       </ThemeProvider>
