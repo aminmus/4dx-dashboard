@@ -98,7 +98,7 @@ const InputNps = ({ id, current, goal, targetDate, setIsAddingOrEditing, handleR
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <TextField
           id="standard-number"
-          label="Current"
+          label="NPS"
           type="number"
           value={currentNps}
           default={currentNps}
