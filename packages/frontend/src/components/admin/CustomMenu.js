@@ -37,23 +37,24 @@ const CustomMenu = ({ handleEditClick, handleLogoutClick, editMode }) => {
         sidebarIsOpen={open}
       />
       <MenuItemLink
-        to="/clients"
-        key="clients"
-        primaryText="Clients"
-        leftIcon={<DefaultIcon />}
-        sidebarIsOpen={open}
-      />
-      <MenuItemLink
-        to="/measureGoals"
-        key="measureGoals"
-        primaryText="Measure Goals"
-        leftIcon={<DefaultIcon />}
+        to="/"
+        key="editMode"
+        primaryText={editMode ? 'Turn Off Edit Mode' : 'Edit Mode'}
+        onClick={handleEditClick}
+        leftIcon={<EditIcon />}
         sidebarIsOpen={open}
       />
       <MenuItemLink
         to="/nps"
         key="nps"
         primaryText="NPS"
+        leftIcon={<DefaultIcon />}
+        sidebarIsOpen={open}
+      />
+      <MenuItemLink
+        to="/clients"
+        key="clients"
+        primaryText="Clients"
         leftIcon={<DefaultIcon />}
         sidebarIsOpen={open}
       />
@@ -65,11 +66,10 @@ const CustomMenu = ({ handleEditClick, handleLogoutClick, editMode }) => {
         sidebarIsOpen={open}
       />
       <MenuItemLink
-        to="/"
-        key="editMode"
-        primaryText={`Edit Mode: ${editMode ? 'on' : 'off'}`}
-        onClick={handleEditClick}
-        leftIcon={<EditIcon />}
+        to="/measureGoals"
+        key="measureGoals"
+        primaryText="Measure Goals"
+        leftIcon={<DefaultIcon />}
         sidebarIsOpen={open}
       />
       <MenuItemLink
