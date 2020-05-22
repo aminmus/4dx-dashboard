@@ -49,16 +49,12 @@ passport.use(
       try {
         const user = await User.findOne({ where: { email } });
         if (!user) {
-          return done(null, false, {
-            message: 'Invalid email or password',
-          });
+          return done(new Error('Invalid email or password'));
         }
 
         const isValidPassword = await user.isValidPassword(password);
         if (!isValidPassword) {
-          return done(null, false, {
-            message: 'Invalid email or password',
-          });
+          return done(new Error('Invalid email or password'));
         }
 
         return done(null, user, { message: 'Logged in Successfully' });

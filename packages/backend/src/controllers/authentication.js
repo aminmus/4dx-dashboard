@@ -38,11 +38,7 @@ const login = async (req, res, next) => {
   passport.authenticate('login', (err, user, info) => {
     try {
       if (err) return next(err);
-      if (!user) return res.status(400).json(info);
-      /**
-             * User token signed with JWT
-             * @const
-             */
+
       const token = jwt.sign(
         { user: { id: user.id, email: user.email, role: user.role } },
         process.env.JWT_SECRET,
