@@ -1,7 +1,7 @@
 {
 	"name": "4dx",
 	"version": "0.1.0",
-	"description": "New 4DX site in React and Node JS",
+	"description": "4DX Dashboard site in React and Node JS",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"doc-fe": "jsdoc -c ./packages/frontend/jsdoc.json",
@@ -14,7 +14,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+ssh://git@bitbucket.org/vaimo/4dx.git"
+		"url": "git@github.com:aminmus/4dx-dashboard.git"
 	},
 	"workspaces": [
 		"packages/*"
@@ -24,7 +24,7 @@
 		"Daniel Salin"
 	],
 	"license": "ISC",
-	"homepage": "https://bitbucket.org/vaimo/4dx#readme",
+	"homepage": "https://github.com/aminmus/4dx-dashboard#readme",
 	"devDependencies": {
 		"better-docs": "^1.4.7",
 		"husky": "^4.2.1",

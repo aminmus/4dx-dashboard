@@ -11,11 +11,11 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@bitbucket.org/vaimo/4dx.git"
+        "url": "git@github.com:aminmus/4dx-dashboard.git"
     },
     "author": "Amin Mushehid",
     "license": "ISC",
-    "homepage": "https://bitbucket.org/vaimo/4dx#readme",
+    "homepage": "https://github.com/aminmus/4dx-dashboard#readme",
     "dependencies": {
         "bcryptjs": "^2.4.3",
         "cors": "^2.8.5",
