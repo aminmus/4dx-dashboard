@@ -27,12 +27,16 @@ const authProvider = {
     });
 
     const response = await fetch(request);
-    if (response.status < 200 || response.status >= 300) throw new Error(response.statusText);
+    if (response.status < 200 || response.status >= 300) {
+      const responseBody = await response.json();
+      return Promise.reject(new Error(responseBody.errors[0].title));
+    }
 
     const { token } = await response.json();
     localStorage.setItem('email', username);
+    localStorage.setItem('token', token);
     store.dispatch(setLoginStatus());
-    return localStorage.setItem('token', token);
+    return Promise.resolve();
   },
   logout: () => {
     localStorage.removeItem('email');
