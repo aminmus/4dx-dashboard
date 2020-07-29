@@ -56,7 +56,7 @@ const startServer = async () => {
   const app = express();
 
   app.use(express.json({ type: 'application/vnd.api+json' }));
-  app.use(express.urlencoded());
+  app.use(express.urlencoded({ extended: true }));
   app.use(cors());
   app.use(passport.initialize());
 
