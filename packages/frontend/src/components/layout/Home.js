@@ -15,6 +15,7 @@ import formatNpsData from '../../utils/charts/formatNpsData';
 import MeasuresGraphContainer from '../measures/MeasuresGraphContainer';
 import NpsGraphContainer from '../nps/NpsGraphContainer';
 import COLORS from '../../style/COLORS';
+import DemoAlert from '../elements/DemoAlert';
 
 const { danger, dangerDark } = COLORS;
 
@@ -133,6 +134,7 @@ const Home = ({
 
   return (
     <div className={classes.mainContainer}>
+      <DemoAlert />
       {isFetching && <CircularProgress />}
       <div className="row">
         <div className="col-md">
